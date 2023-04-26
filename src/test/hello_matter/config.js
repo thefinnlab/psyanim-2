@@ -28,7 +28,7 @@ export default class Config {
                         showVelocity: true,
                         velocityColor: 0x00aeef,
         
-                        showCollisions: true,
+                        showCollisions: false,
                         collisionColor: 0xf5950c,
             
                         showSeparations: false,

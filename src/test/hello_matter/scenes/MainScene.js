@@ -1,5 +1,9 @@
 import Phaser from 'phaser';
 
+import PsyanimConstants from '../../../gameobjects/PsyanimConstants';
+
+import ScreenBoundary from '../../../gameobjects/ScreenBoundary';
+
 export default class MainScene extends Phaser.Scene {
 
     constructor() {
@@ -26,8 +30,9 @@ export default class MainScene extends Phaser.Scene {
 
     create() {
 
+        this.screenBoundary = new ScreenBoundary(this);
+
         this.player = this.createTriangleShapedPlayer(400, 300, 30, 60);
-        // this.player = this.createCircleShapedPlayer();
     }
 
     update(t, dt) {
@@ -86,7 +91,14 @@ export default class MainScene extends Phaser.Scene {
 
         let verts = this.computeTriangleVertices(base, altitude);
 
-        let sprite = this.matter.add.sprite(x, y, textureKey);
+        let sprite = this.matter.add.sprite(x, y, textureKey, null, {
+            label: 'player',
+            collisionFilter: {
+                category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
+                mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | 
+                    PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
+            }
+        });
 
         sprite.setBody({
             type: 'fromVertices',

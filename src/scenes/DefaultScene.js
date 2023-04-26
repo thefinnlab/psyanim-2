@@ -4,6 +4,6 @@ export default class DefaultScene extends Phaser.Scene {
 
     constructor() {
 
-        super('infinite_runner_game');
+        super('psyanim_default_scene');
     }
 }
