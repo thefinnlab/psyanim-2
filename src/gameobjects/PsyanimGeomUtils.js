@@ -12,6 +12,13 @@ export default class PsyanimGeomUtils {
         ];
     }
 
+    /**
+     * 
+     * @param {*} scene 
+     * @param {*} textureKey 
+     * @param {*} geomParams - NOTE: x and y must be used to offset texture b.c. anything offscreen isn't kept
+     * @param {*} color 
+     */
     static generateTriangleTexture(scene, textureKey, geomParams = { x: 400, y: 300, base: 12, altitude: 24}, color = 0x0000ff) {
 
         let verts = PsyanimGeomUtils.computeTriangleVertices(geomParams.base, geomParams.altitude);
@@ -27,6 +34,13 @@ export default class PsyanimGeomUtils {
         graphics.destroy();
     }
 
+    /**
+     * 
+     * @param {*} scene 
+     * @param {*} textureKey 
+     * @param {*} geomParams - NOTE: x and y must be used to offset texture b.c. anything offscreen isn't kept
+     * @param {*} color 
+     */
     static generateCircleTexture(scene, textureKey, geomParams = { x: 400, y: 300, radius: 12}, color = 0xFFFF00) {
 
         let graphics = scene.add.graphics();
