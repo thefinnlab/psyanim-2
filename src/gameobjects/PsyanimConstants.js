@@ -1,6 +1,12 @@
 
 export default class PsyanimConstants {
 
+    static SHAPE_TYPE = {
+        CIRCLE: 'PSYANIM_SHAPE_CIRCLE',
+        RECTANGLE: 'PSYANIM_SHAPE_RECTANGLE',
+        TRIANGLE: 'PSYANIM_SHAPE_TRIANGLE',
+    }
+
     static COLLISION_CATEGORIES = {
         NONE: 0x0000,
         DEFAULT: 0x0001,

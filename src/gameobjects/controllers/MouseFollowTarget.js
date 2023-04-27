@@ -7,7 +7,7 @@ export default class MouseFollowTarget extends Phaser.Physics.Matter.Sprite {
 
         let textureKey = 'mouseFollowTarget';
 
-        PsyanimGeomUtils.generateCircleTexture(scene, textureKey, { x: x, y: y, radius: radius });
+        PsyanimGeomUtils.generateCircleTexture(scene, textureKey, { x: x, y: y, radius: radius }, 0x00ff00);
 
         let bodyOptions = {
             label: 'mouseFollowTarget',

@@ -3,25 +3,25 @@ import PsyanimGeomUtils from "../PsyanimGeomUtils";
 
 export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprite {
 
-    constructor(scene, x = 400, y = 300, base = 30, altitude = 60) {
+    constructor(scene, name = 'player', x = 400, y = 300, base = 30, altitude = 60) {
 
-        let textureKey = 'playerTriangle';
+        let textureKey = 'player_' + name;
 
         PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, {
-            x: 400, y: 300, base: base, altitude: altitude
+            base: base, altitude: altitude
         });
 
-        let verts = PsyanimGeomUtils.computeTriangleVertices(base, altitude);
-
-        super(scene.matter.world, x, y, textureKey, null);
+        super(scene.matter.world, x, y, textureKey);
 
         // need to set body after initializing so graphics and collision line up nicely
+        let verts = PsyanimGeomUtils.computeTriangleVertices(base, altitude);
+
         this.setBody({
             type: 'fromVertices',
             verts: verts
         }, 
         {
-            label: 'player',
+            label: name,
             collisionFilter: {
                 category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
                 mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
