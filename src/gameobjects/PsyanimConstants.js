@@ -7,4 +7,10 @@ export default class PsyanimConstants {
         MOUSE_CURSOR: 0x0002,
         SCREEN_BOUNDARY: 0x0004
     }
+
+    static DEFAULT_SPRITE_COLLISION_FILTER = {
+        category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
+        mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | 
+            PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
+    };
 }

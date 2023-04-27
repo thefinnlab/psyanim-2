@@ -1,8 +1,9 @@
 import Phaser from 'phaser';
 
 import PsyanimConstants from '../../../gameobjects/PsyanimConstants';
-
-import ScreenBoundary from '../../../gameobjects/ScreenBoundary';
+import MouseFollowTarget from '../../../gameobjects/input/MouseFollowTarget';
+import PsyanimGeomUtils from '../../../gameobjects/PsyanimGeomUtils';
+import ScreenBoundary from '../../../gameobjects/world/ScreenBoundary';
 
 export default class MainScene extends Phaser.Scene {
 
@@ -15,7 +16,6 @@ export default class MainScene extends Phaser.Scene {
 
         this.speed = 7;
         this.turnSpeed = 0.15;
-
     }
 
     preload() {
@@ -30,9 +30,23 @@ export default class MainScene extends Phaser.Scene {
 
     create() {
 
+        // setup wrapping with screen boundary
         this.screenBoundary = new ScreenBoundary(this);
 
-        this.player = this.createTriangleShapedPlayer(400, 300, 30, 60);
+        // create player
+        let triangleTextureKey = 'triangle';
+
+        let playerGeomParams = {
+            x: 400, y: 300,
+            base: 30, altitude: 60
+        };
+
+        PsyanimGeomUtils.generateTriangleTexture(this, triangleTextureKey, playerGeomParams);
+        
+        this.player = PsyanimGeomUtils.createTriangleSprite(this, triangleTextureKey, playerGeomParams);
+
+        // setup mouse follow target
+        this.mouseFollowTarget = new MouseFollowTarget(this);
     }
 
     update(t, dt) {
@@ -53,86 +67,5 @@ export default class MainScene extends Phaser.Scene {
 
             this.player.setAngle(newAngle * 180 / Math.PI);
         }
-    }
-
-    createTriangleShapedPlayer(x = 400, y = 300, base = 12, altitude = 24, color = 0x0000ff) {
-
-        let textureKey = 'triangle';
-        this.generateTriangleTexture(textureKey, x, y, base, altitude);
-        return this.createTriangleSprite(textureKey, x, y, base, altitude);
-    }
-
-    computeTriangleVertices(base, altitude) {
-
-        return [
-
-            {x: -altitude * (1/3), y: -base / 2},
-            {x: altitude * (2/3), y: 0 },
-            {x: -altitude * (1/3), y: base / 2},
-        ];
-    }
-
-    generateTriangleTexture(name, x = 400, y = 300, base = 12, altitude = 24, color = 0x0000ff) {
-
-        let verts = this.computeTriangleVertices(base, altitude);
-
-        let graphics = this.add.graphics();
-        graphics.fillStyle(color);
-        graphics.fillTriangle(
-            verts[0].x + x, verts[0].y + y,
-            verts[1].x + x, verts[1].y + y,
-            verts[2].x + x, verts[2].y + y
-        );
-        graphics.generateTexture(name);
-        graphics.destroy();
-    }
-
-    createTriangleSprite(textureKey, x = 400, y = 300, base = 12, altitude = 24) {
-
-        let verts = this.computeTriangleVertices(base, altitude);
-
-        let sprite = this.matter.add.sprite(x, y, textureKey, null, {
-            label: 'player',
-            collisionFilter: {
-                category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
-                mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | 
-                    PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
-            }
-        });
-
-        sprite.setBody({
-            type: 'fromVertices',
-            verts: verts
-        });
-
-        return sprite;
-    }
-
-    createCircleShapedPlayer(x = 400, y = 300, radius = 24, color = 0x0000ff) {
-
-        let textureKey = 'circle';
-        this.generateCircleTexture(textureKey);
-        return this.createCircleSprite(textureKey);
-    }
-
-    generateCircleTexture(name, x = 400, y = 300, radius = 24, color = 0x0000ff) {
-
-        let graphics = this.add.graphics();
-        graphics.fillStyle(color);
-        graphics.fillCircle(x, y, radius);
-        graphics.generateTexture(name);
-        graphics.destroy();
-    }
-
-    createCircleSprite(textureKey, x = 400, y = 300, radius = 24) {
-
-        let sprite = this.matter.add.sprite(x, y, textureKey);
-
-        sprite.setBody({ 
-            type: 'circle', 
-            radius: radius
-        });
-
-        return sprite;
     }
 }
