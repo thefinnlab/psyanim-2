@@ -12,9 +12,11 @@
 
 ## Getting started:
 
+**0. Install dependencies with: `npm i`**
+
 <br>
 
-**1. To run local dev server and open client in browser: `npm run start`**
+**1. To run local dev server and open client in browser: `npm start`**
 
 <br>
 
