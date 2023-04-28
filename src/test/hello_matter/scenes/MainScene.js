@@ -30,7 +30,13 @@ export default class MainScene extends Phaser.Scene {
         this.mouseFollowTarget = new MouseFollowTarget(this);
 
         // create player
-        this.player = new PsyanimPlayerController(this);
+        this.player = new PsyanimPlayerController(this, 'player', 400, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+            base: 30, altitude: 60, 
+            width: 40, height: 20, 
+            radius: 12, 
+            color: 0x0000ff
+        });
 
         // add 3 vehicles with different geometry to the scene
         let vehicle1 = new PsyanimVehicle(this, 'agent1', 200, 150, {
