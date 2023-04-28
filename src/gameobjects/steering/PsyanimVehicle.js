@@ -5,7 +5,19 @@ import PsyanimGeomUtils from '../PsyanimGeomUtils';
 
 export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
+    static STATE = {
+
+        IDLE: 0x0001,
+        SEEK: 0x0002,
+        FLEE: 0x0004,
+        ARRIVE: 0x0008
+    };
+
     constructor(scene, name, x = 200, y = 200, shapeParams = {}) {
+
+        /**
+         *  Setup vehicle rendering + physics
+         */
 
         const defaultShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
@@ -85,10 +97,106 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
         this.setBody(matterConfig, matterOptions);
 
+        let mass = 100;
+
+        this.body.mass = mass;
+        this.body.inverseMass = 1/mass;
+
+        this.body.inertia = Infinity;
+        this.body.inverseInertia = 0;
+
         scene.add.existing(this);
+
+        /**
+         *  Setup vehicle steering state
+         */
+
+        this.setState(PsyanimVehicle.STATE.IDLE);
+
+        this.target = null;
+
+        this.maxSpeed = 5;
+        this.maxAcceleration = 0.1;
+    }
+
+    setState(state) {
+
+        this.state = state;
+
+        switch (this.state) {
+
+            case PsyanimVehicle.STATE.IDLE:
+
+                this._getSteering = (target) => new Phaser.Math.Vector2(0, 0);
+                break;
+
+            case PsyanimVehicle.STATE.SEEK:
+
+                this._getSteering = this._seek;
+                break;
+
+            case PsyanimVehicle.STATE.FLEE:
+
+                console.error("TODO: implement");
+                break;
+
+            case PsyanimVehicle.STATE.ARRIVE:
+
+                console.error("TODO: implement");
+                break;
+
+        }
+    }
+
+    _lookWhereYoureGoing() {
+
+        let velocity = this.getVelocity();
+
+        let angle = Math.atan2(velocity.y, velocity.x);
+
+        this.setAngle(angle * 180 / Math.PI);
+    }
+
+    _seek(target) {
+
+        let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
+
+        let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
+        desiredVelocity.subtract(currentPosition);
+        desiredVelocity.setLength(this.maxSpeed);
+
+        let currentVelocityXY = this.getVelocity();
+
+        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
+
+        let acceleration = desiredVelocity.clone();
+        acceleration.subtract(currentVelocity);
+
+        if (acceleration.length() > this.maxAcceleration)
+        {
+            acceleration.setLength(this.maxAcceleration);
+        }
+
+        return acceleration;
     }
 
     update(t, dt) {
 
+        // clamp velocity to max speed
+        let velocity = new Phaser.Math.Vector2(this.getVelocity());
+
+        if (velocity.length() > this.maxSpeed)
+        {
+            velocity.setLength(this.maxSpeed);
+
+            this.setVelocity(velocity.x, velocity.y);    
+        }
+
+        // apply steering
+        let steer = this._getSteering(this.target);
+
+        this.applyForce(steer);
+
+        this._lookWhereYoureGoing();
     }
 }

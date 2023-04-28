@@ -87,6 +87,14 @@ export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprit
 
         this.setBody(matterConfig, matterOptions);
 
+        let mass = 100;
+
+        this.body.mass = mass;
+        this.body.inverseMass = 1/mass;
+
+        this.body.inertia = Infinity;
+        this.body.inverseInertia = 0;
+
         scene.add.existing(this);
 
         /**
@@ -100,8 +108,8 @@ export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprit
             D: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         }
 
-        this.speed = 5;
-        this.turnSpeed = 0.15;
+        this.speed = 6;
+        this.turnSpeed = 0.2;
     }
 
     update(t, dt) {

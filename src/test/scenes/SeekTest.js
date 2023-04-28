@@ -24,6 +24,7 @@ export default class SeekTest extends PsyanimScene {
     }
 
     create() {
+
         super.create();
 
         // setup wrapping with screen boundary
@@ -47,6 +48,33 @@ export default class SeekTest extends PsyanimScene {
             base: 16, altitude: 32, 
             color: 0xffc0cb            
         });
+
+        this.vehicle2 = new PsyanimVehicle(this, 'agent2', 200, 150, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+            width: 60, height: 30,
+            color: 0xffff00            
+        });
+
+        this.vehicle3 = new PsyanimVehicle(this, 'agent3', 200, 450, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+            radius: 12,
+            color: 0x87ceeb          
+        });
+
+        this.vehicle1.target = this.player;
+        this.vehicle1.setState(PsyanimVehicle.STATE.SEEK);
+        this.vehicle1.maxSpeed = 5;
+
+        this.vehicle2.target = this.vehicle3;
+        this.vehicle2.setState(PsyanimVehicle.STATE.SEEK);
+        this.vehicle2.maxSpeed = 3;
+        this.vehicle2.maxAcceleration = 0.02;
+
+        this.vehicle3.target = this.mouseFollowTarget;
+        this.vehicle3.setState(PsyanimVehicle.STATE.SEEK);
+        this.vehicle3.maxSpeed = 4;
+
+        this.vehicles = [this.vehicle1, this.vehicle2, this.vehicle3];
     }
 
     update(t, dt) {
@@ -55,6 +83,7 @@ export default class SeekTest extends PsyanimScene {
 
         this.mouseFollowTarget.update(t, dt);
         this.player.update(t, dt);
-        this.vehicle1.update(t, dt);
+
+        this.vehicles.forEach(v => v.update(t, dt));
     }
 }
