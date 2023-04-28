@@ -93,8 +93,6 @@ export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprit
          *  Setup controller
          */
 
-        this.scene.events.on('update', (t, dt) => { this.update(t, dt) });
-
         this.keys = {
             W: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
             A: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),

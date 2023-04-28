@@ -88,7 +88,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         scene.add.existing(this);
     }
 
-    update() {
+    update(t, dt) {
 
     }
 }

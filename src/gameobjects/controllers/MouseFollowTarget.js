@@ -24,8 +24,6 @@ export default class MouseFollowTarget extends Phaser.Physics.Matter.Sprite {
         super(scene.matter.world, x, y, textureKey, null, bodyOptions);
 
         scene.add.existing(this);
-
-        this.scene.events.on('update', this.update, this);
     }
 
     update(t, dt) {
