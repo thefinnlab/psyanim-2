@@ -1,6 +1,8 @@
 import Phaser, { Physics } from 'phaser';
 
-import DefaultScene from './scenes/DefaultScene';
+import ArriveTest from './scenes/ArriveTest';
+import SeekTest from './scenes/SeekTest';
+import FleeTest from './scenes/FleeTest';
 
 export default class Config {
 
@@ -10,7 +12,7 @@ export default class Config {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
-            scene: [DefaultScene],
+            scene: [SeekTest, ArriveTest, FleeTest],
             physics: {
                 default: 'matter',
                 matter: {

@@ -25,7 +25,7 @@ export default class MouseFollowTarget extends Phaser.Physics.Matter.Sprite {
 
         scene.add.existing(this);
 
-        this.scene.events.on('update', (t, dt) => { this.update(t, dt) });
+        this.scene.events.on('update', this.update, this);
     }
 
     update(t, dt) {

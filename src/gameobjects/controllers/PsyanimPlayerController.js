@@ -11,7 +11,7 @@ export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprit
 
         const defaultShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            base: 30, altitude: 60, 
+            base: 16, altitude: 32, 
             width: 20, height: 20, 
             radius: 30, 
             color: 0xffff00};
@@ -102,7 +102,7 @@ export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprit
             D: scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         }
 
-        this.speed = 7;
+        this.speed = 5;
         this.turnSpeed = 0.15;
     }
 

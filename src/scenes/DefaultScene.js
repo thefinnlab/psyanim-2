@@ -6,4 +6,12 @@ export default class DefaultScene extends Phaser.Scene {
 
         super('psyanim_default_scene');
     }
+
+    init() {}
+
+    preload() {}
+
+    create() {}
+
+    update(t, dt) {}
 }
