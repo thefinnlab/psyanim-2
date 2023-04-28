@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimTestScene from './PsyanimTestScene';
+import PsyanimScene from '../../scenes/PsyanimScene';
 
 import PsyanimConstants from '../../gameobjects/PsyanimConstants';
 import MouseFollowTarget from '../../gameobjects/controllers/MouseFollowTarget';
@@ -8,7 +8,7 @@ import ScreenBoundary from '../../gameobjects/world/ScreenBoundary';
 import PsyanimPlayerController from '../../gameobjects/controllers/PsyanimPlayerController';
 import PsyanimVehicle from '../../gameobjects/steering/PsyanimVehicle';
 
-export default class SeekTest extends PsyanimTestScene {
+export default class SeekTest extends PsyanimScene {
 
     constructor() {
 

@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
+import PsyanimScene from './PsyanimScene';
 
-export default class DefaultScene extends Phaser.Scene {
+export default class DefaultScene extends PsyanimScene {
 
     constructor() {
 
