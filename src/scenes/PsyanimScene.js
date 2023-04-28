@@ -31,6 +31,18 @@ export default class PsyanimScene extends Phaser.Scene {
         if (this.keys.J.isDown) {
 
             // load previous scene
+            let currentSceneIndex = this.scene.getIndex(this.scene.key);
+
+            let scenes = this.scene.manager.scenes;
+
+            let nextSceneIndex = currentSceneIndex - 1;
+
+            if (nextSceneIndex < 0)
+            {
+                nextSceneIndex = scenes.length - 1;
+            }
+
+            this.scene.start(scenes[nextSceneIndex]);
         }
         else if (this.keys.K.isDown) {
 
