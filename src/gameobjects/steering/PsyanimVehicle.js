@@ -126,7 +126,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         this._velocitySamples = [];
 
         // TODO: move these out of here - these are arrive-specific params
-        this.r1 = 40;
+        this.r1 = 25;
         this.r2 = 140;
     }
 
@@ -281,7 +281,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
             scaledMaxAcceleration = (r - this.r1) / (this.r2 - this.r1) * this.maxAcceleration;
         }
 
-        let desiredVelocity = targetRelativePosition.normalize().clone();
+        let desiredVelocity = targetRelativePosition.clone();
 
         desiredVelocity.setLength(desiredSpeed);
 
@@ -317,6 +317,6 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
         this.applyForce(steer);
 
-        this._lookWhereYoureGoing(t);
+        this._lookWhereYoureGoing(4);
     }
 }

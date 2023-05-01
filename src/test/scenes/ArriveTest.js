@@ -39,7 +39,7 @@ export default class ArriveTest extends PsyanimScene {
         
         this.vehicle1.target = this.mouseFollowTarget;
         this.vehicle1.setState(PsyanimVehicle.STATE.ARRIVE);
-        this.vehicle1.maxSpeed = 5;
+        this.vehicle1.maxSpeed = 8;
     }
 
     shutdown() {
