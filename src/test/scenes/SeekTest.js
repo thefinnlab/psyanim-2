@@ -27,9 +27,6 @@ export default class SeekTest extends PsyanimScene {
 
         super.create();
 
-        // setup wrapping with screen boundary
-        this.screenBoundary = new ScreenBoundary(this);
-
         // setup mouse follow target
         this.mouseFollowTarget = new MouseFollowTarget(this);
 

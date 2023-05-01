@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import ScreenBoundary from '../gameobjects/world/ScreenBoundary';
+
 export default class PsyanimScene extends Phaser.Scene {
 
     constructor(key) {
@@ -19,6 +21,9 @@ export default class PsyanimScene extends Phaser.Scene {
     }
 
     create() {
+
+        // setup wrapping with screen boundary
+        this.screenBoundary = new ScreenBoundary(this);
 
         this.keys = {
             J: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
