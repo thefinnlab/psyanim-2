@@ -125,9 +125,8 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         this.nSamplesForLookSmoothing = 5
         this._velocitySamples = [];
 
-        // TODO: move these out of here - these are arrive-specific params
-        this.r1 = 25;
-        this.r2 = 140;
+        this.innerDecelerationRadius = 25;
+        this.outerDecelerationRadius = 140;
     }
 
     setState(state) {
@@ -203,7 +202,6 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         }
     }
 
-    // TODO: move this out of here and into it's own class!
     _seek(target) {
 
         let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
@@ -251,19 +249,6 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         return acceleration;
     }
 
-    // TODO: move this out of here and into a utility class
-    _vec2ToString(name, vector) {
-
-        let vecString = name + " = ( ";
-        vecString += vector.x.toString();
-        vecString += ", ";
-        vecString += vector.y.toString();
-        vecString += " )";
-
-        return vecString;
-    }
-
-    // TODO: move this out of there, including it's params...
     _arrive(target) {
 
         /**
@@ -289,20 +274,20 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
         let scaledMaxAcceleration = this.maxAcceleration;
 
-        if (r <= this.r1)
+        if (r <= this.innerDecelerationRadius)
         {
             this.setVelocity(0, 0);
 
             return new Phaser.Math.Vector2(0, 0);
         }
-        else if (r > this.r2)
+        else if (r > this.outerDecelerationRadius)
         {
             desiredSpeed = this.maxSpeed;
         }
-        else // ((r > this.r1) && r < this.r2)
+        else // ((r > this.innerDecelerationRadius) && r < this.r2)
         {
-            desiredSpeed = ((this.maxSpeed) / (this.r2 - this.r1)) * (r - this.r1);
-            scaledMaxAcceleration = (r - this.r1) / (this.r2 - this.r1) * this.maxAcceleration;
+            desiredSpeed = ((this.maxSpeed) / (this.outerDecelerationRadius - this.innerDecelerationRadius)) * (r - this.innerDecelerationRadius);
+            scaledMaxAcceleration = (r - this.innerDecelerationRadius) / (this.outerDecelerationRadius - this.innerDecelerationRadius) * this.maxAcceleration;
         }
 
         let desiredVelocity = targetRelativePosition.clone();
