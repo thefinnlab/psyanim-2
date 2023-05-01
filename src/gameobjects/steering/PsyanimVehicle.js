@@ -116,7 +116,18 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         this.target = null;
 
         this.maxSpeed = 5;
-        this.maxAcceleration = 0.1;
+        this.maxAcceleration = 0.2;
+
+        this.turnSpeed = 0.2;
+
+        this.smoothLookDirection = true;
+
+        this.nSamplesForLookSmoothing = 5
+        this._velocitySamples = [];
+
+        // TODO: move these out of here - these are arrive-specific params
+        this.r1 = 40;
+        this.r2 = 140;
     }
 
     setState(state) {
@@ -153,21 +164,46 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         let velocityXY = this.getVelocity();
 
         let velocity = new Phaser.Math.Vector2(velocityXY.x, velocityXY.y);
-        
-        if (velocity.length() > 1e-3)
+
+        let direction = new Phaser.Math.Vector2(0, 0);
+
+        if (this.smoothLookDirection)
         {
-            // velocity.normalize();
+            if (this._velocitySamples.length == this.nSamplesForLookSmoothing)
+            {
+                this._velocitySamples.shift();
+            }
 
-            let v_ratio = velocity.y / velocity.x;
+            this._velocitySamples.push(velocity);
 
-            console.log("v_ratio = " + v_ratio);
+            for (let i = 0; i < this._velocitySamples.length; ++i)
+            {
+                direction.add(this._velocitySamples[i]);
+            }
+    
+            direction.scale(1 / this._velocitySamples.length);    
+        }
+        else
+        {
+            direction = velocity;
+        }
 
-            let angle = Math.atan2(velocity.y, velocity.x) * 180 / Math.PI;
+        if (direction.length() > 1e-3)
+        {
+            direction.normalize();
 
-            this.setAngle(angle);
+            let targetAngle = Math.atan2(direction.y, direction.x) * 180 / Math.PI;
+
+            let newAngle = Phaser.Math.Angle.RotateTo(
+                this.angle * Math.PI / 180,
+                targetAngle,
+                this.turnSpeed);
+
+            this.setAngle(newAngle);
         }
     }
 
+    // TODO: move this out of here and into it's own class!
     _seek(target) {
 
         let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
@@ -191,6 +227,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         return acceleration;
     }
 
+    // TODO: move this out of here and into a utility class
     _vec2ToString(name, vector) {
 
         let vecString = name + " = ( ";
@@ -202,6 +239,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         return vecString;
     }
 
+    // TODO: move this out of there, including it's params...
     _arrive(target) {
 
         /**
@@ -216,9 +254,6 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
          * 
          */
 
-        this.r1 = 50;
-        this.r2 = 150;
-
         let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
 
         let targetRelativePosition = new Phaser.Math.Vector2(target.x, target.y);
@@ -226,29 +261,28 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
         let r = targetRelativePosition.length();
 
-        if (r - this.r1 < 1e-3) 
+        let desiredSpeed = 0;
+
+        let scaledMaxAcceleration = this.maxAcceleration;
+
+        if (r <= this.r1)
         {
             this.setVelocity(0, 0);
 
-            let angle = Math.atan2(targetRelativePosition.y, targetRelativePosition.x);
-
-            this.setAngle(angle * 180 / Math.PI);
-
             return new Phaser.Math.Vector2(0, 0);
         }
-
-        let desiredSpeed = 0;
-
-        if (r > this.r2)
+        else if (r > this.r2)
         {
             desiredSpeed = this.maxSpeed;
         }
-        else if (r > this.r1 && r < this.r2)
+        else // ((r > this.r1) && r < this.r2)
         {
             desiredSpeed = ((this.maxSpeed) / (this.r2 - this.r1)) * (r - this.r1);
+            scaledMaxAcceleration = (r - this.r1) / (this.r2 - this.r1) * this.maxAcceleration;
         }
 
-        let desiredVelocity = targetRelativePosition.clone();
+        let desiredVelocity = targetRelativePosition.normalize().clone();
+
         desiredVelocity.setLength(desiredSpeed);
 
         let currentVelocityXY = this.getVelocity();
@@ -258,9 +292,9 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         let acceleration = desiredVelocity.clone();
         acceleration.subtract(currentVelocity);
 
-        if (acceleration.length() > this.maxAcceleration)
+        if (acceleration.length() > scaledMaxAcceleration)
         {
-            acceleration.setLength(this.maxAcceleration);
+            acceleration.setLength(scaledMaxAcceleration);
         }
 
         return acceleration;
@@ -283,6 +317,6 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
         this.applyForce(steer);
 
-        this._lookWhereYoureGoing();
+        this._lookWhereYoureGoing(t);
     }
 }

@@ -64,12 +64,12 @@ export default class SeekTest extends PsyanimScene {
 
         this.vehicle2.target = this.vehicle3;
         this.vehicle2.setState(PsyanimVehicle.STATE.SEEK);
-        this.vehicle2.maxSpeed = 3;
-        this.vehicle2.maxAcceleration = 0.02;
+        this.vehicle2.maxSpeed = 4;
+        this.vehicle2.nSamplesForSmoothing = 10;
 
         this.vehicle3.target = this.mouseFollowTarget;
         this.vehicle3.setState(PsyanimVehicle.STATE.SEEK);
-        this.vehicle3.maxSpeed = 4;
+        this.vehicle3.maxSpeed = 5;
 
         this.vehicles = [this.vehicle1, this.vehicle2, this.vehicle3];
     }
