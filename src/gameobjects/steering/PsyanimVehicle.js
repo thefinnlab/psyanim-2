@@ -148,7 +148,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
             case PsyanimVehicle.STATE.FLEE:
 
-                console.error("TODO: implement");
+                this._getSteering = this._flee;
                 break;
 
             case PsyanimVehicle.STATE.ARRIVE:
@@ -211,6 +211,30 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
         desiredVelocity.subtract(currentPosition);
         desiredVelocity.setLength(this.maxSpeed);
+
+        let currentVelocityXY = this.getVelocity();
+
+        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
+
+        let acceleration = desiredVelocity.clone();
+        acceleration.subtract(currentVelocity);
+
+        if (acceleration.length() > this.maxAcceleration)
+        {
+            acceleration.setLength(this.maxAcceleration);
+        }
+
+        return acceleration;
+    }
+
+    _flee(target) {
+
+        let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
+
+        let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
+        desiredVelocity.subtract(currentPosition);
+        desiredVelocity.setLength(this.maxSpeed);
+        desiredVelocity.scale(-1);
 
         let currentVelocityXY = this.getVelocity();
 
