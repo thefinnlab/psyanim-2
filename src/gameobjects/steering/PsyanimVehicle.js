@@ -142,7 +142,7 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
             case PsyanimVehicle.STATE.ARRIVE:
 
-                console.error("TODO: implement");
+                this._getSteering = this._arrive;
                 break;
 
         }
@@ -150,11 +150,22 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
 
     _lookWhereYoureGoing() {
 
-        let velocity = this.getVelocity();
+        let velocityXY = this.getVelocity();
 
-        let angle = Math.atan2(velocity.y, velocity.x);
+        let velocity = new Phaser.Math.Vector2(velocityXY.x, velocityXY.y);
+        
+        if (velocity.length() > 1e-3)
+        {
+            // velocity.normalize();
 
-        this.setAngle(angle * 180 / Math.PI);
+            let v_ratio = velocity.y / velocity.x;
+
+            console.log("v_ratio = " + v_ratio);
+
+            let angle = Math.atan2(velocity.y, velocity.x) * 180 / Math.PI;
+
+            this.setAngle(angle);
+        }
     }
 
     _seek(target) {
@@ -164,6 +175,81 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
         desiredVelocity.subtract(currentPosition);
         desiredVelocity.setLength(this.maxSpeed);
+
+        let currentVelocityXY = this.getVelocity();
+
+        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
+
+        let acceleration = desiredVelocity.clone();
+        acceleration.subtract(currentVelocity);
+
+        if (acceleration.length() > this.maxAcceleration)
+        {
+            acceleration.setLength(this.maxAcceleration);
+        }
+
+        return acceleration;
+    }
+
+    _vec2ToString(name, vector) {
+
+        let vecString = name + " = ( ";
+        vecString += vector.x.toString();
+        vecString += ", ";
+        vecString += vector.y.toString();
+        vecString += " )";
+
+        return vecString;
+    }
+
+    _arrive(target) {
+
+        /**
+         *  NOTE: we define two concentric circles of radii, r1 and r2, where r1 < r2, such that the 
+         *  desired speed of the vehicle at a distance of r1 from the target is zero and the desired 
+         *  speed of the vehicle at a distance of r2 from the target is the v_max.
+         * 
+         *  Between r1 and r2, the velocity v varies linearly as a function of the distance r from 
+         *  the target, according to the following equation:
+         * 
+         *  v(r) = ((v_max) / (r2 - r1)) * (r - r1)
+         * 
+         */
+
+        this.r1 = 50;
+        this.r2 = 150;
+
+        let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
+
+        let targetRelativePosition = new Phaser.Math.Vector2(target.x, target.y);
+        targetRelativePosition.subtract(currentPosition);
+
+        let r = targetRelativePosition.length();
+
+        if (r - this.r1 < 1e-3) 
+        {
+            this.setVelocity(0, 0);
+
+            let angle = Math.atan2(targetRelativePosition.y, targetRelativePosition.x);
+
+            this.setAngle(angle * 180 / Math.PI);
+
+            return new Phaser.Math.Vector2(0, 0);
+        }
+
+        let desiredSpeed = 0;
+
+        if (r > this.r2)
+        {
+            desiredSpeed = this.maxSpeed;
+        }
+        else if (r > this.r1 && r < this.r2)
+        {
+            desiredSpeed = ((this.maxSpeed) / (this.r2 - this.r1)) * (r - this.r1);
+        }
+
+        let desiredVelocity = targetRelativePosition.clone();
+        desiredVelocity.setLength(desiredSpeed);
 
         let currentVelocityXY = this.getVelocity();
 
