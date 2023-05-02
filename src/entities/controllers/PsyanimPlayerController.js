@@ -1,7 +1,11 @@
+import Phaser from 'phaser';
+
+import PsyanimEntity from '../PsyanimEntity';
+
 import PsyanimConstants from "../PsyanimConstants";
 import PsyanimGeomUtils from "../PsyanimGeomUtils";
 
-export default class PsyanimPlayerController extends Phaser.Physics.Matter.Sprite {
+export default class PsyanimPlayerController extends PsyanimEntity {
 
     constructor(scene, name = 'player', x = 400, y = 300, shapeParams = {}) {
 

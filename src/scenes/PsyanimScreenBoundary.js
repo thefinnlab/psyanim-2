@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimConstants from '../gameobjects/PsyanimConstants';
+import PsyanimConstants from '../entities/PsyanimConstants';
 
 export default class PsyanimScreenBoundary {
 

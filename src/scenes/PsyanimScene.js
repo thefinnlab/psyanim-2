@@ -9,7 +9,14 @@ export default class PsyanimScene extends Phaser.Scene {
         super(key);
     }
 
+    addEntity(entity) {
+
+        this._entities.push(entity);
+    }
+
     init() {
+
+        this._entities = [];
 
         const sceneNameHeader = document.getElementById("sceneName");
 
@@ -65,5 +72,7 @@ export default class PsyanimScene extends Phaser.Scene {
 
             this.scene.start(scenes[nextSceneIndex]);
         }
+
+        this._entities.forEach(e => e.update(t, dt));
     }
 }

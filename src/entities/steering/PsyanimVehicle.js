@@ -1,9 +1,11 @@
 import Phaser from 'phaser';
 
+import PsyanimEntity from '../PsyanimEntity';
+
 import PsyanimConstants from "../PsyanimConstants";
 import PsyanimGeomUtils from '../PsyanimGeomUtils';
 
-export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
+export default class PsyanimVehicle extends PsyanimEntity {
 
     static STATE = {
 

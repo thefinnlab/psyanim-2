@@ -2,10 +2,10 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../scenes/PsyanimScene';
 
-import PsyanimConstants from '../../gameobjects/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../gameobjects/controllers/PsyanimMouseFollowTarget';
-import PsyanimPlayerController from '../../gameobjects/controllers/PsyanimPlayerController';
-import PsyanimVehicle from '../../gameobjects/steering/PsyanimVehicle';
+import PsyanimConstants from '../../entities/PsyanimConstants';
+import PsyanimMouseFollowTarget from '../../entities/controllers/PsyanimMouseFollowTarget';
+import PsyanimPlayerController from '../../entities/controllers/PsyanimPlayerController';
+import PsyanimVehicle from '../../entities/steering/PsyanimVehicle';
 
 export default class SeekTest extends PsyanimScene {
 
@@ -14,23 +14,15 @@ export default class SeekTest extends PsyanimScene {
         super('Seek Test');
     }
 
-    init() {
-        super.init();
-    }
-
-    preload() {
-        super.preload();
-    }
-
     create() {
 
         super.create();
 
         // setup mouse follow target
-        this.mouseFollowTarget = new PsyanimMouseFollowTarget(this);
+        let mouseFollowTarget = new PsyanimMouseFollowTarget(this);
 
         // create player
-        this.player = new PsyanimPlayerController(this, 'player', 400, 300, {
+        let player = new PsyanimPlayerController(this, 'player', 400, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
             base: 16, altitude: 32, 
             width: 40, height: 20, 
@@ -39,47 +31,42 @@ export default class SeekTest extends PsyanimScene {
         });
 
         // add agents as vehicles to this scene
-        this.vehicle1 = new PsyanimVehicle(this, 'agent1', 600, 450, {
+        let vehicle1 = new PsyanimVehicle(this, 'agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
         });
 
-        this.vehicle2 = new PsyanimVehicle(this, 'agent2', 200, 150, {
+        let vehicle2 = new PsyanimVehicle(this, 'agent2', 200, 150, {
             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
             width: 60, height: 30,
             color: 0xffff00            
         });
 
-        this.vehicle3 = new PsyanimVehicle(this, 'agent3', 200, 450, {
+        let vehicle3 = new PsyanimVehicle(this, 'agent3', 200, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
             radius: 12,
             color: 0x87ceeb          
         });
 
-        this.vehicle1.target = this.player;
-        this.vehicle1.setState(PsyanimVehicle.STATE.SEEK);
-        this.vehicle1.maxSpeed = 5;
+        vehicle1.target = player;
+        vehicle1.setState(PsyanimVehicle.STATE.SEEK);
+        vehicle1.maxSpeed = 5;
 
-        this.vehicle2.target = this.vehicle3;
-        this.vehicle2.setState(PsyanimVehicle.STATE.SEEK);
-        this.vehicle2.maxSpeed = 4;
-        this.vehicle2.nSamplesForSmoothing = 10;
+        vehicle2.target = vehicle3;
+        vehicle2.setState(PsyanimVehicle.STATE.SEEK);
+        vehicle2.maxSpeed = 4;
+        vehicle2.nSamplesForSmoothing = 10;
 
-        this.vehicle3.target = this.mouseFollowTarget;
-        this.vehicle3.setState(PsyanimVehicle.STATE.SEEK);
-        this.vehicle3.maxSpeed = 5;
+        vehicle3.target = mouseFollowTarget;
+        vehicle3.setState(PsyanimVehicle.STATE.SEEK);
+        vehicle3.maxSpeed = 5;
 
-        this.vehicles = [this.vehicle1, this.vehicle2, this.vehicle3];
-    }
+        let vehicles = [vehicle1, vehicle2, vehicle3];
 
-    update(t, dt) {
+        this.addEntity(mouseFollowTarget);
+        this.addEntity(player);
 
-        super.update(t, dt);
-
-        this.mouseFollowTarget.update(t, dt);
-        this.player.update(t, dt);
-
-        this.vehicles.forEach(v => v.update(t, dt));
+        vehicles.forEach(v => this.addEntity(v));
     }
 }
