@@ -31,11 +31,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
     innerDecelerationRadius = 25;
     outerDecelerationRadius = 140;
 
-    _velocitySamples = [];
-
     constructor(entity, options) {
 
         super(entity);
+
+        this._velocitySamples = [];
 
         this.setState(PsyanimVehicle.STATE.IDLE);
     }

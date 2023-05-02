@@ -4,25 +4,25 @@ import PsyanimComponent from "../../PsyanimComponent";
 
 export default class PsyanimPlayerController extends PsyanimComponent {
 
+    speed = 6;
+    turnSpeed = 0.2;
+
     constructor(entity, options = {}) {
 
         super(entity);
 
-        this.keys = {
+        this._keys = {
             W: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
             A: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             S: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
             D: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         }
-
-        this.speed = 6;
-        this.turnSpeed = 0.2;
     }
 
     update(t, dt) {
 
-        let horizontal = (this.keys.A.isDown ? -1 : 0) + (this.keys.D.isDown ? 1 : 0);
-        let vertical = (this.keys.W.isDown ? -1 : 0) + (this.keys.S.isDown ? 1 : 0);
+        let horizontal = (this._keys.A.isDown ? -1 : 0) + (this._keys.D.isDown ? 1 : 0);
+        let vertical = (this._keys.W.isDown ? -1 : 0) + (this._keys.S.isDown ? 1 : 0);
 
         this.entity.setVelocity(horizontal * this.speed, vertical * this.speed);
 
