@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import PsyanimScene from '../../scenes/PsyanimScene';
 
 import PsyanimConstants from '../../gameobjects/PsyanimConstants';
-import MouseFollowTarget from '../../gameobjects/controllers/MouseFollowTarget';
+import PsyanimMouseFollowTarget from '../../gameobjects/controllers/PsyanimMouseFollowTarget';
 import PsyanimVehicle from '../../gameobjects/steering/PsyanimVehicle';
 
 export default class SeekTest extends PsyanimScene {
@@ -26,7 +26,7 @@ export default class SeekTest extends PsyanimScene {
         super.create();
 
         // setup mouse follow target
-        this.mouseFollowTarget = new MouseFollowTarget(this);
+        this.mouseFollowTarget = new PsyanimMouseFollowTarget(this);
 
         // add agents as vehicles to this scene
         this.vehicle1 = new PsyanimVehicle(this, 'agent1', 600, 450, {

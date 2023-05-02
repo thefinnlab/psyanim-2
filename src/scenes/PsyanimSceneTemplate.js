@@ -2,11 +2,11 @@ import Phaser from 'phaser';
 
 import PsyanimScene from './PsyanimScene';
 
-export default class DefaultScene extends PsyanimScene {
+export default class PsyanimSceneTemplate extends PsyanimScene {
 
     constructor() {
 
-        super('Psyanim Default Scene');
+        super('Psyanim Scene Template');
     }
 
     init() {
