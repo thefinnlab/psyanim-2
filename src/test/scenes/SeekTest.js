@@ -20,7 +20,13 @@ export default class SeekTest extends PsyanimScene {
         super.create();
 
         // setup mouse follow target
-        let mouseFollowTarget = new PsyanimMouseFollowTarget(this);
+        let mouseTarget = new PsyanimEntity(this, 'mouseFollowTarget', 400, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 4,
+            color: 0x00ff00
+        });
+
+        mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
         // create player
         let player = new PsyanimPlayerController(this, 'player', 400, 300, {
@@ -63,13 +69,13 @@ export default class SeekTest extends PsyanimScene {
         vehicle2.maxSpeed = 4;
         vehicle2.nSamplesForSmoothing = 10;
 
-        vehicle3.target = mouseFollowTarget;
+        vehicle3.target = mouseTarget;
         vehicle3.setState(PsyanimVehicle.STATE.SEEK);
         vehicle3.maxSpeed = 5;
 
         let agents = [agent1, agent2, agent3];
 
-        this.addEntity(mouseFollowTarget);
+        this.addEntity(mouseTarget);
         this.addEntity(player);
 
         agents.forEach(v => this.addEntity(v));

@@ -19,7 +19,13 @@ export default class SeekTest extends PsyanimScene {
         super.create();
 
         // setup mouse follow target
-        let mouseFollowTarget = new PsyanimMouseFollowTarget(this);
+        let mouseTarget = new PsyanimEntity(this, 'mouseFollowTarget', 400, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 4,
+            color: 0x00ff00
+        });
+
+        mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
         // add agents with vehicle components to this scene
         let agent1 = new PsyanimEntity(this, 'agent1', 600, 450, {
@@ -37,16 +43,16 @@ export default class SeekTest extends PsyanimScene {
         let vehicle1 = agent1.addComponent(PsyanimVehicle);
         let vehicle2 = agent2.addComponent(PsyanimVehicle);
 
-        vehicle1.target = mouseFollowTarget;
+        vehicle1.target = mouseTarget;
         vehicle1.setState(PsyanimVehicle.STATE.FLEE);
         vehicle1.maxSpeed = 4;
 
-        vehicle2.target = mouseFollowTarget;
+        vehicle2.target = mouseTarget;
         vehicle2.setState(PsyanimVehicle.STATE.FLEE);
         vehicle2.maxSpeed = 3;
         vehicle2.nSamplesForLookSmoothing = 10;
 
-        this.addEntity(mouseFollowTarget);
+        this.addEntity(mouseTarget);
         this.addEntity(agent1);
         this.addEntity(agent2);
     }

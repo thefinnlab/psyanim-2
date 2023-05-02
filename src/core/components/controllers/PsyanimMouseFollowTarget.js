@@ -1,23 +1,23 @@
 import Phaser from 'phaser';
 
-import PsyanimEntity from '../../PsyanimEntity';
+import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimConstants from "../../PsyanimConstants";
 import PsyanimGeomUtils from "../../PsyanimGeomUtils";
 
-export default class PsyanimMouseFollowTarget extends Phaser.Physics.Matter.Sprite {
+export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
-    constructor(scene, x = 400, y = 300, radius = 4) {
+    constructor(entity, options = { radius: 4 }) {
 
-        let textureKey = 'mouseFollowTarget';
+        super(entity);
 
-        PsyanimGeomUtils.generateCircleTexture(scene, textureKey, { x: x, y: y, radius: radius }, 0x00ff00);
+        this._radius = options.radius;
 
         let bodyOptions = {
             label: 'mouseFollowTarget',
             shape: {
                 type: 'circle',
-                radius: radius
+                radius: options.radius
             },
             collisionFilter: {
                 category: PsyanimConstants.COLLISION_CATEGORIES.MOUSE_CURSOR,
@@ -25,14 +25,12 @@ export default class PsyanimMouseFollowTarget extends Phaser.Physics.Matter.Spri
             }
         }
 
-        super(scene.matter.world, x, y, textureKey, null, bodyOptions);
-
-        scene.add.existing(this);
+        this.entity.setBody({ type: 'circle', radius: options.radius }, bodyOptions);
     }
 
     update(t, dt) {
 
-        this.x = this.scene.input.x;
-        this.y = this.scene.input.y;
+        this.entity.x = this.entity.scene.input.x;
+        this.entity.y = this.entity.scene.input.y;
     }
 }
