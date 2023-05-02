@@ -4,8 +4,6 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimVehicle extends PsyanimComponent {
 
-    // _velocitySamples = [];
-
     static STATE = {
 
         IDLE: 0x0001,
@@ -17,30 +15,29 @@ export default class PsyanimVehicle extends PsyanimComponent {
         // 0x0040
     };
 
+    state = PsyanimVehicle.STATE.IDLE;
+
+    target = null;
+
+    maxSpeed = 5;
+    maxAcceleration = 0.2;
+
+    turnSpeed = 0.2;
+
+    smoothLookDirection = true;
+
+    nSamplesForLookSmoothing = 5;
+
+    innerDecelerationRadius = 25;
+    outerDecelerationRadius = 140;
+
+    _velocitySamples = [];
+
     constructor(entity, options) {
 
         super(entity);
 
-        /**
-         *  Setup vehicle steering state
-         */
-
         this.setState(PsyanimVehicle.STATE.IDLE);
-
-        this.target = null;
-
-        this.maxSpeed = 5;
-        this.maxAcceleration = 0.2;
-
-        this.turnSpeed = 0.2;
-
-        this.smoothLookDirection = true;
-
-        this.nSamplesForLookSmoothing = 5;
-        this._velocitySamples = [];
-
-        this.innerDecelerationRadius = 25;
-        this.outerDecelerationRadius = 140;
     }
 
     setState(state) {
