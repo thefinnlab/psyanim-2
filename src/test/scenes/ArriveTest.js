@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
+import PsyanimEntity from '../../core/PsyanimEntity';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
@@ -10,7 +11,7 @@ export default class ArriveTest extends PsyanimScene {
 
     constructor() {
 
-        super('Arrive Test');
+        super('ArriveTest');
     }
 
     create() {
@@ -20,19 +21,21 @@ export default class ArriveTest extends PsyanimScene {
         // setup mouse follow target
         let mouseFollowTarget = new PsyanimMouseFollowTarget(this);
 
-        // add agents as vehicles to this scene
-        let vehicle1 = new PsyanimVehicle(this, 'agent1', 600, 450, {
+        // add agents with vehicle components to this scene
+        let agent1 = new PsyanimEntity(this, 'agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
         });
-        
+
+        let vehicle1 = agent1.addComponent(PsyanimVehicle);
+
         vehicle1.target = mouseFollowTarget;
-        vehicle1.setState(PsyanimVehicle.STATE.ARRIVE);
         vehicle1.maxSpeed = 8;
+        vehicle1.setState(PsyanimVehicle.STATE.ARRIVE);
 
         // add entities to PsyanimScene so they are managed and receive updates
-        this.addEntity(mouseFollowTarget)
-        this.addEntity(vehicle1);
+        this.addEntity(mouseFollowTarget);
+        this.addEntity(agent1);
     }
 }

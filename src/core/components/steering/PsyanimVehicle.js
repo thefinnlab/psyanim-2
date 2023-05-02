@@ -1,11 +1,10 @@
 import Phaser from 'phaser';
 
-import PsyanimEntity from '../../PsyanimEntity';
+import PsyanimComponent from '../../PsyanimComponent';
 
-import PsyanimConstants from "../../PsyanimConstants";
-import PsyanimGeomUtils from '../../PsyanimGeomUtils';
+export default class PsyanimVehicle extends PsyanimComponent {
 
-export default class PsyanimVehicle extends PsyanimEntity {
+    // _velocitySamples = [];
 
     static STATE = {
 
@@ -18,99 +17,9 @@ export default class PsyanimVehicle extends PsyanimEntity {
         // 0x0040
     };
 
-    constructor(scene, name, x = 200, y = 200, shapeParams = {}) {
+    constructor(entity, options) {
 
-        /**
-         *  Setup vehicle rendering + physics
-         */
-
-        const defaultShapeParams = {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            base: 30, altitude: 60, 
-            width: 20, height: 20, 
-            radius: 30, 
-            color: 0xffff00};
-
-        let textureKey = 'vehicle_' + name;
-
-        let matterConfig = {};
-
-        let matterOptions = {
-            label: name,
-            collisionFilter: {
-                category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
-                mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | 
-                    PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
-            }
-        };
-
-        let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
-        let color = (shapeParams.color) ? shapeParams.color : defaultShapeParams.color;
-
-        switch(shapeType)
-        {
-            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
-
-                let radius = (shapeParams.radius) ? shapeParams.radius : defaultShapeParams.radius;
-
-                let circleGeomParams = {
-                    radius: radius
-                };
-
-                PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, color);
-
-                matterConfig.type = 'circle';
-                matterConfig.radius = circleGeomParams.radius;
-
-                break;
-
-            case PsyanimConstants.SHAPE_TYPE.TRIANGLE:
-
-                let base = (shapeParams.base) ? shapeParams.base : defaultShapeParams.base;
-                let altitude = (shapeParams.altitude) ? shapeParams.altitude : defaultShapeParams.altitude;
-    
-                let triangleGeomParams = {
-                    base: base, altitude: altitude
-                };
-
-                PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, color);
-    
-                matterConfig.type = 'fromVertices';
-                matterConfig.verts = PsyanimGeomUtils.computeTriangleVertices(base, altitude);
-    
-                break;
-
-            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
-
-                let width = (shapeParams.width) ? shapeParams.width : defaultShapeParams.width;
-                let height = (shapeParams.height) ? shapeParams.height : defaultShapeParams.height;
-
-                let rectangleGeomParams = {
-                    width: width, height: height
-                };
-
-                PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, color);
-
-                matterConfig.type = 'rectangle';
-                matterConfig.width = width;
-                matterConfig.height = height;
-
-                break;
-        }
-
-        super(scene.matter.world, x, y, textureKey);
-
-        this.setBody(matterConfig, matterOptions);
-
-        let mass = 100;
-
-        this.body.mass = mass;
-        this.body.inverseMass = 1/mass;
-
-        this.body.inertia = Infinity;
-        this.body.inverseInertia = 0;
-
-        scene.add.existing(this);
+        super(entity);
 
         /**
          *  Setup vehicle steering state
@@ -127,7 +36,7 @@ export default class PsyanimVehicle extends PsyanimEntity {
 
         this.smoothLookDirection = true;
 
-        this.nSamplesForLookSmoothing = 5
+        this.nSamplesForLookSmoothing = 5;
         this._velocitySamples = [];
 
         this.innerDecelerationRadius = 25;
@@ -165,7 +74,7 @@ export default class PsyanimVehicle extends PsyanimEntity {
 
     _lookWhereYoureGoing() {
 
-        let velocityXY = this.getVelocity();
+        let velocityXY = this.entity.getVelocity();
 
         let velocity = new Phaser.Math.Vector2(velocityXY.x, velocityXY.y);
 
@@ -199,23 +108,23 @@ export default class PsyanimVehicle extends PsyanimEntity {
             let targetAngle = Math.atan2(direction.y, direction.x) * 180 / Math.PI;
 
             let newAngle = Phaser.Math.Angle.RotateTo(
-                this.angle * Math.PI / 180,
+                this.entity.angle * Math.PI / 180,
                 targetAngle,
                 this.turnSpeed);
 
-            this.setAngle(newAngle);
+            this.entity.setAngle(newAngle);
         }
     }
 
     _seek(target) {
 
-        let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
+        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
 
         let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
         desiredVelocity.subtract(currentPosition);
         desiredVelocity.setLength(this.maxSpeed);
 
-        let currentVelocityXY = this.getVelocity();
+        let currentVelocityXY = this.entity.getVelocity();
 
         let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
 
@@ -232,14 +141,14 @@ export default class PsyanimVehicle extends PsyanimEntity {
 
     _flee(target) {
 
-        let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
+        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
 
         let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
         desiredVelocity.subtract(currentPosition);
         desiredVelocity.setLength(this.maxSpeed);
         desiredVelocity.scale(-1);
 
-        let currentVelocityXY = this.getVelocity();
+        let currentVelocityXY = this.entity.getVelocity();
 
         let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
 
@@ -268,7 +177,7 @@ export default class PsyanimVehicle extends PsyanimEntity {
          * 
          */
 
-        let currentPosition = new Phaser.Math.Vector2(this.x, this.y);
+        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
 
         let targetRelativePosition = new Phaser.Math.Vector2(target.x, target.y);
         targetRelativePosition.subtract(currentPosition);
@@ -281,7 +190,7 @@ export default class PsyanimVehicle extends PsyanimEntity {
 
         if (r <= this.innerDecelerationRadius)
         {
-            this.setVelocity(0, 0);
+            this.entity.setVelocity(0, 0);
 
             return new Phaser.Math.Vector2(0, 0);
         }
@@ -299,7 +208,7 @@ export default class PsyanimVehicle extends PsyanimEntity {
 
         desiredVelocity.setLength(desiredSpeed);
 
-        let currentVelocityXY = this.getVelocity();
+        let currentVelocityXY = this.entity.getVelocity();
 
         let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
 
@@ -317,20 +226,20 @@ export default class PsyanimVehicle extends PsyanimEntity {
     update(t, dt) {
 
         // clamp velocity to max speed
-        let velocity = new Phaser.Math.Vector2(this.getVelocity());
+        let velocity = new Phaser.Math.Vector2(this.entity.getVelocity());
 
         if (velocity.length() > this.maxSpeed)
         {
             velocity.setLength(this.maxSpeed);
 
-            this.setVelocity(velocity.x, velocity.y);    
+            this.entity.setVelocity(velocity.x, velocity.y);    
         }
 
         // apply steering
         let steer = this._getSteering(this.target);
 
-        this.applyForce(steer);
+        this.entity.applyForce(steer);
 
-        this._lookWhereYoureGoing(4);
+        this._lookWhereYoureGoing();
     }
 }

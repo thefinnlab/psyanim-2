@@ -5,7 +5,7 @@ import PsyanimEntity from '../../PsyanimEntity';
 import PsyanimConstants from "../../PsyanimConstants";
 import PsyanimGeomUtils from "../../PsyanimGeomUtils";
 
-export default class PsyanimMouseFollowTarget extends PsyanimEntity {
+export default class PsyanimMouseFollowTarget extends Phaser.Physics.Matter.Sprite {
 
     constructor(scene, x = 400, y = 300, radius = 4) {
 

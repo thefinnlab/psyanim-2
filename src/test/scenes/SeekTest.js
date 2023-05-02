@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
+import PsyanimEntity from '../../core/PsyanimEntity';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
@@ -11,7 +12,7 @@ export default class SeekTest extends PsyanimScene {
 
     constructor() {
 
-        super('Seek Test');
+        super('SeekTest');
     }
 
     create() {
@@ -31,29 +32,33 @@ export default class SeekTest extends PsyanimScene {
         });
 
         // add agents as vehicles to this scene
-        let vehicle1 = new PsyanimVehicle(this, 'agent1', 600, 450, {
+        let agent1 = new PsyanimEntity(this, 'agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
         });
 
-        let vehicle2 = new PsyanimVehicle(this, 'agent2', 200, 150, {
+        let agent2 = new PsyanimEntity(this, 'agent2', 200, 150, {
             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
             width: 60, height: 30,
             color: 0xffff00            
         });
 
-        let vehicle3 = new PsyanimVehicle(this, 'agent3', 200, 450, {
+        let agent3 = new PsyanimEntity(this, 'agent3', 200, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
             radius: 12,
             color: 0x87ceeb          
         });
 
+        let vehicle1 = agent1.addComponent(PsyanimVehicle);
+        let vehicle2 = agent2.addComponent(PsyanimVehicle);
+        let vehicle3 = agent3.addComponent(PsyanimVehicle);
+
         vehicle1.target = player;
         vehicle1.setState(PsyanimVehicle.STATE.SEEK);
         vehicle1.maxSpeed = 5;
 
-        vehicle2.target = vehicle3;
+        vehicle2.target = agent3;
         vehicle2.setState(PsyanimVehicle.STATE.SEEK);
         vehicle2.maxSpeed = 4;
         vehicle2.nSamplesForSmoothing = 10;
@@ -62,11 +67,11 @@ export default class SeekTest extends PsyanimScene {
         vehicle3.setState(PsyanimVehicle.STATE.SEEK);
         vehicle3.maxSpeed = 5;
 
-        let vehicles = [vehicle1, vehicle2, vehicle3];
+        let agents = [agent1, agent2, agent3];
 
         this.addEntity(mouseFollowTarget);
         this.addEntity(player);
 
-        vehicles.forEach(v => this.addEntity(v));
+        agents.forEach(v => this.addEntity(v));
     }
 }

@@ -6,7 +6,7 @@ export default class PsyanimSceneTemplate extends PsyanimScene {
 
     constructor() {
 
-        super('Psyanim Scene Template');
+        super('PsyanimSceneTemplate');
     }
 
     init() {

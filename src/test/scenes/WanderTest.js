@@ -11,7 +11,7 @@ export default class WanderTest extends PsyanimScene {
 
     constructor() {
 
-        super('Wander Test');
+        super('WanderTest');
     }
 
     create() {

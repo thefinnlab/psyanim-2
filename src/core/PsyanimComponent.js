@@ -2,8 +2,11 @@ import Phaser from 'phaser';
 
 export default class PsyanimComponent {
 
-    constructor() {
+    entity = null;
 
+    constructor(entity) {
+
+        this.entity = entity;
     }
 
     update(t, dt) {

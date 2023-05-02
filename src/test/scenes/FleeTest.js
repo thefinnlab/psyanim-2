@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
+import PsyanimEntity from '../../core/PsyanimEntity';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
@@ -10,7 +11,7 @@ export default class SeekTest extends PsyanimScene {
 
     constructor() {
 
-        super('Flee Test');
+        super('FleeTest');
     }
 
     create() {
@@ -20,18 +21,21 @@ export default class SeekTest extends PsyanimScene {
         // setup mouse follow target
         let mouseFollowTarget = new PsyanimMouseFollowTarget(this);
 
-        // add agents as vehicles to this scene
-        let vehicle1 = new PsyanimVehicle(this, 'agent1', 600, 450, {
+        // add agents with vehicle components to this scene
+        let agent1 = new PsyanimEntity(this, 'agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
         });
 
-        let vehicle2 = new PsyanimVehicle(this, 'agent2', 200, 150, {
+        let agent2 = new PsyanimEntity(this, 'agent2', 200, 150, {
             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
             width: 60, height: 30,
             color: 0xffff00            
         });
+
+        let vehicle1 = agent1.addComponent(PsyanimVehicle);
+        let vehicle2 = agent2.addComponent(PsyanimVehicle);
 
         vehicle1.target = mouseFollowTarget;
         vehicle1.setState(PsyanimVehicle.STATE.FLEE);
@@ -43,7 +47,7 @@ export default class SeekTest extends PsyanimScene {
         vehicle2.nSamplesForLookSmoothing = 10;
 
         this.addEntity(mouseFollowTarget);
-        this.addEntity(vehicle1);
-        this.addEntity(vehicle2);
+        this.addEntity(agent1);
+        this.addEntity(agent2);
     }
 }
