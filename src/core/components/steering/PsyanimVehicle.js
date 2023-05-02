@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 
-import PsyanimEntity from '../PsyanimEntity';
+import PsyanimEntity from '../../PsyanimEntity';
 
-import PsyanimConstants from "../PsyanimConstants";
-import PsyanimGeomUtils from '../PsyanimGeomUtils';
+import PsyanimConstants from "../../PsyanimConstants";
+import PsyanimGeomUtils from '../../PsyanimGeomUtils';
 
 export default class PsyanimVehicle extends PsyanimEntity {
 

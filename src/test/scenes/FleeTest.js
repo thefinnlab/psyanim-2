@@ -1,10 +1,10 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from '../../scenes/PsyanimScene';
+import PsyanimScene from '../../core/scene/PsyanimScene';
 
-import PsyanimConstants from '../../entities/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../entities/controllers/PsyanimMouseFollowTarget';
-import PsyanimVehicle from '../../entities/steering/PsyanimVehicle';
+import PsyanimConstants from '../../core/PsyanimConstants';
+import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
+import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
 export default class SeekTest extends PsyanimScene {
 
