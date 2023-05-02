@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import PsyanimScreenBoundary from './PsyanimScreenBoundary';
+import PsyanimEntity from '../PsyanimEntity';
 
 export default class PsyanimScene extends Phaser.Scene {
 
@@ -9,9 +10,13 @@ export default class PsyanimScene extends Phaser.Scene {
         super(key);
     }
 
-    addEntity(entity) {
+    addEntity(name, x, y, shapeParams = {}) {
+
+        let entity = new PsyanimEntity(this, name, x, y, shapeParams);
 
         this._entities.push(entity);
+
+        return entity;
     }
 
     init() {

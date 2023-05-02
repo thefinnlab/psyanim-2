@@ -19,7 +19,7 @@ export default class ArriveTest extends PsyanimScene {
         super.create();
 
         // setup mouse follow target
-        let mouseTarget = new PsyanimEntity(this, 'mouseFollowTarget', 400, 300, {
+        let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 4,
             color: 0x00ff00
@@ -28,7 +28,7 @@ export default class ArriveTest extends PsyanimScene {
         mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
         // add agents with vehicle components to this scene
-        let agent1 = new PsyanimEntity(this, 'agent1', 600, 450, {
+        let agent1 = this.addEntity('agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
@@ -39,9 +39,5 @@ export default class ArriveTest extends PsyanimScene {
         vehicle1.target = mouseTarget;
         vehicle1.maxSpeed = 8;
         vehicle1.setState(PsyanimVehicle.STATE.ARRIVE);
-
-        // add entities to PsyanimScene so they are managed and receive updates
-        this.addEntity(mouseTarget);
-        this.addEntity(agent1);
     }
 }
