@@ -3,7 +3,6 @@ import Phaser from 'phaser';
 import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimConstants from "../../PsyanimConstants";
-import PsyanimGeomUtils from "../../PsyanimGeomUtils";
 
 export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
