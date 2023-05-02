@@ -10,7 +10,10 @@ export default class PsyanimVehicle extends Phaser.Physics.Matter.Sprite {
         IDLE: 0x0001,
         SEEK: 0x0002,
         FLEE: 0x0004,
-        ARRIVE: 0x0008
+        ARRIVE: 0x0008,
+        WANDER: 0x0010
+        // 0x0020
+        // 0x0040
     };
 
     constructor(scene, name, x = 200, y = 200, shapeParams = {}) {

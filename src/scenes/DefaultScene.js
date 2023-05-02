@@ -1,18 +1,29 @@
 import Phaser from 'phaser';
+
 import PsyanimScene from './PsyanimScene';
 
 export default class DefaultScene extends PsyanimScene {
 
     constructor() {
 
-        super('psyanim_default_scene');
+        super('Psyanim Default Scene');
     }
 
-    init() {}
+    init() {
+        super.init();
+    }
 
-    preload() {}
+    preload() {
+        super.preload();
+    }
 
-    create() {}
+    create() {
 
-    update(t, dt) {}
+        super.create();
+    }
+
+    update(t, dt) {
+
+        super.update();
+    }
 }
