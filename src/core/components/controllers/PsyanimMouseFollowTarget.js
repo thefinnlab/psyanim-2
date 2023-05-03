@@ -6,17 +6,17 @@ import PsyanimConstants from "../../PsyanimConstants";
 
 export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
-    constructor(entity, options = { radius: 4 }) {
+    constructor(entity) {
 
         super(entity);
 
-        this._radius = options.radius;
+        this._radius = 4;
 
         let bodyOptions = {
             label: 'mouseFollowTarget',
             shape: {
                 type: 'circle',
-                radius: options.radius
+                radius: 4
             },
             collisionFilter: {
                 category: PsyanimConstants.COLLISION_CATEGORIES.MOUSE_CURSOR,
@@ -24,7 +24,7 @@ export default class PsyanimMouseFollowTarget extends PsyanimComponent {
             }
         }
 
-        this.entity.setBody({ type: 'circle', radius: options.radius }, bodyOptions);
+        this.entity.setBody({ type: 'circle', radius: 4 }, bodyOptions);
     }
 
     update(t, dt) {

@@ -7,7 +7,7 @@ export default class PsyanimPlayerController extends PsyanimComponent {
     speed = 6;
     turnSpeed = 0.2;
 
-    constructor(entity, options = {}) {
+    constructor(entity) {
 
         super(entity);
 

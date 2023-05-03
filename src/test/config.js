@@ -14,7 +14,7 @@ export default class Config {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
-            scene: [DebugGraphicsTest, ArriveTest, SeekTest, FleeTest],
+            scene: [ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
             physics: {
                 default: 'matter',
                 matter: {

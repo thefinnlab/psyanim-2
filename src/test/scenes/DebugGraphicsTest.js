@@ -6,6 +6,7 @@ import PsyanimPlayerController from '../../core/components/controllers/PsyanimPl
 import PsyanimConstants from '../../core/PsyanimConstants';
 
 import PsyanimCircleRenderer from '../../core/components/rendering/PsyanimCircleRenderer';
+import PsyanimLineRenderer from '../../core/components/rendering/PsyanimLineRenderer';
 
 export default class DebugGraphicsTest extends PsyanimScene {
 
@@ -19,7 +20,7 @@ export default class DebugGraphicsTest extends PsyanimScene {
         super.create();
 
         // create player
-        let player = this.addEntity('player', 400, 300, {
+        this.player = this.addEntity('player', 400, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
             base: 16, altitude: 32, 
             width: 40, height: 20, 
@@ -27,7 +28,23 @@ export default class DebugGraphicsTest extends PsyanimScene {
             color: 0x0000ff
         });
 
-        player.addComponent(PsyanimPlayerController);
-        player.addComponent(PsyanimCircleRenderer);
+        this.player.addComponent(PsyanimPlayerController);
+        this.player.addComponent(PsyanimCircleRenderer);
+
+        this.line = this.player.addComponent(PsyanimLineRenderer);
+    }
+
+    update(t, dt) {
+
+        super.update(t, dt);
+
+        // update line endpoints in player's local space
+        this.line.originPoint.x = this.player.x;
+        this.line.originPoint.y = this.player.y;
+
+        let offset = this.player.forward.setLength(150);
+
+        this.line.endPoint.x = this.player.x + offset.x;
+        this.line.endPoint.y = this.player.y + offset.y;
     }
 }
