@@ -3,6 +3,7 @@ import Phaser, { Physics } from 'phaser';
 import ArriveTest from './scenes/ArriveTest';
 import SeekTest from './scenes/SeekTest';
 import FleeTest from './scenes/FleeTest';
+import WanderTest from './scenes/WanderTest';
 
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
@@ -14,7 +15,7 @@ export default class Config {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
-            scene: [ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
+            scene: [WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
             physics: {
                 default: 'matter',
                 matter: {

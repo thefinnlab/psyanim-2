@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimConstants from './PsyanimConstants';
 import PsyanimGeomUtils from './PsyanimGeomUtils';
+import PsyanimComponent from './PsyanimComponent';
 
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
@@ -113,12 +114,26 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     addComponent(componentType) {
 
+        // TODO: let's make sure we don't add multiple entities of this component type
+
         let newComponent = new componentType(this);
 
         this._components.push(newComponent);
 
         return newComponent;
     }
+
+    getComponent(componentType) {
+
+        let components = this._components.filter(c => c instanceof componentType);
+
+        if (components.length == 0)
+        {
+            return null;
+        }
+
+        return components[0];
+     }
 
     get position() {
 
