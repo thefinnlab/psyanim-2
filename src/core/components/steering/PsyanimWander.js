@@ -9,6 +9,8 @@ export default class PsyanimWander extends PsyanimComponent {
     radius = 20;
     offset = 150;
 
+    maxAngleChangePerFrame = 45;
+
     constructor(entity) {
 
         super(entity);
@@ -19,6 +21,7 @@ export default class PsyanimWander extends PsyanimComponent {
 
         if (!this.vehicle)
         {
+            console.log("No PsyaimVehicle component found... PsyanimWander adding PsyaimVehicle to this entity");
             this.vehicle = this.entity.addComponent(PsyanimVehicle);
         }
 
@@ -29,7 +32,8 @@ export default class PsyanimWander extends PsyanimComponent {
         this.vehicle.target = this.target;
         this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
 
-        this._angle = 45;
+        this._angle = 270;
+        this._targetVector = null;
     }
 
     get debug() {
@@ -70,42 +74,54 @@ export default class PsyanimWander extends PsyanimComponent {
             this.radius
         );
 
-        this._debugCircleTargetLine = new Phaser.Geom.Line(
+        this._debugCircleAngleLine = new Phaser.Geom.Line(
             this._debugCircle.x,
             this._debugCircle.y,
             this._debugCircle.x + this.radius,
             this._debugCircle.y
         );
+
+        this._debugTargetLine = new Phaser.Geom.Line(
+            0,
+            0,
+            this.entity.x,
+            this.entity.y,
+        )
     }
+
+    // Fields you need to compute before doing this:
+    // this._angleVector
+    // this._targetVector
+
 
     _drawDebugGraphics() {
 
+        // TODO: we should be doing these calcs outside this method 
+        // - in the update() loop before debug graphics are drawn!
+
         // update render state
-        let offsetVector = new Phaser.Math.Vector2(this.offset, 0);
-        offsetVector.setAngle(this.entity.rotation);
-
-        let newPosition = this.entity.position.add(offsetVector);
-
         this._debugCircle.setPosition(
-            newPosition.x,
-            newPosition.y
+            this._circleCenterVector.x,
+            this._circleCenterVector.y
         );
 
-        let circleCenterVector = new Phaser.Math.Vector2(this._debugCircle.x, this._debugCircle.y);
-        
-        let targetVector = this.entity.forward.setLength(this.radius);
-        targetVector.rotate(this._angle * Math.PI / 180);
-        targetVector.add(circleCenterVector);
+        this._debugCircleAngleLine.setTo(
+            this._circleCenterVector.x, 
+            this._circleCenterVector.y,
+            this._targetVector.x, 
+            this._targetVector.y
+        );
 
-        this._debugCircleTargetLine.setTo(
-            circleCenterVector.x, circleCenterVector.y,
-            targetVector.x, targetVector.y
+        this._debugTargetLine.setTo(
+            this.entity.x, this.entity.y,
+            this._targetVector.x, this._targetVector.y
         );
 
         // draw
         this.graphics.clear();
 
-        this.graphics.strokeLineShape(this._debugCircleTargetLine);
+        this.graphics.strokeLineShape(this._debugCircleAngleLine);
+        this.graphics.strokeLineShape(this._debugTargetLine);
         this.graphics.strokeCircleShape(this._debugCircle);
     }
 
@@ -113,11 +129,33 @@ export default class PsyanimWander extends PsyanimComponent {
 
         super.update(t, dt);
 
+        // compute angle change
+        this._angle += (Math.random() * 2 - 1) * this.maxAngleChangePerFrame;
+
+        if (this._angle > 360)
+        {
+            this._angle - 360;
+        }
+        else if (this._angle < 0)
+        {
+            this._angle + 360;
+        }
+
+        // update target vector
+        let offsetVector = new Phaser.Math.Vector2(this.offset, 0);
+        offsetVector.setAngle(this.entity.rotation);
+
+        this._circleCenterVector = this.entity.position.add(offsetVector);
+
+        this._targetVector = this.entity.forward.setLength(this.radius);
+        this._targetVector.rotate(this._angle * Math.PI / 180);
+        this._targetVector.add(this._circleCenterVector);
+
+        this.target.x = this._targetVector.x;
+        this.target.y = this._targetVector.y;
+
         if (this._debug) {
             this._drawDebugGraphics();
         }
-
-        this.target.x = this.entity.scene.input.x;
-        this.target.y = this.entity.scene.input.y;
     }
 }
