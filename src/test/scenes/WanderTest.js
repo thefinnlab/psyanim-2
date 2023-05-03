@@ -30,5 +30,6 @@ export default class WanderTest extends PsyanimScene {
         agent1.addComponent(PsyanimWander);
 
         let wander = agent1.getComponent(PsyanimWander);
+        wander.debug = true;
     }
 }

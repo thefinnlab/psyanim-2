@@ -26,7 +26,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     smoothLookDirection = true;
 
-    nSamplesForLookSmoothing = 5;
+    nSamplesForLookSmoothing = 10;
 
     innerDecelerationRadius = 25;
     outerDecelerationRadius = 140;
