@@ -6,7 +6,7 @@ import PsyanimComponent from './PsyanimComponent';
 
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
-    constructor(scene, name, x, y, shapeParams = {}) {
+    constructor(scene, name, x, y, shapeParams = { isEmpty: false }) {
 
         /**
          *  Some helpful tips:
@@ -19,8 +19,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
             base: 30, altitude: 60, 
             width: 20, height: 20, 
-            radius: 30, 
-            color: 0xffff00};
+            radius: 4, 
+            color: 0xffff00,
+        };
 
         let textureKey = scene.scene.key + "_" + name;
 
@@ -94,6 +95,13 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.name = name;
 
         this.setBody(matterConfig, matterOptions);
+
+        if (shapeParams.isEmpty)
+        {
+            this.body.isSleeping = true;
+            this.body.isSensor = true;
+            this.visible = false;
+        }
 
         let mass = 100;
 

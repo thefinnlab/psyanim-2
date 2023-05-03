@@ -6,7 +6,6 @@ import PsyanimVehicle from './PsyanimVehicle';
 
 export default class PsyanimWander extends PsyanimComponent {
     
-
     constructor(entity) {
 
         super(entity);
@@ -18,11 +17,19 @@ export default class PsyanimWander extends PsyanimComponent {
             this.vehicle = this.entity.addComponent(PsyanimVehicle);
         }
 
-        // this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
+        this.target = entity.scene.addEntity(this.entity.name + 'wanderTarget', 0, 0, {
+            isEmpty: true
+        });
+
+        this.vehicle.target = this.target;
+        this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
     }
 
     update(t, dt) {
 
         super.update(t, dt);
+
+        this.target.x = this.entity.scene.input.x;
+        this.target.y = this.entity.scene.input.y;
     }
 }
