@@ -5,9 +5,6 @@ import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimWander from '../../core/components/steering/PsyanimWander';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
-import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
-import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 
 export default class WanderTest extends PsyanimScene {
 
@@ -20,16 +17,24 @@ export default class WanderTest extends PsyanimScene {
 
         super.create();
 
-        // add agents with vehicle components to this scene
-        let agent1 = this.addEntity('agent1', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, 
-            color: 0xffc0cb            
-        });
+        let nAgents = 100;
 
-        agent1.addComponent(PsyanimWander);
+        for (let i = 0; i < nAgents; ++i)
+        {
+            let deltaX = (Math.random() * 2 - 1) * 350;
+            let deltaY = (Math.random() * 2 - 1) * 250;
 
-        let wander = agent1.getComponent(PsyanimWander);
-        wander.debug = true;
+            let agent = this.addEntity('agent' + i, 400 + deltaX, 300 + deltaY, {
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+                base: 16, altitude: 32, 
+                color: 0xffc0cb            
+            });
+    
+            let wander = agent.addComponent(PsyanimWander);    
+            wander.debug = false;
+            wander.maxSpeed = 3;
+            wander.radius = 50;
+            wander.maxAngleChangePerFrame = 20;
+        }
     }
 }

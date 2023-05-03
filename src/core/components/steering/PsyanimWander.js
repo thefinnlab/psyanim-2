@@ -6,10 +6,12 @@ import PsyanimVehicle from './PsyanimVehicle';
 
 export default class PsyanimWander extends PsyanimComponent {
 
-    radius = 20;
+    maxSpeed = 3;
+
+    radius = 50;
     offset = 150;
 
-    maxAngleChangePerFrame = 45;
+    maxAngleChangePerFrame = 20;
 
     constructor(entity) {
 
@@ -89,17 +91,11 @@ export default class PsyanimWander extends PsyanimComponent {
         )
     }
 
-    // Fields you need to compute before doing this:
-    // this._angleVector
-    // this._targetVector
-
-
     _drawDebugGraphics() {
 
-        // TODO: we should be doing these calcs outside this method 
-        // - in the update() loop before debug graphics are drawn!
-
         // update render state
+        this._debugCircle.radius = this.radius;
+
         this._debugCircle.setPosition(
             this._circleCenterVector.x,
             this._circleCenterVector.y
@@ -128,6 +124,9 @@ export default class PsyanimWander extends PsyanimComponent {
     update(t, dt) {
 
         super.update(t, dt);
+
+        // update component params
+        this.vehicle.maxSpeed = this.maxSpeed;
 
         // compute angle change
         this._angle += (Math.random() * 2 - 1) * this.maxAngleChangePerFrame;
