@@ -4,8 +4,8 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimCircleRenderer extends PsyanimComponent {
     
-    forwardOffset = 100;
-    rightOffset = 0;
+    offset = 150;
+    angle = 0;
     radius = 20;
 
     constructor(entity, options = { color: 0xa020f0 }) {
@@ -15,8 +15,8 @@ export default class PsyanimCircleRenderer extends PsyanimComponent {
         this.graphics = entity.scene.add.graphics({ lineStyle: { width: 2, color: options.color, alpha: 0.6 } });
 
         this._circle = new Phaser.Geom.Circle(
-            entity.x + this.forwardOffset, 
-            entity.y + this.rightOffset, 
+            entity.x, 
+            entity.y, 
             this.radius);
     }
 
@@ -28,10 +28,8 @@ export default class PsyanimCircleRenderer extends PsyanimComponent {
 
         this.graphics.strokeCircleShape(this._circle);
 
-        let forwardComponent = this.entity.forward.setLength(this.forwardOffset);
-        let rightComponent = this.entity.right.setLength(this.rightOffset);
-
-        let offsetVector = forwardComponent.add(rightComponent);
+        let offsetVector = new Phaser.Math.Vector2(this.offset, 0);
+        offsetVector.setAngle((this.entity.angle + this.angle) * Math.PI / 180);
 
         let newPosition = this.entity.position.add(offsetVector);
 
