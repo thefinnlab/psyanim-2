@@ -120,6 +120,21 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return newComponent;
     }
 
+    get position() {
+
+        return new Phaser.Math.Vector2(this.x, this.y);
+    }
+
+    get forward() {
+
+        return new Phaser.Math.Vector2(1, 0).setAngle(this.angle * Math.PI / 180);
+    }
+
+    get right() {
+
+        return this.forward.rotate(90 * Math.PI / 180);
+    }
+
     update(t, dt) {
 
         this._components.forEach(c => c.update(t, dt));

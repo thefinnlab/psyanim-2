@@ -4,6 +4,8 @@ import ArriveTest from './scenes/ArriveTest';
 import SeekTest from './scenes/SeekTest';
 import FleeTest from './scenes/FleeTest';
 
+import DebugGraphicsTest from './scenes/DebugGraphicsTest';
+
 export default class Config {
 
     static get() {
@@ -12,7 +14,7 @@ export default class Config {
             type: Phaser.AUTO,
             width: 800,
             height: 600,
-            scene: [ArriveTest, SeekTest, FleeTest],
+            scene: [DebugGraphicsTest, ArriveTest, SeekTest, FleeTest],
             physics: {
                 default: 'matter',
                 matter: {

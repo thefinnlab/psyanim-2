@@ -29,6 +29,8 @@ export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
     update(t, dt) {
 
+        super.update(t, dt);
+
         this.entity.x = this.entity.scene.input.x;
         this.entity.y = this.entity.scene.input.y;
     }
