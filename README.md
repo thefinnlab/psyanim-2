@@ -1,27 +1,16 @@
 # Psyanim 2.0
 
-<br>
-
 ## Introduction and Overview
 
-<br>
-
-### TODO: this project is under heavy development, so check back frequently for updates to this README. :)
-
-<br><br>
+See instructions below for building & running Psyanim 2.0.<br><br>
+Keyboard controls are shown on main web page.
 
 ## Getting started:
 
-**0. Install dependencies with: `npm i`**
+**1. Install dependencies with: `npm i`**
 
-<br>
+**2. To run local dev server and open client in browser: `npm start`**
 
-**1. To run local dev server and open client in browser: `npm start`**
+**3. To watch for code changes while dev server is running, in a separate terminal run: `npm run watch`**
 
-<br>
-
-**2. To watch for code changes while dev server is running, in a separate terminal run: `npm run watch`**
-
-<br>
-
-**3. To build with webpack for deployment: `npm run build`**
+**4. To build with webpack for deployment: `npm run build`**

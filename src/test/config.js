@@ -14,6 +14,7 @@ export default class Config {
 
         return {
             type: Phaser.AUTO,
+            parent: 'phaser-app',
             width: 800,
             height: 600,
             scene: [SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
