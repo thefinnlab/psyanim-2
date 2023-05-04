@@ -11,12 +11,19 @@ export default class PsyanimConstants {
         NONE: 0x0000,
         DEFAULT: 0x0001,
         MOUSE_CURSOR: 0x0002,
-        SCREEN_BOUNDARY: 0x0004
+        SCREEN_BOUNDARY: 0x0004,
+        SENSOR: 0x0008
     }
 
     static DEFAULT_SPRITE_COLLISION_FILTER = {
         category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
         mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | 
+            PsyanimConstants.COLLISION_CATEGORIES.SENSOR |
             PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
+    };
+
+    static DEFAULT_SENSOR_COLLISION_FILTER = {
+        category: PsyanimConstants.COLLISION_CATEGORIES.SENSOR,
+        mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT
     };
 }

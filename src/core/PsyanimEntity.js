@@ -6,7 +6,7 @@ import PsyanimComponent from './PsyanimComponent';
 
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
-    constructor(scene, name, x, y, shapeParams = { isEmpty: false }) {
+    constructor(scene, name, x, y, shapeParams = { isEmpty: false }, options = {}) {
 
         /**
          *  Some helpful tips:
@@ -15,6 +15,13 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
          *      - use 'this.body.isSensor' to toggle whether this body collides with other bodies or not
          */
 
+        const defaultOptions = {
+            isVisible: true,
+            isSensor: false,
+            isSleeping: false
+        };
+
+        // setup rendering
         const defaultShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
             base: 30, altitude: 60, 
@@ -23,17 +30,29 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             color: 0xffff00,
         };
 
-        let textureKey = scene.scene.key + "_" + name;
+        let textureKey = null;
+        let generateNewTexture = false;
 
+        if (shapeParams.textureKey) 
+        {
+            textureKey = shapeParams.textureKey;
+        }
+        else
+        {
+            textureKey = scene.scene.key + "_" + name;
+        }
+
+        // if textureKey doesn't exist in texture manager,
+        if ( !scene.textures.exists(textureKey) )
+        {
+            generateNewTexture = true;
+        }
+        
         let matterConfig = {};
 
         let matterOptions = {
             label: name,
-            collisionFilter: {
-                category: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT,
-                mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT | 
-                    PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY
-            }
+            collisionFilter: PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER
         };
 
         let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
@@ -49,7 +68,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
                     radius: radius
                 };
 
-                PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, color);
+                if (generateNewTexture)
+                {
+                    PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, color);
+                }
 
                 matterConfig.type = 'circle';
                 matterConfig.radius = circleGeomParams.radius;
@@ -65,7 +87,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
                     base: base, altitude: altitude
                 };
 
-                PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, color);
+                if (generateNewTexture)
+                {
+                    PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, color);
+                }
 
                 matterConfig.type = 'fromVertices';
                 matterConfig.verts = PsyanimGeomUtils.computeTriangleVertices(base, altitude);
@@ -81,7 +106,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
                     width: width, height: height
                 };
 
-                PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, color);
+                if (generateNewTexture)
+                {
+                    PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, color);
+                }
 
                 matterConfig.type = 'rectangle';
                 matterConfig.width = width;
@@ -94,6 +122,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
         this.name = name;
 
+        // setup physics body
         this.setBody(matterConfig, matterOptions);
 
         if (shapeParams.isEmpty)
@@ -102,6 +131,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             this.body.isSensor = true;
             this.visible = false;
         }
+
+        this.isVisible = (options.isVisible) ? options.isVisible : defaultOptions.isVisible;
+        this.body.isSensor = (options.isSensor) ? options.isSensor : defaultOptions.isSensor;
+        this.body.isSleeping = (options.isSleeping) ? options.isSleeping : defaultOptions.isSleeping;
 
         let mass = 100;
 
