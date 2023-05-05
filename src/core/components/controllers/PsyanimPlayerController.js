@@ -19,6 +19,15 @@ export default class PsyanimPlayerController extends PsyanimComponent {
         }
     }
 
+    onEnable() {
+
+    }
+
+    onDisable() {
+
+        this.entity.setVelocity(0, 0);
+    }
+
     update(t, dt) {
 
         let horizontal = (this._keys.A.isDown ? -1 : 0) + (this._keys.D.isDown ? 1 : 0);

@@ -5,6 +5,7 @@ import SeekTest from './scenes/SeekTest';
 import FleeTest from './scenes/FleeTest';
 import WanderTest from './scenes/WanderTest';
 import SensorTest from './scenes/SensorTest';
+import PathFollowTest from './scenes/PathFollowTest';
 
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
@@ -17,7 +18,8 @@ export default class Config {
             parent: 'phaser-app',
             width: 800,
             height: 600,
-            scene: [SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
+            backgroundColor: 0xffffff,
+            scene: [PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
             physics: {
                 default: 'matter',
                 matter: {

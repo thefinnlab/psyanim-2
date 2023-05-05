@@ -37,7 +37,7 @@ export default class PsyanimScene extends Phaser.Scene {
         // setup wrapping with screen boundary
         this.screenBoundary = new PsyanimScreenBoundary(this);
 
-        this.keys = {
+        this._sceneChangeKeys = {
             J: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
             K: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
         };
@@ -45,7 +45,7 @@ export default class PsyanimScene extends Phaser.Scene {
 
     update(t, dt) {
 
-        if (this.keys.J.isDown) {
+        if (this._sceneChangeKeys.J.isDown) {
 
             // load previous scene
             let currentSceneIndex = this.scene.getIndex(this.scene.key);
@@ -61,7 +61,7 @@ export default class PsyanimScene extends Phaser.Scene {
 
             this.scene.start(scenes[nextSceneIndex]);
         }
-        else if (this.keys.K.isDown) {
+        else if (this._sceneChangeKeys.K.isDown) {
 
             // load next scene
             let currentSceneIndex = this.scene.getIndex(this.scene.key);

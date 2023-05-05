@@ -193,6 +193,12 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     update(t, dt) {
 
-        this._components.forEach(c => c.update(t, dt));
+        this._components.forEach(c => {
+
+            if (c.enabled)
+            {
+                c.update(t, dt);
+            }
+        })
     }
 }
