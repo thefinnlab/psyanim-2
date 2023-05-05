@@ -24,6 +24,16 @@ export default class PsyanimPathRenderer extends PsyanimComponent {
         this._radius = new Phaser.Geom.Line(this.p1.x, this.p1.y, this.p2.x, this.p2.y);
     }
 
+    onDisable() {
+        this.clear();
+    }
+
+    clear() {
+
+        this._lineGraphics.clear();
+        this._radiusGraphics.clear();
+    }
+
     update(t, dt) {
 
         super.update(t, dt);
@@ -40,8 +50,7 @@ export default class PsyanimPathRenderer extends PsyanimComponent {
         this._radius.y2 = this.p2.y;
 
         // render
-        this._lineGraphics.clear();
-        this._radiusGraphics.clear();
+        this.clear();
 
         this._radiusGraphics.strokeLineShape(this._radius);
         this._lineGraphics.strokeLineShape(this._line);
