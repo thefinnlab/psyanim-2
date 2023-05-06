@@ -104,12 +104,19 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
             let targetAngle = Math.atan2(direction.y, direction.x) * 180 / Math.PI;
 
-            let newAngle = Phaser.Math.Angle.RotateTo(
-                this.entity.angle * Math.PI / 180,
-                targetAngle,
-                this.turnSpeed);
-
-            this.entity.setAngle(newAngle);
+            if (this.turnSpeed == Infinity)
+            {
+                this.entity.setAngle(targetAngle);
+            }
+            else
+            {
+                let lerpedAngle = Phaser.Math.Angle.RotateTo(
+                    this.entity.angle * Math.PI / 180,
+                    targetAngle,
+                    this.turnSpeed);
+    
+                this.entity.setAngle(lerpedAngle);                    
+            }
         }
     }
 
