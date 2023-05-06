@@ -38,7 +38,6 @@ export default class PsyanimPathFollow extends PsyanimComponent {
 
         this._seekTarget = entity.scene.addEntity(this.entity.name + 'SeekTarget', 0, 0, {
             isEmpty: true,
-            radius: 4
         });
 
         this.vehicle.target = this._seekTarget;
