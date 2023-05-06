@@ -7,6 +7,9 @@ export default class PsyanimPathRenderer extends PsyanimComponent {
     lineWidth = 4;
     radius = 20;
 
+    lineColor = 0x000000;
+    radiusColor = 0x808080;
+
     p1 = new Phaser.Math.Vector2(0, 0);
     p2 = new Phaser.Math.Vector2(1, 0);
 
@@ -14,8 +17,8 @@ export default class PsyanimPathRenderer extends PsyanimComponent {
 
         super(entity);
 
-        this._lineGraphics = this.entity.scene.add.graphics({ lineStyle: { width: this.lineWidth, color: 0x000000 } });
-        this._radiusGraphics = this.entity.scene.add.graphics({ lineStyle: { width: this.radius, color: 0x808080 } });
+        this._lineGraphics = this.entity.scene.add.graphics({ lineStyle: { width: this.lineWidth, color: this.lineColor } });
+        this._radiusGraphics = this.entity.scene.add.graphics({ lineStyle: { width: this.radius, color: this.radiusColor } });
 
         this._lineGraphics.depth = -1;
         this._radiusGraphics.depth = -2;
@@ -32,6 +35,23 @@ export default class PsyanimPathRenderer extends PsyanimComponent {
 
         this._lineGraphics.clear();
         this._radiusGraphics.clear();
+    }
+
+    setRadius(value) {
+
+        if (this.radius == value) {
+            return;
+        }
+
+        this.radius = value;
+
+        // TODO: lineStyle() not working here, so we have to rebuild graphics for now
+        // this._radiusGraphics.lineStyle(value, this.radiusColor);
+
+        this._radiusGraphics.destroy();
+
+        this._radiusGraphics = this.entity.scene.add.graphics({ lineStyle: { width: this.radius, color: this.radiusColor } });
+        this._radiusGraphics.depth = -2;
     }
 
     update(t, dt) {
