@@ -72,7 +72,7 @@ export default class PsyanimSensor extends PsyanimComponent {
         {
             otherLabel = bodyLabelA;
         }
-        else if (bodyLabelB == this.entity.name)
+        else if (bodyLabelB != this.entity.name)
         {
             otherLabel = bodyLabelB;
         }
@@ -106,7 +106,7 @@ export default class PsyanimSensor extends PsyanimComponent {
         {
             otherLabel = bodyLabelA;
         }
-        else if (bodyLabelB == this.entity.name)
+        else if (bodyLabelB != this.entity.name)
         {
             otherLabel = bodyLabelB;
         }

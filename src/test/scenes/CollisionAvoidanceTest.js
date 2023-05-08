@@ -84,14 +84,6 @@ export default class CollisionAvoidanceTest extends PsyanimScene {
                 vehicle: vehicle
             });
         }
-
-        // setup keyboard controls for testing
-        this.input.keyboard.on('keydown-P', () => {
-
-        })
-        this._testKeys = {
-            C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
-        };
     }
 
     update(t, dt) {
@@ -106,16 +98,6 @@ export default class CollisionAvoidanceTest extends PsyanimScene {
             {
                 data.pathFollow.reverseDirection();
             }
-
-            if (data.agent.name == 'yellow')
-            {
-                if ((Phaser.Input.Keyboard.JustDown(this._testKeys.C)))
-                {
-                    let agentInfo = "nearby agents: ";
-                    data.vehicle._nearbyAgents.forEach(agent => agentInfo += agent.name + ", ");
-                    console.log(agentInfo);
-                }
-            }    
         });
     }
 }
