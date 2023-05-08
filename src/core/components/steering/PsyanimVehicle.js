@@ -9,9 +9,9 @@ export default class PsyanimVehicle extends PsyanimComponent {
         IDLE: 0x0001,
         SEEK: 0x0002,
         FLEE: 0x0004,
-        ARRIVE: 0x0008,
-        WANDER: 0x0010
-        // 0x0020
+        EVADE: 0x0008,
+        ARRIVE: 0x0010,
+        WANDER: 0x0020
         // 0x0040
     };
 
@@ -30,6 +30,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     innerDecelerationRadius = 25;
     outerDecelerationRadius = 140;
+
+    panicDistance = 250;
 
     constructor(entity) {
 
@@ -61,11 +63,15 @@ export default class PsyanimVehicle extends PsyanimComponent {
                 this._getSteering = this._flee;
                 break;
 
+            case PsyanimVehicle.STATE.EVADE:
+
+                this._getSteering = this._evade;
+                break;
+
             case PsyanimVehicle.STATE.ARRIVE:
 
                 this._getSteering = this._arrive;
                 break;
-
         }
     }
 
@@ -145,10 +151,15 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _flee(target) {
 
-        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
+        let distanceToTarget = this.entity.position.subtract(target.position).length();
+
+        if (distanceToTarget > this.panicDistance)
+        {
+            return new Phaser.Math.Vector2(0, 0);
+        }
 
         let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
-        desiredVelocity.subtract(currentPosition);
+        desiredVelocity.subtract(this.entity.position);
         desiredVelocity.setLength(this.maxSpeed);
         desiredVelocity.scale(-1);
 
@@ -165,6 +176,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
         }
 
         return acceleration;
+    }
+
+    _evade(target) {
+
+        return this._flee(target);
     }
 
     _arrive(target) {
@@ -228,6 +244,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
     }
 
     update(t, dt) {
+
+        super.update(t, dt);
 
         // clamp velocity to max speed
         let velocity = new Phaser.Math.Vector2(this.entity.getVelocity());

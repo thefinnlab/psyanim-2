@@ -12,7 +12,7 @@ export default class SeekTest extends PsyanimScene {
 
     constructor() {
 
-        super('SeekTest');
+        super('Seek Test');
     }
 
     create() {
