@@ -33,6 +33,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     panicDistance = 250;
 
+    maxPredictionTime = 1.0;
+
     constructor(entity) {
 
         super(entity);
@@ -77,9 +79,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _lookWhereYoureGoing() {
 
-        let velocityXY = this.entity.getVelocity();
-
-        let velocity = new Phaser.Math.Vector2(velocityXY.x, velocityXY.y);
+        let velocity = this.entity.velocity;
 
         let direction = new Phaser.Math.Vector2(0, 0);
 
@@ -151,14 +151,15 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _flee(target) {
 
-        let distanceToTarget = this.entity.position.subtract(target.position).length();
+        let targetPosition = target.position;
+        let distanceToTarget = this.entity.position.subtract(targetPosition).length();
 
         if (distanceToTarget > this.panicDistance)
         {
             return new Phaser.Math.Vector2(0, 0);
         }
 
-        let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
+        let desiredVelocity = new Phaser.Math.Vector2(targetPosition.x, targetPosition.y);
         desiredVelocity.subtract(this.entity.position);
         desiredVelocity.setLength(this.maxSpeed);
         desiredVelocity.scale(-1);
@@ -180,7 +181,32 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _evade(target) {
 
-        return this._flee(target);
+        let targetPosition = target.position;
+        let distanceToTarget = this.entity.position.subtract(targetPosition).length();
+
+        let targetVelocity = target.velocity;
+        let targetSpeed = targetVelocity.length();
+
+        let predictionTime = this.maxPredictionTime;
+
+        if (targetSpeed > distanceToTarget / this.maxPredictionTime)
+        {
+            predictionTime = distanceToTarget / targetSpeed;
+
+            // don't project too far out, predicted position can go past character.
+            // Unity Movement AI package uses this magic number.  can adjust if needed.
+            predictionTime *= 0.9;
+        }
+
+        let evadeTargetPosition = targetVelocity.clone();
+        evadeTargetPosition.scale(predictionTime);
+        evadeTargetPosition.add(targetPosition);
+
+        let evadeTarget = {
+            position: evadeTargetPosition,
+        }
+
+        return this._flee(evadeTarget);
     }
 
     _arrive(target) {

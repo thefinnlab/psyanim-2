@@ -150,8 +150,7 @@ export default class PsyanimWander extends PsyanimComponent {
         this._targetVector.rotate(this._angle * Math.PI / 180);
         this._targetVector.add(this._circleCenterVector);
 
-        this.target.x = this._targetVector.x;
-        this.target.y = this._targetVector.y;
+        this.target.position = this._targetVector;
 
         if (this._debug) {
             this._drawDebugGraphics();

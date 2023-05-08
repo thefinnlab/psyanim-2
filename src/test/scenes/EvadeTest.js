@@ -23,7 +23,7 @@ export default class EvadeTest extends PsyanimScene {
         });
 
         let wander = wanderAgent.addComponent(PsyanimWander);
-        wander.maxSpeed = 2;
+        wander.maxSpeed = 4;
 
         let evadeAgent = this.addEntity('evadeAgent', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
