@@ -5,6 +5,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 import PsyanimVehicle from './PsyanimVehicle';
 
 import PsyanimPathRenderer from '../rendering/PsyanimPathRenderer';
+import PsyanimConstants from '../../PsyanimConstants';
 
 export default class PsyanimPathFollow extends PsyanimComponent {
 
@@ -35,6 +36,8 @@ export default class PsyanimPathFollow extends PsyanimComponent {
 
         this._seekTarget = entity.scene.addEntity(this.entity.name + 'SeekTarget', 0, 0, {
             isEmpty: true,
+        }, {
+            collisionFilter: PsyanimConstants.DEFAULT_VISUAL_ONLY_COLLISION_FILTER
         });
 
         this.vehicle.target = this._seekTarget;

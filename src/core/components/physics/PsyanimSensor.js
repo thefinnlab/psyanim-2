@@ -133,5 +133,5 @@ export default class PsyanimSensor extends PsyanimComponent {
         // keep bodies in sync with entity
         this.entity.scene.matter.body
             .setPosition(this.sensorBody, { x: this.entity.x, y: this.entity.y });
-}
+    }
 }

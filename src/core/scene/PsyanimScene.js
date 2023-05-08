@@ -10,9 +10,9 @@ export default class PsyanimScene extends Phaser.Scene {
         super(key);
     }
 
-    addEntity(name, x, y, shapeParams = {}) {
+    addEntity(name, x, y, shapeParams = {}, matterOptions = {}) {
 
-        let entity = new PsyanimEntity(this, name, x, y, shapeParams);
+        let entity = new PsyanimEntity(this, name, x, y, shapeParams, matterOptions);
 
         this._entities.push(entity);
 

@@ -6,7 +6,7 @@ import PsyanimComponent from './PsyanimComponent';
 
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
-    constructor(scene, name, x, y, shapeParams = { isEmpty: false }, options = {}) {
+    constructor(scene, name, x, y, shapeParams = { isEmpty: false }, matterOptions = {}) {
 
         /**
          *  Some helpful tips:
@@ -15,12 +15,6 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
          *      - use 'this.body.isSensor' to toggle whether this body collides with other bodies or not
          */
 
-        const defaultOptions = {
-            isVisible: true,
-            isSensor: false,
-            isSleeping: false
-        };
-
         // setup rendering
         const defaultShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
@@ -28,6 +22,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             width: 20, height: 20, 
             radius: 4, 
             color: 0xffff00,
+            isVisible: true
         };
 
         let textureKey = null;
@@ -50,10 +45,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         
         let matterConfig = {};
 
-        let matterOptions = {
-            label: name,
-            collisionFilter: PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER
-        };
+        matterOptions.name = (matterOptions.name) ? matterOptions.name : name;
+        matterOptions.isSensor = (matterOptions.isSensor) ? matterOptions.isSensor : false;
+        matterOptions.isSleeping = (matterOptions.isSleeping) ? matterOptions.isSleeping : false;
+        matterOptions.collisionFilter = (matterOptions.collisionFilter) 
+            ? matterOptions.collisionFilter : PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER;
 
         let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
         let color = (shapeParams.color) ? shapeParams.color : defaultShapeParams.color;
@@ -135,9 +131,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             this.visible = false;
         }
 
-        this.isVisible = (options.isVisible) ? options.isVisible : defaultOptions.isVisible;
-        this.body.isSensor = (options.isSensor) ? options.isSensor : defaultOptions.isSensor;
-        this.body.isSleeping = (options.isSleeping) ? options.isSleeping : defaultOptions.isSleeping;
+        this.isVisible = (shapeParams.isVisible) ? shapeParams.isVisible : defaultShapeParams.isVisible;
+        this.body.isSensor = matterOptions.isSensor;
+        this.body.isSleeping = matterOptions.isSleeping;
+
+        // console.log(this.name + ' collision filter = ' + JSON.stringify(matterOptions));
 
         let mass = 100;
 
