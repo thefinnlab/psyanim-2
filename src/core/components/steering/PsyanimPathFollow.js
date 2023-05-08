@@ -96,6 +96,15 @@ export default class PsyanimPathFollow extends PsyanimComponent {
         }
     }
 
+    reverseDirection() {
+
+        let start = this.p2;
+        let end = this.p1;
+
+        this.p1 = start;
+        this.p2 = end;
+    }
+
     update(t, dt) {
 
         super.update(t, dt);
