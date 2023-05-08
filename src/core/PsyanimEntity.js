@@ -122,8 +122,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
         this.name = name;
 
-        // setup physics body
+        // setup new physics body
         this.setBody(matterConfig, matterOptions);
+
+        // there's a bug in phaser where 'label' doesn't get set for non-primitive bodies
+        this.body.label = this.name;
 
         if (shapeParams.isEmpty)
         {

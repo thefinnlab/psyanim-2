@@ -9,7 +9,7 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         super(entity);
 
-        this.body = null
+        this.sensorBody = null;
 
         this.events = new Phaser.Events.EventEmitter();
 
@@ -19,16 +19,16 @@ export default class PsyanimSensor extends PsyanimComponent {
 
     setBody(shapeParams) {
 
-        if (this.body != null)
+        if (this.sensorBody != null)
         {
-            this.body.onCollideCallback = null;
+            this.sensorBody.onCollideCallback = null;
         }
 
         switch (shapeParams.shapeType) 
         {
             case PsyanimConstants.SHAPE_TYPE.CIRCLE:
 
-                this.body = this.entity.scene.matter.add.circle(
+                this.sensorBody = this.entity.scene.matter.add.circle(
                     this.entity.x, this.entity.y,
                     shapeParams.radius,
                     {
@@ -46,6 +46,16 @@ export default class PsyanimSensor extends PsyanimComponent {
 
                 break;
         }
+    }
+
+    onEnable() {
+
+        this.entity.body.isSleeping = false;
+    }
+
+    onDisable() {
+
+        this.entity.body.isSleeping = true;
     }
 
     _onTriggerEnter(pair) {
@@ -69,7 +79,16 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         if (otherLabel != null)
         {
-            this.events.emit('triggerEnter', otherLabel);
+            let entity = this.entity.scene.getEntityByName(otherLabel);
+
+            if (entity)
+            {
+                this.events.emit('triggerEnter', entity);
+            }
+            else
+            {
+                console.warn('Sensor detected entity which is not in scene: ' + otherLabel);
+            }
         }
     }
 
@@ -94,7 +113,16 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         if (otherLabel != null)
         {
-            this.events.emit('triggerExit', otherLabel);
+            let entity = this.entity.scene.getEntityByName(otherLabel);
+
+            if (entity)
+            {
+                this.events.emit('triggerExit', entity);
+            }
+            else
+            {
+                console.warn('Sensor detected entity which is not in scene: ' + otherLabel);
+            }
         }
     }
 
@@ -104,6 +132,6 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         // keep bodies in sync with entity
         this.entity.scene.matter.body
-            .setPosition(this.body, { x: this.entity.x, y: this.entity.y });
+            .setPosition(this.sensorBody, { x: this.entity.x, y: this.entity.y });
 }
 }

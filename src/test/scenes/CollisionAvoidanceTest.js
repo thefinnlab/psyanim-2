@@ -59,6 +59,7 @@ export default class PsyanimCollisionAvoidance extends PsyanimScene {
             let vehicle = agent.addComponent(PsyanimVehicle);
             vehicle.turnSpeed = Infinity;
             vehicle.maxSpeed = 2.5;
+            vehicle.enableCollisionAvoidance();
 
             let pathFollow = agent.addComponent(PsyanimPathFollow);
             pathFollow.p1 = pathStart;

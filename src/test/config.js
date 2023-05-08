@@ -21,7 +21,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [EvadeTest, CollisionAvoidanceTest, PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
+            scene: [CollisionAvoidanceTest, EvadeTest, PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
             physics: {
                 default: 'matter',
                 matter: {

@@ -51,12 +51,12 @@ export default class SensorTest extends PsyanimScene {
             radius: 75,
         });
 
-        sensor.events.on('triggerEnter', (otherLabel) => {
-            console.log(otherLabel + ' has ENTERED the building...');
+        sensor.events.on('triggerEnter', (entity) => {
+            console.log(entity.name + ' has ENTERED the building...');
         });
 
-        sensor.events.on('triggerExit', (otherLabel) => {
-            console.log(otherLabel + ' has EXITED the building...');
+        sensor.events.on('triggerExit', (entity) => {
+            console.log(entity.name + ' has EXITED the building...');
         });
     }
 }

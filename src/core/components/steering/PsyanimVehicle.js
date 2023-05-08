@@ -2,6 +2,9 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimSensor from '../physics/PsyanimSensor';
+import PsyanimConstants from '../../PsyanimConstants';
+
 export default class PsyanimVehicle extends PsyanimComponent {
 
     static STATE = {
@@ -42,6 +45,44 @@ export default class PsyanimVehicle extends PsyanimComponent {
         this._velocitySamples = [];
 
         this.setState(PsyanimVehicle.STATE.IDLE);
+    }
+
+    enableCollisionAvoidance() {
+
+        if (this.sensor)
+        {
+            this.sensor.enabled = true;
+        }
+        else // setup collision avoidance for the first time
+        {
+            this._nearbyAgents = [];
+
+            this.sensor = this.entity.addComponent(PsyanimSensor);
+
+            this.sensor.setBody({
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 75
+            });
+    
+            this.sensor.events.on('triggerEnter', (entity) => {
+                this._nearbyAgents.push(entity);
+            });
+    
+            this.sensor.events.on('triggerExit', (entity) => {
+
+                this._nearbyAgents = this._nearbyAgents.filter(e => {
+                    e.name != entity.name;
+                });
+            });    
+        }
+    }
+
+    disableCollisionAvoidance() {
+
+        if (this.sensor)
+        {
+            this.sensor.enabled = false;
+        }
     }
 
     setState(state) {
@@ -207,6 +248,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
         }
 
         return this._flee(evadeTarget);
+    }
+
+    _avoidCollisions() {
+
+
     }
 
     _arrive(target) {
