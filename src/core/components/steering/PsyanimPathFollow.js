@@ -27,14 +27,11 @@ export default class PsyanimPathFollow extends PsyanimComponent {
             this.vehicle = this.entity.addComponent(PsyanimVehicle);
         }
 
-        this.pathRenderer = this.entity.getComponent(PsyanimPathRenderer);
+        this.pathRenderer = this.entity.addComponent(PsyanimPathRenderer);
 
-        if (!this.pathRenderer)
-        {
-            this.pathRenderer = this.entity.addComponent(PsyanimPathRenderer);
-        }
+        this.pathRenderer.setRadius(this.radius);    
 
-        this.pathRenderer.setRadius(this.radius);
+        this.pathRenderer.enabled = false;
 
         this._seekTarget = entity.scene.addEntity(this.entity.name + 'SeekTarget', 0, 0, {
             isEmpty: true,
@@ -47,10 +44,12 @@ export default class PsyanimPathFollow extends PsyanimComponent {
     }
 
     onEnable() {
+
         this.pathRenderer.enabled = true;
     }
 
     onDisable() {
+
         this.pathRenderer.enabled = false;
     }
 
@@ -109,10 +108,13 @@ export default class PsyanimPathFollow extends PsyanimComponent {
 
         super.update(t, dt);
 
-        // update path renderer
-        this.pathRenderer.p1 = this.p1;
-        this.pathRenderer.p2 = this.p2;
-        this.pathRenderer.setRadius(this.radius);
+        if (this.pathRenderer.enabled)
+        {
+            // update path renderer
+            this.pathRenderer.p1 = this.p1;
+            this.pathRenderer.p2 = this.p2;
+            this.pathRenderer.setRadius(this.radius);
+        }
 
         this.computeSeekTargetLocation();
     }

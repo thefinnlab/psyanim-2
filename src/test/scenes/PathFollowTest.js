@@ -42,6 +42,7 @@ export default class PathFollowTest extends PsyanimScene {
         this.pathFollow1.p2 = new Phaser.Math.Vector2(770, 370);
         this.pathFollow1.predictionTime = predictionTime;
         this.pathFollow1.targetOffset = targetOffset;
+        this.pathFollow1.pathRenderer.enabled = true;
 
         this.stoppingRadius = predictionTime + targetOffset;
     }
