@@ -5,7 +5,7 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPathFollow from '../../core/components/steering/PsyanimPathFollow';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
-export default class CollisionAvoidanceTest extends PsyanimScene {
+export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
 
     constructor() {
 
@@ -68,8 +68,15 @@ export default class CollisionAvoidanceTest extends PsyanimScene {
 
             let vehicle = agent.addComponent(PsyanimVehicle);
             vehicle.turnSpeed = Infinity;
-            vehicle.maxSpeed = 2.5;
-            vehicle.enableCollisionAvoidance();
+            vehicle.maxSpeed = 1.5;
+
+            if (i != 0)
+            {
+                vehicle.enableCollisionAvoidance();
+            }
+
+            vehicle.maxAcceleration = 0.2;
+            vehicle.sensorRadius = 50;
 
             let pathFollow = agent.addComponent(PsyanimPathFollow);
             pathFollow.p1 = pathStart;
