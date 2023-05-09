@@ -44,13 +44,14 @@ export default class PsyanimScene extends Phaser.Scene {
 
         this._sceneChangeKeys = {
             J: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
-            K: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
+            K: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K),
+            T: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T)
         };
     }
 
     update(t, dt) {
 
-        if (this._sceneChangeKeys.J.isDown) {
+        if (Phaser.Input.Keyboard.JustDown(this._sceneChangeKeys.J)) {
 
             // load previous scene
             let currentSceneIndex = this.scene.getIndex(this.scene.key);
@@ -66,7 +67,7 @@ export default class PsyanimScene extends Phaser.Scene {
 
             this.scene.start(scenes[nextSceneIndex]);
         }
-        else if (this._sceneChangeKeys.K.isDown) {
+        else if (Phaser.Input.Keyboard.JustDown(this._sceneChangeKeys.K)) {
 
             // load next scene
             let currentSceneIndex = this.scene.getIndex(this.scene.key);
@@ -81,6 +82,17 @@ export default class PsyanimScene extends Phaser.Scene {
             }
 
             this.scene.start(scenes[nextSceneIndex]);
+        }
+        else if (Phaser.Input.Keyboard.JustDown(this._sceneChangeKeys.T)) {
+
+            if (this.matter.world.engine.timing.timeScale < 1)
+            {
+                this.matter.world.engine.timing.timeScale = 1.0;
+            }
+            else
+            {
+                this.matter.world.engine.timing.timeScale = 0.05;
+            }
         }
 
         this._entities.forEach(e => e.update(t, dt));

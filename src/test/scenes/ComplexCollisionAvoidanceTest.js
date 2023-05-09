@@ -5,6 +5,8 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPathFollow from '../../core/components/steering/PsyanimPathFollow';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
+import PsyanimCollisionAvoidanceDebug from '../../core/components/rendering/PsyanimCollisionAvoidanceDebug';
+
 export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
 
     constructor() {
@@ -97,6 +99,12 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
                 vehicle: vehicle
             });
         }
+
+        let yellowAgent = this.agentComponents.find(c => c.agent.name == 'yellow').agent;
+
+        let debugRenderer = yellowAgent.addComponent(PsyanimCollisionAvoidanceDebug);
+
+        debugRenderer.vehicle = yellowAgent.getComponent(PsyanimVehicle);
     }
 
     update(t, dt) {
