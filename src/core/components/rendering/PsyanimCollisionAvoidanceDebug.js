@@ -12,6 +12,7 @@ export default class PsyanimCollisionAvoidanceDebug extends PsyanimComponent {
         
         this.graphics = entity.scene.add.graphics({ lineStyle: { width: 2, color: 0x00ff00, alpha: 1.0 } });
 
+        this._line = new Phaser.Geom.Line(0, 0, 0, 0);
         this._circle = new Phaser.Geom.Circle(0, 0, 4);
     }
 
@@ -21,19 +22,26 @@ export default class PsyanimCollisionAvoidanceDebug extends PsyanimComponent {
 
         this.graphics.clear();
 
-        let finalRelativePosition = this.vehicle._collisionAvoidanceTargetPosition;
+        let _collisionAvoidanceTarget = this.vehicle._collisionAvoidanceTarget;
 
-        if (finalRelativePosition == null)
+        if (_collisionAvoidanceTarget == null)
         {
             return;
         }
 
-        let targetPosition = this.entity.position.add(finalRelativePosition);
+        let targetPosition = _collisionAvoidanceTarget.target.position;
+        let predictedPosition = this.entity.position.add(_collisionAvoidanceTarget.finalRelativePosition);
 
         this._circle.setPosition(
-            targetPosition.x, targetPosition.y
+            predictedPosition.x, predictedPosition.y
+        );
+
+        this._line.setTo(
+            targetPosition.x, targetPosition.y,
+            predictedPosition.x, predictedPosition.y
         );
 
         this.graphics.strokeCircleShape(this._circle);
+        this.graphics.strokeLineShape(this._line);
     }
 }

@@ -48,7 +48,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         this._collisionAvoidanceEnabled = false;
 
-        this._collisionAvoidanceTargetPosition = null;
+        this._collisionAvoidanceTarget = null;
 
         this._nearbyAgents = [];
 
@@ -317,7 +317,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         // calculate steering
         if (firstTarget == null)
         {
-            this._collisionAvoidanceTargetPosition = null;
+            this._collisionAvoidanceTarget = null;
             return new Phaser.Math.Vector2(0, 0);
         }
 
@@ -332,7 +332,10 @@ export default class PsyanimVehicle extends PsyanimComponent {
             finalRelativePosition = firstRelativePosition.add(firstRelativeVelocity.scale(shortestTime));
         }
 
-        this._collisionAvoidanceTargetPosition = finalRelativePosition.clone();
+        this._collisionAvoidanceTarget = {
+            target: firstTarget,
+            finalRelativePosition: finalRelativePosition.clone()
+        };
 
         finalRelativePosition.normalize();
 
