@@ -75,6 +75,11 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
             {
                 vehicle.enableCollisionAvoidance();
             }
+            else
+            {
+                vehicle.maxSpeed = 1.5;
+            }
+
 
             vehicle.maxAcceleration = 0.2;
             vehicle.sensorRadius = 100;

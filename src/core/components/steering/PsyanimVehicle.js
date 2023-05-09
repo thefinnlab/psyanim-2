@@ -296,8 +296,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
                 .add(relativePosition)
                 .length();
 
-            // let minSeparation = distance - relativeSpeed * timeToCollision;
-
             if (minSeparation > 2 * this.collisionRadius)
             {
                 continue;
@@ -419,14 +417,10 @@ export default class PsyanimVehicle extends PsyanimComponent {
         {
             steer = this._avoidCollisions();
 
-            if (steer.length() < 0.005)
+            if (steer.length() < 0.00001)
             {
                 steer = this._getSteering(this.target);
             }    
-            else
-            {
-                // console.log("we're avoiding collisions!");
-            }
         }
         else
         {
