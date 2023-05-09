@@ -258,6 +258,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return this._flee(evadeTarget);
     }
 
+    collisionRadius = 8;
+
     _avoidCollisions() {
 
         /**
@@ -269,8 +271,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
         {
             return new Phaser.Math.Vector2(0, 0);
         }
-
-        let collisionRadius = 3;
 
         let shortestTime = Infinity;
         let firstTarget = null;
@@ -290,9 +290,15 @@ export default class PsyanimVehicle extends PsyanimComponent {
             let timeToCollision = -1 * relativePosition.dot(relativeVelocity) / (relativeSpeed * relativeSpeed);
 
             let distance = relativePosition.length();
-            let minSeparation = distance - relativeSpeed * timeToCollision;
 
-            if (minSeparation > 2 * collisionRadius)
+            let minSeparation = relativeVelocity.clone()
+                .scale(timeToCollision)
+                .add(relativePosition)
+                .length();
+
+            // let minSeparation = distance - relativeSpeed * timeToCollision;
+
+            if (minSeparation > 2 * this.collisionRadius)
             {
                 continue;
             }
@@ -316,7 +322,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         let finalRelativePosition = null;
 
-        if (firstMinSeparation <= 0 || firstDistance < 2 * collisionRadius)
+        if (firstMinSeparation <= 0 || firstDistance < 2 * this.collisionRadius)
         {
             finalRelativePosition = firstTarget.position.subtract(this.entity.position);
         }
@@ -327,11 +333,9 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         finalRelativePosition.normalize();
 
-        let steering = finalRelativePosition.scale(this.maxAcceleration);
+        let steering = finalRelativePosition.scale(-1 * this.maxAcceleration);
 
-        console.log("non-zero steering found");
-
-        return steering.scale(-1);
+        return steering;
     }
 
     _arrive(target) {

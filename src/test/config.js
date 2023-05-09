@@ -8,6 +8,7 @@ import SensorTest from './scenes/SensorTest';
 import PathFollowTest from './scenes/PathFollowTest';
 import EvadeTest from './scenes/EvadeTest';
 import SimpleCollisionAvoidanceTest from './scenes/SimpleCollisionAvoidanceTest';
+import ComplexCollisionAvoidanceTest from './scenes/ComplexCollisionAvoidanceTest';
 
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
@@ -21,7 +22,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [SimpleCollisionAvoidanceTest, EvadeTest, PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
+            scene: [SimpleCollisionAvoidanceTest, ComplexCollisionAvoidanceTest, EvadeTest, PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
             physics: {
                 default: 'matter',
                 matter: {

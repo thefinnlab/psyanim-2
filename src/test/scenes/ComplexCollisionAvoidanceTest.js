@@ -9,7 +9,7 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
 
     constructor() {
 
-        super('Collision Avoidance Test');
+        super('Complex Collision Avoidance Test');
     }
 
     create() {
@@ -50,7 +50,7 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
         let predictionTime = 25;
         let targetOffset = 50;
 
-        this.stoppingRadius = predictionTime + targetOffset;
+        this.stoppingRadius = 50;
         this.agentComponents = [];
 
         for (let i = 0; i < agentData.length; ++i)
@@ -68,7 +68,8 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
 
             let vehicle = agent.addComponent(PsyanimVehicle);
             vehicle.turnSpeed = Infinity;
-            vehicle.maxSpeed = 1.5;
+            vehicle.maxSpeed = 2.0;
+            vehicle.collisionRadius = 8;
 
             if (i != 0)
             {
@@ -76,7 +77,7 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
             }
 
             vehicle.maxAcceleration = 0.2;
-            vehicle.sensorRadius = 50;
+            vehicle.sensorRadius = 100;
 
             let pathFollow = agent.addComponent(PsyanimPathFollow);
             pathFollow.p1 = pathStart;

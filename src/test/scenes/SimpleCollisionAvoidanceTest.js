@@ -9,7 +9,7 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
     constructor() {
 
-        super('Collision Avoidance Test');
+        super('Simple Collision Avoidance Test');
     }
 
     create() {
@@ -18,16 +18,16 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
         let agentData = [
             {
-                spawnPoint: new Phaser.Math.Vector2(75, 305),
-                pathStart: new Phaser.Math.Vector2(50, 300),
-                pathEnd: new Phaser.Math.Vector2(750, 300),
+                spawnPoint: new Phaser.Math.Vector2(225, 300),
+                pathStart: new Phaser.Math.Vector2(200, 300),
+                pathEnd: new Phaser.Math.Vector2(600, 300),
                 color: 0xff0000,
                 name: 'red'
             },
             {
-                spawnPoint: new Phaser.Math.Vector2(725, 290),
-                pathStart: new Phaser.Math.Vector2(750, 295),
-                pathEnd: new Phaser.Math.Vector2(50, 295),
+                spawnPoint: new Phaser.Math.Vector2(575, 300),
+                pathStart: new Phaser.Math.Vector2(600, 300),
+                pathEnd: new Phaser.Math.Vector2(200, 300),
                 color: 0xffff00,
                 name: 'yellow'
             }
@@ -58,6 +58,8 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
             vehicle.maxAcceleration = 0.2;
             vehicle.sensorRadius = 100;
+
+            vehicle.collisionRadius = 8;
 
             vehicle.enableCollisionAvoidance();
 
