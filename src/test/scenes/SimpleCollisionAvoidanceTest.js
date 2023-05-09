@@ -54,7 +54,7 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
             let vehicle = agent.addComponent(PsyanimVehicle);
             vehicle.turnSpeed = Infinity;
-            vehicle.maxSpeed = 1.5;
+            vehicle.maxSpeed = 2.5;
 
             vehicle.maxAcceleration = 0.2;
             vehicle.sensorRadius = 100;

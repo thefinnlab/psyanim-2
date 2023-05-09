@@ -270,7 +270,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
             return new Phaser.Math.Vector2(0, 0);
         }
 
-        let collisionRadius = 16;
+        let collisionRadius = 3;
 
         let shortestTime = Infinity;
         let firstTarget = null;
@@ -287,7 +287,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
             let relativeVelocity = agent.velocity.subtract(this.entity.velocity);
             let relativeSpeed = relativeVelocity.length();
 
-            let timeToCollision = relativePosition.dot(relativeVelocity) / (relativeSpeed * relativeSpeed);
+            let timeToCollision = -1 * relativePosition.dot(relativeVelocity) / (relativeSpeed * relativeSpeed);
 
             let distance = relativePosition.length();
             let minSeparation = distance - relativeSpeed * timeToCollision;
@@ -328,6 +328,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
         finalRelativePosition.normalize();
 
         let steering = finalRelativePosition.scale(this.maxAcceleration);
+
+        console.log("non-zero steering found");
 
         return steering.scale(-1);
     }
@@ -419,7 +421,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
             }    
             else
             {
-                console.log("we're avoiding collisions!");
+                // console.log("we're avoiding collisions!");
             }
         }
         else
