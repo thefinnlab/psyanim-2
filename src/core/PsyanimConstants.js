@@ -32,4 +32,9 @@ export default class PsyanimConstants {
         category: PsyanimConstants.COLLISION_CATEGORIES.VISUAL_ONLY,
         mask: PsyanimConstants.COLLISION_CATEGORIES.NONE
     };
+
+    static DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER = {
+        category: PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY,
+        mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT
+    };
 }

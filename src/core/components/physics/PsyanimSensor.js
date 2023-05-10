@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 import PsyanimConstants from '../../PsyanimConstants';
+import PsyanimEntity from '../../PsyanimEntity';
 
 export default class PsyanimSensor extends PsyanimComponent {
 
@@ -63,31 +64,26 @@ export default class PsyanimSensor extends PsyanimComponent {
         let bodyA = pair.bodyA;
         let bodyB = pair.bodyB;
 
-        let bodyLabelA = bodyA.label;
-        let bodyLabelB = bodyB.label;
+        let body = null;
 
-        let otherLabel = null;
-
-        if (bodyLabelA != this.entity.name)
+        if (bodyA != this.entity.body)
         {
-            otherLabel = bodyLabelA;
+            body = bodyA;
         }
-        else if (bodyLabelB != this.entity.name)
+        else if (bodyB != this.entity.body)
         {
-            otherLabel = bodyLabelB;
+            body = bodyB;
         }
 
-        if (otherLabel != null)
+        if (body != null)
         {
-            let entity = this.entity.scene.getEntityByName(otherLabel);
-
-            if (entity)
+            if (body.gameObject instanceof PsyanimEntity)
             {
-                this.events.emit('triggerEnter', entity);
+                this.events.emit('triggerEnter', body.gameObject);
             }
             else
             {
-                console.warn('Sensor detected entity which is not in scene: ' + otherLabel);
+                console.warn('Sensor detected entity which is not in scene: ' + body.label);
             }
         }
         else
@@ -101,31 +97,26 @@ export default class PsyanimSensor extends PsyanimComponent {
         let bodyA = pair.bodyA;
         let bodyB = pair.bodyB;
 
-        let bodyLabelA = bodyA.label;
-        let bodyLabelB = bodyB.label;
+        let body = null;
 
-        let otherLabel = null;
-
-        if (bodyLabelA != this.entity.name)
+        if (bodyA != this.entity.body)
         {
-            otherLabel = bodyLabelA;
+            body = bodyA;
         }
-        else if (bodyLabelB != this.entity.name)
+        else if (bodyB != this.entity.body)
         {
-            otherLabel = bodyLabelB;
+            body = bodyB;
         }
 
-        if (otherLabel != null)
+        if (body != null)
         {
-            let entity = this.entity.scene.getEntityByName(otherLabel);
-
-            if (entity)
+            if (body.gameObject instanceof PsyanimEntity)
             {
-                this.events.emit('triggerExit', entity);
+                this.events.emit('triggerExit', body.gameObject);
             }
             else
             {
-                console.warn('Sensor detected entity which is not in scene: ' + otherLabel);
+                console.warn('Sensor detected entity which is not in scene: ' + body.label);
             }
         }
         else

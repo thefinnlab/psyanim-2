@@ -15,6 +15,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
          *      - use 'this.body.isSensor' to toggle whether this body collides with other bodies or not
          */
 
+        // TODO: everywhere you're doing these checks for object properties, use Object.hasOwn()!!!
+        // otherwise, bools and ints may get evaluated unexpectedly!
+
         // setup rendering
         const defaultShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
@@ -22,7 +25,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             width: 20, height: 20, 
             radius: 4, 
             color: 0xffff00,
-            isVisible: true
+            visible: true
         };
 
         let textureKey = null;
@@ -45,10 +48,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         
         let matterConfig = {};
 
-        matterOptions.name = (matterOptions.name) ? matterOptions.name : name;
+        matterOptions.name = Object.hasOwn(matterOptions, 'name') ? matterOptions.name : name;
         matterOptions.isSensor = (matterOptions.isSensor) ? matterOptions.isSensor : false;
         matterOptions.isSleeping = (matterOptions.isSleeping) ? matterOptions.isSleeping : false;
-        matterOptions.collisionFilter = (matterOptions.collisionFilter) 
+        matterOptions.collisionFilter = Object.hasOwn(matterOptions, 'collisionFilter') 
             ? matterOptions.collisionFilter : PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER;
 
         let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
@@ -131,7 +134,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             this.visible = false;
         }
 
-        this.isVisible = (shapeParams.isVisible) ? shapeParams.isVisible : defaultShapeParams.isVisible;
+        this.visible = (Object.hasOwn(shapeParams, 'visible')) ? shapeParams.visible : defaultShapeParams.visible;
         this.body.isSensor = matterOptions.isSensor;
         this.body.isSleeping = matterOptions.isSleeping;
 

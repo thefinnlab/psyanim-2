@@ -4,7 +4,7 @@ import PsyanimConstants from '../PsyanimConstants';
 
 export default class PsyanimScreenBoundary {
 
-    constructor(scene, x = 400, y = 300, width = 800, height = 600) {
+    constructor(scene, x = 400, y = 300, width = 800, height = 600, wrap = true) {
 
         this.scene = scene;
 
@@ -12,10 +12,7 @@ export default class PsyanimScreenBoundary {
             label: 'screen_boundary',
             isStatic: true,
             isSensor: true,
-            collisionFilter: {
-                category: PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY,
-                mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT
-            },
+            collisionFilter: PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER,
             onCollideEndCallback: (pair) => this._handleCollisionEnd(pair)
         });
 
@@ -23,6 +20,70 @@ export default class PsyanimScreenBoundary {
         this.upperYBound = y - height / 2;
         this.leftXBound = x - width / 2;
         this.rightXBound = x + width/2;
+
+        // setup collision boundaries
+        const thickness = 400;
+
+        this.topBoundary = scene.addEntity('topBoundary', width / 2, -thickness / 2, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+            width: 1.5 * width, height: 400,
+            visible: false
+        },
+        { 
+            isStatic: true, 
+            isSleeping: true,
+            collisionFilter: PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER,
+        });
+
+        this.bottomBoundary = scene.addEntity('bottomBoundary', width / 2, height + thickness / 2, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+            width: 1.5 * width, height: thickness,
+            visible: false
+        }, 
+        { 
+            isStatic: true, 
+            isSleeping: true,
+            collisionFilter: PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER,
+        });
+
+        this.leftBoundary = scene.addEntity('leftBoundary', -thickness / 2, height / 2, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+            width: thickness, height: 1.5 * height,
+            visible: false
+        }, 
+        { 
+            isStatic: true, 
+            isSleeping: true,
+            collisionFilter: PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER,
+        });
+
+        this.rightBoundary = scene.addEntity('rightBoundary', width + thickness / 2, height / 2, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+            width: thickness, height: 1.5 * height,
+            visible: false
+        }, 
+        { 
+            isStatic: true, 
+            isSleeping: true,
+            collisionFilter: PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER,
+        });
+
+        this.wrap = wrap;
+    }
+
+    get wrap() {
+
+        return this._wrap;
+    }
+
+    set wrap(value) {
+
+        this._wrap = value;
+
+        this.topBoundary.body.isSensor = this._wrap;
+        this.bottomBoundary.body.isSensor = this._wrap;
+        this.leftBoundary.body.isSensor = this._wrap;
+        this.rightBoundary.body.isSensor = this._wrap;
     }
 
     _handleCollisionEnd(pair) {
@@ -36,6 +97,14 @@ export default class PsyanimScreenBoundary {
             body = pair.bodyB;
         }
 
+        if (this._wrap)
+        {
+            this._wrapEntity(body);
+        }
+    }
+
+    _wrapEntity(body)
+    {
         if (body.position.y > this.lowerYBound)
         {
             // body passed the lower-Y boundary
