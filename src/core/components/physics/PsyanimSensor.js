@@ -90,6 +90,10 @@ export default class PsyanimSensor extends PsyanimComponent {
                 console.warn('Sensor detected entity which is not in scene: ' + otherLabel);
             }
         }
+        else
+        {
+            console.warn('Sensor::onTriggerEnter detected a collision pair that has nothing to do with this entity.');
+        }
     }
 
     _onTriggerExit(pair) {
@@ -123,6 +127,10 @@ export default class PsyanimSensor extends PsyanimComponent {
             {
                 console.warn('Sensor detected entity which is not in scene: ' + otherLabel);
             }
+        }
+        else
+        {
+            console.warn('Sensor::onTriggerExit detected a collision pair that has nothing to do with this entity.');
         }
     }
 

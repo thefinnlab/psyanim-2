@@ -271,6 +271,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         if (this._nearbyAgents.length == 0)
         {
+            this._collisionAvoidanceTarget = null;
             return new Phaser.Math.Vector2(0, 0);
         }
 

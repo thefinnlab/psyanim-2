@@ -72,6 +72,8 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
             vehicle.turnSpeed = Infinity;
             vehicle.maxSpeed = 2.0;
             vehicle.collisionRadius = 16;
+            vehicle.maxAcceleration = 0.2;
+            vehicle.sensorRadius = 500;
 
             if (i != 0)
             {
@@ -81,10 +83,6 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
             {
                 vehicle.maxSpeed = 1.5;
             }
-
-
-            vehicle.maxAcceleration = 0.2;
-            vehicle.sensorRadius = 100;
 
             let pathFollow = agent.addComponent(PsyanimPathFollow);
             pathFollow.p1 = pathStart;
