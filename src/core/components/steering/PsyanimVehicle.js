@@ -425,7 +425,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         {
             steer = this._avoidCollisions();
 
-            if (steer.length() < 0.00001)
+            if (steer.length() < 1e-3)
             {
                 steer = this._getSteering(this.target);
             }    

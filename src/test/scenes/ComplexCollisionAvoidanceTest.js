@@ -100,16 +100,36 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
             });
         }
 
-        let yellowAgent = this.agentComponents.find(c => c.agent.name == 'yellow').agent;
+        this.yellowAgentComponents = this.agentComponents.find(c => c.agent.name == 'yellow');
+
+        let yellowAgent = this.yellowAgentComponents.agent;
 
         let debugRenderer = yellowAgent.addComponent(PsyanimCollisionAvoidanceDebug);
 
         debugRenderer.vehicle = yellowAgent.getComponent(PsyanimVehicle);
+
+        this._testKeys = {
+            C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
+        };
     }
 
     update(t, dt) {
 
         super.update(t, dt);
+
+        if (Phaser.Input.Keyboard.JustDown(this._testKeys.C)) {
+
+            let yellowAgentVehicle = this.yellowAgentComponents.vehicle;
+
+            let agentInfo = "nearby agents: ";
+            
+            yellowAgentVehicle._nearbyAgents.forEach(v => {
+
+                agentInfo += v.name + ", ";
+            });
+
+            console.log(agentInfo);
+        }
 
         this.agentComponents.forEach(data => {
 
