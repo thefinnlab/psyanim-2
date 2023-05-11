@@ -7,6 +7,8 @@ Keyboard controls are also shown on main web page.
 
 ## Getting started:
 
+**0. Install Node.js with npm: `https://nodejs.org/en/download`**
+
 **1. Install dependencies with: `npm i`**
 
 **2. To run local dev server and open client in browser: `npm start`**
