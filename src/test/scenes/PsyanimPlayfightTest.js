@@ -20,37 +20,57 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         super.create();
 
-        // create player
-        this.player = this.addEntity('player', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
-            base: 16, altitude: 32, color: 0x0000ff });
-
-        this.player.addComponent(PsyanimPlayerController);
-
-        // add agents as vehicles to this scene
-        let wanderAgent = this.addEntity('wanderAgent', 0, 0, {
+        // setup wander agent 1
+        let wanderAgent1 = this.addEntity('wanderAgent1', 0, 0, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, color: 0xff0000         
         });
 
-        let wanderTarget = this.addEntity('wanderTarget', 0, 0, { isEmpty: true });
+        let wanderTarget1 = this.addEntity('wanderTarget1', 0, 0, { isEmpty: true });
 
-        this.wanderVehicle = wanderAgent.addComponent(PsyanimVehicle);
-        this.wanderVehicle.target = wanderTarget;
-        this.wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
+        this.wanderVehicle1 = wanderAgent1.addComponent(PsyanimVehicle);
+        this.wanderVehicle1.target = wanderTarget1;
+        this.wanderVehicle1.setState(PsyanimVehicle.STATE.SEEK);
 
-        this.wanderVehicle.innerDecelerationRadius = 16;
-        this.wanderVehicle.outerDecelerationRadius = 30;
+        this.wanderVehicle1.innerDecelerationRadius = 16;
+        this.wanderVehicle1.outerDecelerationRadius = 30;
 
-        this.wander = wanderAgent.addComponent(PsyanimWander);
-        this.wander.vehicle = this.wanderVehicle;
-        this.wander.target = wanderTarget;
-        this.wander.maxSpeed = 4;
+        this.wander1 = wanderAgent1.addComponent(PsyanimWander);
+        this.wander1.vehicle = this.wanderVehicle1;
+        this.wander1.target = wanderTarget1;
+        this.wander1.maxSpeed = 2;
 
-        this.playfight = wanderAgent.addComponent(PsyanimPlayfight);
-        this.playfight.vehicle = this.wanderVehicle;
-        this.playfight.wander = this.wander;
-        this.playfight.setChargeTarget(this.player);
+        this.playfight1 = wanderAgent1.addComponent(PsyanimPlayfight);
+        this.playfight1.vehicle = this.wanderVehicle1;
+        this.playfight1.wander = this.wander1;
+
+        // setup wander agent 2
+        let wanderAgent2 = this.addEntity('wanderAgent2', 0, 0, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+            base: 16, altitude: 32, color: 0x0000ff         
+        });
+
+        let wanderTarget2 = this.addEntity('wanderTarget2', 0, 0, { isEmpty: true });
+
+        this.wanderVehicle2 = wanderAgent2.addComponent(PsyanimVehicle);
+        this.wanderVehicle2.target = wanderTarget2;
+        this.wanderVehicle2.setState(PsyanimVehicle.STATE.SEEK);
+
+        this.wanderVehicle2.innerDecelerationRadius = 16;
+        this.wanderVehicle2.outerDecelerationRadius = 30;
+
+        this.wander2 = wanderAgent2.addComponent(PsyanimWander);
+        this.wander2.vehicle = this.wanderVehicle2;
+        this.wander2.target = wanderTarget2;
+        this.wander2.maxSpeed = 2;
+
+        this.playfight2 = wanderAgent2.addComponent(PsyanimPlayfight);
+        this.playfight2.vehicle = this.wanderVehicle2;
+        this.playfight2.wander = this.wander2;
+
+        // setup charge targets for each playfight component
+        this.playfight1.setChargeTarget(wanderAgent2);
+        this.playfight2.setChargeTarget(wanderAgent1);
 
         // setup inputs
         this._testKeys = {
@@ -58,6 +78,10 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
             V: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
             ZERO: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
         }
+
+        // TODO: for the screen boundary wrapping to look good, 
+        // we need the wander behavior to avoid the screen boundaries...
+        // this.screenBoundary.wrap = false;
     }
 
     update(t, dt) {

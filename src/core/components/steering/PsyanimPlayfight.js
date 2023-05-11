@@ -12,7 +12,7 @@ export default class PsyanimPlayfight extends PsyanimComponent {
         CHARGING: 0x0002
     }
 
-    breakDuration = 2000;
+    breakDuration = 1500;
 
     vehicle = null;
     wander = null;
