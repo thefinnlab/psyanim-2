@@ -303,6 +303,9 @@ export default class PsyanimVehicle extends PsyanimComponent {
      *  So, when using this behavior, it is advisable to have the target remain outside the panic 
      *  radius of this entity or otherwise be actively pursuing the entity.
      * 
+     *  It's also better to keep the panic distance radius smaller (maybe < 2-4 times the vehicle
+     *  size) to avoid the situation where the target is sitting still inside the panic radius.
+     * 
      * @param {*} target 
      * @returns 
      */
