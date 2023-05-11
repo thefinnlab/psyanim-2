@@ -7,11 +7,11 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
-export default class FleeTest extends PsyanimScene {
+export default class AdvancedFleeTest extends PsyanimScene {
 
     constructor() {
 
-        super('Flee Test');
+        super('Advanced Flee Test');
     }
 
     create() {
@@ -51,5 +51,7 @@ export default class FleeTest extends PsyanimScene {
         vehicle2.setState(PsyanimVehicle.STATE.FLEE);
         vehicle2.maxSpeed = 3;
         vehicle2.nSamplesForLookSmoothing = 10;
+
+        this.screenBoundary.wrap = false;
     }
 }

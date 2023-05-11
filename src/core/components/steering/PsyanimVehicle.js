@@ -230,6 +230,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return acceleration;
     }
 
+    _advancedFlee(target) {
+
+        
+    }
+
     _evade(target) {
 
         let targetPosition = target.position;
