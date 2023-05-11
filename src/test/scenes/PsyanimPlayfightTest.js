@@ -34,18 +34,29 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         let wanderTarget = this.addEntity('wanderTarget', 0, 0, { isEmpty: true });
 
-        let wanderVehicle = wanderAgent.addComponent(PsyanimVehicle);
-        wanderVehicle.target = wanderTarget;
-        wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
+        this.wanderVehicle = wanderAgent.addComponent(PsyanimVehicle);
+        this.wanderVehicle.target = wanderTarget;
+        this.wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
 
-        let wander = wanderAgent.addComponent(PsyanimWander);
-        wander.vehicle = wanderVehicle;
-        wander.target = wanderTarget;
-        wander.maxSpeed = 4;
+        this.wander = wanderAgent.addComponent(PsyanimWander);
+        this.wander.vehicle = this.wanderVehicle;
+        this.wander.target = wanderTarget;
+        this.wander.maxSpeed = 4;
+
+        // setup inputs
+        this._testKeys = {
+            ZERO: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
+        }
     }
 
     update(t, dt) {
 
         super.update(t, dt);
+
+        if (Phaser.Input.Keyboard.JustDown(this._testKeys.ZERO))
+        {
+            this.wander.enabled = !this.wander.enabled;
+            this.wanderVehicle.enabled = !this.wanderVehicle.enabled;
+        }
     }
 }

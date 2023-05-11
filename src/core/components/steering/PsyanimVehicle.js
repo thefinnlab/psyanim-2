@@ -66,6 +66,12 @@ export default class PsyanimVehicle extends PsyanimComponent {
         this.setState(PsyanimVehicle.STATE.IDLE);
     }
 
+    onDisable() {
+
+        this.entity.setVelocity(0, 0);
+        this.entity.body.force = { x: 0, y: 0 };
+    }
+
     setAdvancedFleeSearchDirection(clockwise) {
 
         const counterClockwiseAngles = [
