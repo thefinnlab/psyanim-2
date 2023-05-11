@@ -52,32 +52,11 @@ export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
         this.playfight.wander = this.wander;
         this.playfight.setChargeTarget(this.player);
 
-        // setup inputs
-        this._testKeys = {
-            C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
-            V: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
-            ZERO: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
-        }
-
         // this.screenBoundary.wrap = false;
     }
 
     update(t, dt) {
 
         super.update(t, dt);
-
-        if (Phaser.Input.Keyboard.JustDown(this._testKeys.ZERO))
-        {
-            this.wander.enabled = !this.wander.enabled;
-            this.wanderVehicle.enabled = !this.wanderVehicle.enabled;
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this._testKeys.C))
-        {
-            this.playfight.setState(PsyanimPlayfight.STATE.CHARGING);
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this._testKeys.V))
-        {
-            this.playfight.setState(PsyanimPlayfight.STATE.WANDERING);
-        }
     }
 }
