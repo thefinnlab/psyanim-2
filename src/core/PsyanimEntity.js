@@ -133,8 +133,12 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             this.body.isSensor = true;
             this.visible = false;
         }
+        else
+        {
+            this.visible = Object.hasOwn(shapeParams, 'visible') ? shapeParams.visible : defaultShapeParams.visible;
+        }
 
-        this.visible = (Object.hasOwn(shapeParams, 'visible')) ? shapeParams.visible : defaultShapeParams.visible;
+        // TODO: should this be placed in the previous 'else' block above?
         this.body.isSensor = matterOptions.isSensor;
         this.body.isSleeping = matterOptions.isSleeping;
 
