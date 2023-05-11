@@ -56,7 +56,7 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle2.target = wanderTarget2;
         this.wanderVehicle2.setState(PsyanimVehicle.STATE.SEEK);
 
-        this.wanderVehicle2.innerDecelerationRadius = 16;
+        this.wanderVehicle2.innerDecelerationRadius = 12;
         this.wanderVehicle2.outerDecelerationRadius = 30;
 
         this.wander2 = wanderAgent2.addComponent(PsyanimWander);
