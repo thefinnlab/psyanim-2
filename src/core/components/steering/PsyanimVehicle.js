@@ -300,6 +300,9 @@ export default class PsyanimVehicle extends PsyanimComponent {
      *  actively pursuing this entity any time it is within the panic distance when there are 
      *  obstacles also blocking potential flee directions.
      * 
+     *  So, when using this behavior, it is advisable to have the target remain outside the panic 
+     *  radius of this entity or otherwise be actively pursuing the entity.
+     * 
      * @param {*} target 
      * @returns 
      */
