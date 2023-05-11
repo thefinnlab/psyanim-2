@@ -40,7 +40,9 @@ export default class RayCastTest extends PsyanimScene {
 
         this.screenBoundary.wrap = false;
 
-        this.bodies = [this.box.body];
+        this.bodies = [this.box.body, 
+            this.screenBoundary.topBoundary.body, this.screenBoundary.bottomBoundary.body, 
+            this.screenBoundary.leftBoundary.body, this.screenBoundary.rightBoundary.body];
     }
 
     update(t, dt) {
@@ -50,7 +52,7 @@ export default class RayCastTest extends PsyanimScene {
         let start = { x: this.player.x, y: this.player.y };
 
         let forward = this.player.forward;
-        let endPositionRelative = forward.setLength(1000);
+        let endPositionRelative = forward.setLength(100);
 
         let endPositionVector = this.player.position.add(endPositionRelative);
 
