@@ -61,7 +61,28 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         this._advancedFleeDirection = this.entity.position;
 
+        this.setAdvancedFleeSearchDirection(true);
+
         this.setState(PsyanimVehicle.STATE.IDLE);
+    }
+
+    setAdvancedFleeSearchDirection(clockwise) {
+
+        const counterClockwiseAngles = [
+            0, Math.PI / 4, Math.PI / 2, Math.PI * 3 / 4,
+            -Math.PI * 3 / 4, -Math.PI / 2, -Math.PI / 4
+        ];
+
+        const clockwiseAngles = [
+            0, -Math.PI / 4, -Math.PI / 2, -Math.PI * 3 / 4,
+            Math.PI * 3 / 4, Math.PI / 2, Math.PI / 4
+        ];
+
+        this.anglesToCheck = (clockwise) ? clockwiseAngles : counterClockwiseAngles;
+    }
+
+    setAvailableAngles() {
+
     }
 
     enableCollisionAvoidance() {
@@ -267,6 +288,21 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return false;
     }
 
+    /**
+     * 
+     *  Advanced Flee is essentially Flee blended with some basic obstacle avoidance.
+     * 
+     *  Advanced Flee will attempt to do some simple obstacle avoidance by picking a flee direction
+     *  that's not along the path from the target to this entity, but also not in the direction of
+     *  nearby obstacles (like the world screen boundary).
+     * 
+     *  A fundamental limitation of the algorithm here, however, is that the target must either be
+     *  actively pursuing this entity any time it is within the panic distance when there are 
+     *  obstacles also blocking potential flee directions.
+     * 
+     * @param {*} target 
+     * @returns 
+     */
     _advancedFlee(target) {
 
         let targetPosition = target.position;
@@ -285,12 +321,9 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         const distance = 100;
 
-        const anglesToCheck = [0, Math.PI / 4, -Math.PI / 4,
-            Math.PI / 2, -Math.PI / 2, Math.PI / 3, -Math.PI / 3];
-
-        for (let i = 0; i < anglesToCheck.length; ++i)
+        for (let i = 0; i < this.anglesToCheck.length; ++i)
         {
-            let newAngle = desiredVelocityAngle + anglesToCheck[i];
+            let newAngle = desiredVelocityAngle + this.anglesToCheck[i];
 
             let newVelocityDirection = desiredVelocityDirection
                 .clone()
