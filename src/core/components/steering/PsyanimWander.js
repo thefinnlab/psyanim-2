@@ -50,6 +50,15 @@ export default class PsyanimWander extends PsyanimComponent {
         }
     }
 
+    onEnable() {
+
+        this.vehicle.enabled = true;
+
+        this.vehicle.maxSpeed = 4;
+        this.vehicle.target = this.target;
+        this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
+    }
+
     _setupDebugGraphics() {
 
         this.graphics = this.entity.scene.add.graphics({ 

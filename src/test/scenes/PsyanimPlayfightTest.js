@@ -7,6 +7,7 @@ import PsyanimPlayerController from '../../core/components/controllers/PsyanimPl
 
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimWander from '../../core/components/steering/PsyanimWander';
+import PsyanimPlayfight from '../../core/components/steering/PsyanimPlayfight';
 
 export default class PsyanimPlayfightTest extends PsyanimScene {
 
@@ -38,13 +39,23 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle.target = wanderTarget;
         this.wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
 
+        this.wanderVehicle.innerDecelerationRadius = 16;
+        this.wanderVehicle.outerDecelerationRadius = 30;
+
         this.wander = wanderAgent.addComponent(PsyanimWander);
         this.wander.vehicle = this.wanderVehicle;
         this.wander.target = wanderTarget;
         this.wander.maxSpeed = 4;
 
+        this.playfight = wanderAgent.addComponent(PsyanimPlayfight);
+        this.playfight.vehicle = this.wanderVehicle;
+        this.playfight.wander = this.wander;
+        this.playfight.setChargeTarget(this.player);
+
         // setup inputs
         this._testKeys = {
+            C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
+            V: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
             ZERO: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
         }
     }
@@ -57,6 +68,14 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         {
             this.wander.enabled = !this.wander.enabled;
             this.wanderVehicle.enabled = !this.wanderVehicle.enabled;
+        }
+        else if (Phaser.Input.Keyboard.JustDown(this._testKeys.C))
+        {
+            this.playfight.setState(PsyanimPlayfight.STATE.CHARGING);
+        }
+        else if (Phaser.Input.Keyboard.JustDown(this._testKeys.V))
+        {
+            this.playfight.setState(PsyanimPlayfight.STATE.WANDERING);
         }
     }
 }
