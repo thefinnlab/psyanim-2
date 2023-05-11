@@ -6,6 +6,9 @@ import PsyanimVehicle from './PsyanimVehicle';
 
 export default class PsyanimWander extends PsyanimComponent {
 
+    vehicle = null;
+    target = null;
+
     maxSpeed = 3;
 
     radius = 50;
@@ -18,21 +21,6 @@ export default class PsyanimWander extends PsyanimComponent {
         super(entity);
 
         this._debug = false;
-
-        this.vehicle = this.entity.getComponent(PsyanimVehicle);
-
-        if (!this.vehicle)
-        {
-            console.log("No PsyaimVehicle component found... PsyanimWander adding PsyaimVehicle to this entity");
-            this.vehicle = this.entity.addComponent(PsyanimVehicle);
-        }
-
-        this.target = entity.scene.addEntity(this.entity.name + 'wanderTarget', 0, 0, {
-            isEmpty: true
-        });
-
-        this.vehicle.target = this.target;
-        this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
 
         this._angle = 270;
         this._targetVector = null;
@@ -124,9 +112,6 @@ export default class PsyanimWander extends PsyanimComponent {
     update(t, dt) {
 
         super.update(t, dt);
-
-        // update component params
-        this.vehicle.maxSpeed = this.maxSpeed;
 
         // compute angle change
         this._angle += (Math.random() * 2 - 1) * this.maxAngleChangePerFrame;

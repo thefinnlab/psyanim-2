@@ -67,14 +67,14 @@ export default class RayCastTest extends PsyanimScene {
                 console.log("raycast hit gameobject named: " + c.bodyA.gameObject.name);
                 c.bodyA.gameObject.setTint(0xff0000);
             });
-
-            this.bodies.forEach(body => {
-
-                if (!collisions || !collisions.find(c => c.bodyA.gameObject.name == body.gameObject.name))
-                {
-                    body.gameObject.setTint(0xffff00);
-                }
-            });
         }
+
+        this.bodies.forEach(body => {
+
+            if (!collisions || !collisions.find(c => c.bodyA.gameObject.name == body.gameObject.name))
+            {
+                body.gameObject.setTint(0xffff00);
+            }
+        });
     }
 }

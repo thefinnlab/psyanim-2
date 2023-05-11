@@ -22,7 +22,15 @@ export default class EvadeTest extends PsyanimScene {
             base: 16, altitude: 32, color: 0xff0000         
         });
 
+        let wanderTarget = this.addEntity('wanderTarget', 0, 0, { isEmpty: true });
+
+        let wanderVehicle = wanderAgent.addComponent(PsyanimVehicle);
+        wanderVehicle.target = wanderTarget;
+        wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
+
         let wander = wanderAgent.addComponent(PsyanimWander);
+        wander.vehicle = wanderVehicle;
+        wander.target = wanderTarget;
         wander.maxSpeed = 4;
 
         let evadeAgent = this.addEntity('evadeAgent', 600, 450, {
