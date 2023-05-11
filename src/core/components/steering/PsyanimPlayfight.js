@@ -15,6 +15,6 @@ export default class PsyanimPlayfight extends PsyanimComponent {
 
     update(t, dt) {
 
-
+        super.update(t, dt);
     }
 }

@@ -11,6 +11,7 @@ import SimpleCollisionAvoidanceTest from './scenes/SimpleCollisionAvoidanceTest'
 import ComplexCollisionAvoidanceTest from './scenes/ComplexCollisionAvoidanceTest';
 import RayCastTest from './scenes/RayCastTest';
 import AdvancedFleeTest from './scenes/AdvancedFleeTest';
+import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
@@ -24,7 +25,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [AdvancedFleeTest, RayCastTest, SimpleCollisionAvoidanceTest, ComplexCollisionAvoidanceTest, EvadeTest, PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
+            scene: [PsyanimPlayfightTest, AdvancedFleeTest, RayCastTest, SimpleCollisionAvoidanceTest, ComplexCollisionAvoidanceTest, EvadeTest, PathFollowTest, SensorTest, WanderTest, ArriveTest, SeekTest, FleeTest, DebugGraphicsTest],
             physics: {
                 default: 'matter',
                 matter: {
