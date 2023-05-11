@@ -60,7 +60,7 @@ export default class RayCastTest extends PsyanimScene {
 
         let collisions = this.matter.query.ray(this.bodies, start, end);
 
-        if (collisions)
+        if (collisions && collisions.length != 0)
         {
             collisions.forEach(c => {
 

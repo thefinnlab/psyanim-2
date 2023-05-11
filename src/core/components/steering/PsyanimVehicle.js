@@ -12,10 +12,10 @@ export default class PsyanimVehicle extends PsyanimComponent {
         IDLE: 0x0001,
         SEEK: 0x0002,
         FLEE: 0x0004,
-        EVADE: 0x0008,
-        ARRIVE: 0x0010,
-        WANDER: 0x0020
-        // 0x0040
+        ADVANCED_FLEE: 0x0008,
+        EVADE: 0x0010,
+        ARRIVE: 0x0020,
+        WANDER: 0x0040
     };
 
     state = PsyanimVehicle.STATE.IDLE;
@@ -51,6 +51,15 @@ export default class PsyanimVehicle extends PsyanimComponent {
         this._collisionAvoidanceTarget = null;
 
         this._nearbyAgents = [];
+
+        this._advancedFleeRaycastBodies = [
+            this.entity.scene.screenBoundary.topBoundary.body, 
+            this.entity.scene.screenBoundary.bottomBoundary.body, 
+            this.entity.scene.screenBoundary.leftBoundary.body, 
+            this.entity.scene.screenBoundary.rightBoundary.body
+        ];
+
+        this._advancedFleeDirection = this.entity.position;
 
         this.setState(PsyanimVehicle.STATE.IDLE);
     }
@@ -114,6 +123,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
             case PsyanimVehicle.STATE.FLEE:
 
                 this._getSteering = this._flee;
+                break;
+
+            case PsyanimVehicle.STATE.ADVANCED_FLEE:
+
+                this._getSteering = this._advancedFlee;
                 break;
 
             case PsyanimVehicle.STATE.EVADE:
@@ -230,9 +244,84 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return acceleration;
     }
 
+    _isPathBlocked(directionVector, distance = 100) {
+
+        let start = { x: this.entity.x, y: this.entity.y };
+
+        let endPositionRelative = directionVector.clone()
+            .setLength(distance);
+
+        let endVector = this.entity.position.add(endPositionRelative);
+
+        let end = { x: endVector.x, y: endVector.y };
+
+        let collisions = this.entity.scene.matter.query.ray(
+            this._advancedFleeRaycastBodies, start, end
+        );
+
+        if (collisions && collisions.length != 0)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     _advancedFlee(target) {
 
-        
+        let targetPosition = target.position;
+        let distanceToTarget = this.entity.position.subtract(targetPosition).length();
+
+        if (distanceToTarget > this.panicDistance)
+        {
+            return new Phaser.Math.Vector2(0, 0);
+        }
+
+        let desiredVelocityDirection = this.entity.position.clone()
+            .subtract(targetPosition)
+            .normalize();
+
+        let desiredVelocityAngle = desiredVelocityDirection.angle();
+
+        const distance = 100;
+
+        const anglesToCheck = [0, Math.PI / 4, -Math.PI / 4,
+            Math.PI / 2, -Math.PI / 2, Math.PI / 3, -Math.PI / 3];
+
+        for (let i = 0; i < anglesToCheck.length; ++i)
+        {
+            let newAngle = desiredVelocityAngle + anglesToCheck[i];
+
+            let newVelocityDirection = desiredVelocityDirection
+                .clone()
+                .setAngle(newAngle);
+
+            if (!this._isPathBlocked(newVelocityDirection))
+            {
+                desiredVelocityDirection = newVelocityDirection;
+                break;
+            }
+        }
+
+        this._advancedFleeDirection = desiredVelocityDirection.clone()
+            .setLength(distance);
+
+        let desiredVelocity = desiredVelocityDirection.clone()
+            .setLength(this.maxSpeed);
+
+        let currentVelocityXY = this.entity.getVelocity();
+
+        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
+
+        let acceleration = desiredVelocity.clone();
+        acceleration.subtract(currentVelocity);
+
+        if (acceleration.length() > this.maxAcceleration)
+        {
+            acceleration.setLength(this.maxAcceleration);
+        }
+
+        return acceleration;
     }
 
     _evade(target) {
