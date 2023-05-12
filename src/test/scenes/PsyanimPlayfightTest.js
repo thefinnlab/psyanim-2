@@ -20,10 +20,12 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         super.create();
 
+        let circleAgentRadius = 12;
+
         // setup wander agent 1
-        let wanderAgent1 = this.addEntity('wanderAgent1', 0, 0, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, color: 0xff0000         
+        let wanderAgent1 = this.addEntity('wanderAgent1', 500, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+            base: 16, altitude: 32, radius: circleAgentRadius, color: 0xff0000         
         });
 
         let wanderTarget1 = this.addEntity('wanderTarget1', 0, 0, { isEmpty: true });
@@ -32,7 +34,7 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle1.target = wanderTarget1;
         this.wanderVehicle1.setState(PsyanimVehicle.STATE.SEEK);
 
-        this.wanderVehicle1.innerDecelerationRadius = 16;
+        this.wanderVehicle1.innerDecelerationRadius = circleAgentRadius;
         this.wanderVehicle1.outerDecelerationRadius = 30;
 
         this.wander1 = wanderAgent1.addComponent(PsyanimWander);
@@ -45,9 +47,9 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.playfight1.wander = this.wander1;
 
         // setup wander agent 2
-        let wanderAgent2 = this.addEntity('wanderAgent2', 0, 0, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, color: 0x0000ff         
+        let wanderAgent2 = this.addEntity('wanderAgent2', 300, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+            base: 16, altitude: 32, radius: circleAgentRadius, color: 0x0000ff         
         });
 
         let wanderTarget2 = this.addEntity('wanderTarget2', 0, 0, { isEmpty: true });
@@ -81,7 +83,7 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         // TODO: for the screen boundary wrapping to look good, 
         // we need the wander behavior to avoid the screen boundaries...
-        // this.screenBoundary.wrap = false;
+        this.screenBoundary.wrap = false;
     }
 
     update(t, dt) {
