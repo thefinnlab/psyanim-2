@@ -21,6 +21,8 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         super.create();
 
         let circleAgentRadius = 12;
+        let outerDecelerationRadius = 30;
+        let panicDistance = 30;
 
         // setup wander agent 1
         let wanderAgent1 = this.addEntity('wanderAgent1', 500, 300, {
@@ -35,12 +37,12 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle1.setState(PsyanimVehicle.STATE.SEEK);
 
         this.wanderVehicle1.innerDecelerationRadius = circleAgentRadius;
-        this.wanderVehicle1.outerDecelerationRadius = 30;
+        this.wanderVehicle1.outerDecelerationRadius = outerDecelerationRadius;
+        this.wanderVehicle1.panicDistance = panicDistance;
 
         this.wander1 = wanderAgent1.addComponent(PsyanimWander);
         this.wander1.vehicle = this.wanderVehicle1;
         this.wander1.target = wanderTarget1;
-        this.wander1.maxSpeed = 2;
 
         this.playfight1 = wanderAgent1.addComponent(PsyanimPlayfight);
         this.playfight1.vehicle = this.wanderVehicle1;
@@ -58,13 +60,13 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle2.target = wanderTarget2;
         this.wanderVehicle2.setState(PsyanimVehicle.STATE.SEEK);
 
-        this.wanderVehicle2.innerDecelerationRadius = 12;
-        this.wanderVehicle2.outerDecelerationRadius = 30;
+        this.wanderVehicle2.innerDecelerationRadius = circleAgentRadius;
+        this.wanderVehicle2.outerDecelerationRadius = outerDecelerationRadius;
+        this.wanderVehicle2.panicDistance = panicDistance;
 
         this.wander2 = wanderAgent2.addComponent(PsyanimWander);
         this.wander2.vehicle = this.wanderVehicle2;
         this.wander2.target = wanderTarget2;
-        this.wander2.maxSpeed = 2;
 
         this.playfight2 = wanderAgent2.addComponent(PsyanimPlayfight);
         this.playfight2.vehicle = this.wanderVehicle2;

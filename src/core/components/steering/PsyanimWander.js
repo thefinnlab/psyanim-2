@@ -9,8 +9,6 @@ export default class PsyanimWander extends PsyanimComponent {
     vehicle = null;
     target = null;
 
-    maxSpeed = 3;
-
     radius = 50;
     offset = 150;
 

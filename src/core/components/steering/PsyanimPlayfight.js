@@ -15,6 +15,15 @@ export default class PsyanimPlayfight extends PsyanimComponent {
 
     breakDuration = 1500;
 
+    maxChargeSpeed = 8;
+    maxChargeAcceleration = 0.4;
+
+    maxWanderSpeed = 2;
+    maxWanderAcceleration = 0.2;
+
+    maxFleeSpeed = 4;
+    maxFleeAcceleration = 0.4;
+
     vehicle = null;
     wander = null;
 
@@ -55,7 +64,9 @@ export default class PsyanimPlayfight extends PsyanimComponent {
                 this.wander.enabled = false;
 
                 this.vehicle.target = this._chargeTarget;
-                this.vehicle.maxSpeed = 8;
+                this.vehicle.maxSpeed = this.maxChargeSpeed;
+                this.vehicle.maxAcceleration = this.maxChargeAcceleration;
+
                 this.vehicle.setState(PsyanimVehicle.STATE.ARRIVE);
 
                 break;
@@ -63,6 +74,9 @@ export default class PsyanimPlayfight extends PsyanimComponent {
             case PsyanimPlayfight.STATE.WANDERING:
 
                 this.wander.enabled = true;
+
+                this.wander.maxSpeed = this.maxWanderSpeed;
+                this.vehicle.maxAcceleration = this.maxWanderAcceleration;
 
                 this._wanderTimer = 0;
 
@@ -73,8 +87,8 @@ export default class PsyanimPlayfight extends PsyanimComponent {
                 this.wander.enabled = false;
 
                 this.vehicle.target = this._chargeTarget;
-                this.vehicle.maxSpeed = 4;
-                this.vehicle.panicDistance = 100;
+                this.vehicle.maxSpeed = this.maxFleeSpeed;
+                this.vehicle.maxAcceleration = this.maxFleeAcceleration;
 
                 this.vehicle.setState(PsyanimVehicle.STATE.ADVANCED_FLEE);
 
