@@ -15,7 +15,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
         ADVANCED_FLEE: 0x0008,
         EVADE: 0x0010,
         ARRIVE: 0x0020,
-        WANDER: 0x0040
+        WANDER: 0x0040,
+        CHARGE: 0x0080
     };
 
     state = PsyanimVehicle.STATE.IDLE;
@@ -166,6 +167,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
                 this._getSteering = this._arrive;
                 break;
+
+            case PsyanimVehicle.STATE.CHARGE:
+
+                this._getSteering = this._charge;
+                break;
         }
     }
 
@@ -216,6 +222,12 @@ export default class PsyanimVehicle extends PsyanimComponent {
                 this.entity.setAngle(lerpedAngle);                    
             }
         }
+    }
+
+    _charge(target) {
+
+        return target.position.subtract(this.entity.position)
+            .setLength(this.maxAcceleration);
     }
 
     _seek(target) {
