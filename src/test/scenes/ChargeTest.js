@@ -76,12 +76,23 @@ export default class ChargeTest extends PsyanimScene {
 
         this.vehicle1 = this.agent1.addComponent(PsyanimVehicle);
 
-        this.vehicle1.chargeDuration = 2.35;
+        this.vehicle1.chargeDuration = 1.2;
+
+        // give it some initial velocity proportional to the distance so it's not so sluggish starting out... 
+        // for starters, maybe we do a fraction of the average velocity as the initial velocity... 
+        let v0 = this.target.position
+            .subtract(this.agent1.position)
+            .scale(1 / (this.vehicle1.chargeDuration * 1000)) // avg velocity in px/ms
+            .scale(16.666); // convert to px/step
+        
+        v0.scale(0.05); // take a fraction of avg. velocity as v0
+
+        this.vehicle1.entity.setVelocity(v0.x, v0.y);
 
         this.vehicle1.maxSpeed = 100;
 
         this.vehicle1.innerDecelerationRadius = 10;
-        this.vehicle1.outerDecelerationRadius = 30;
+        this.vehicle1.outerDecelerationRadius = 300;
 
         this.vehicle1.setTarget(this.target);
 
@@ -122,7 +133,7 @@ export default class ChargeTest extends PsyanimScene {
             .subtract(this.agent1.position)
             .length();
 
-        if (this._running && distanceToTarget < 15)
+        if (this._running && distanceToTarget < 20)
         {
             console.log("reached target in " + (this._timer / 1000) + " seconds!");
 
