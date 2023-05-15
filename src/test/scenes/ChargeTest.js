@@ -63,9 +63,6 @@ export default class ChargeTest extends PsyanimScene {
             .subtract(this.agent1.position)
             .scale((2 / (t_ms * t_ms)));
 
-        // initialize the velocity to zero
-        this.currentVelocity = new Phaser.Math.Vector2(0, 0);
-
         this.isConstantAcceleration = true;
 
         // need to set friction to zero for this!
