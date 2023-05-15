@@ -25,8 +25,8 @@ export default class ChargeTest extends PsyanimScene {
         });
 
         this.agent1 = this.addEntity('agent1', 50, 50, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 4, color: 0x00ff00
+            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+            base: 12, altitude: 20, color: 0x00ff00
         });
 
         // this._initConstantVelocity();
@@ -89,6 +89,7 @@ export default class ChargeTest extends PsyanimScene {
 
         this.vehicle1.entity.setVelocity(v0.x, v0.y);
 
+        // leave the max speed unconstrained (large value)
         this.vehicle1.maxSpeed = 100;
 
         this.vehicle1.innerDecelerationRadius = 10;
@@ -144,10 +145,6 @@ export default class ChargeTest extends PsyanimScene {
             else if (this.isConstantVelocity)
             {
                 this.agent1.setVelocity(0, 0);
-            }
-            else
-            {
-                // this.vehicle1.setState(PsyanimVehicle.STATE.IDLE);
             }
 
             this._running = false;
