@@ -30,7 +30,8 @@ export default class ChargeTest extends PsyanimScene {
         });
 
         // this._initConstantVelocity();
-        this._initConstantAcceleration();
+        // this._initConstantAcceleration();
+        this._initVehicle()
         
         this._timer = 0;
         this._running = true;
@@ -75,18 +76,12 @@ export default class ChargeTest extends PsyanimScene {
 
         this.vehicle1 = this.agent1.addComponent(PsyanimVehicle);
 
-        let t_seconds = 2.0;
-
-        let t = t_seconds * 1000 / 16.666;
+        this.vehicle1.chargeDuration = 2.35;
 
         this.vehicle1.maxSpeed = 100;
 
-        this.vehicle1.maxAcceleration = (2 / (t * t)) * 
-            this.target.position
-                .subtract(this.agent1.position)
-                .length();
+        this.vehicle1.setTarget(this.target);
 
-        this.vehicle1.target = this.target;
         this.vehicle1.setState(PsyanimVehicle.STATE.CHARGE);
     }
 
@@ -105,19 +100,6 @@ export default class ChargeTest extends PsyanimScene {
             newVelocity.scale(16.666);
 
             this.agent1.setVelocity(newVelocity.x, newVelocity.y);
-
-
-
-            // the following is an example of how to compute updated positions by hand for comparison:
-
-            // let currentPosition = this.agent1.position;
-
-            // let dx = this.constantVelocity.clone().scale(dt);
-
-            // let newPosition = currentPosition
-            //     .add(dx);
-
-            // this.agent1.position = newPosition;
         }
         else if (this._running && this.isConstantAcceleration)
         {
@@ -151,9 +133,7 @@ export default class ChargeTest extends PsyanimScene {
             }
             else
             {
-                this.vehicle1.entity.body.isSleeping = true;
-                this.vehicle1.maxAcceleration = 0;
-                this.vehicle1.entity.setVelocity(0, 0);                    
+                this.vehicle1.setState(PsyanimVehicle.STATE.IDLE);
             }
 
             this._running = false;

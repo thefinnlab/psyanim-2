@@ -41,6 +41,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     sensorRadius = 75;
 
+    chargeDuration = 2.0;
+
     constructor(entity) {
 
         super(entity);
@@ -140,39 +142,104 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
             case PsyanimVehicle.STATE.IDLE:
 
+                this.useAcceleration = false;
+
+                this.entity.body.friction = 0.1;
+                this.entity.body.frictionAir = 0.01;
+                this.entity.body.frictionStatic = 0.5;
+
+                this.entity.setVelocity(0, 0);
+
                 this._getSteering = (target) => new Phaser.Math.Vector2(0, 0);
                 break;
 
             case PsyanimVehicle.STATE.SEEK:
+
+                this.useAcceleration = false;
+
+                this.entity.body.friction = 0.1;
+                this.entity.body.frictionAir = 0.01;
+                this.entity.body.frictionStatic = 0.5;
 
                 this._getSteering = this._seek;
                 break;
 
             case PsyanimVehicle.STATE.FLEE:
 
+                this.useAcceleration = false;
+
+                this.entity.body.friction = 0.1;
+                this.entity.body.frictionAir = 0.01;
+                this.entity.body.frictionStatic = 0.5;
+
                 this._getSteering = this._flee;
                 break;
 
             case PsyanimVehicle.STATE.ADVANCED_FLEE:
+
+                this.useAcceleration = false;
+
+                this.entity.body.friction = 0.1;
+                this.entity.body.frictionAir = 0.01;
+                this.entity.body.frictionStatic = 0.5;
 
                 this._getSteering = this._advancedFlee;
                 break;
 
             case PsyanimVehicle.STATE.EVADE:
 
+                this.useAcceleration = false;
+
+                this.entity.body.friction = 0.1;
+                this.entity.body.frictionAir = 0.01;
+                this.entity.body.frictionStatic = 0.5;
+
                 this._getSteering = this._evade;
                 break;
 
             case PsyanimVehicle.STATE.ARRIVE:
+
+                this.useAcceleration = false;
+
+                this.entity.body.friction = 0.1;
+                this.entity.body.frictionAir = 0.01;
+                this.entity.body.frictionStatic = 0.5;
 
                 this._getSteering = this._arrive;
                 break;
 
             case PsyanimVehicle.STATE.CHARGE:
 
+                this.useAcceleration = true;
+
+                this.entity.body.friction = 0;
+                this.entity.body.frictionAir = 0;
+                this.entity.body.frictionStatic = 0;
+
+                this._computeChargeAcceleration();
+
                 this._getSteering = this._charge;
                 break;
         }
+    }
+
+    setTarget(newTarget) {
+
+        this.target = newTarget;
+
+        if (this.state == PsyanimVehicle.STATE.CHARGE)
+        {
+            this._computeChargeAcceleration();
+        }
+    }
+
+    _computeChargeAcceleration() {
+
+        let t_ms = 1000 * this.chargeDuration;
+
+        this._chargeAcceleration = this.target.position
+            .subtract(this.entity.position)
+            .scale(2 / (t_ms * t_ms));
     }
 
     _lookWhereYoureGoing() {
@@ -226,8 +293,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _charge(target) {
 
-        return target.position.subtract(this.entity.position)
-            .setLength(this.maxAcceleration);
+        return this._chargeAcceleration;
     }
 
     _seek(target) {
@@ -587,7 +653,20 @@ export default class PsyanimVehicle extends PsyanimComponent {
             steer = this._getSteering(this.target);
         }
 
-        this.entity.applyForce(steer);
+        if (this.useAcceleration)
+        {
+            let dv = steer.clone().scale(dt);
+
+            let newVelocity = this.entity.velocity.scale(1/16.666)
+                .add(dv)
+                .scale(16.666);
+
+            this.entity.setVelocity(newVelocity.x, newVelocity.y);
+        }
+        else
+        {
+            this.entity.applyForce(steer);
+        }
 
         this._lookWhereYoureGoing();
     }
