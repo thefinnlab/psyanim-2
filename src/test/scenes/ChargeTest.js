@@ -29,8 +29,8 @@ export default class ChargeTest extends PsyanimScene {
             radius: 4, color: 0x00ff00
         });
 
-        this._initConstantVelocity();
-        // this._initConstantAcceleration();
+        // this._initConstantVelocity();
+        this._initConstantAcceleration();
         
         this._timer = 0;
         this._running = true;
@@ -45,6 +45,7 @@ export default class ChargeTest extends PsyanimScene {
             .subtract(this.agent1.position)
             .length() / t_ms;
 
+        // note that this is 'px / ms'
         this.constantVelocity = this.target.position
             .subtract(this.agent1.position)
             .setLength(constantSpeed);
@@ -54,13 +55,15 @@ export default class ChargeTest extends PsyanimScene {
 
     _initConstantAcceleration() {
 
-        let t_seconds = 2.2;
+        let t_seconds = 2.35;
         let t_ms = 1000 * t_seconds;
 
+        // note that this is 'px / ms^2'
         this.constantAcceleration = this.target.position
             .subtract(this.agent1.position)
             .scale((2 / (t_ms * t_ms)));
 
+        // initialize the velocity to zero
         this.currentVelocity = new Phaser.Math.Vector2(0, 0);
 
         this.isConstantAcceleration = true;
@@ -115,7 +118,7 @@ export default class ChargeTest extends PsyanimScene {
 
             this.agent1.setVelocity(newVelocity.x, newVelocity.y);
 
-            // the following is an example of how to compute updated positions by hand:
+            // the following is an example of how to compute updated positions by hand for comparison:
 
             // let currentPosition = this.agent1.position;
 
@@ -128,24 +131,36 @@ export default class ChargeTest extends PsyanimScene {
         }
         else if (this._running && this.isConstantAcceleration)
         {
+            // let newVelocity = this.agent1.velocity
+            //     .scale(1/16.666)
+            //     .add(this.constantAcceleration.clone()
+            //         .scale(dt));
+
+            // newVelocity.scale(16.666);
+
+            // this.agent1.setVelocity(newVelocity.x, newVelocity.y);
+
+            // the following is an example of how to do the euler integration by hand for comparison:
+
             let newVelocity = this.currentVelocity
                 .add(this.constantAcceleration.clone()
                     .scale(dt));
 
-            let currentPosition = this.agent1.position;
+            this.currentVelocity = newVelocity.clone();
 
-            let dx = newVelocity.clone().scale(dt);
+            newVelocity.scale(16.666);
 
-            let newPosition = currentPosition
-                .add(dx);
+            this.agent1.setVelocity(newVelocity.x, newVelocity.y);
 
-            this.agent1.position = newPosition;
-            this.currentVelocity = newVelocity;
+            // let currentPosition = this.agent1.position;
 
-            // TODO: after converting newVelocity to 'px / step', these two funcs give same result
-            // newVelocity.scale(16.666);
-            // this.agent1.setVelocity(newVelocity.x, newVelocity.y);
-            // this.matter.body.setVelocity(this.agent1.body, { x: newVelocity.x, y: newVelocity.y});
+            // let dx = newVelocity.clone().scale(dt);
+
+            // let newPosition = currentPosition
+            //     .add(dx);
+
+            // this.agent1.position = newPosition;
+            // this.currentVelocity = newVelocity;
         }
 
         // check end condition
@@ -153,7 +168,7 @@ export default class ChargeTest extends PsyanimScene {
             .subtract(this.agent1.position)
             .length();
 
-        if (this._running && distanceToTarget < 5)
+        if (this._running && distanceToTarget < 15)
         {
             console.log("reached target in " + (this._timer / 1000) + " seconds!");
 
