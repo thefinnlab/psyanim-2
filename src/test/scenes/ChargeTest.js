@@ -67,6 +67,11 @@ export default class ChargeTest extends PsyanimScene {
         this.currentVelocity = new Phaser.Math.Vector2(0, 0);
 
         this.isConstantAcceleration = true;
+
+        // need to set friction to zero for this!
+        this.agent1.body.friction = 0;
+        this.agent1.body.frictionAir = 0;
+        this.agent1.body.frictionStatic = 0;
     }
 
     _initVehicle() {
@@ -118,6 +123,8 @@ export default class ChargeTest extends PsyanimScene {
 
             this.agent1.setVelocity(newVelocity.x, newVelocity.y);
 
+
+
             // the following is an example of how to compute updated positions by hand for comparison:
 
             // let currentPosition = this.agent1.position;
@@ -131,36 +138,15 @@ export default class ChargeTest extends PsyanimScene {
         }
         else if (this._running && this.isConstantAcceleration)
         {
-            // let newVelocity = this.agent1.velocity
-            //     .scale(1/16.666)
-            //     .add(this.constantAcceleration.clone()
-            //         .scale(dt));
-
-            // newVelocity.scale(16.666);
-
-            // this.agent1.setVelocity(newVelocity.x, newVelocity.y);
-
             // the following is an example of how to do the euler integration by hand for comparison:
 
-            let newVelocity = this.currentVelocity
-                .add(this.constantAcceleration.clone()
-                    .scale(dt));
+            let dv = this.constantAcceleration.clone().scale(dt);
 
-            this.currentVelocity = newVelocity.clone();
-
-            newVelocity.scale(16.666);
+            let newVelocity = this.agent1.velocity.scale(1/16.666)
+                .add(dv)
+                .scale(16.666);
 
             this.agent1.setVelocity(newVelocity.x, newVelocity.y);
-
-            // let currentPosition = this.agent1.position;
-
-            // let dx = newVelocity.clone().scale(dt);
-
-            // let newPosition = currentPosition
-            //     .add(dx);
-
-            // this.agent1.position = newPosition;
-            // this.currentVelocity = newVelocity;
         }
 
         // check end condition

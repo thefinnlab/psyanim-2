@@ -207,7 +207,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     get velocity() {
 
-        let currentVelocityXY = this.getVelocity();
+        let currentVelocityXY = this.scene.matter.body.getVelocity(this.body);
 
         return new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
     }
