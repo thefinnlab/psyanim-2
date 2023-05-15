@@ -246,6 +246,18 @@ export default class PsyanimVehicle extends PsyanimComponent {
             .scale(1/16.666) // convert to px/ms
             .add(this._chargeAcceleration.clone().scale(t_ms))
             .scale(16.666); // convert back to px/step
+
+        // give it some initial velocity proportional to the distance so it's not so sluggish starting out... 
+        // for starters, maybe we do a fraction of the average velocity as the initial velocity... 
+        let v0 = this.target.position
+            .subtract(this.entity.position)
+            .scale(1 / (this.chargeDuration * 1000)) // avg velocity in px/ms
+            .scale(16.666); // convert to px/step
+        
+        v0.scale(0.05); // take a fraction of avg. velocity as v0
+
+        this.entity.setVelocity(v0.x, v0.y);
+
     }
 
     _lookWhereYoureGoing() {
