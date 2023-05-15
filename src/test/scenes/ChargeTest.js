@@ -29,7 +29,8 @@ export default class ChargeTest extends PsyanimScene {
             radius: 4, color: 0x00ff00
         });
 
-        this._initConstantVelocity();
+        // this._initConstantVelocity();
+        this._initConstantAcceleration();
         
         this._timer = 0;
         this._running = true;
@@ -53,13 +54,14 @@ export default class ChargeTest extends PsyanimScene {
 
     _initConstantAcceleration() {
 
-        let t_seconds = 2.0;
-        let t_steps = t_seconds * 1000 / 16.666;
+        let t_seconds = 2.2;
+        let t_ms = 1000 * t_seconds;
 
-        this.acceleration = (2 / (t_steps * t_steps)) * 
-            this.target.position
-                .subtract(this.agent1.position)
-                .length();
+        this.constantAcceleration = this.target.position
+            .subtract(this.agent1.position)
+            .scale((2 / (t_ms * t_ms)));
+
+        this.currentVelocity = new Phaser.Math.Vector2(0, 0);
 
         this.isConstantAcceleration = true;
     }
@@ -106,30 +108,35 @@ export default class ChargeTest extends PsyanimScene {
         // update object acceleration
         if (this._running && this.isConstantVelocity)
         {
-            // this.agent1.setVelocity(this.constantVelocity.x, this.constantVelocity.y);
-
             let currentPosition = this.agent1.position;
 
-            let dv = this.constantVelocity.clone().scale(dt);
+            let dx = this.constantVelocity.clone().scale(dt);
 
             let newPosition = currentPosition
-                .add(dv);
+                .add(dx);
 
             this.agent1.position = newPosition;
-
-            console.log(newPosition);
         }
         else if (this._running && this.isConstantAcceleration)
         {
-            let currentSpeed = this.agent1.velocity.length();
+            let newVelocity = this.currentVelocity
+                .add(this.constantAcceleration.clone()
+                    .scale(dt));
 
-            let newSpeed = currentSpeed + this.acceleration;
+            let currentPosition = this.agent1.position;
 
-            let newVelocity = this.target.position
-                .subtract(this.agent1.position)
-                .setLength(newSpeed);
+            let dx = newVelocity.clone().scale(dt);
 
-            this.agent1.setVelocity(newVelocity.x, newVelocity.y);
+            let newPosition = currentPosition
+                .add(dx);
+
+            this.agent1.position = newPosition;
+            this.currentVelocity = newVelocity;
+
+            // TODO: after converting newVelocity to 'px / step', these two funcs give same result
+            // newVelocity.scale(16.666);
+            // this.agent1.setVelocity(newVelocity.x, newVelocity.y);
+            // this.matter.body.setVelocity(this.agent1.body, { x: newVelocity.x, y: newVelocity.y});
         }
 
         // check end condition
