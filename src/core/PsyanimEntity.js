@@ -13,6 +13,18 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
          *      - use 'this.visible' to toggle sprite visibility
          *      - use 'this.body.isSleeping' to toggle whether or not this object receives physics updates
          *      - use 'this.body.isSensor' to toggle whether this body collides with other bodies or not
+         * 
+         *  From: https://github.com/liabru/matter-js/issues/179
+         * 
+         *  "Internally the engine uses MKS (meters, kilograms, and seconds) units 
+         *  and radians for angles.
+         * 
+         *  If you use the built in renderer and and built in runner, with default 
+         *  settings this translates to:
+         *  
+         *      1 position = 1 px
+         *      1 speed = 1 px per step
+         *      1 step = 16.666ms"
          */
 
         // TODO: everywhere you're doing these checks for object properties, use Object.hasOwn()!!!

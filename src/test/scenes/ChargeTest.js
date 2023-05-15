@@ -15,7 +15,7 @@ export default class ChargeTest extends PsyanimScene {
 
         super.create();
 
-        this.target = this.addEntity('target', 750, 300, {
+        this.target = this.addEntity('target', 750, 550, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 4, color: 0x0000ff
         },
@@ -24,7 +24,7 @@ export default class ChargeTest extends PsyanimScene {
             isSleeping: true
         });
 
-        this.agent1 = this.addEntity('agent1', 50, 300, {
+        this.agent1 = this.addEntity('agent1', 50, 50, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 4, color: 0x00ff00
         });
@@ -76,20 +76,6 @@ export default class ChargeTest extends PsyanimScene {
         this.vehicle1 = this.agent1.addComponent(PsyanimVehicle);
 
         let t_seconds = 2.0;
-
-        // /**
-        //  *  From: https://github.com/liabru/matter-js/issues/179
-        //  * 
-        //  *  "Internally the engine uses MKS (meters, kilograms, and seconds) units 
-        //  *  and radians for angles.
-        //  * 
-        //  *  If you use the built in renderer and and built in runner, with default 
-        //  *  settings this translates to:
-        //  *  
-        //  *      1 position = 1 px
-        //  *      1 speed = 1 px per step
-        //  *      1 step = 16.666ms"
-        //  */
 
         let t = t_seconds * 1000 / 16.666;
 
