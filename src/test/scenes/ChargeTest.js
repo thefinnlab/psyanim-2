@@ -80,6 +80,9 @@ export default class ChargeTest extends PsyanimScene {
 
         this.vehicle1.maxSpeed = 100;
 
+        this.vehicle1.innerDecelerationRadius = 10;
+        this.vehicle1.outerDecelerationRadius = 30;
+
         this.vehicle1.setTarget(this.target);
 
         this.vehicle1.setState(PsyanimVehicle.STATE.CHARGE);
@@ -133,7 +136,7 @@ export default class ChargeTest extends PsyanimScene {
             }
             else
             {
-                this.vehicle1.setState(PsyanimVehicle.STATE.IDLE);
+                // this.vehicle1.setState(PsyanimVehicle.STATE.IDLE);
             }
 
             this._running = false;

@@ -240,6 +240,12 @@ export default class PsyanimVehicle extends PsyanimComponent {
         this._chargeAcceleration = this.target.position
             .subtract(this.entity.position)
             .scale(2 / (t_ms * t_ms));
+
+        // TODO: this should be named _computeChargeParams()
+        this._maxChargeSpeed = this.entity.velocity
+            .scale(1/16.666) // convert to px/ms
+            .add(this._chargeAcceleration.clone().scale(t_ms))
+            .scale(16.666); // convert back to px/step
     }
 
     _lookWhereYoureGoing() {
@@ -293,7 +299,51 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _charge(target) {
 
-        return this._chargeAcceleration;
+        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
+
+        let targetRelativePosition = new Phaser.Math.Vector2(target.x, target.y);
+        targetRelativePosition.subtract(currentPosition);
+
+        let r = targetRelativePosition.length();
+
+        let desiredSpeed = 0;
+
+        let scaledMaxAcceleration = this._chargeAcceleration;
+
+        if (r <= this.innerDecelerationRadius)
+        {
+            this.entity.setVelocity(0, 0);
+
+            return new Phaser.Math.Vector2(0, 0);
+        }
+        else if (r > this.outerDecelerationRadius)
+        {
+            return this._chargeAcceleration;
+        }
+        else // ((r > this.innerDecelerationRadius) && r < this.r2)
+        {
+            //  v(r) = ((v_max) / (r2 - r1)) * (r - r1)
+            desiredSpeed = ((this._maxChargeSpeed) / (this.outerDecelerationRadius - this.innerDecelerationRadius)) * (r - this.innerDecelerationRadius);
+            scaledMaxAcceleration = (r - this.innerDecelerationRadius) / (this.outerDecelerationRadius - this.innerDecelerationRadius) * this._chargeAcceleration.length();
+        }
+
+        let desiredVelocity = targetRelativePosition.clone();
+
+        desiredVelocity.setLength(desiredSpeed);
+
+        let currentVelocityXY = this.entity.getVelocity();
+
+        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
+
+        let acceleration = desiredVelocity.clone();
+        acceleration.subtract(currentVelocity);
+
+        if (acceleration.length() > scaledMaxAcceleration)
+        {
+            acceleration.setLength(scaledMaxAcceleration);
+        }
+
+        return acceleration;
     }
 
     _seek(target) {
@@ -564,18 +614,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     _arrive(target) {
 
-        /**
-         *  NOTE: we define two concentric circles of radii, r1 and r2, where r1 < r2, such that the 
-         *  desired speed of the vehicle at a distance of r1 from the target is zero and the desired 
-         *  speed of the vehicle at a distance of r2 from the target is the v_max.
-         * 
-         *  Between r1 and r2, the velocity v varies linearly as a function of the distance r from 
-         *  the target, according to the following equation:
-         * 
-         *  v(r) = ((v_max) / (r2 - r1)) * (r - r1)
-         * 
-         */
-
         let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
 
         let targetRelativePosition = new Phaser.Math.Vector2(target.x, target.y);
@@ -599,6 +637,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         }
         else // ((r > this.innerDecelerationRadius) && r < this.r2)
         {
+            //  v(r) = ((v_max) / (r2 - r1)) * (r - r1)
             desiredSpeed = ((this.maxSpeed) / (this.outerDecelerationRadius - this.innerDecelerationRadius)) * (r - this.innerDecelerationRadius);
             scaledMaxAcceleration = (r - this.innerDecelerationRadius) / (this.outerDecelerationRadius - this.innerDecelerationRadius) * this.maxAcceleration;
         }
