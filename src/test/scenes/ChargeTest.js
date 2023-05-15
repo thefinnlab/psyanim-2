@@ -29,8 +29,8 @@ export default class ChargeTest extends PsyanimScene {
             radius: 4, color: 0x00ff00
         });
 
-        // this._initConstantVelocity();
-        this._initConstantAcceleration();
+        this._initConstantVelocity();
+        // this._initConstantAcceleration();
         
         this._timer = 0;
         this._running = true;
@@ -38,7 +38,7 @@ export default class ChargeTest extends PsyanimScene {
 
     _initConstantVelocity() {
 
-        let t_seconds = 2.0;
+        let t_seconds = 3.2;
         let t_ms = t_seconds * 1000;
 
         let constantSpeed = this.target.position
@@ -108,14 +108,23 @@ export default class ChargeTest extends PsyanimScene {
         // update object acceleration
         if (this._running && this.isConstantVelocity)
         {
-            let currentPosition = this.agent1.position;
+            let newVelocity = this.constantVelocity.clone();
 
-            let dx = this.constantVelocity.clone().scale(dt);
+            // we need to convert the velocity from (px / ms) to (px / step)
+            newVelocity.scale(16.666);
 
-            let newPosition = currentPosition
-                .add(dx);
+            this.agent1.setVelocity(newVelocity.x, newVelocity.y);
 
-            this.agent1.position = newPosition;
+            // the following is an example of how to compute updated positions by hand:
+
+            // let currentPosition = this.agent1.position;
+
+            // let dx = this.constantVelocity.clone().scale(dt);
+
+            // let newPosition = currentPosition
+            //     .add(dx);
+
+            // this.agent1.position = newPosition;
         }
         else if (this._running && this.isConstantAcceleration)
         {
