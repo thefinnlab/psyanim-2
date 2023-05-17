@@ -31,12 +31,12 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     // TODO: these need to move into their respective behavior components:
 
+    collisionRadius = 8;
+
     innerDecelerationRadius = 25;
     outerDecelerationRadius = 140;
 
     panicDistance = 250;
-
-    maxPredictionTime = 1.0;
 
     sensorRadius = 75;
 
@@ -159,17 +159,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
                 this.entity.body.frictionStatic = 0.5;
 
                 this._getSteering = this._advancedFlee;
-                break;
-
-            case PsyanimVehicle.STATE.EVADE:
-
-                this.useAcceleration = false;
-
-                this.entity.body.friction = 0.1;
-                this.entity.body.frictionAir = 0.01;
-                this.entity.body.frictionStatic = 0.5;
-
-                this._getSteering = this._evade;
                 break;
 
             case PsyanimVehicle.STATE.ARRIVE:
@@ -333,36 +322,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return acceleration;
     }
 
-    _flee(target) {
-
-        let targetPosition = target.position;
-        let distanceToTarget = this.entity.position.subtract(targetPosition).length();
-
-        if (distanceToTarget > this.panicDistance)
-        {
-            return new Phaser.Math.Vector2(0, 0);
-        }
-
-        let desiredVelocity = new Phaser.Math.Vector2(targetPosition.x, targetPosition.y);
-        desiredVelocity.subtract(this.entity.position);
-        desiredVelocity.setLength(this.maxSpeed);
-        desiredVelocity.scale(-1);
-
-        let currentVelocityXY = this.entity.getVelocity();
-
-        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
-
-        let acceleration = desiredVelocity.clone();
-        acceleration.subtract(currentVelocity);
-
-        if (acceleration.length() > this.maxAcceleration)
-        {
-            acceleration.setLength(this.maxAcceleration);
-        }
-
-        return acceleration;
-    }
-
     _isPathBlocked(directionVector, distance = 100) {
 
         let start = { x: this.entity.x, y: this.entity.y };
@@ -460,38 +419,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         return acceleration;
     }
-
-    _evade(target) {
-
-        let targetPosition = target.position;
-        let distanceToTarget = this.entity.position.subtract(targetPosition).length();
-
-        let targetVelocity = target.velocity;
-        let targetSpeed = targetVelocity.length();
-
-        let predictionTime = this.maxPredictionTime;
-
-        if (targetSpeed > distanceToTarget / this.maxPredictionTime)
-        {
-            predictionTime = distanceToTarget / targetSpeed;
-
-            // don't project too far out, predicted position can go past character.
-            // Unity Movement AI package uses this magic number.  can adjust if needed.
-            predictionTime *= 0.9;
-        }
-
-        let evadeTargetPosition = targetVelocity.clone();
-        evadeTargetPosition.scale(predictionTime);
-        evadeTargetPosition.add(targetPosition);
-
-        let evadeTarget = {
-            position: evadeTargetPosition,
-        }
-
-        return this._flee(evadeTarget);
-    }
-
-    collisionRadius = 8;
 
     _avoidCollisions() {
 

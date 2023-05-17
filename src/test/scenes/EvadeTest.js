@@ -3,7 +3,10 @@ import Phaser from 'phaser';
 import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
-import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
+import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
+import PsyanimFleeBehavior from '../../core/components/steering/PsyanimFleeBehavior';
+import PsyanimEvadeBehavior from '../../core/components/steering/PsyanimEvadeBehavior';
+import PsyanimEvadeAgent from '../../core/components/steering/agents/PsyanimEvadeAgent';
 
 export default class EvadeTest extends PsyanimScene {
 
@@ -16,30 +19,33 @@ export default class EvadeTest extends PsyanimScene {
 
         super.create();
 
-        // add agents as vehicles to this scene
-        let wanderAgent = this.addEntity('wanderAgent', 0, 0, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, color: 0xff0000         
+        // create player
+        let player = this.addEntity('player', 400, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+            base: 16, altitude: 32, 
+            width: 40, height: 20, 
+            radius: 12, 
+            color: 0x0000ff
         });
 
-        let wanderTarget = this.addEntity('wanderTarget', 0, 0, { isEmpty: true });
+        player.addComponent(PsyanimPlayerController);
 
-        let wanderVehicle = wanderAgent.addComponent(PsyanimVehicle);
-        wanderVehicle.target = wanderTarget;
-        wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
-
-        let wander = wanderAgent.addComponent(PsyanimWanderBehavior);
-        wander.vehicle = wanderVehicle;
-        wander.target = wanderTarget;
-        wander.maxSpeed = 4;
-
-        let evadeAgent = this.addEntity('evadeAgent', 600, 450, {
+        // create evade agent
+        let agent = this.addEntity('evadeAgent', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, color: 0x00ff00         
         });
 
-        let evadeAgentVehicle = evadeAgent.addComponent(PsyanimVehicle);
-        evadeAgentVehicle.target = wanderAgent;
-        evadeAgentVehicle.setState(PsyanimVehicle.STATE.EVADE);
+        let evadeAgentVehicle = agent.addComponent(PsyanimVehicle);
+
+        let fleeBehavior = agent.addComponent(PsyanimFleeBehavior);
+
+        let evadeBehavior = agent.addComponent(PsyanimEvadeBehavior);
+        evadeBehavior.fleeBehavior = fleeBehavior;
+
+        let evadeAgent = agent.addComponent(PsyanimEvadeAgent);
+        evadeAgent.target = player;
+        evadeAgent.vehicle = evadeAgentVehicle;
+        evadeAgent.evadeBehavior = evadeBehavior;
     }
 }

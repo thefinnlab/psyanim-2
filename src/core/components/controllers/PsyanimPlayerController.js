@@ -4,7 +4,7 @@ import PsyanimComponent from "../../PsyanimComponent";
 
 export default class PsyanimPlayerController extends PsyanimComponent {
 
-    speed = 6;
+    speed = 8;
     turnSpeed = 0.2;
 
     constructor(entity) {
@@ -33,7 +33,10 @@ export default class PsyanimPlayerController extends PsyanimComponent {
         let horizontal = (this._keys.A.isDown ? -1 : 0) + (this._keys.D.isDown ? 1 : 0);
         let vertical = (this._keys.W.isDown ? -1 : 0) + (this._keys.S.isDown ? 1 : 0);
 
-        this.entity.setVelocity(horizontal * this.speed, vertical * this.speed);
+        let velocity = new Phaser.Math.Vector2(horizontal, vertical)
+            .setLength(this.speed);
+
+        this.entity.setVelocity(velocity.x, velocity.y);
 
         if (Math.abs(horizontal) > 1e-3 || Math.abs(vertical) > 1e-3)
         {
