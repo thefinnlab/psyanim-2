@@ -7,6 +7,9 @@ import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimM
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 
+import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
+import PsyanimSeekAgent from '../../core/components/steering/agents/PsyanimSeekAgent';
+
 export default class SeekTest extends PsyanimScene {
 
     constructor() {
@@ -62,17 +65,33 @@ export default class SeekTest extends PsyanimScene {
         let vehicle2 = agent2.addComponent(PsyanimVehicle);
         let vehicle3 = agent3.addComponent(PsyanimVehicle);
 
-        vehicle1.target = player;
-        vehicle1.setState(PsyanimVehicle.STATE.SEEK);
         vehicle1.maxSpeed = 5;
 
-        vehicle2.target = agent3;
-        vehicle2.setState(PsyanimVehicle.STATE.SEEK);
         vehicle2.maxSpeed = 4;
         vehicle2.nSamplesForSmoothing = 10;
 
-        vehicle3.target = mouseTarget;
-        vehicle3.setState(PsyanimVehicle.STATE.SEEK);
         vehicle3.maxSpeed = 5;
+
+        // add seek behavior components to our agents
+        let seek1 = agent1.addComponent(PsyanimSeekBehavior);
+        let seek2 = agent2.addComponent(PsyanimSeekBehavior);
+        let seek3 = agent3.addComponent(PsyanimSeekBehavior);
+
+        // add seek agent component to our agents
+        let seekAgent1 = agent1.addComponent(PsyanimSeekAgent);
+        let seekAgent2 = agent2.addComponent(PsyanimSeekAgent);
+        let seekAgent3 = agent3.addComponent(PsyanimSeekAgent);
+
+        seekAgent1.seekBehavior = seek1;
+        seekAgent2.seekBehavior = seek2;
+        seekAgent3.seekBehavior = seek3;
+
+        seekAgent1.vehicle = vehicle1;
+        seekAgent2.vehicle = vehicle2;
+        seekAgent3.vehicle = vehicle3;
+
+        seekAgent1.target = player;
+        seekAgent2.target = agent3;
+        seekAgent3.target = mouseTarget;
     }
 }

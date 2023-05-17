@@ -7,22 +7,6 @@ import PsyanimConstants from '../../PsyanimConstants';
 
 export default class PsyanimVehicle extends PsyanimComponent {
 
-    static STATE = {
-
-        IDLE: 0x0001,
-        SEEK: 0x0002,
-        FLEE: 0x0004,
-        ADVANCED_FLEE: 0x0008,
-        EVADE: 0x0010,
-        ARRIVE: 0x0020,
-        WANDER: 0x0040,
-        CHARGE: 0x0080
-    };
-
-    state = PsyanimVehicle.STATE.IDLE;
-
-    target = null;
-
     maxSpeed = 5;
     maxAcceleration = 0.2;
 
@@ -31,6 +15,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
     smoothLookDirection = true;
 
     nSamplesForLookSmoothing = 10;
+
+    // TODO: these need to move into their respective behavior components:
 
     innerDecelerationRadius = 25;
     outerDecelerationRadius = 140;
@@ -65,8 +51,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
         this._advancedFleeDirection = this.entity.position;
 
         this.setAdvancedFleeSearchDirection(true);
-
-        this.setState(PsyanimVehicle.STATE.IDLE);
     }
 
     onDisable() {
@@ -353,29 +337,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
         if (acceleration.length() > scaledMaxAcceleration)
         {
             acceleration.setLength(scaledMaxAcceleration);
-        }
-
-        return acceleration;
-    }
-
-    _seek(target) {
-
-        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
-
-        let desiredVelocity = new Phaser.Math.Vector2(target.x, target.y);
-        desiredVelocity.subtract(currentPosition);
-        desiredVelocity.setLength(this.maxSpeed);
-
-        let currentVelocityXY = this.entity.getVelocity();
-
-        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
-
-        let acceleration = desiredVelocity.clone();
-        acceleration.subtract(currentVelocity);
-
-        if (acceleration.length() > this.maxAcceleration)
-        {
-            acceleration.setLength(this.maxAcceleration);
         }
 
         return acceleration;
@@ -673,9 +634,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return acceleration;
     }
 
-    update(t, dt) {
-
-        super.update(t, dt);
+    steer(steeringForce) {
 
         // clamp velocity to max speed
         let velocity = new Phaser.Math.Vector2(this.entity.getVelocity());
@@ -688,25 +647,25 @@ export default class PsyanimVehicle extends PsyanimComponent {
         }
 
         // apply steering
-        let steer = null;
+        let steering = null;
 
         if (this._collisionAvoidanceEnabled)
         {
-            steer = this._avoidCollisions();
+            steering = this._avoidCollisions();
 
-            if (steer.length() < 1e-3)
+            if (steering.length() < 1e-3)
             {
-                steer = this._getSteering(this.target);
+                steering = steeringForce;
             }    
         }
         else
         {
-            steer = this._getSteering(this.target);
+            steering = steeringForce;
         }
 
         if (this.useAcceleration)
         {
-            let dv = steer.clone().scale(dt);
+            let dv = steering.clone().scale(dt);
 
             let newVelocity = this.entity.velocity.scale(1/16.666)
                 .add(dv)
@@ -716,7 +675,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         }
         else
         {
-            this.entity.applyForce(steer);
+            this.entity.applyForce(steering);
         }
 
         this._lookWhereYoureGoing();
