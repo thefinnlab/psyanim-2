@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
-import PsyanimEntity from '../../core/PsyanimEntity';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';

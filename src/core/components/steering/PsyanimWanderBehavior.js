@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimVehicle from './PsyanimVehicle';
 
-export default class PsyanimWander extends PsyanimComponent {
+export default class PsyanimWanderBehavior extends PsyanimComponent {
 
     vehicle = null;
     target = null;

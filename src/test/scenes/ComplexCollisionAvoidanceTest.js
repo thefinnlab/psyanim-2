@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimConstants from '../../core/PsyanimConstants';
-import PsyanimPathFollow from '../../core/components/steering/PsyanimPathFollow';
+import PsyanimPathFollowBehavior from '../../core/components/steering/PsyanimPathFollowBehavior';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
 import PsyanimCollisionAvoidanceDebug from '../../core/components/rendering/PsyanimCollisionAvoidanceDebug';
@@ -84,7 +84,7 @@ export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
                 vehicle.maxSpeed = 1.5;
             }
 
-            let pathFollow = agent.addComponent(PsyanimPathFollow);
+            let pathFollow = agent.addComponent(PsyanimPathFollowBehavior);
             pathFollow.p1 = pathStart;
             pathFollow.p2 = pathEnd;
             pathFollow.predictionTime = predictionTime;

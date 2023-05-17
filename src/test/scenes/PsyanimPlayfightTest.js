@@ -3,11 +3,10 @@ import Phaser from 'phaser';
 import PsyanimScene from "../../core/scene/PsyanimScene";
 
 import PsyanimConstants from '../../core/PsyanimConstants';
-import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
-import PsyanimWander from '../../core/components/steering/PsyanimWander';
-import PsyanimPlayfight from '../../core/components/steering/PsyanimPlayfight';
+import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
+import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlayfightBehavior';
 
 export default class PsyanimPlayfightTest extends PsyanimScene {
 
@@ -40,11 +39,11 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle1.outerDecelerationRadius = outerDecelerationRadius;
         this.wanderVehicle1.panicDistance = panicDistance;
 
-        this.wander1 = wanderAgent1.addComponent(PsyanimWander);
+        this.wander1 = wanderAgent1.addComponent(PsyanimWanderBehavior);
         this.wander1.vehicle = this.wanderVehicle1;
         this.wander1.target = wanderTarget1;
 
-        this.playfight1 = wanderAgent1.addComponent(PsyanimPlayfight);
+        this.playfight1 = wanderAgent1.addComponent(PsyanimPlayfightBehavior);
         this.playfight1.vehicle = this.wanderVehicle1;
         this.playfight1.wander = this.wander1;
 
@@ -64,11 +63,11 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         this.wanderVehicle2.outerDecelerationRadius = outerDecelerationRadius;
         this.wanderVehicle2.panicDistance = panicDistance;
 
-        this.wander2 = wanderAgent2.addComponent(PsyanimWander);
+        this.wander2 = wanderAgent2.addComponent(PsyanimWanderBehavior);
         this.wander2.vehicle = this.wanderVehicle2;
         this.wander2.target = wanderTarget2;
 
-        this.playfight2 = wanderAgent2.addComponent(PsyanimPlayfight);
+        this.playfight2 = wanderAgent2.addComponent(PsyanimPlayfightBehavior);
         this.playfight2.vehicle = this.wanderVehicle2;
         this.playfight2.wander = this.wander2;
 

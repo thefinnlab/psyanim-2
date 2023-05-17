@@ -3,7 +3,7 @@ import Phaser from 'phaser';
 import PsyanimScene from '../../core/scene/PsyanimScene';
 
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
-import PsyanimWander from '../../core/components/steering/PsyanimWander';
+import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 
@@ -38,7 +38,7 @@ export default class WanderTest extends PsyanimScene {
             wanderVehicle.target = wanderTarget;
             wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
 
-            let wander = agent.addComponent(PsyanimWander);   
+            let wander = agent.addComponent(PsyanimWanderBehavior);   
             wander.vehicle = wanderVehicle;
             wander.target = wanderTarget;
             

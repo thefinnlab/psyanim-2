@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimConstants from '../../core/PsyanimConstants';
-import PsyanimPathFollow from '../../core/components/steering/PsyanimPathFollow';
+import PsyanimPathFollowBehavior from '../../core/components/steering/PsyanimPathFollowBehavior';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
 export default class PathFollowTest extends PsyanimScene {
@@ -37,7 +37,7 @@ export default class PathFollowTest extends PsyanimScene {
         this.vehicle1.turnSpeed = Infinity;
         this.vehicle1.maxSpeed = 3;
 
-        this.pathFollow1 = this.agent1.addComponent(PsyanimPathFollow);
+        this.pathFollow1 = this.agent1.addComponent(PsyanimPathFollowBehavior);
         this.pathFollow1.p1 = new Phaser.Math.Vector2(30, 430);
         this.pathFollow1.p2 = new Phaser.Math.Vector2(770, 370);
         this.pathFollow1.predictionTime = predictionTime;

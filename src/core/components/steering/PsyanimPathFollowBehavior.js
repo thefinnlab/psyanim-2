@@ -7,7 +7,7 @@ import PsyanimVehicle from './PsyanimVehicle';
 import PsyanimPathRenderer from '../rendering/PsyanimPathRenderer';
 import PsyanimConstants from '../../PsyanimConstants';
 
-export default class PsyanimPathFollow extends PsyanimComponent {
+export default class PsyanimPathFollowBehavior extends PsyanimComponent {
 
     p1 = new Phaser.Math.Vector2(0, 0);
     p2 = new Phaser.Math.Vector2(400, 300);

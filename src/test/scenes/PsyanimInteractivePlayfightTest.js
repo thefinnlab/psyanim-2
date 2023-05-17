@@ -6,8 +6,8 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
-import PsyanimWander from '../../core/components/steering/PsyanimWander';
-import PsyanimPlayfight from '../../core/components/steering/PsyanimPlayfight';
+import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
+import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlayfightBehavior';
 
 export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
 
@@ -42,12 +42,12 @@ export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
         this.wanderVehicle.innerDecelerationRadius = 12;
         this.wanderVehicle.outerDecelerationRadius = 30;
 
-        this.wander = wanderAgent.addComponent(PsyanimWander);
+        this.wander = wanderAgent.addComponent(PsyanimWanderBehavior);
         this.wander.vehicle = this.wanderVehicle;
         this.wander.target = wanderTarget;
         this.wander.maxSpeed = 4;
 
-        this.playfight = wanderAgent.addComponent(PsyanimPlayfight);
+        this.playfight = wanderAgent.addComponent(PsyanimPlayfightBehavior);
         this.playfight.vehicle = this.wanderVehicle;
         this.playfight.wander = this.wander;
         this.playfight.setChargeTarget(this.player);

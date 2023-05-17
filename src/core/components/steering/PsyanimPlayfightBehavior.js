@@ -3,9 +3,8 @@ import Phaser from 'phaser';
 import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimVehicle from './PsyanimVehicle';
-import PsyanimWander from './PsyanimWander';
 
-export default class PsyanimPlayfight extends PsyanimComponent {
+export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     static STATE = {
         WANDERING: 0x0001,
@@ -64,36 +63,6 @@ export default class PsyanimPlayfight extends PsyanimComponent {
                 this.wander.enabled = false;
 
                 this.vehicle.target = this._chargeTarget;
-
-                // this.vehicle.maxSpeed = 8;
-
-                // let deltaPosition = this._chargeTarget.position
-                //     .subtract(this.entity.position)
-                //     .scale(0.5);
-
-                // let chargeDuration = (this.breakDuration - this._breakTimer);
-
-                // /**
-                //  *  From: https://github.com/liabru/matter-js/issues/179
-                //  * 
-                //  *  "Internally the engine uses MKS (meters, kilograms, and seconds) units 
-                //  *  and radians for angles.
-                //  * 
-                //  *  If you use the built in renderer and and built in runner, with default 
-                //  *  settings this translates to:
-                //  *  
-                //  *      1 position = 1 px
-                //  *      1 speed = 1 px per step
-                //  *      1 step = 16.666ms"
-                //  */
-                // let chargeDurationSteps = chargeDuration / 16.666;
-
-                // let acceleration = deltaPosition
-                //     .subtract(this.entity.velocity.scale(chargeDurationSteps))
-                //     .scale(2 / (chargeDurationSteps * chargeDurationSteps))
-                //     .length();
-
-                // this.vehicle.maxAcceleration = acceleration;
 
                 this.vehicle.maxSpeed = this.maxChargeSpeed;
                 this.vehicle.maxChargeAcceleration = this.maxChargeAcceleration;
