@@ -6,13 +6,12 @@ import PsyanimVehicle from './PsyanimVehicle';
 
 export default class PsyanimWanderBehavior extends PsyanimComponent {
 
-    vehicle = null;
-    target = null;
-
     radius = 50;
     offset = 150;
 
     maxAngleChangePerFrame = 20;
+
+    seekBehavior = null;
 
     constructor(entity) {
 
@@ -22,30 +21,8 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
 
         this._angle = 270;
         this._targetVector = null;
-    }
 
-    get debug() {
-        return this._debug;
-    }
-
-    set debug(value) {
-
-        if (this._debug == value)
-        {
-            return;
-        }
-
-        this._debug = value;
-
-        if (this._debug)
-        {
-            this._setupDebugGraphics();
-        }
-        else
-        {
-            this.graphics.destroy();
-            this.graphics = null;
-        }
+        this.target = this.entity.scene.addEntity(this.entity.name + '_wanderTarget', 0, 0, { isEmpty: true });
     }
 
     onEnable() {
@@ -57,68 +34,7 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
         this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
     }
 
-    _setupDebugGraphics() {
-
-        this.graphics = this.entity.scene.add.graphics({ 
-            lineStyle: {
-                width: 2, color: 0xa020f0, alpha: 0.6
-            }
-        });
-
-        this._debugCircle = new Phaser.Geom.Circle(
-            this.entity.x,
-            this.entity.y,
-            this.radius
-        );
-
-        this._debugCircleAngleLine = new Phaser.Geom.Line(
-            this._debugCircle.x,
-            this._debugCircle.y,
-            this._debugCircle.x + this.radius,
-            this._debugCircle.y
-        );
-
-        this._debugTargetLine = new Phaser.Geom.Line(
-            0,
-            0,
-            this.entity.x,
-            this.entity.y,
-        )
-    }
-
-    _drawDebugGraphics() {
-
-        // update render state
-        this._debugCircle.radius = this.radius;
-
-        this._debugCircle.setPosition(
-            this._circleCenterVector.x,
-            this._circleCenterVector.y
-        );
-
-        this._debugCircleAngleLine.setTo(
-            this._circleCenterVector.x, 
-            this._circleCenterVector.y,
-            this._targetVector.x, 
-            this._targetVector.y
-        );
-
-        this._debugTargetLine.setTo(
-            this.entity.x, this.entity.y,
-            this._targetVector.x, this._targetVector.y
-        );
-
-        // draw
-        this.graphics.clear();
-
-        this.graphics.strokeLineShape(this._debugCircleAngleLine);
-        this.graphics.strokeLineShape(this._debugTargetLine);
-        this.graphics.strokeCircleShape(this._debugCircle);
-    }
-
-    update(t, dt) {
-
-        super.update(t, dt);
+    getSteering() {
 
         // compute angle change
         this._angle += (Math.random() * 2 - 1) * this.maxAngleChangePerFrame;
@@ -144,8 +60,6 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
 
         this.target.position = this._targetVector;
 
-        if (this._debug) {
-            this._drawDebugGraphics();
-        }
+        return this.seekBehavior.getSteering(this.target);
     }
 }

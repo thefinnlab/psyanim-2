@@ -4,8 +4,11 @@ import PsyanimScene from '../../core/scene/PsyanimScene';
 
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
+import PsyanimWanderAgent from '../../core/components/steering/agents/PsyanimWanderAgent';
+import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
+import PsyanimWanderDebug from '../../core/components/rendering/PsyanimWanderDebug';
 
 export default class WanderTest extends PsyanimScene {
 
@@ -32,20 +35,25 @@ export default class WanderTest extends PsyanimScene {
                 color: 0xffc0cb            
             });
     
-            let wanderTarget = this.addEntity('wanderTarget' + i, 0, 0, { isEmpty: true });
-
             let wanderVehicle = agent.addComponent(PsyanimVehicle);
-            wanderVehicle.target = wanderTarget;
-            wanderVehicle.setState(PsyanimVehicle.STATE.SEEK);
+
+            let seek = agent.addComponent(PsyanimSeekBehavior);
 
             let wander = agent.addComponent(PsyanimWanderBehavior);   
             wander.vehicle = wanderVehicle;
-            wander.target = wanderTarget;
             
-            wander.debug = false;
             wander.maxSpeed = 3;
             wander.radius = 50;
             wander.maxAngleChangePerFrame = 20;
+
+            wander.seekBehavior = seek;
+
+            let wanderAgent = agent.addComponent(PsyanimWanderAgent);
+            wanderAgent.vehicle = wanderVehicle;
+            wanderAgent.wanderBehavior = wander;
+
+            // let wanderDebug = agent.addComponent(PsyanimWanderDebug);
+            // wanderDebug.wanderBehavior = wander;
         }
     }
 }
