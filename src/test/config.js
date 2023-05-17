@@ -27,7 +27,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [SeekTest],
+            scene: [SeekTest, FleeTest],
             physics: {
                 default: 'matter',
                 matter: {

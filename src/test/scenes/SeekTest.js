@@ -41,7 +41,7 @@ export default class SeekTest extends PsyanimScene {
 
         player.addComponent(PsyanimPlayerController);
 
-        // add agents as vehicles to this scene
+        // add agents to the scene
         let agent1 = this.addEntity('agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
@@ -66,11 +66,10 @@ export default class SeekTest extends PsyanimScene {
         let vehicle3 = agent3.addComponent(PsyanimVehicle);
 
         vehicle1.maxSpeed = 5;
-
         vehicle2.maxSpeed = 4;
-        vehicle2.nSamplesForSmoothing = 10;
-
         vehicle3.maxSpeed = 5;
+
+        vehicle2.nSamplesForSmoothing = 10;
 
         // add seek behavior components to our agents
         let seek1 = agent1.addComponent(PsyanimSeekBehavior);

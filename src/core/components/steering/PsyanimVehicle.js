@@ -7,6 +7,17 @@ import PsyanimConstants from '../../PsyanimConstants';
 
 export default class PsyanimVehicle extends PsyanimComponent {
 
+    /**
+     *  NOTES: 
+     * 
+     *  Default params for friction are:
+     * 
+     *      this.entity.body.friction = 0.1;
+     *      this.entity.body.frictionAir = 0.01;
+     *      this.entity.body.frictionStatic = 0.5;
+     * 
+     */
+
     maxSpeed = 5;
     maxAcceleration = 0.2;
 
@@ -15,6 +26,8 @@ export default class PsyanimVehicle extends PsyanimComponent {
     smoothLookDirection = true;
 
     nSamplesForLookSmoothing = 10;
+
+    useAcceleration = false;
 
     // TODO: these need to move into their respective behavior components:
 
@@ -135,28 +148,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
                 this.entity.setVelocity(0, 0);
 
                 this._getSteering = (target) => new Phaser.Math.Vector2(0, 0);
-                break;
-
-            case PsyanimVehicle.STATE.SEEK:
-
-                this.useAcceleration = false;
-
-                this.entity.body.friction = 0.1;
-                this.entity.body.frictionAir = 0.01;
-                this.entity.body.frictionStatic = 0.5;
-
-                this._getSteering = this._seek;
-                break;
-
-            case PsyanimVehicle.STATE.FLEE:
-
-                this.useAcceleration = false;
-
-                this.entity.body.friction = 0.1;
-                this.entity.body.frictionAir = 0.01;
-                this.entity.body.frictionStatic = 0.5;
-
-                this._getSteering = this._flee;
                 break;
 
             case PsyanimVehicle.STATE.ADVANCED_FLEE:

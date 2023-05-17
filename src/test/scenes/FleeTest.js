@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
-import PsyanimEntity from '../../core/PsyanimEntity';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
+
+import PsyanimFleeBehavior from '../../core/components/steering/PsyanimFleeBehavior';
+import PsyanimFleeAgent from '../../core/components/steering/agents/PsyanimFleeAgent';
 
 export default class FleeTest extends PsyanimScene {
 
@@ -27,7 +29,7 @@ export default class FleeTest extends PsyanimScene {
 
         mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
-        // add agents with vehicle components to this scene
+        // add agents to this scene
         let agent1 = this.addEntity('agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
@@ -40,16 +42,30 @@ export default class FleeTest extends PsyanimScene {
             color: 0xffff00            
         });
 
+        // add vehicle components to our agents
         let vehicle1 = agent1.addComponent(PsyanimVehicle);
         let vehicle2 = agent2.addComponent(PsyanimVehicle);
 
-        vehicle1.target = mouseTarget;
-        vehicle1.setState(PsyanimVehicle.STATE.FLEE);
         vehicle1.maxSpeed = 4;
-
-        vehicle2.target = mouseTarget;
-        vehicle2.setState(PsyanimVehicle.STATE.FLEE);
         vehicle2.maxSpeed = 3;
+
         vehicle2.nSamplesForLookSmoothing = 10;
+
+        // add flee behavior components to our agents
+        let flee1 = agent1.addComponent(PsyanimFleeBehavior);
+        let flee2 = agent2.addComponent(PsyanimFleeBehavior);
+
+        // add flee agent component to our agents
+        let fleeAgent1 = agent1.addComponent(PsyanimFleeAgent);
+        let fleeAgent2 = agent2.addComponent(PsyanimFleeAgent);
+
+        fleeAgent1.fleeBehavior = flee1;
+        fleeAgent2.fleeBehavior = flee2;
+
+        fleeAgent1.vehicle = vehicle1;
+        fleeAgent2.vehicle = vehicle2;
+
+        fleeAgent1.target = mouseTarget;
+        fleeAgent2.target = mouseTarget;
     }
 }
