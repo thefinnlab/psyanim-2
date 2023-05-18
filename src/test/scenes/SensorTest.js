@@ -23,6 +23,7 @@ export default class SensorTest extends PsyanimScene {
             color: 0xff00ff
         });
 
+        wall.depth = 1;
         wall.body.isStatic = true;
 
         let killzone1 = this.addEntity('killzone1', 600, 200, {

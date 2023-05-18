@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
-import PsyanimEntity from '../../core/PsyanimEntity';
 
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
+
+import PsyanimArriveBehavior from '../../core/components/steering/PsyanimArriveBehavior';
+import PsyanimArriveAgent from '../../core/components/steering/agents/PsyanimArriveAgent';
 
 export default class ArriveTest extends PsyanimScene {
 
@@ -28,16 +30,21 @@ export default class ArriveTest extends PsyanimScene {
         mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
         // add agents with vehicle components to this scene
-        let agent1 = this.addEntity('agent1', 600, 450, {
+        let agent = this.addEntity('agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
         });
 
-        let vehicle1 = agent1.addComponent(PsyanimVehicle);
+        let vehicle = agent.addComponent(PsyanimVehicle);
 
-        vehicle1.target = mouseTarget;
-        vehicle1.maxSpeed = 8;
-        vehicle1.setState(PsyanimVehicle.STATE.ARRIVE);
+        vehicle.maxSpeed = 8;
+
+        let arriveBehavior = agent.addComponent(PsyanimArriveBehavior);
+
+        let arriveAgent = agent.addComponent(PsyanimArriveAgent);
+        arriveAgent.arriveBehavior = arriveBehavior;
+        arriveAgent.target = mouseTarget;
+        arriveAgent.vehicle = vehicle;
     }
 }

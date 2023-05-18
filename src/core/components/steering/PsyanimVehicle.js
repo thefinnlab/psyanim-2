@@ -25,16 +25,13 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     smoothLookDirection = true;
 
-    nSamplesForLookSmoothing = 10;
+    nSamplesForLookSmoothing = 6;
 
     useAcceleration = false;
 
     // TODO: these need to move into their respective behavior components:
 
     collisionRadius = 8;
-
-    innerDecelerationRadius = 25;
-    outerDecelerationRadius = 140;
 
     panicDistance = 250;
 
@@ -159,17 +156,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
                 this.entity.body.frictionStatic = 0.5;
 
                 this._getSteering = this._advancedFlee;
-                break;
-
-            case PsyanimVehicle.STATE.ARRIVE:
-
-                this.useAcceleration = false;
-
-                this.entity.body.friction = 0.1;
-                this.entity.body.frictionAir = 0.01;
-                this.entity.body.frictionStatic = 0.5;
-
-                this._getSteering = this._arrive;
                 break;
 
             case PsyanimVehicle.STATE.CHARGE:
@@ -501,55 +487,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
         let steering = finalRelativePosition.scale(-1 * this.maxAcceleration);
 
         return steering;
-    }
-
-    _arrive(target) {
-
-        let currentPosition = new Phaser.Math.Vector2(this.entity.x, this.entity.y);
-
-        let targetRelativePosition = new Phaser.Math.Vector2(target.x, target.y);
-        targetRelativePosition.subtract(currentPosition);
-
-        let r = targetRelativePosition.length();
-
-        let desiredSpeed = 0;
-
-        let scaledMaxAcceleration = this.maxAcceleration;
-
-        if (r <= this.innerDecelerationRadius)
-        {
-            this.entity.setVelocity(0, 0);
-
-            return new Phaser.Math.Vector2(0, 0);
-        }
-        else if (r > this.outerDecelerationRadius)
-        {
-            desiredSpeed = this.maxSpeed;
-        }
-        else // ((r > this.innerDecelerationRadius) && r < this.r2)
-        {
-            //  v(r) = ((v_max) / (r2 - r1)) * (r - r1)
-            desiredSpeed = ((this.maxSpeed) / (this.outerDecelerationRadius - this.innerDecelerationRadius)) * (r - this.innerDecelerationRadius);
-            scaledMaxAcceleration = (r - this.innerDecelerationRadius) / (this.outerDecelerationRadius - this.innerDecelerationRadius) * this.maxAcceleration;
-        }
-
-        let desiredVelocity = targetRelativePosition.clone();
-
-        desiredVelocity.setLength(desiredSpeed);
-
-        let currentVelocityXY = this.entity.getVelocity();
-
-        let currentVelocity = new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
-
-        let acceleration = desiredVelocity.clone();
-        acceleration.subtract(currentVelocity);
-
-        if (acceleration.length() > scaledMaxAcceleration)
-        {
-            acceleration.setLength(scaledMaxAcceleration);
-        }
-
-        return acceleration;
     }
 
     steer(steeringForce) {
