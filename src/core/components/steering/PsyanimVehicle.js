@@ -19,7 +19,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
      */
 
     maxSpeed = 5;
-    maxAcceleration = 0.2;
 
     turnSpeed = 0.2;
 

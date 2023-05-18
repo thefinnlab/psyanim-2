@@ -7,6 +7,11 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
 import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlayfightBehavior';
+import PsyanimPlayfightAgent from '../../core/components/steering/agents/PsyanimPlayfightAgent';
+
+import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
+import PsyanimArriveBehavior from '../../core/components/steering/PsyanimArriveBehavior';
+import PsyanimFleeBehavior from '../../core/components/steering/PsyanimFleeBehavior';
 
 export default class PsyanimPlayfightTest extends PsyanimScene {
 
@@ -23,86 +28,95 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         let outerDecelerationRadius = 30;
         let panicDistance = 30;
 
+        let breakDuration = 1500;
+
+        let maxChargeSpeed = 8;
+        let maxChargeAcceleration = 0.4;
+
+        let maxWanderSpeed = 2;
+        let maxWanderAcceleration = 0.2;
+
+        let maxFleeSpeed = 4;
+        let maxFleeAcceleration = 0.4;
+
         // setup wander agent 1
-        let wanderAgent1 = this.addEntity('wanderAgent1', 500, 300, {
+        let agent1 = this.addEntity('agent1', 500, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
             base: 16, altitude: 32, radius: circleAgentRadius, color: 0xff0000         
         });
 
-        let wanderTarget1 = this.addEntity('wanderTarget1', 0, 0, { isEmpty: true });
+        let vehicle1 = agent1.addComponent(PsyanimVehicle);
 
-        this.wanderVehicle1 = wanderAgent1.addComponent(PsyanimVehicle);
-        this.wanderVehicle1.target = wanderTarget1;
-        this.wanderVehicle1.setState(PsyanimVehicle.STATE.SEEK);
+        let arrive1 = agent1.addComponent(PsyanimArriveBehavior);
+        arrive1.maxSpeed = maxChargeSpeed;
+        arrive1.maxAcceleration = maxChargeAcceleration;
+        arrive1.innerDecelerationRadius = circleAgentRadius;
+        arrive1.outerDecelerationRadius = outerDecelerationRadius;
 
-        this.wanderVehicle1.innerDecelerationRadius = circleAgentRadius;
-        this.wanderVehicle1.outerDecelerationRadius = outerDecelerationRadius;
-        this.wanderVehicle1.panicDistance = panicDistance;
+        let flee1 = agent1.addComponent(PsyanimFleeBehavior);
+        flee1.maxSpeed = maxFleeSpeed;
+        flee1.maxAcceleration = maxFleeAcceleration;
+        flee1.panicDistance = panicDistance;
 
-        this.wander1 = wanderAgent1.addComponent(PsyanimWanderBehavior);
-        this.wander1.vehicle = this.wanderVehicle1;
-        this.wander1.target = wanderTarget1;
+        let seek1 = agent1.addComponent(PsyanimSeekBehavior);
+        seek1.maxSpeed = maxWanderSpeed;
+        seek1.maxAcceleration = maxWanderAcceleration;
 
-        this.playfight1 = wanderAgent1.addComponent(PsyanimPlayfightBehavior);
-        this.playfight1.vehicle = this.wanderVehicle1;
-        this.playfight1.wander = this.wander1;
+        let wander1 = agent1.addComponent(PsyanimWanderBehavior);
+        wander1.seekBehavior = seek1;
+
+        let playfight1 = agent1.addComponent(PsyanimPlayfightBehavior);
+        playfight1.breakDuration = breakDuration;
+        playfight1.fleeBehavior = flee1;
+        playfight1.arriveBehavior = arrive1;
+        playfight1.wanderBehavior = wander1;
+
+        let playfightAgent1 = agent1.addComponent(PsyanimPlayfightAgent);
+        playfightAgent1.playfightBehavior = playfight1;
+        playfightAgent1.vehicle = vehicle1;
 
         // setup wander agent 2
-        let wanderAgent2 = this.addEntity('wanderAgent2', 300, 300, {
+        let agent2 = this.addEntity('agent2', 300, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            base: 16, altitude: 32, radius: circleAgentRadius, color: 0x0000ff         
+            base: 16, altitude: 32, radius: circleAgentRadius, color: 0x00ff00         
         });
 
-        let wanderTarget2 = this.addEntity('wanderTarget2', 0, 0, { isEmpty: true });
+        let vehicle2 = agent2.addComponent(PsyanimVehicle);
 
-        this.wanderVehicle2 = wanderAgent2.addComponent(PsyanimVehicle);
-        this.wanderVehicle2.target = wanderTarget2;
-        this.wanderVehicle2.setState(PsyanimVehicle.STATE.SEEK);
+        let arrive2 = agent2.addComponent(PsyanimArriveBehavior);
+        arrive2.maxSpeed = maxChargeSpeed;
+        arrive2.maxAcceleration = maxChargeAcceleration;
+        arrive2.innerDecelerationRadius = circleAgentRadius;
+        arrive2.outerDecelerationRadius = outerDecelerationRadius;
 
-        this.wanderVehicle2.innerDecelerationRadius = circleAgentRadius;
-        this.wanderVehicle2.outerDecelerationRadius = outerDecelerationRadius;
-        this.wanderVehicle2.panicDistance = panicDistance;
+        let flee2 = agent2.addComponent(PsyanimFleeBehavior);
+        flee2.maxSpeed = maxFleeSpeed;
+        flee2.maxAcceleration = maxFleeAcceleration;
+        flee2.panicDistance = panicDistance;
 
-        this.wander2 = wanderAgent2.addComponent(PsyanimWanderBehavior);
-        this.wander2.vehicle = this.wanderVehicle2;
-        this.wander2.target = wanderTarget2;
+        let seek2 = agent2.addComponent(PsyanimSeekBehavior);
+        seek2.maxSpeed = maxWanderSpeed;
+        seek2.maxAcceleration = maxWanderAcceleration;
 
-        this.playfight2 = wanderAgent2.addComponent(PsyanimPlayfightBehavior);
-        this.playfight2.vehicle = this.wanderVehicle2;
-        this.playfight2.wander = this.wander2;
+        let wander2 = agent2.addComponent(PsyanimWanderBehavior);
+        wander2.seekBehavior = seek2;
 
-        // setup charge targets for each playfight component
-        this.playfight1.setChargeTarget(wanderAgent2);
-        this.playfight2.setChargeTarget(wanderAgent1);
+        let playfight2 = agent2.addComponent(PsyanimPlayfightBehavior);
+        playfight2.breakDuration = breakDuration;
+        playfight2.fleeBehavior = flee2;
+        playfight2.arriveBehavior = arrive2;
+        playfight2.wanderBehavior = wander2;
 
-        // setup inputs
-        this._testKeys = {
-            C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
-            V: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
-            ZERO: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
-        }
+        let playfightAgent2 = agent2.addComponent(PsyanimPlayfightAgent);
+        playfightAgent2.playfightBehavior = playfight2;
+        playfightAgent2.vehicle = vehicle2;
+
+        // setup targets for each playfight component
+        playfightAgent1.setTarget(agent2);
+        playfightAgent2.setTarget(agent1);
 
         // TODO: for the screen boundary wrapping to look good, 
         // we need the wander behavior to avoid the screen boundaries...
         this.screenBoundary.wrap = false;
-    }
-
-    update(t, dt) {
-
-        super.update(t, dt);
-
-        if (Phaser.Input.Keyboard.JustDown(this._testKeys.ZERO))
-        {
-            this.wander.enabled = !this.wander.enabled;
-            this.wanderVehicle.enabled = !this.wanderVehicle.enabled;
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this._testKeys.C))
-        {
-            this.playfight.setState(PsyanimPlayfight.STATE.CHARGING);
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this._testKeys.V))
-        {
-            this.playfight.setState(PsyanimPlayfight.STATE.WANDERING);
-        }
     }
 }

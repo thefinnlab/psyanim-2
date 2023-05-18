@@ -25,15 +25,6 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
         this.target = this.entity.scene.addEntity(this.entity.name + '_wanderTarget', 0, 0, { isEmpty: true });
     }
 
-    onEnable() {
-
-        this.vehicle.enabled = true;
-
-        this.vehicle.maxSpeed = 4;
-        this.vehicle.target = this.target;
-        this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
-    }
-
     getSteering() {
 
         // compute angle change

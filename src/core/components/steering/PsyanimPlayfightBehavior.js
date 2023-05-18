@@ -2,8 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-import PsyanimVehicle from './PsyanimVehicle';
-
 export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     static STATE = {
@@ -14,113 +12,135 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     breakDuration = 1500;
 
-    maxChargeSpeed = 8;
-    maxChargeAcceleration = 0.4;
-
-    maxWanderSpeed = 2;
-    maxWanderAcceleration = 0.2;
-
-    maxFleeSpeed = 4;
-    maxFleeAcceleration = 0.4;
-
-    vehicle = null;
-    wander = null;
+    fleeBehavior = null;
+    arriveBehavior = null;
+    wanderBehavior = null;
 
     constructor(entity) {
 
         super(entity);
 
-        this._state = PsyanimPlayfight.STATE.WANDERING;
-
         this._breakTimer = 0;
+
+        this.setState(PsyanimPlayfightBehavior.STATE.WANDERING);
     }
 
-    setChargeTarget(target) {
+    setTarget(target) {
 
-        if (this._chargeTarget != null)
+        if (this._target != null)
         {
-            this.setOnCollideWith(this._chargeTarget.body, null);   
+            this.setOnCollideWith(this._target.body, null);   
         }
 
-        this._chargeTarget = target;
+        this._target = target;
 
-        this.entity.setOnCollideWith(this._chargeTarget.body, () => this._handleCollision());
+        this.entity.setOnCollideWith(this._target.body, () => this._handleCollision());
     }
 
     _handleCollision() {
 
-        this.setState(PsyanimPlayfight.STATE.FLEEING);
+        this.playfightBehavior.setState(PsyanimPlayfightBehavior.STATE.FLEEING);
+    }
+
+    get maxSpeed() {
+
+        switch (this._state) {
+
+            case PsyanimPlayfightBehavior.STATE.CHARGING:
+
+                return this.arriveBehavior.maxSpeed;
+
+            case PsyanimPlayfightBehavior.STATE.WANDERING:
+
+                return this.wanderBehavior.seekBehavior.maxSpeed;
+
+            case PsyanimPlayfightBehavior.STATE.FLEEING:
+
+                return this.fleeBehavior.maxSpeed;
+        }
+    }
+
+    get maxAcceleration() {
+
+        switch (this._state) {
+
+            case PsyanimPlayfightBehavior.STATE.CHARGING:
+
+                return this.arriveBehavior.maxAcceleration;
+
+            case PsyanimPlayfightBehavior.STATE.WANDERING:
+
+                return this.wanderBehavior.seekBehavior.maxAcceleration;
+
+            case PsyanimPlayfightBehavior.STATE.FLEEING:
+
+                return this.fleeBehavior.maxAcceleration;
+            }
     }
 
     setState(state) {
 
         this._state = state;
 
-        switch (state) {
+        switch (this._state) {
 
-            case PsyanimPlayfight.STATE.CHARGING:
-
-                this.wander.enabled = false;
-
-                this.vehicle.target = this._chargeTarget;
-
-                this.vehicle.maxSpeed = this.maxChargeSpeed;
-                this.vehicle.maxChargeAcceleration = this.maxChargeAcceleration;
-
-                this.vehicle.setState(PsyanimVehicle.STATE.ARRIVE);
+            case PsyanimPlayfightBehavior.STATE.CHARGING:
 
                 break;
 
-            case PsyanimPlayfight.STATE.WANDERING:
+            case PsyanimPlayfightBehavior.STATE.WANDERING:
 
-                this.wander.enabled = true;
+                break;
 
-                this.wander.maxSpeed = this.maxWanderSpeed;
-                this.vehicle.maxAcceleration = this.maxWanderAcceleration;
+            case PsyanimPlayfightBehavior.STATE.FLEEING:
 
                 this._breakTimer = 0;
-
-                break;
-
-            case PsyanimPlayfight.STATE.FLEEING:
-
-                this.wander.enabled = false;
-
-                this.vehicle.target = this._chargeTarget;
-                this.vehicle.maxSpeed = this.maxFleeSpeed;
-                this.vehicle.maxAcceleration = this.maxFleeAcceleration;
-
-                this.vehicle.setState(PsyanimVehicle.STATE.ADVANCED_FLEE);
 
                 break;
         }
     }
 
-    update(t, dt) {
+    updateBreakTimer(dt) {
 
-        super.update(t, dt);
-
-        if (this._state == PsyanimPlayfight.STATE.WANDERING)
+        if (this._state == PsyanimPlayfightBehavior.STATE.WANDERING)
         {
             this._breakTimer += dt;
 
             if (this._breakTimer >= this.breakDuration)
             {
-                this.setState(PsyanimPlayfight.STATE.CHARGING);
+                this.setState(PsyanimPlayfightBehavior.STATE.CHARGING);
             }
         }
-        else if (this._state == PsyanimPlayfight.STATE.FLEEING)
+        else if (this._state == PsyanimPlayfightBehavior.STATE.FLEEING)
         {
             this._breakTimer += dt;
 
             let distanceToTarget = this.entity.position
-                .subtract(this._chargeTarget.position)
+                .subtract(this._target.position)
                 .length();
 
-            if (distanceToTarget > this.vehicle.panicDistance)
+            if (distanceToTarget > this.fleeBehavior.panicDistance)
             {
-                this.setState(PsyanimPlayfight.STATE.WANDERING);
+                this.setState(PsyanimPlayfightBehavior.STATE.WANDERING);
             }
+        }
+    }
+
+    getSteering(target) {
+
+        switch (this._state) {
+
+            case PsyanimPlayfightBehavior.STATE.CHARGING:
+
+                return this.arriveBehavior.getSteering(target);
+
+            case PsyanimPlayfightBehavior.STATE.WANDERING:
+
+                return this.wanderBehavior.getSteering();
+
+            case PsyanimPlayfightBehavior.STATE.FLEEING:
+
+                return this.fleeBehavior.getSteering(target);
         }
     }
 }
