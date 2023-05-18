@@ -4,6 +4,9 @@ import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPathFollowBehavior from '../../core/components/steering/PsyanimPathFollowBehavior';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
+import PsyanimPathFollowAgent from '../../core/components/steering/agents/PsyanimPathFollowAgent';
+import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
+import PsyanimPathRenderer from '../../core/components/rendering/PsyanimPathRenderer';
 
 export default class PathFollowTest extends PsyanimScene {
 
@@ -20,11 +23,10 @@ export default class PathFollowTest extends PsyanimScene {
         this._testKeys = {
             U: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.U),
             I: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I),
-            R: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R)
         };
 
         // create agent that follows a path
-        this.agent1 = this.addEntity('agent1', 400, 300, {
+        this.agent = this.addEntity('agent', 400, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
@@ -33,17 +35,28 @@ export default class PathFollowTest extends PsyanimScene {
         let predictionTime = 25;
         let targetOffset = 50;
 
-        this.vehicle1 = this.agent1.addComponent(PsyanimVehicle);
-        this.vehicle1.turnSpeed = Infinity;
-        this.vehicle1.maxSpeed = 3;
+        let vehicle = this.agent.addComponent(PsyanimVehicle);
+        vehicle.turnSpeed = Infinity;
+        vehicle.maxSpeed = 3;
 
-        this.pathFollow1 = this.agent1.addComponent(PsyanimPathFollowBehavior);
-        this.pathFollow1.p1 = new Phaser.Math.Vector2(30, 430);
-        this.pathFollow1.p2 = new Phaser.Math.Vector2(770, 370);
-        this.pathFollow1.predictionTime = predictionTime;
-        this.pathFollow1.targetOffset = targetOffset;
-        this.pathFollow1.pathRenderer.enabled = true;
+        let seek = this.agent.addComponent(PsyanimSeekBehavior);
 
+        this.pathFollow = this.agent.addComponent(PsyanimPathFollowBehavior);
+        this.pathFollow.p1 = new Phaser.Math.Vector2(30, 430);
+        this.pathFollow.p2 = new Phaser.Math.Vector2(770, 370);
+        this.pathFollow.predictionTime = predictionTime;
+        this.pathFollow.targetOffset = targetOffset;
+        this.pathFollow.seekBehavior = seek;
+
+        let pathFollowAgent = this.agent.addComponent(PsyanimPathFollowAgent);
+        pathFollowAgent.vehicle = vehicle;
+        pathFollowAgent.pathFollowBehavior = this.pathFollow;
+
+        // setup path renderer
+        this.pathRenderer = this.agent.addComponent(PsyanimPathRenderer);
+        this.pathRenderer.setRadius(this.pathFollow.radius);
+
+        // setup stopping radius
         this.stoppingRadius = predictionTime + targetOffset;
     }
 
@@ -54,18 +67,25 @@ export default class PathFollowTest extends PsyanimScene {
         // process control inputs
         if (Phaser.Input.Keyboard.JustDown(this._testKeys.U))
         {
-            this.pathFollow1.enabled = false;
+            this.pathRenderer.enabled = false;
         }
         else if (Phaser.Input.Keyboard.JustDown(this._testKeys.I))
         {
-            this.pathFollow1.enabled = true;
+            this.pathRenderer.enabled = true;
         }
 
-        let distanceToPathEnd = this.agent1.position.subtract(this.pathFollow1.p2).length();
+        if (this.pathRenderer.enabled)
+        {
+            this.pathRenderer.p1 = this.pathFollow.p1;
+            this.pathRenderer.p2 = this.pathFollow.p2;
+            this.pathRenderer.setRadius(this.pathFollow.radius);
+        }
+
+        let distanceToPathEnd = this.agent.position.subtract(this.pathFollow.p2).length();
 
         if (distanceToPathEnd < this.stoppingRadius)
         {
-            this.pathFollow1.reverseDirection();
+            this.pathFollow.reverseDirection();
         }
     }
 }

@@ -9,6 +9,10 @@ import PsyanimConstants from '../../PsyanimConstants';
 
 export default class PsyanimPathFollowBehavior extends PsyanimComponent {
 
+    vehicle;
+
+    seekBehavior = null;
+
     p1 = new Phaser.Math.Vector2(0, 0);
     p2 = new Phaser.Math.Vector2(400, 300);
 
@@ -21,39 +25,13 @@ export default class PsyanimPathFollowBehavior extends PsyanimComponent {
 
         super(entity);
 
-        this.vehicle = this.entity.getComponent(PsyanimVehicle);
-
-        if (!this.vehicle)
-        {
-            this.vehicle = this.entity.addComponent(PsyanimVehicle);
-        }
-
-        this.pathRenderer = this.entity.addComponent(PsyanimPathRenderer);
-
-        this.pathRenderer.setRadius(this.radius);    
-
-        this.pathRenderer.enabled = false;
-
         this._seekTarget = entity.scene.addEntity(this.entity.name + 'SeekTarget', 0, 0, {
             isEmpty: true,
         }, {
             collisionFilter: PsyanimConstants.DEFAULT_VISUAL_ONLY_COLLISION_FILTER
         });
 
-        this.vehicle.target = this._seekTarget;
-        this.vehicle.setState(PsyanimVehicle.STATE.SEEK);
-
         this.computeSeekTargetLocation();
-    }
-
-    onEnable() {
-
-        this.pathRenderer.enabled = true;
-    }
-
-    onDisable() {
-
-        this.pathRenderer.enabled = false;
     }
 
     computeSeekTargetLocation() {
@@ -107,18 +85,10 @@ export default class PsyanimPathFollowBehavior extends PsyanimComponent {
         this.p2 = end;
     }
 
-    update(t, dt) {
-
-        super.update(t, dt);
-
-        if (this.pathRenderer.enabled)
-        {
-            // update path renderer
-            this.pathRenderer.p1 = this.p1;
-            this.pathRenderer.p2 = this.p2;
-            this.pathRenderer.setRadius(this.radius);
-        }
+    getSteering(target) {
 
         this.computeSeekTargetLocation();
+
+        return this.seekBehavior.getSteering(this._seekTarget);
     }
 }
