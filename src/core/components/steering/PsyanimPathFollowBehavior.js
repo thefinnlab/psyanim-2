@@ -2,14 +2,11 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-import PsyanimVehicle from './PsyanimVehicle';
-
-import PsyanimPathRenderer from '../rendering/PsyanimPathRenderer';
 import PsyanimConstants from '../../PsyanimConstants';
 
 export default class PsyanimPathFollowBehavior extends PsyanimComponent {
 
-    vehicle;
+    vehicle = null;
 
     seekBehavior = null;
 
@@ -85,7 +82,7 @@ export default class PsyanimPathFollowBehavior extends PsyanimComponent {
         this.p2 = end;
     }
 
-    getSteering(target) {
+    getSteering() {
 
         this.computeSeekTargetLocation();
 

@@ -10,26 +10,30 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         super(entity);
 
-        this.sensorBody = null;
-
         this.events = new Phaser.Events.EventEmitter();
 
-        // TODO: add a default body here, but that means you'll have 
-        //  unsub from the onCollideCallback() when you setup a new one
+        this._sensorBody = null;
+
+        this.setBody({
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 10
+        });
     }
 
     setBody(shapeParams) {
 
-        if (this.sensorBody != null)
+        if (this._sensorBody != null)
         {
-            this.sensorBody.onCollideCallback = null;
+            this.entity.scene.matter.world.remove(this._sensorBody);
+
+            this._sensorBody = null;
         }
 
         switch (shapeParams.shapeType) 
         {
             case PsyanimConstants.SHAPE_TYPE.CIRCLE:
 
-                this.sensorBody = this.entity.scene.matter.add.circle(
+                this._sensorBody = this.entity.scene.matter.add.circle(
                     this.entity.x, this.entity.y,
                     shapeParams.radius,
                     {
@@ -66,11 +70,11 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         let body = null;
 
-        if (bodyA != this.entity.body)
+        if (bodyA != this._sensorBody && bodyA != this.entity.body)
         {
             body = bodyA;
         }
-        else if (bodyB != this.entity.body)
+        else if (bodyB != this._sensorBody && bodyB != this.entity.body)
         {
             body = bodyB;
         }
@@ -91,11 +95,11 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         let body = null;
 
-        if (bodyA != this.entity.body)
+        if (bodyA != this._sensorBody && bodyA != this.entity.body)
         {
             body = bodyA;
         }
-        else if (bodyB != this.entity.body)
+        else if (bodyB != this._sensorBody && bodyB != this.entity.body)
         {
             body = bodyB;
         }
@@ -115,6 +119,6 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         // keep bodies in sync with entity
         this.entity.scene.matter.body
-            .setPosition(this.sensorBody, { x: this.entity.x, y: this.entity.y });
+            .setPosition(this._sensorBody, { x: this.entity.x, y: this.entity.y });
     }
 }

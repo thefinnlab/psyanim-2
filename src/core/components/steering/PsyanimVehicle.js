@@ -31,10 +31,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     // TODO: these need to move into their respective behavior components:
 
-    collisionRadius = 8;
-
-    sensorRadius = 75;
-
     chargeDuration = 2.0;
 
     constructor(entity) {
@@ -45,56 +41,12 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
         // TODO: these are all for collision avoidance
         this._collisionAvoidanceEnabled = false;
-
-        this._collisionAvoidanceTarget = null;
-
-        this._nearbyAgents = [];
     }
 
     onDisable() {
 
         this.entity.setVelocity(0, 0);
         this.entity.body.force = { x: 0, y: 0 };
-    }
-
-    enableCollisionAvoidance() {
-
-        if (this.sensor)
-        {
-            this.sensor.enabled = true;
-        }
-        else // setup collision avoidance for the first time
-        {
-            this.sensor = this.entity.addComponent(PsyanimSensor);
-
-            this.sensor.setBody({
-                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-                radius: this.sensorRadius
-            });
-    
-            this.sensor.events.on('triggerEnter', (entity) => {
-                this._nearbyAgents.push(entity);
-            });
-    
-            this.sensor.events.on('triggerExit', (entity) => {
-
-                this._nearbyAgents = this._nearbyAgents.filter(e => {
-                    e.name != entity.name;
-                });
-            });    
-        }
-
-        this._collisionAvoidanceEnabled = true;
-    }
-
-    disableCollisionAvoidance() {
-
-        if (this.sensor)
-        {
-            this.sensor.enabled = false;
-        }
-
-        this._collisionAvoidanceEnabled = false;
     }
 
     setState(state) {
@@ -253,90 +205,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         return acceleration;
     }
 
-    _avoidCollisions() {
-
-        /**
-         *  Algorithm here is lifted mostly straight from 'Artificial Inteligence for Games'
-         *  by Ian Millington, 3rd ed.
-         */
-
-        if (this._nearbyAgents.length == 0)
-        {
-            this._collisionAvoidanceTarget = null;
-            return new Phaser.Math.Vector2(0, 0);
-        }
-
-        let shortestTime = Infinity;
-        let firstTarget = null;
-        let firstMinSeparation = 0;
-        let firstDistance = 0;
-        let firstRelativePosition = null;
-        let firstRelativeVelocity = null;
-
-        // find target for collision avoidance
-        for (let i = 0; i < this._nearbyAgents.length; ++i)
-        {
-            let agent = this._nearbyAgents[i];
-            let relativePosition = agent.position.subtract(this.entity.position);
-            let relativeVelocity = agent.velocity.subtract(this.entity.velocity);
-            let relativeSpeed = relativeVelocity.length();
-
-            let timeToCollision = -1 * relativePosition.dot(relativeVelocity) / (relativeSpeed * relativeSpeed);
-
-            let distance = relativePosition.length();
-
-            let minSeparation = relativeVelocity.clone()
-                .scale(timeToCollision)
-                .add(relativePosition)
-                .length();
-
-            if (minSeparation > 2 * this.collisionRadius)
-            {
-                continue;
-            }
-
-            if (timeToCollision > 0 && timeToCollision < shortestTime)
-            {
-                shortestTime = timeToCollision;
-                firstTarget = agent;
-                firstMinSeparation = minSeparation;
-                firstDistance = distance;
-                firstRelativePosition = relativePosition;
-                firstRelativeVelocity = relativeVelocity;
-            }
-        }
-
-        // calculate steering
-        if (firstTarget == null)
-        {
-            this._collisionAvoidanceTarget = null;
-            return new Phaser.Math.Vector2(0, 0);
-        }
-
-        let finalRelativePosition = null;
-
-        if (firstMinSeparation <= 0 || firstDistance < 2 * this.collisionRadius)
-        {
-            finalRelativePosition = firstTarget.position.subtract(this.entity.position);
-        }
-        else
-        {
-            finalRelativePosition = firstRelativePosition.add(firstRelativeVelocity.scale(shortestTime));
-        }
-
-        this._collisionAvoidanceTarget = {
-            target: firstTarget,
-            finalRelativePosition: finalRelativePosition.clone()
-        };
-
-        finalRelativePosition.normalize();
-
-        let steering = finalRelativePosition.scale(-1 * this.maxAcceleration);
-
-        return steering;
-    }
-
-    steer(steeringForce) {
+    steer(steering) {
 
         // clamp velocity to max speed
         let velocity = new Phaser.Math.Vector2(this.entity.getVelocity());
@@ -349,23 +218,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
         }
 
         // apply steering
-        let steering = null;
-
-        if (this._collisionAvoidanceEnabled)
-        {
-            steering = this._avoidCollisions();
-
-            if (steering.length() < 1e-3)
-            {
-                steering = steeringForce;
-            }    
-        }
-        else
-        {
-            steering = steeringForce;
-        }
-
-        if (this.useAcceleration)
+        if (this.useAcceleration) // interpret steering as acceleration
         {
             let dv = steering.clone().scale(dt);
 
@@ -375,7 +228,7 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
             this.entity.setVelocity(newVelocity.x, newVelocity.y);
         }
-        else
+        else // interpret steering as force
         {
             this.entity.applyForce(steering);
         }

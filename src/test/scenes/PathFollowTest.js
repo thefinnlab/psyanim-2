@@ -55,6 +55,9 @@ export default class PathFollowTest extends PsyanimScene {
         // setup path renderer
         this.pathRenderer = this.agent.addComponent(PsyanimPathRenderer);
         this.pathRenderer.setRadius(this.pathFollow.radius);
+        this.pathRenderer.p1 = this.pathFollow.p1;
+        this.pathRenderer.p2 = this.pathFollow.p2;
+        this.pathRenderer.setRadius(this.pathFollow.radius);
 
         // setup stopping radius
         this.stoppingRadius = predictionTime + targetOffset;
@@ -72,13 +75,6 @@ export default class PathFollowTest extends PsyanimScene {
         else if (Phaser.Input.Keyboard.JustDown(this._testKeys.I))
         {
             this.pathRenderer.enabled = true;
-        }
-
-        if (this.pathRenderer.enabled)
-        {
-            this.pathRenderer.p1 = this.pathFollow.p1;
-            this.pathRenderer.p2 = this.pathFollow.p2;
-            this.pathRenderer.setRadius(this.pathFollow.radius);
         }
 
         let distanceToPathEnd = this.agent.position.subtract(this.pathFollow.p2).length();

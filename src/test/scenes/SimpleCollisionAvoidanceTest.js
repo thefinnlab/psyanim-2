@@ -3,7 +3,11 @@ import Phaser from 'phaser';
 import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPathFollowBehavior from '../../core/components/steering/PsyanimPathFollowBehavior';
+import PsyanimCollisionAvoidanceBehavior from '../../core/components/steering/PsyanimCollisionAvoidanceBehavior';
+import PsyanimPathFollowAgent from '../../core/components/steering/agents/PsyanimPathFollowAgent';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
+import PsyanimPathRenderer from '../../core/components/rendering/PsyanimPathRenderer';
+import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
 
 import PsyanimCollisionAvoidanceDebug from '../../core/components/rendering/PsyanimCollisionAvoidanceDebug';
 
@@ -41,6 +45,16 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
         this.stoppingRadius = predictionTime + targetOffset;
         this.agentComponents = [];
 
+        // setup path renderer
+        let path = this.addEntity('path', 0, 0, {
+            isEmpty: true
+        });
+
+        this.pathRenderer = path.addComponent(PsyanimPathRenderer);
+        this.pathRenderer.setRadius(30);
+        this.pathRenderer.p1 = new Phaser.Math.Vector2(200, 300);
+        this.pathRenderer.p2 = new Phaser.Math.Vector2(600, 300);
+
         for (let i = 0; i < agentData.length; ++i)
         {
             let spawnPoint = agentData[i].spawnPoint;
@@ -55,37 +69,43 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
             });
 
             let vehicle = agent.addComponent(PsyanimVehicle);
-            vehicle.turnSpeed = Infinity;
+            vehicle.turnSpeed = 100;
             vehicle.maxSpeed = 2.5;
-
             vehicle.maxAcceleration = 0.2;
-            vehicle.sensorRadius = 100;
 
-            vehicle.collisionRadius = 16;
+            let collisionAvoidance = agent.addComponent(PsyanimCollisionAvoidanceBehavior);
+            collisionAvoidance.setSensorRadius(100);
+            collisionAvoidance.collisionRadius = 16;
 
-            vehicle.enableCollisionAvoidance();
+            let seek = agent.addComponent(PsyanimSeekBehavior);
 
             let pathFollow = agent.addComponent(PsyanimPathFollowBehavior);
             pathFollow.p1 = pathStart;
             pathFollow.p2 = pathEnd;
             pathFollow.predictionTime = predictionTime;
             pathFollow.targetOffset = targetOffset;
-            pathFollow.pathRenderer.enabled = true;
+            pathFollow.seekBehavior = seek;
+
+            let pathFollowAgent = agent.addComponent(PsyanimPathFollowAgent);
+            pathFollowAgent.collisionAvoidanceBehavior = collisionAvoidance;
+            pathFollowAgent.vehicle = vehicle;
+            pathFollowAgent.pathFollowBehavior = pathFollow;
 
             this.agentComponents.push({
                 agent: agent,
                 pathFollow: pathFollow,
-                vehicle: vehicle
+                vehicle: vehicle,
+                collisionAvoidance: collisionAvoidance
             });
         }
+        
+        this.redAgentComponents = this.agentComponents.find(c => c.agent.name == 'red');
 
-        this.yellowAgentComponents = this.agentComponents.find(c => c.agent.name == 'yellow');
+        // let yellowAgent = this.redAgentComponents.agent;
 
-        let yellowAgent = this.yellowAgentComponents.agent;
+        // let debugRenderer = yellowAgent.addComponent(PsyanimCollisionAvoidanceDebug);
 
-        let debugRenderer = yellowAgent.addComponent(PsyanimCollisionAvoidanceDebug);
-
-        debugRenderer.vehicle = yellowAgent.getComponent(PsyanimVehicle);
+        // debugRenderer.vehicle = yellowAgent.getComponent(PsyanimVehicle);
         
         this._testKeys = {
             C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
@@ -98,11 +118,11 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
         if (Phaser.Input.Keyboard.JustDown(this._testKeys.C)) {
 
-            let yellowAgentVehicle = this.yellowAgentComponents.vehicle;
+            let collisionAvoidance = this.redAgentComponents.collisionAvoidance;
 
             let agentInfo = "nearby agents: ";
             
-            yellowAgentVehicle._nearbyAgents.forEach(v => {
+            collisionAvoidance._nearbyAgents.forEach(v => {
 
                 agentInfo += v.name + ", ";
             });
