@@ -6,6 +6,9 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
+import PsyanimAdvancedFleeBehavior from '../../core/components/steering/PsyanimAdvancedFleeBehavior';
+import PsyanimAdvancedFleeAgent from '../../core/components/steering/agents/PsyanimAdvancedFleeAgent';
+
 import PsyanimLineRenderer from '../../core/components/rendering/PsyanimLineRenderer';
 
 export default class AdvancedFleeTest extends PsyanimScene {
@@ -45,16 +48,30 @@ export default class AdvancedFleeTest extends PsyanimScene {
         this.vehicle2 = this.agent2.addComponent(PsyanimVehicle);
 
         this.vehicle1.target = mouseTarget;
-        this.vehicle1.setState(PsyanimVehicle.STATE.ADVANCED_FLEE);
         this.vehicle1.maxSpeed = 4;
-        this.vehicle1.panicDistance = 100;
-
+        
         this.vehicle2.target = mouseTarget;
-        this.vehicle2.setState(PsyanimVehicle.STATE.ADVANCED_FLEE);
         this.vehicle2.maxSpeed = 3;
         this.vehicle2.nSamplesForLookSmoothing = 10;
-        this.vehicle2.setAdvancedFleeSearchDirection(false);
-        this.vehicle2.panicDistance = 100;
+
+        this.flee1 = this.agent1.addComponent(PsyanimAdvancedFleeBehavior);
+        this.flee2 = this.agent2.addComponent(PsyanimAdvancedFleeBehavior);
+
+        this.flee1.panicDistance = 100;
+
+        this.flee2.panicDistance = 100;
+        this.flee2.setAdvancedFleeSearchDirection(false);
+
+        this.fleeAgent1 = this.agent1.addComponent(PsyanimAdvancedFleeAgent);
+        this.fleeAgent2 = this.agent2.addComponent(PsyanimAdvancedFleeAgent);
+
+        this.fleeAgent1.vehicle = this.vehicle1;
+        this.fleeAgent1.target = mouseTarget;
+        this.fleeAgent1.advancedFleeBehavior = this.flee1;
+
+        this.fleeAgent2.vehicle = this.vehicle2;
+        this.fleeAgent2.target = mouseTarget;
+        this.fleeAgent2.advancedFleeBehavior = this.flee2;
 
         this.lineRenderer1 = this.agent1.addComponent(PsyanimLineRenderer);
         this.lineRenderer2 = this.agent2.addComponent(PsyanimLineRenderer);
@@ -67,11 +84,11 @@ export default class AdvancedFleeTest extends PsyanimScene {
         super.update(t, dt);
 
         this.lineRenderer1.originPoint = this.agent1.position;
-        this.lineRenderer1.endPoint = this.vehicle1._advancedFleeDirection.clone()
+        this.lineRenderer1.endPoint = this.flee1._advancedFleeDirection.clone()
             .add(this.agent1.position);
 
         this.lineRenderer2.originPoint = this.agent2.position;
-        this.lineRenderer2.endPoint = this.vehicle2._advancedFleeDirection.clone()
+        this.lineRenderer2.endPoint = this.flee1._advancedFleeDirection.clone()
             .add(this.agent2.position);
     }
 }
