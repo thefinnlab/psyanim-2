@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimCollisionAvoidanceDebug extends PsyanimComponent {
 
-    vehicle = null;
+    collisionAvoidanceBehavior = null;
 
     constructor(entity) {
 
@@ -22,7 +22,7 @@ export default class PsyanimCollisionAvoidanceDebug extends PsyanimComponent {
 
         this.graphics.clear();
 
-        let _collisionAvoidanceTarget = this.vehicle._collisionAvoidanceTarget;
+        let _collisionAvoidanceTarget = this.collisionAvoidanceBehavior._collisionAvoidanceTarget;
 
         if (_collisionAvoidanceTarget == null)
         {

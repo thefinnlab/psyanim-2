@@ -24,16 +24,16 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
         let agentData = [
             {
-                spawnPoint: new Phaser.Math.Vector2(225, 300),
-                pathStart: new Phaser.Math.Vector2(200, 300),
-                pathEnd: new Phaser.Math.Vector2(600, 300),
+                spawnPoint: new Phaser.Math.Vector2(225, 299),
+                pathStart: new Phaser.Math.Vector2(200, 299),
+                pathEnd: new Phaser.Math.Vector2(600, 299),
                 color: 0xff0000,
                 name: 'red'
             },
             {
-                spawnPoint: new Phaser.Math.Vector2(575, 300),
-                pathStart: new Phaser.Math.Vector2(600, 300),
-                pathEnd: new Phaser.Math.Vector2(200, 300),
+                spawnPoint: new Phaser.Math.Vector2(575, 301),
+                pathStart: new Phaser.Math.Vector2(600, 301),
+                pathEnd: new Phaser.Math.Vector2(200, 301),
                 color: 0xffff00,
                 name: 'yellow'
             }
@@ -101,11 +101,9 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
         
         this.redAgentComponents = this.agentComponents.find(c => c.agent.name == 'red');
 
-        // let yellowAgent = this.redAgentComponents.agent;
+        let debugRenderer = this.redAgentComponents.agent.addComponent(PsyanimCollisionAvoidanceDebug);
 
-        // let debugRenderer = yellowAgent.addComponent(PsyanimCollisionAvoidanceDebug);
-
-        // debugRenderer.vehicle = yellowAgent.getComponent(PsyanimVehicle);
+        debugRenderer.collisionAvoidanceBehavior = this.redAgentComponents.collisionAvoidance;
         
         this._testKeys = {
             C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
