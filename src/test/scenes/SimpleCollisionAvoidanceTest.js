@@ -75,7 +75,7 @@ export default class SimpleCollisionAvoidanceTest extends PsyanimScene {
 
             let collisionAvoidance = agent.addComponent(PsyanimCollisionAvoidanceBehavior);
             collisionAvoidance.setSensorRadius(100);
-            collisionAvoidance.collisionRadius = 16;
+            collisionAvoidance.collisionRadius = 10;
 
             let seek = agent.addComponent(PsyanimSeekBehavior);
 
