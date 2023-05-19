@@ -6,6 +6,7 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
+import PsyanimWanderDebug from '../../core/components/rendering/PsyanimWanderDebug';
 import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlayfightBehavior';
 import PsyanimPlayfightAgent from '../../core/components/steering/agents/PsyanimPlayfightAgent';
 
@@ -38,6 +39,10 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         let maxWanderSpeed = 4;
         let maxWanderAcceleration = 0.2;
 
+        let wanderRadius = 50;
+        let wanderOffset = 250;
+        let maxWanderAngleChangePerFrame = 20;
+
         let maxFleeSpeed = 4;
         let maxFleeAcceleration = 0.4;
 
@@ -69,6 +74,12 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         let wander1 = agent1.addComponent(PsyanimWanderBehavior);
         wander1.seekBehavior = seek1;
+        wander1.radius = wanderRadius;
+        wander1.offset = wanderOffset;
+        wander1.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
+
+        // let wanderDebug1 = agent1.addComponent(PsyanimWanderDebug);
+        // wanderDebug1.wanderBehavior = wander1;
 
         let collisionAvoidance1 = agent1.addComponent(PsyanimCollisionAvoidanceBehavior);
         collisionAvoidance1.setSensorRadius(collisionAvoidanceSensorRadius);
@@ -110,6 +121,9 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         let wander2 = agent2.addComponent(PsyanimWanderBehavior);
         wander2.seekBehavior = seek2;
+        wander2.radius = wanderRadius;
+        wander2.offset = wanderOffset;
+        wander2.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
 
         let collisionAvoidance2 = agent2.addComponent(PsyanimCollisionAvoidanceBehavior);
         collisionAvoidance2.setSensorRadius(collisionAvoidanceSensorRadius);
