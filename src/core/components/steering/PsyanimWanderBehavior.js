@@ -53,7 +53,6 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
 
         if (collisions && collisions.length != 0)
         {
-            console.log("found collisions for entity: " + this.entity.name);
             return true;
         }
 

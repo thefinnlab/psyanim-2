@@ -27,6 +27,10 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         super.create();
 
+        /**
+         *  Global Test Parameters
+         */
+
         let circleAgentRadius = 12;
         let outerDecelerationRadius = 30;
         let panicDistance = 30;
@@ -49,103 +53,72 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         let collisionAvoidanceSensorRadius = 100;
         let collisionAvoidanceCollisionRadius = 40;
 
-        // setup wander agent 1
-        let agent1 = this.addEntity('agent1', 500, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            base: 16, altitude: 32, radius: circleAgentRadius, color: 0xff0000         
-        });
+        /**
+         *  Create playfight agents
+         */
 
-        let vehicle1 = agent1.addComponent(PsyanimVehicle);
+        let agents = [];
 
-        let arrive1 = agent1.addComponent(PsyanimArriveBehavior);
-        arrive1.maxSpeed = maxChargeSpeed;
-        arrive1.maxAcceleration = maxChargeAcceleration;
-        arrive1.innerDecelerationRadius = circleAgentRadius;
-        arrive1.outerDecelerationRadius = outerDecelerationRadius;
+        for (let i = 0 ; i < 2; ++i)
+        {
+            let agent = this.addEntity('agent' + i, 500, 300, {
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+                base: 16, altitude: 32, radius: circleAgentRadius, color: (i == 0 ? 0xff0000 : 0x0000ff)
+            });
+    
+            let vehicle = agent.addComponent(PsyanimVehicle);
+    
+            let arrive = agent.addComponent(PsyanimArriveBehavior);
+            arrive.maxSpeed = maxChargeSpeed;
+            arrive.maxAcceleration = maxChargeAcceleration;
+            arrive.innerDecelerationRadius = circleAgentRadius;
+            arrive.outerDecelerationRadius = outerDecelerationRadius;
+    
+            let flee = agent.addComponent(PsyanimFleeBehavior);
+            flee.maxSpeed = maxFleeSpeed;
+            flee.maxAcceleration = maxFleeAcceleration;
+            flee.panicDistance = panicDistance;
+    
+            let seek = agent.addComponent(PsyanimSeekBehavior);
+            seek.maxSpeed = maxWanderSpeed;
+            seek.maxAcceleration = maxWanderAcceleration;
+    
+            let wander = agent.addComponent(PsyanimWanderBehavior);
+            wander.seekBehavior = seek;
+            wander.radius = wanderRadius;
+            wander.offset = wanderOffset;
+            wander.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
+    
+            // let wanderDebug = agent.addComponent(PsyanimWanderDebug);
+            // wanderDebug.wanderBehavior = wander;
+    
+            let collisionAvoidance = agent.addComponent(PsyanimCollisionAvoidanceBehavior);
+            collisionAvoidance.setSensorRadius(collisionAvoidanceSensorRadius);
+            collisionAvoidance.collisionRadius = collisionAvoidanceCollisionRadius;
+    
+            let playfight = agent.addComponent(PsyanimPlayfightBehavior);
+            playfight.breakDuration = breakDuration;
+            playfight.fleeBehavior = flee;
+            playfight.arriveBehavior = arrive;
+            playfight.wanderBehavior = wander;
+            playfight.collisionAvoidanceBehavior = collisionAvoidance;
+    
+            let playfightAgent = agent.addComponent(PsyanimPlayfightAgent);
+            playfightAgent.playfightBehavior = playfight;
+            playfightAgent.vehicle = vehicle;
 
-        let flee1 = agent1.addComponent(PsyanimFleeBehavior);
-        flee1.maxSpeed = maxFleeSpeed;
-        flee1.maxAcceleration = maxFleeAcceleration;
-        flee1.panicDistance = panicDistance;
+            agents.push(agent);
+        }
 
-        let seek1 = agent1.addComponent(PsyanimSeekBehavior);
-        seek1.maxSpeed = maxWanderSpeed;
-        seek1.maxAcceleration = maxWanderAcceleration;
+        /**
+         *  Setup targets for the playfight agents
+         */
+        let playfightAgent1 = agents[0].getComponent(PsyanimPlayfightAgent);
+        let playfightAgent2 = agents[1].getComponent(PsyanimPlayfightAgent);
 
-        let wander1 = agent1.addComponent(PsyanimWanderBehavior);
-        wander1.seekBehavior = seek1;
-        wander1.radius = wanderRadius;
-        wander1.offset = wanderOffset;
-        wander1.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
+        playfightAgent1.setTarget(agents[1]);
+        playfightAgent2.setTarget(agents[0]);
 
-        // let wanderDebug1 = agent1.addComponent(PsyanimWanderDebug);
-        // wanderDebug1.wanderBehavior = wander1;
-
-        let collisionAvoidance1 = agent1.addComponent(PsyanimCollisionAvoidanceBehavior);
-        collisionAvoidance1.setSensorRadius(collisionAvoidanceSensorRadius);
-        collisionAvoidance1.collisionRadius = collisionAvoidanceCollisionRadius;
-
-        let playfight1 = agent1.addComponent(PsyanimPlayfightBehavior);
-        playfight1.breakDuration = breakDuration;
-        playfight1.fleeBehavior = flee1;
-        playfight1.arriveBehavior = arrive1;
-        playfight1.wanderBehavior = wander1;
-        playfight1.collisionAvoidanceBehavior = collisionAvoidance1;
-
-        let playfightAgent1 = agent1.addComponent(PsyanimPlayfightAgent);
-        playfightAgent1.playfightBehavior = playfight1;
-        playfightAgent1.vehicle = vehicle1;
-
-        // setup wander agent 2
-        let agent2 = this.addEntity('agent2', 300, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            base: 16, altitude: 32, radius: circleAgentRadius, color: 0x00ff00         
-        });
-
-        let vehicle2 = agent2.addComponent(PsyanimVehicle);
-
-        let arrive2 = agent2.addComponent(PsyanimArriveBehavior);
-        arrive2.maxSpeed = maxChargeSpeed;
-        arrive2.maxAcceleration = maxChargeAcceleration;
-        arrive2.innerDecelerationRadius = circleAgentRadius;
-        arrive2.outerDecelerationRadius = outerDecelerationRadius;
-
-        let flee2 = agent2.addComponent(PsyanimFleeBehavior);
-        flee2.maxSpeed = maxFleeSpeed;
-        flee2.maxAcceleration = maxFleeAcceleration;
-        flee2.panicDistance = panicDistance;
-
-        let seek2 = agent2.addComponent(PsyanimSeekBehavior);
-        seek2.maxSpeed = maxWanderSpeed;
-        seek2.maxAcceleration = maxWanderAcceleration;
-
-        let wander2 = agent2.addComponent(PsyanimWanderBehavior);
-        wander2.seekBehavior = seek2;
-        wander2.radius = wanderRadius;
-        wander2.offset = wanderOffset;
-        wander2.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
-
-        let collisionAvoidance2 = agent2.addComponent(PsyanimCollisionAvoidanceBehavior);
-        collisionAvoidance2.setSensorRadius(collisionAvoidanceSensorRadius);
-        collisionAvoidance2.collisionRadius = collisionAvoidanceCollisionRadius;
-
-        let playfight2 = agent2.addComponent(PsyanimPlayfightBehavior);
-        playfight2.breakDuration = breakDuration;
-        playfight2.fleeBehavior = flee2;
-        playfight2.arriveBehavior = arrive2;
-        playfight2.wanderBehavior = wander2;
-        playfight2.collisionAvoidanceBehavior = collisionAvoidance2;
-
-        let playfightAgent2 = agent2.addComponent(PsyanimPlayfightAgent);
-        playfightAgent2.playfightBehavior = playfight2;
-        playfightAgent2.vehicle = vehicle2;
-
-        // setup targets for each playfight component
-        playfightAgent1.setTarget(agent2);
-        playfightAgent2.setTarget(agent1);
-
-        // TODO: for the screen boundary wrapping to look good, 
-        // we need the wander behavior to avoid the screen boundaries...
         this.screenBoundary.wrap = false;
     }
 }
