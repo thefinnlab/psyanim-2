@@ -31,14 +31,14 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
          *  Global Test Parameters
          */
 
-        let circleAgentRadius = 12;
-        let outerDecelerationRadius = 30;
-        let panicDistance = 30;
-
         let breakDuration = 2000;
 
         let maxChargeSpeed = 9;
         let maxChargeAcceleration = 0.4;
+
+        let circleAgentRadius = 12;
+        let outerDecelerationRadius = 30;
+        let panicDistance = 30;
 
         let maxWanderSpeed = 4;
         let maxWanderAcceleration = 0.2;
