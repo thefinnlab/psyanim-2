@@ -7,13 +7,14 @@ export default class PsyanimPlayfightAgent extends PsyanimComponent {
 
     playfightBehavior = null;
     vehicle = null;
-
     constructor(entity) {
 
         super(entity);
     }
 
     setTarget(target) {
+
+        this._target = target;
 
         this.playfightBehavior.setTarget(target);
     }

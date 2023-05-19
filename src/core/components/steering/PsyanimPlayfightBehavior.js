@@ -15,6 +15,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
     fleeBehavior = null;
     arriveBehavior = null;
     wanderBehavior = null;
+    collisionAvoidanceBehavior = null;
 
     constructor(entity) {
 
@@ -22,7 +23,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
         this._breakTimer = 0;
 
-        this.setState(PsyanimPlayfightBehavior.STATE.WANDERING);
+        this._setState(PsyanimPlayfightBehavior.STATE.WANDERING);
     }
 
     setTarget(target) {
@@ -39,7 +40,9 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     _handleCollision() {
 
-        this.playfightBehavior.setState(PsyanimPlayfightBehavior.STATE.FLEEING);
+        console.log("collision occured at t = " + this.entity.scene.time.now / 1000);
+
+        this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);
     }
 
     get maxSpeed() {
@@ -78,7 +81,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
             }
     }
 
-    setState(state) {
+    _setState(state) {
 
         this._state = state;
 
@@ -108,7 +111,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             if (this._breakTimer >= this.breakDuration)
             {
-                this.setState(PsyanimPlayfightBehavior.STATE.CHARGING);
+                this._setState(PsyanimPlayfightBehavior.STATE.CHARGING);
             }
         }
         else if (this._state == PsyanimPlayfightBehavior.STATE.FLEEING)
@@ -121,7 +124,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             if (distanceToTarget > this.fleeBehavior.panicDistance)
             {
-                this.setState(PsyanimPlayfightBehavior.STATE.WANDERING);
+                this._setState(PsyanimPlayfightBehavior.STATE.WANDERING);
             }
         }
     }
@@ -135,6 +138,13 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
                 return this.arriveBehavior.getSteering(target);
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
+
+                let avoidanceSteering = this.collisionAvoidanceBehavior.getSteering();
+
+                if (avoidanceSteering.length() > 1e-3)
+                {
+                    return avoidanceSteering;
+                }
 
                 return this.wanderBehavior.getSteering();
 

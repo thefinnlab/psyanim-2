@@ -13,6 +13,8 @@ import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehav
 import PsyanimArriveBehavior from '../../core/components/steering/PsyanimArriveBehavior';
 import PsyanimFleeBehavior from '../../core/components/steering/PsyanimFleeBehavior';
 
+import PsyanimCollisionAvoidanceBehavior from '../../core/components/steering/PsyanimCollisionAvoidanceBehavior';
+
 export default class PsyanimPlayfightTest extends PsyanimScene {
 
     constructor() {
@@ -28,16 +30,19 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         let outerDecelerationRadius = 30;
         let panicDistance = 30;
 
-        let breakDuration = 1500;
+        let breakDuration = 2000;
 
-        let maxChargeSpeed = 8;
+        let maxChargeSpeed = 9;
         let maxChargeAcceleration = 0.4;
 
-        let maxWanderSpeed = 2;
+        let maxWanderSpeed = 4;
         let maxWanderAcceleration = 0.2;
 
         let maxFleeSpeed = 4;
         let maxFleeAcceleration = 0.4;
+
+        let collisionAvoidanceSensorRadius = 100;
+        let collisionAvoidanceCollisionRadius = 40;
 
         // setup wander agent 1
         let agent1 = this.addEntity('agent1', 500, 300, {
@@ -65,11 +70,16 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         let wander1 = agent1.addComponent(PsyanimWanderBehavior);
         wander1.seekBehavior = seek1;
 
+        let collisionAvoidance1 = agent1.addComponent(PsyanimCollisionAvoidanceBehavior);
+        collisionAvoidance1.setSensorRadius(collisionAvoidanceSensorRadius);
+        collisionAvoidance1.collisionRadius = collisionAvoidanceCollisionRadius;
+
         let playfight1 = agent1.addComponent(PsyanimPlayfightBehavior);
         playfight1.breakDuration = breakDuration;
         playfight1.fleeBehavior = flee1;
         playfight1.arriveBehavior = arrive1;
         playfight1.wanderBehavior = wander1;
+        playfight1.collisionAvoidanceBehavior = collisionAvoidance1;
 
         let playfightAgent1 = agent1.addComponent(PsyanimPlayfightAgent);
         playfightAgent1.playfightBehavior = playfight1;
@@ -101,11 +111,16 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         let wander2 = agent2.addComponent(PsyanimWanderBehavior);
         wander2.seekBehavior = seek2;
 
+        let collisionAvoidance2 = agent2.addComponent(PsyanimCollisionAvoidanceBehavior);
+        collisionAvoidance2.setSensorRadius(collisionAvoidanceSensorRadius);
+        collisionAvoidance2.collisionRadius = collisionAvoidanceCollisionRadius;
+
         let playfight2 = agent2.addComponent(PsyanimPlayfightBehavior);
         playfight2.breakDuration = breakDuration;
         playfight2.fleeBehavior = flee2;
         playfight2.arriveBehavior = arrive2;
         playfight2.wanderBehavior = wander2;
+        playfight2.collisionAvoidanceBehavior = collisionAvoidance2;
 
         let playfightAgent2 = agent2.addComponent(PsyanimPlayfightAgent);
         playfightAgent2.playfightBehavior = playfight2;
