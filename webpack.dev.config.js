@@ -2,15 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-    mode: 'production',
-    entry: './experiments/index.js',
+    mode: 'development',
+    entry: './src/index.js',
     devtool: 'inline-source-map',
     devServer: {
-        static: './dist',
-    },
-    performance: {
-        maxEntrypointSize: 100000000,
-        maxAssetSize: 100000000,
+        static: './devdist',
     },
     plugins: [
         new HtmlWebpackPlugin({
@@ -20,7 +16,7 @@ module.exports = {
       ],
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'devdist'),
         clean: true,
     },
     optimization: {

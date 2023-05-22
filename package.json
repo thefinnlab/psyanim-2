@@ -5,10 +5,16 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    
     "test": "echo \"Error: no test specified\" && exit 1",
+    
     "build": "webpack",
+    "start": "webpack serve --open",
     "watch": "webpack --watch",
-    "start": "webpack serve --open"
+
+    "devbuild": "webpack --config ./webpack.dev.config.js",
+    "devwatch": "webpack --config ./webpack.dev.config.js --watch",
+    "devstart": "webpack serve --config ./webpack.dev.config.js --open "
   },
   "keywords": [],
   "author": "",
