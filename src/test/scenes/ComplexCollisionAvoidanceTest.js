@@ -7,6 +7,9 @@ import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
 import PsyanimCollisionAvoidanceDebug from '../../core/components/rendering/PsyanimCollisionAvoidanceDebug';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class ComplexCollisionAvoidanceTest extends PsyanimScene {
 
     constructor() {

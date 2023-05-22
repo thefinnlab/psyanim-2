@@ -8,6 +8,9 @@ import PsyanimFleeBehavior from '../../core/components/steering/PsyanimFleeBehav
 import PsyanimEvadeBehavior from '../../core/components/steering/PsyanimEvadeBehavior';
 import PsyanimEvadeAgent from '../../core/components/steering/agents/PsyanimEvadeAgent';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class EvadeTest extends PsyanimScene {
 
     constructor() {
@@ -18,6 +21,11 @@ export default class EvadeTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         // create player
         let player = this.addEntity('player', 400, 300, {

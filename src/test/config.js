@@ -1,4 +1,4 @@
-import Phaser, { Physics } from 'phaser';
+import Phaser from 'phaser';
 
 import ArriveTest from './scenes/ArriveTest';
 import SeekTest from './scenes/SeekTest';

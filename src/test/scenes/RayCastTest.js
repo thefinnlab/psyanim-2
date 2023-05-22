@@ -6,6 +6,9 @@ import PsyanimEntity from '../../core/PsyanimEntity';
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class RayCastTest extends PsyanimScene {
 
     constructor() {
@@ -16,6 +19,11 @@ export default class RayCastTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+        .addComponent(PsyanimPhysicsSettingsController).entity
+        .addComponent(PsyanimSceneChangeController);    
 
         // create player
         this.player = this.addEntity('player', 400, 300, {
@@ -64,7 +72,6 @@ export default class RayCastTest extends PsyanimScene {
         {
             collisions.forEach(c => {
 
-                console.log("raycast hit gameobject named: " + c.bodyA.gameObject.name);
                 c.bodyA.gameObject.setTint(0xff0000);
             });
         }

@@ -10,6 +10,9 @@ import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehav
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimWanderDebug from '../../core/components/rendering/PsyanimWanderDebug';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class WanderTest extends PsyanimScene {
 
     constructor() {
@@ -20,6 +23,11 @@ export default class WanderTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         let nAgents = 20;
 

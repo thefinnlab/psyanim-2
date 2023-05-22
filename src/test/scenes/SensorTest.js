@@ -6,6 +6,9 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 import PsyanimSensor from '../../core/components/physics/PsyanimSensor';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class SensorTest extends PsyanimScene {
 
     constructor() {
@@ -16,6 +19,11 @@ export default class SensorTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         let wall = this.addEntity('wall', 650, 200, {
             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,

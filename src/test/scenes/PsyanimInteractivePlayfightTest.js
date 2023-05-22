@@ -9,6 +9,9 @@ import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
 import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlayfightBehavior';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
 
     constructor() {
@@ -19,6 +22,11 @@ export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         // create player
         this.player = this.addEntity('player', 400, 300, {

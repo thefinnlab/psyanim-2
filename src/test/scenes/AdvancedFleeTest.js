@@ -11,6 +11,9 @@ import PsyanimAdvancedFleeAgent from '../../core/components/steering/agents/Psya
 
 import PsyanimLineRenderer from '../../core/components/rendering/PsyanimLineRenderer';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class AdvancedFleeTest extends PsyanimScene {
 
     constructor() {
@@ -21,6 +24,11 @@ export default class AdvancedFleeTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         // setup mouse follow target
         let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {

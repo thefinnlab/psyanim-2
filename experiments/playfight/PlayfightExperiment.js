@@ -1,34 +1,41 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from "../../core/scene/PsyanimScene";
+import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
-import PsyanimConstants from '../../core/PsyanimConstants';
+import PsyanimConstants from '../../src/core/PsyanimConstants';
 
-import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
-import PsyanimWanderBehavior from '../../core/components/steering/PsyanimWanderBehavior';
-import PsyanimWanderDebug from '../../core/components/rendering/PsyanimWanderDebug';
-import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlayfightBehavior';
-import PsyanimPlayfightAgent from '../../core/components/steering/agents/PsyanimPlayfightAgent';
+import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 
-import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
-import PsyanimArriveBehavior from '../../core/components/steering/PsyanimArriveBehavior';
-import PsyanimFleeBehavior from '../../core/components/steering/PsyanimFleeBehavior';
+import PsyanimWanderBehavior from '../../src/core/components/steering/PsyanimWanderBehavior';
+import PsyanimSeekBehavior from '../../src/core/components/steering/PsyanimSeekBehavior';
+import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArriveBehavior';
+import PsyanimFleeBehavior from '../../src/core/components/steering/PsyanimFleeBehavior';
+import PsyanimCollisionAvoidanceBehavior from '../../src/core/components/steering/PsyanimCollisionAvoidanceBehavior';
 
-import PsyanimCollisionAvoidanceBehavior from '../../core/components/steering/PsyanimCollisionAvoidanceBehavior';
+import PsyanimPlayfightBehavior from '../../src/core/components/steering/PsyanimPlayfightBehavior';
+import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent';
 
-import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
-
-export default class PsyanimPlayfightTest extends PsyanimScene {
+export default class PlayfightExperiment extends PsyanimScene {
 
     constructor() {
 
-        super('Playfight Test');
+        super('Playfight Experiment');
     }
 
     create() {
 
         super.create();
+
+        /**
+         *  TODO:
+         * 
+         *      - create a PsyanimTextRenderer component that allows you to write text to the screen
+         *          and updates it when it's 'text' property is changed
+         * 
+         *      - create a component that runs an 'experiment' and when it ends, it shows a UI overlay
+         *          (white screen) and throws an event of some sort
+         * 
+         */
 
         /**
          *  Global Test Parameters
@@ -60,12 +67,6 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
          *  Create playfight agents
          */
 
-        // setup scene controls
-        this.addEntity('sceneControls')
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
-
-        // setup agents
         let agents = [];
 
         for (let i = 0 ; i < 2; ++i)

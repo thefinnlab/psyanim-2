@@ -10,6 +10,9 @@ import PsyanimPlayerController from '../../core/components/controllers/PsyanimPl
 import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
 import PsyanimSeekAgent from '../../core/components/steering/agents/PsyanimSeekAgent';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class SeekTest extends PsyanimScene {
 
     constructor() {
@@ -20,6 +23,11 @@ export default class SeekTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         // setup mouse follow target
         let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {

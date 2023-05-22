@@ -40,8 +40,6 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     _handleCollision() {
 
-        console.log("collision occured at t = " + this.entity.scene.time.now / 1000);
-
         this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);
     }
 

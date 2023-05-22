@@ -5,7 +5,7 @@ import PsyanimGeomUtils from './PsyanimGeomUtils';
 
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
-    constructor(scene, name, x, y, shapeParams = { isEmpty: false }, matterOptions = {}) {
+    constructor(scene, name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         /**
          *  Some helpful tips:
@@ -138,22 +138,20 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         // there's a bug in phaser where 'label' doesn't get set for non-primitive bodies
         this.body.label = this.name;
 
-        if (shapeParams.isEmpty)
+        if (Object.hasOwn(shapeParams, 'isEmpty') && shapeParams.isEmpty == true)
         {
+            this.visible = false;
+
             this.body.isSleeping = true;
             this.body.isSensor = true;
-            this.visible = false;
         }
         else
         {
             this.visible = Object.hasOwn(shapeParams, 'visible') ? shapeParams.visible : defaultShapeParams.visible;
+
+            this.body.isSensor = matterOptions.isSensor;
+            this.body.isSleeping = matterOptions.isSleeping;
         }
-
-        // TODO: should this be placed in the previous 'else' block above?
-        this.body.isSensor = matterOptions.isSensor;
-        this.body.isSleeping = matterOptions.isSleeping;
-
-        // console.log(this.name + ' collision filter = ' + JSON.stringify(matterOptions));
 
         let mass = 100;
 

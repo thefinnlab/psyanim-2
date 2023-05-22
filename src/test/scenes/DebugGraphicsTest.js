@@ -8,6 +8,9 @@ import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimCircleRenderer from '../../core/components/rendering/PsyanimCircleRenderer';
 import PsyanimLineRenderer from '../../core/components/rendering/PsyanimLineRenderer';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class DebugGraphicsTest extends PsyanimScene {
 
     constructor() {
@@ -18,6 +21,11 @@ export default class DebugGraphicsTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         // create player
         this.player = this.addEntity('player', 400, 300, {

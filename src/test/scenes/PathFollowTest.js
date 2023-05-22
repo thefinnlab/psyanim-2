@@ -8,6 +8,9 @@ import PsyanimPathFollowAgent from '../../core/components/steering/agents/Psyani
 import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
 import PsyanimPathRenderer from '../../core/components/rendering/PsyanimPathRenderer';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class PathFollowTest extends PsyanimScene {
 
     constructor() {
@@ -18,6 +21,11 @@ export default class PathFollowTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         // setup keyboard controls for testing
         this._testKeys = {

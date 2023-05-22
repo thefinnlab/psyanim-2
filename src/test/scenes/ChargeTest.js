@@ -4,6 +4,9 @@ import PsyanimScene from '../../core/scene/PsyanimScene';
 import PsyanimConstants from '../../core/PsyanimConstants';
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
 export default class ChargeTest extends PsyanimScene {
 
     constructor() {
@@ -14,6 +17,11 @@ export default class ChargeTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         this.target = this.addEntity('target', 750, 550, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
