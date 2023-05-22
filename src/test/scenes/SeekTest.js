@@ -76,6 +76,12 @@ export default class SeekTest extends PsyanimScene {
         let seek2 = agent2.addComponent(PsyanimSeekBehavior);
         let seek3 = agent3.addComponent(PsyanimSeekBehavior);
 
+        seek1.maxSpeed = 5;
+        seek2.maxSpeed = 4;
+        seek3.maxSpeed = 6;
+
+        seek3.maxAcceleration = 0.4;
+
         // add seek agent component to our agents
         let seekAgent1 = agent1.addComponent(PsyanimSeekAgent);
         let seekAgent2 = agent2.addComponent(PsyanimSeekAgent);

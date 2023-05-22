@@ -17,8 +17,7 @@ export default class PsyanimAdvancedFleeAgent extends PsyanimComponent {
 
         super.update(t, dt);
 
-        this.advancedFleeBehavior.maxSpeed = this.vehicle.maxSpeed;
-        this.advancedFleeBehavior.maxAcceleration = this.vehicle.maxAcceleration;
+        this.vehicle.maxSpeed = this.advancedFleeBehavior.maxSpeed;
 
         let steering = this.advancedFleeBehavior.getSteering(this.target);
 

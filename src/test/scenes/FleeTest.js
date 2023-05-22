@@ -46,14 +46,14 @@ export default class FleeTest extends PsyanimScene {
         let vehicle1 = agent1.addComponent(PsyanimVehicle);
         let vehicle2 = agent2.addComponent(PsyanimVehicle);
 
-        vehicle1.maxSpeed = 4;
-        vehicle2.maxSpeed = 3;
-
         vehicle2.nSamplesForLookSmoothing = 10;
 
         // add flee behavior components to our agents
         let flee1 = agent1.addComponent(PsyanimFleeBehavior);
         let flee2 = agent2.addComponent(PsyanimFleeBehavior);
+
+        flee1.maxSpeed = 6;
+        flee1.maxSpeed = 5;
 
         // add flee agent component to our agents
         let fleeAgent1 = agent1.addComponent(PsyanimFleeAgent);

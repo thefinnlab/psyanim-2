@@ -38,9 +38,9 @@ export default class ArriveTest extends PsyanimScene {
 
         let vehicle = agent.addComponent(PsyanimVehicle);
 
-        vehicle.maxSpeed = 8;
-
         let arriveBehavior = agent.addComponent(PsyanimArriveBehavior);
+
+        arriveBehavior.maxSpeed = 8;
 
         let arriveAgent = agent.addComponent(PsyanimArriveAgent);
         arriveAgent.arriveBehavior = arriveBehavior;

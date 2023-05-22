@@ -17,8 +17,7 @@ export default class PsyanimSeekAgent extends PsyanimComponent {
 
         super.update(t, dt);
 
-        this.seekBehavior.maxSpeed = this.vehicle.maxSpeed;
-        this.seekBehavior.maxAcceleration = this.vehicle.maxAcceleration;
+        this.vehicle.maxSpeed = this.seekBehavior.maxSpeed;
 
         let steering = this.seekBehavior.getSteering(this.target);
 

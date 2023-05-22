@@ -48,17 +48,17 @@ export default class AdvancedFleeTest extends PsyanimScene {
         this.vehicle2 = this.agent2.addComponent(PsyanimVehicle);
 
         this.vehicle1.target = mouseTarget;
-        this.vehicle1.maxSpeed = 4;
         
         this.vehicle2.target = mouseTarget;
-        this.vehicle2.maxSpeed = 3;
         this.vehicle2.nSamplesForLookSmoothing = 10;
 
         this.flee1 = this.agent1.addComponent(PsyanimAdvancedFleeBehavior);
         this.flee2 = this.agent2.addComponent(PsyanimAdvancedFleeBehavior);
 
+        this.flee1.maxSpeed = 6;
         this.flee1.panicDistance = 100;
 
+        this.flee2.maxSpeed = 5;
         this.flee2.panicDistance = 100;
         this.flee2.setAdvancedFleeSearchDirection(false);
 
