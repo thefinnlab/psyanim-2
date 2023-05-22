@@ -15,7 +15,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
           title: 'Output Management',
-          template: './src/assets/index.html'
+          template: './experiments/index.html'
         }),
       ],
     output: {
