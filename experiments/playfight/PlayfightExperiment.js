@@ -25,7 +25,7 @@ export default class PlayfightExperiment extends PsyanimExperiment {
          */
 
         // declare your variables that vary from run to run in arrays
-        let experimentDurations = [4000, 6000, 7000, 8000, 10000];
+        let experimentDurations = [4000, 6000, 7000, 8000, 10000]; // every experiment run needs a duration set
         let breakDurations = [2000, 2500, 3000, 3500, 4000];
 
         let maxChargeSpeeds = [8, 9, 10, 11, 12];
