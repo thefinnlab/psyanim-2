@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import EmptyScene from './playfight/EmptyScene';
 import PlayfightExperiment from './playfight/PlayfightExperiment';
 
 export default class Config {
@@ -12,7 +13,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [PlayfightExperiment],
+            scene: [PlayfightExperiment, EmptyScene],
             physics: {
                 default: 'matter',
                 matter: {

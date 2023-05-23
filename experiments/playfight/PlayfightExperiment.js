@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from '../../src/core/scene/PsyanimScene';
+import PsyanimExperiment from '../../src/core/scene/PsyanimExperiment';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 
@@ -14,11 +14,57 @@ import PsyanimAdvancedFleeBehavior from '../../src/core/components/steering/Psya
 import PsyanimPlayfightBehavior from '../../src/core/components/steering/PsyanimPlayfightBehavior';
 import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent';
 
-export default class PlayfightExperiment extends PsyanimScene {
+export default class PlayfightExperiment extends PsyanimExperiment {
 
     constructor() {
 
         super('Playfight Experiment');
+
+        /**
+         *  Setup parameters for this experiment
+         */
+
+        // declare your variables that vary from run to run in arrays
+        let experimentDurations = [4000, 6000, 7000, 8000, 10000];
+        let breakDurations = [2000, 2500, 3000, 3500, 4000];
+
+        let maxChargeSpeeds = [8, 9, 10, 11, 12];
+
+        // declare the rest of your parameters that remain constant between runs in a single object
+        let parameterSet = {
+
+            maxChargeAcceleration: 0.4,
+
+            circleAgentRadius: 12,
+            outerDecelerationRadius: 30,
+    
+            maxWanderSpeed: 4,
+            maxWanderAcceleration: 0.2,
+    
+            wanderRadius: 50,
+            wanderOffset: 250,
+            maxWanderAngleChangePerFrame: 20,
+    
+            maxFleeSpeed: 4,
+            maxFleeAcceleration: 0.2,
+            panicDistance: 100,
+        };
+
+        // add parameter sets to this experiment, updating the value as you add each one
+        for (let i = 0; i < 5; ++i)
+        {
+            parameterSet.experimentDuration = experimentDurations[i];
+
+            parameterSet.breakDuration = breakDurations[i];
+            parameterSet.maxChargeSpeed = maxChargeSpeeds[i];
+
+            this.addParameterSet(parameterSet);
+        }
+    }
+
+    init() {
+
+        super.init();
     }
 
     create() {
@@ -26,27 +72,9 @@ export default class PlayfightExperiment extends PsyanimScene {
         super.create();
 
         /**
-         *  Global Test Parameters
+         *  Get the current parameter set for this experiment run
          */
-
-        let breakDuration = 2000;
-
-        let maxChargeSpeed = 9;
-        let maxChargeAcceleration = 0.4;
-
-        let circleAgentRadius = 12;
-        let outerDecelerationRadius = 30;
-
-        let maxWanderSpeed = 4;
-        let maxWanderAcceleration = 0.2;
-
-        let wanderRadius = 50;
-        let wanderOffset = 250;
-        let maxWanderAngleChangePerFrame = 20;
-
-        let maxFleeSpeed = 4;
-        let maxFleeAcceleration = 0.2;
-        let panicDistance = 100;
+        let params = this.currentParameterSet;
 
         /**
          *  Create playfight agents
@@ -58,34 +86,34 @@ export default class PlayfightExperiment extends PsyanimScene {
         {
             let agent = this.addEntity('agent' + i, 200 + i * 400, 300, {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-                base: 16, altitude: 32, radius: circleAgentRadius, color: (i == 0 ? 0xff0000 : 0x0000ff)
+                radius: params.circleAgentRadius, color: (i == 0 ? 0xff0000 : 0x0000ff)
             });
     
             let vehicle = agent.addComponent(PsyanimVehicle);
     
             let arrive = agent.addComponent(PsyanimArriveBehavior);
-            arrive.maxSpeed = maxChargeSpeed;
-            arrive.maxAcceleration = maxChargeAcceleration;
-            arrive.innerDecelerationRadius = circleAgentRadius;
-            arrive.outerDecelerationRadius = outerDecelerationRadius;
+            arrive.maxSpeed = params.maxChargeSpeed;
+            arrive.maxAcceleration = params.maxChargeAcceleration;
+            arrive.innerDecelerationRadius = params.circleAgentRadius;
+            arrive.outerDecelerationRadius = params.outerDecelerationRadius;
     
             let flee = agent.addComponent(PsyanimAdvancedFleeBehavior);
-            flee.maxSpeed = maxFleeSpeed;
-            flee.maxAcceleration = maxFleeAcceleration;
-            flee.panicDistance = panicDistance;
+            flee.maxSpeed = params.maxFleeSpeed;
+            flee.maxAcceleration = params.maxFleeAcceleration;
+            flee.panicDistance = params.panicDistance;
     
             let seek = agent.addComponent(PsyanimSeekBehavior);
-            seek.maxSpeed = maxWanderSpeed;
-            seek.maxAcceleration = maxWanderAcceleration;
+            seek.maxSpeed = params.maxWanderSpeed;
+            seek.maxAcceleration = params.maxWanderAcceleration;
     
             let wander = agent.addComponent(PsyanimWanderBehavior);
             wander.seekBehavior = seek;
-            wander.radius = wanderRadius;
-            wander.offset = wanderOffset;
-            wander.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
+            wander.radius = params.wanderRadius;
+            wander.offset = params.wanderOffset;
+            wander.maxWanderAngleChangePerFrame = params.maxWanderAngleChangePerFrame;
     
             let playfight = agent.addComponent(PsyanimPlayfightBehavior);
-            playfight.breakDuration = breakDuration;
+            playfight.breakDuration = params.breakDuration;
             playfight.fleeBehavior = flee;
             playfight.arriveBehavior = arrive;
             playfight.wanderBehavior = wander;
