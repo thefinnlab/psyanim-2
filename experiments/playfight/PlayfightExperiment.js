@@ -9,8 +9,7 @@ import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 import PsyanimWanderBehavior from '../../src/core/components/steering/PsyanimWanderBehavior';
 import PsyanimSeekBehavior from '../../src/core/components/steering/PsyanimSeekBehavior';
 import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArriveBehavior';
-import PsyanimFleeBehavior from '../../src/core/components/steering/PsyanimFleeBehavior';
-import PsyanimCollisionAvoidanceBehavior from '../../src/core/components/steering/PsyanimCollisionAvoidanceBehavior';
+import PsyanimAdvancedFleeBehavior from '../../src/core/components/steering/PsyanimAdvancedFleeBehavior';
 
 import PsyanimPlayfightBehavior from '../../src/core/components/steering/PsyanimPlayfightBehavior';
 import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent';
@@ -27,17 +26,6 @@ export default class PlayfightExperiment extends PsyanimScene {
         super.create();
 
         /**
-         *  TODO:
-         * 
-         *      - create a PsyanimTextRenderer component that allows you to write text to the screen
-         *          and updates it when it's 'text' property is changed
-         * 
-         *      - create a component that runs an 'experiment' and when it ends, it shows a UI overlay
-         *          (white screen) and throws an event of some sort
-         * 
-         */
-
-        /**
          *  Global Test Parameters
          */
 
@@ -48,7 +36,6 @@ export default class PlayfightExperiment extends PsyanimScene {
 
         let circleAgentRadius = 12;
         let outerDecelerationRadius = 30;
-        let panicDistance = 30;
 
         let maxWanderSpeed = 4;
         let maxWanderAcceleration = 0.2;
@@ -58,10 +45,8 @@ export default class PlayfightExperiment extends PsyanimScene {
         let maxWanderAngleChangePerFrame = 20;
 
         let maxFleeSpeed = 4;
-        let maxFleeAcceleration = 0.4;
-
-        let collisionAvoidanceSensorRadius = 100;
-        let collisionAvoidanceCollisionRadius = 40;
+        let maxFleeAcceleration = 0.2;
+        let panicDistance = 100;
 
         /**
          *  Create playfight agents
@@ -71,7 +56,7 @@ export default class PlayfightExperiment extends PsyanimScene {
 
         for (let i = 0 ; i < 2; ++i)
         {
-            let agent = this.addEntity('agent' + i, 500, 300, {
+            let agent = this.addEntity('agent' + i, 200 + i * 400, 300, {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
                 base: 16, altitude: 32, radius: circleAgentRadius, color: (i == 0 ? 0xff0000 : 0x0000ff)
             });
@@ -84,7 +69,7 @@ export default class PlayfightExperiment extends PsyanimScene {
             arrive.innerDecelerationRadius = circleAgentRadius;
             arrive.outerDecelerationRadius = outerDecelerationRadius;
     
-            let flee = agent.addComponent(PsyanimFleeBehavior);
+            let flee = agent.addComponent(PsyanimAdvancedFleeBehavior);
             flee.maxSpeed = maxFleeSpeed;
             flee.maxAcceleration = maxFleeAcceleration;
             flee.panicDistance = panicDistance;
@@ -99,19 +84,11 @@ export default class PlayfightExperiment extends PsyanimScene {
             wander.offset = wanderOffset;
             wander.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
     
-            // let wanderDebug = agent.addComponent(PsyanimWanderDebug);
-            // wanderDebug.wanderBehavior = wander;
-    
-            let collisionAvoidance = agent.addComponent(PsyanimCollisionAvoidanceBehavior);
-            collisionAvoidance.setSensorRadius(collisionAvoidanceSensorRadius);
-            collisionAvoidance.collisionRadius = collisionAvoidanceCollisionRadius;
-    
             let playfight = agent.addComponent(PsyanimPlayfightBehavior);
             playfight.breakDuration = breakDuration;
             playfight.fleeBehavior = flee;
             playfight.arriveBehavior = arrive;
             playfight.wanderBehavior = wander;
-            playfight.collisionAvoidanceBehavior = collisionAvoidance;
     
             let playfightAgent = agent.addComponent(PsyanimPlayfightAgent);
             playfightAgent.playfightBehavior = playfight;

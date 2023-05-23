@@ -15,7 +15,6 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
     fleeBehavior = null;
     arriveBehavior = null;
     wanderBehavior = null;
-    collisionAvoidanceBehavior = null;
 
     constructor(entity) {
 
@@ -39,6 +38,10 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
     }
 
     _handleCollision() {
+
+        console.log("playfight collision occured at t = " + this.entity.scene.time.now / 1000);
+
+        this._breakTimer = 0;
 
         this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);
     }
@@ -95,8 +98,6 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimPlayfightBehavior.STATE.FLEEING:
 
-                this._breakTimer = 0;
-
                 break;
         }
     }
@@ -137,11 +138,13 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
 
-                let avoidanceSteering = this.collisionAvoidanceBehavior.getSteering();
+                let distanceToTarget = this.entity.position
+                    .subtract(target.position)
+                    .length();
 
-                if (avoidanceSteering.length() > 1e-3)
+                if (distanceToTarget < this.fleeBehavior.panicDistance)
                 {
-                    return avoidanceSteering;
+                    this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);
                 }
 
                 return this.wanderBehavior.getSteering();
