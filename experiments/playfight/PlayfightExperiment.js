@@ -51,7 +51,7 @@ export default class PlayfightExperiment extends PsyanimExperiment {
         };
 
         // add parameter sets to this experiment, updating the value as you add each one
-        for (let i = 0; i < 5; ++i)
+        for (let i = 0; i < experimentDurations.length; ++i)
         {
             parameterSet.experimentDuration = experimentDurations[i];
 
