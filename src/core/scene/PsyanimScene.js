@@ -27,10 +27,6 @@ export default class PsyanimScene extends Phaser.Scene {
     init() {
 
         this._entities = [];
-
-        const sceneNameHeader = document.getElementById("sceneName");
-
-        sceneNameHeader.innerHTML = this.scene.key;
     }
 
     preload() {

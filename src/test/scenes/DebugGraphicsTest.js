@@ -11,6 +11,8 @@ import PsyanimLineRenderer from '../../core/components/rendering/PsyanimLineRend
 import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
 
+import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
+
 export default class DebugGraphicsTest extends PsyanimScene {
 
     constructor() {
@@ -24,6 +26,7 @@ export default class DebugGraphicsTest extends PsyanimScene {
 
         // setup scene controls
         this.addEntity('sceneControls')
+            .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController);
 

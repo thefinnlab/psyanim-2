@@ -12,6 +12,8 @@ import PsyanimPlayfightBehavior from '../../core/components/steering/PsyanimPlay
 import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
 
+import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
+
 export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
 
     constructor() {
@@ -25,6 +27,7 @@ export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
 
         // setup scene controls
         this.addEntity('sceneControls')
+            .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController);
 

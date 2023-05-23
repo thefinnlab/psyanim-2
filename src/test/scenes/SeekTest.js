@@ -13,6 +13,8 @@ import PsyanimSeekAgent from '../../core/components/steering/agents/PsyanimSeekA
 import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
 
+import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
+
 export default class SeekTest extends PsyanimScene {
 
     constructor() {
@@ -26,6 +28,7 @@ export default class SeekTest extends PsyanimScene {
 
         // setup scene controls
         this.addEntity('sceneControls')
+            .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController);
 
