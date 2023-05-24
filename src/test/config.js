@@ -15,6 +15,8 @@ import PsyanimInteractivePlayfightTest from './scenes/PsyanimInteractivePlayfigh
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 import ChargeTest from './scenes/ChargeTest';
 
+import AnimationBakingTest from './scenes/AnimationBakingTest';
+
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
 export default class Config {
@@ -27,7 +29,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [PsyanimPlayfightTest, SimpleCollisionAvoidanceTest, WanderTest, SeekTest, FleeTest, EvadeTest, 
+            scene: [AnimationBakingTest, PsyanimPlayfightTest, SimpleCollisionAvoidanceTest, WanderTest, SeekTest, FleeTest, EvadeTest, 
                 RayCastTest, SensorTest, DebugGraphicsTest, ArriveTest, PathFollowTest,
                 AdvancedFleeTest],
             physics: {

@@ -11,6 +11,15 @@ export default class PsyanimComponent {
         this._enabled = true;
     }
 
+    destroy() {
+
+        this.enabled = false;
+
+        this.entity._removeComponent(this);
+        
+        this.entity = null;
+    }
+
     get enabled() {
         return this._enabled;
     }

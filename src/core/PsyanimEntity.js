@@ -191,7 +191,17 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         }
 
         return components[0];
-     }
+    }
+
+    getComponents() {
+
+        return this._components.slice();
+    }
+
+    _removeComponent(component) {
+
+        this._components = this._components.filter(c => c != component);
+    }
 
     get position() {
 
