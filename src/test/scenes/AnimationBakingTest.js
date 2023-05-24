@@ -16,6 +16,8 @@ import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 
 import PsyanimExperimentTimer from '../../core/components/utils/PsyanimExperimentTimer';
 
+import PsyanimAnimationBaker from '../../core/components/utils/PsyanimAnimationBaker';
+
 /**
  *  TODO: 
  *      
@@ -54,8 +56,6 @@ export default class AnimationBakingTest extends PsyanimScene {
             color: 0x00ff00
         });
 
-        this.mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
-
         // add agents to this scene
         this.agent1 = this.addEntity('agent1', 600, 450, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
@@ -73,6 +73,9 @@ export default class AnimationBakingTest extends PsyanimScene {
     }
     
     initSimulation() {
+
+                // add mouse follow target controller
+                this.mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
                 // add vehicle components to our agents
                 let vehicle1 = this.agent1.addComponent(PsyanimVehicle);
@@ -99,11 +102,37 @@ export default class AnimationBakingTest extends PsyanimScene {
         
                 fleeAgent1.target = this.mouseTarget;
                 fleeAgent2.target = this.mouseTarget;
+
+                // add animation bakers to each agent
+                this.mouseTarget.addComponent(PsyanimAnimationBaker);
+                this.agent1.addComponent(PsyanimAnimationBaker);
+                this.agent2.addComponent(PsyanimAnimationBaker);
     }
 
     initPlayback() {
 
         console.log("simulation complete - beginning playback!");
+
+        let agent1AnimationClip = this.agent1
+            .getComponent(PsyanimAnimationBaker)
+            .bake();
+
+        let agent2AnimationClip = this.agent2
+            .getComponent(PsyanimAnimationBaker)
+            .bake();
+
+        let mouseTargetAnimationClip = this.mouseTarget
+            .getComponent(PsyanimAnimationBaker)
+            .bake();
+
+        console.log("mouseTarget animation clip file size = " + mouseTargetAnimationClip.getFileSize() + 
+            ", sample count = " + mouseTargetAnimationClip.getSampleCount());
+
+        console.log("agent 1 animation clip file size = " + agent1AnimationClip.getFileSize() + 
+            ", sample count = " + agent1AnimationClip.getSampleCount());
+            
+        console.log("agent 2 animation clip file size = " + agent2AnimationClip.getFileSize() + 
+            ", sample count = " + agent2AnimationClip.getSampleCount());
 
         this.agent1.getComponents().forEach(c => c.destroy());
         this.agent2.getComponents().forEach(c => c.destroy());
