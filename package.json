@@ -5,13 +5,10 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    
     "test": "echo \"Error: no test specified\" && exit 1",
-    
     "build": "webpack",
     "start": "webpack serve --open",
     "watch": "webpack --watch",
-
     "devbuild": "webpack --config ./webpack.dev.config.js",
     "devwatch": "webpack --config ./webpack.dev.config.js --watch",
     "devstart": "webpack serve --config ./webpack.dev.config.js --open "
@@ -20,6 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.2",
     "phaser": "^3.60.0"
   },
   "devDependencies": {
