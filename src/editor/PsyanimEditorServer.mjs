@@ -13,14 +13,14 @@ export default class PsyanimEditorServer {
     _initHandlers() {
 
         this.app.get('/', (req, res) => {
-            res.send('hello world again o/');
+            res.send('hello brave new world o/');
         });
     }
 
     start() {
 
         this.app.listen(this.port, () => {
-            console.log(`Editor listening on port ${this.port}`);
+            console.log('Psyanim Editor server listening on port: ' + this.port);
         });
     }
 }
