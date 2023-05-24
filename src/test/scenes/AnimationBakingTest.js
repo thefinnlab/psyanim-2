@@ -151,4 +151,13 @@ export default class AnimationBakingTest extends PsyanimScene {
         this.mouseTarget.addComponent(PsyanimAnimationPlayer)
             .play(mouseTargetAnimationClip);
     }
+
+    saveVideoToServer() {
+
+        // TODO: replace message contents with the blob from ccapture
+        let xhttp = new XMLHttpRequest();
+        xhttp.open('POST', '/data', true);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(JSON.stringify( { message: "my custom video" } ));
+    }
 }
