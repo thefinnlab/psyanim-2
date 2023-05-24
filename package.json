@@ -11,7 +11,7 @@
     "devbuild": "webpack --config ./webpack.dev.config.js",
     "devwatch": "webpack --config ./webpack.dev.config.js --watch",
     "devstart": "webpack serve --config ./webpack.dev.config.js --open ",
-    "editor": "node ./src/editor/main.mjs",
+    "editor": "npx nodemon ./src/editor/main.mjs",
     "deveditor": "npx nodemon ./src/editor/main.mjs"
   },
   "keywords": [],

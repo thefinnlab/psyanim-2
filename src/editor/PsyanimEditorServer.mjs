@@ -12,8 +12,18 @@ export default class PsyanimEditorServer {
 
     _initHandlers() {
 
-        this.app.get('/', (req, res) => {
+        this.app.use('/', express.static('./devdist'));
+
+        this.app.get('/hello', (req, res) => {
             res.send('hello brave new world o/');
+        });
+
+        this.app.get('/test', (req, res) => {
+            res.send('it works o/');
+        });
+
+        this.app.put('/data', (req, res) => {
+            console.log("received req: " + req.body);
         });
     }
 
