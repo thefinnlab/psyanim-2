@@ -198,6 +198,12 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return this._components.slice();
     }
 
+    setPhysicsEnabled(enabled) {
+
+        this.body.isSensor = !enabled;
+        this.body.isSleeping = !enabled;
+    }
+    
     _removeComponent(component) {
 
         this._components = this._components.filter(c => c != component);

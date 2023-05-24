@@ -21,6 +21,17 @@ export default class PsyanimAnimationClip {
         });
     }
 
+    getSample(index) {
+
+        let sample = this._transformData[index];
+
+        return {
+            t: sample.t,
+            pos: sample.pos,
+            rot: sample.rot
+        };
+    }
+
     getSampleCount() {
 
         return this._transformData.length;

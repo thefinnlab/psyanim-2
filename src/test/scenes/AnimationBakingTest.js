@@ -17,6 +17,7 @@ import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 import PsyanimExperimentTimer from '../../core/components/utils/PsyanimExperimentTimer';
 
 import PsyanimAnimationBaker from '../../core/components/utils/PsyanimAnimationBaker';
+import PsyanimAnimationPlayer from '../../core/components/utils/PsyanimAnimationPlayer';
 
 /**
  *  TODO: 
@@ -113,6 +114,7 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         console.log("simulation complete - beginning playback!");
 
+        // capture animation clips from bakers
         let agent1AnimationClip = this.agent1
             .getComponent(PsyanimAnimationBaker)
             .bake();
@@ -130,12 +132,23 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         console.log("agent 1 animation clip file size = " + agent1AnimationClip.getFileSize() + 
             ", sample count = " + agent1AnimationClip.getSampleCount());
-            
+
         console.log("agent 2 animation clip file size = " + agent2AnimationClip.getFileSize() + 
             ", sample count = " + agent2AnimationClip.getSampleCount());
 
+        // destroy all components on each entity
         this.agent1.getComponents().forEach(c => c.destroy());
         this.agent2.getComponents().forEach(c => c.destroy());
         this.mouseTarget.getComponents().forEach(c => c.destroy());
+
+        // add the PsyanimAnimationPlayer component to playback your animation!
+        this.agent1.addComponent(PsyanimAnimationPlayer)
+            .play(agent1AnimationClip);
+
+        this.agent2.addComponent(PsyanimAnimationPlayer)
+            .play(agent2AnimationClip);
+
+        this.mouseTarget.addComponent(PsyanimAnimationPlayer)
+            .play(mouseTargetAnimationClip);
     }
 }
