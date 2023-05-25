@@ -19,6 +19,8 @@ import PsyanimExperimentTimer from '../../core/components/utils/PsyanimExperimen
 import PsyanimAnimationBaker from '../../core/components/utils/PsyanimAnimationBaker';
 import PsyanimAnimationPlayer from '../../core/components/utils/PsyanimAnimationPlayer';
 
+import PsyanimClientNetworkManager from '../../core/components/networking/PsyanimClientNetworkManager';
+
 export default class AnimationBakingTest extends PsyanimScene {
 
     constructor() {
@@ -33,15 +35,19 @@ export default class AnimationBakingTest extends PsyanimScene {
         let experimentDuration = 8000;
 
         // setup scene controls
-        this.addEntity('sceneControls')
+        let testManager = this.addEntity('testManager')
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController).entity
-            .addComponent(PsyanimExperimentTimer)
-                .setOnTimerElapsed(experimentDuration, () => {
+            .addComponent(PsyanimSceneChangeController).entity;
 
-                    this.initPlayback();
+        testManager.addComponent(PsyanimExperimentTimer)
+            .setOnTimerElapsed(experimentDuration, () => {
+
+                this.initPlayback();
         });
+
+        this.networkManager = testManager.addComponent(PsyanimClientNetworkManager);
+        this.networkManager.connect();
 
         // setup mouse follow target
         this.mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
@@ -68,39 +74,39 @@ export default class AnimationBakingTest extends PsyanimScene {
     
     initSimulation() {
 
-                // add mouse follow target controller
-                this.mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
+        // add mouse follow target controller
+        this.mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
-                // add vehicle components to our agents
-                let vehicle1 = this.agent1.addComponent(PsyanimVehicle);
-                let vehicle2 = this.agent2.addComponent(PsyanimVehicle);
-        
-                vehicle2.nSamplesForLookSmoothing = 10;
-        
-                // add flee behavior components to our agents
-                let flee1 = this.agent1.addComponent(PsyanimFleeBehavior);
-                let flee2 = this.agent2.addComponent(PsyanimFleeBehavior);
-        
-                flee1.maxSpeed = 6;
-                flee1.maxSpeed = 5;
-        
-                // add flee agent component to our agents
-                let fleeAgent1 = this.agent1.addComponent(PsyanimFleeAgent);
-                let fleeAgent2 = this.agent2.addComponent(PsyanimFleeAgent);
-        
-                fleeAgent1.fleeBehavior = flee1;
-                fleeAgent2.fleeBehavior = flee2;
-        
-                fleeAgent1.vehicle = vehicle1;
-                fleeAgent2.vehicle = vehicle2;
-        
-                fleeAgent1.target = this.mouseTarget;
-                fleeAgent2.target = this.mouseTarget;
+        // add vehicle components to our agents
+        let vehicle1 = this.agent1.addComponent(PsyanimVehicle);
+        let vehicle2 = this.agent2.addComponent(PsyanimVehicle);
 
-                // add animation bakers to each agent
-                this.mouseTarget.addComponent(PsyanimAnimationBaker);
-                this.agent1.addComponent(PsyanimAnimationBaker);
-                this.agent2.addComponent(PsyanimAnimationBaker);
+        vehicle2.nSamplesForLookSmoothing = 10;
+
+        // add flee behavior components to our agents
+        let flee1 = this.agent1.addComponent(PsyanimFleeBehavior);
+        let flee2 = this.agent2.addComponent(PsyanimFleeBehavior);
+
+        flee1.maxSpeed = 6;
+        flee1.maxSpeed = 5;
+
+        // add flee agent component to our agents
+        let fleeAgent1 = this.agent1.addComponent(PsyanimFleeAgent);
+        let fleeAgent2 = this.agent2.addComponent(PsyanimFleeAgent);
+
+        fleeAgent1.fleeBehavior = flee1;
+        fleeAgent2.fleeBehavior = flee2;
+
+        fleeAgent1.vehicle = vehicle1;
+        fleeAgent2.vehicle = vehicle2;
+
+        fleeAgent1.target = this.mouseTarget;
+        fleeAgent2.target = this.mouseTarget;
+
+        // add animation bakers to each agent
+        this.mouseTarget.addComponent(PsyanimAnimationBaker);
+        this.agent1.addComponent(PsyanimAnimationBaker);
+        this.agent2.addComponent(PsyanimAnimationBaker);
     }
 
     initPlayback() {
@@ -144,9 +150,6 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         this.mouseTarget.addComponent(PsyanimAnimationPlayer)
             .play(mouseTargetAnimationClip);
-
-        this.ws = new WebSocket('ws://localhost:3000');
-        this.ws.binaryData = "blob";
     
         let chunks = [];
 
@@ -160,26 +163,11 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         this.media_recorder.onstop = () => {
 
-            let myBlob = new Blob(chunks, { type: "video/webm" });
+            let videoBlob = new Blob(chunks, { type: "video/webm" });
 
-            // console.log(blob);
+            console.log("stopped recording! blob length = " + videoBlob.size);
 
-            console.log("stopped recording! blob length = " + myBlob.size);
-
-            this.ws.send(myBlob);
-
-            // let blobUrl = URL.createObjectURL(myBlob);
-
-            // let link = document.createElement("a");
-            // link.href = blobUrl;
-            // link.download = "aDefaultFileName.txt";
-            // link.innerHTML = "Click here to download vid!";
-            // document.body.appendChild(link);
-
-            // let xhr = new XMLHttpRequest();
-            // xhr.open("POST", "/data", true);
-            // xhr.setRequestHeader('Content-type','video/webm');
-            // xhr.send(blob);
+            this.networkManager.sendBlob(videoBlob);
         };
 
         this.media_recorder.start();
