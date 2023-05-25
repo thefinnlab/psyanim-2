@@ -37,6 +37,12 @@ export default class PsyanimEditorServer {
             ws.on('message', (msg) => {
                 console.log("message received!");
                 console.log(msg);
+
+                let buffer = Buffer.from(msg, 'binary');
+
+                fs.writeFile('./experiments/videos/video1.webm', buffer, (err) => {
+                    
+                });
             });
 
             console.log("received client connection!");
