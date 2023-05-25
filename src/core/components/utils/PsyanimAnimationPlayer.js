@@ -9,6 +9,8 @@ export default class PsyanimAnimationPlayer extends PsyanimComponent {
         super(entity);
 
         this._clip = null;
+        
+        this.events = new Phaser.Events.EventEmitter();
     }
 
     play(animationClip) {
@@ -41,7 +43,7 @@ export default class PsyanimAnimationPlayer extends PsyanimComponent {
 
                 this.entity.setPhysicsEnabled(true);
 
-                console.log("playback complete!");
+                this.events.emit('playbackComplete');
             }
         }
     }
