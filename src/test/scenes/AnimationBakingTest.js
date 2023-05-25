@@ -138,21 +138,55 @@ export default class AnimationBakingTest extends PsyanimScene {
         let animationPlayer = this.agent1.addComponent(PsyanimAnimationPlayer);
 
         animationPlayer.play(agent1AnimationClip);
-        animationPlayer.events.on('playbackComplete', () => console.log("playback complete!"));
             
         this.agent2.addComponent(PsyanimAnimationPlayer)
             .play(agent2AnimationClip);
 
         this.mouseTarget.addComponent(PsyanimAnimationPlayer)
             .play(mouseTargetAnimationClip);
-    }
 
-    saveVideoToServer() {
+        this.ws = new WebSocket('ws://localhost:3000');
+        this.ws.binaryData = "blob";
+    
+        let chunks = [];
 
-        // TODO: replace message contents with the blob from ccapture
-        let xhttp = new XMLHttpRequest();
-        xhttp.open('POST', '/data', true);
-        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhttp.send(JSON.stringify( { message: "my custom video" } ));
+        let canvas_stream = this.game.canvas.captureStream(60);
+
+        this.media_recorder = new MediaRecorder(canvas_stream, {mimeType: "video/webm"});
+
+        this.media_recorder.ondataavailable = (e) => {
+            chunks.push(e.data);
+        };
+
+        this.media_recorder.onstop = () => {
+
+            let myBlob = new Blob(chunks, { type: "video/webm" });
+
+            // console.log(blob);
+
+            console.log("stopped recording! blob length = " + myBlob.size);
+
+            this.ws.send(myBlob);
+
+            // let blobUrl = URL.createObjectURL(myBlob);
+
+            // let link = document.createElement("a");
+            // link.href = blobUrl;
+            // link.download = "aDefaultFileName.txt";
+            // link.innerHTML = "Click here to download vid!";
+            // document.body.appendChild(link);
+
+            // let xhr = new XMLHttpRequest();
+            // xhr.open("POST", "/data", true);
+            // xhr.setRequestHeader('Content-type','video/webm');
+            // xhr.send(blob);
+        };
+
+        this.media_recorder.start();
+
+        animationPlayer.events.on('playbackComplete', () => {
+            console.log("playback complete!")
+            this.media_recorder.stop();
+        });
     }
 }
