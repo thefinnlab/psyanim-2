@@ -25,6 +25,9 @@ export default class HTMLCaptureStreamTest extends PsyanimScene {
 
         super.create();
 
+        this.ws = new WebSocket('ws://localhost:3000');
+        this.ws.binaryData = "blob";
+
         // setup scene controls
         this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity
@@ -84,13 +87,17 @@ export default class HTMLCaptureStreamTest extends PsyanimScene {
 
             // console.log(blob);
 
-            let blobUrl = URL.createObjectURL(myBlob);
+            console.log("stopped recording! blob length = " + myBlob.size);
 
-            let link = document.createElement("a");
-            link.href = blobUrl;
-            link.download = "aDefaultFileName.txt";
-            link.innerHTML = "Click here to download vid!";
-            document.body.appendChild(link);
+            this.ws.send(myBlob);
+
+            // let blobUrl = URL.createObjectURL(myBlob);
+
+            // let link = document.createElement("a");
+            // link.href = blobUrl;
+            // link.download = "aDefaultFileName.txt";
+            // link.innerHTML = "Click here to download vid!";
+            // document.body.appendChild(link);
 
             // let xhr = new XMLHttpRequest();
             // xhr.open("POST", "/data", true);

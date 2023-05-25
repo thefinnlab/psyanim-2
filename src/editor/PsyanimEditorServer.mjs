@@ -26,8 +26,20 @@ export default class PsyanimEditorServer {
 
     start() {
 
-        this.httpServer = this.app.listen(this.port, () => {
+        let server = this.app.listen(this.port, () => {
             console.log('Psyanim Editor server listening on port: ' + this.port);
+        });
+
+        this.wss = new WebSocketServer({ server });
+
+        this.wss.on('connection', (ws) => {
+
+            ws.on('message', (msg) => {
+                console.log("message received!");
+                console.log(msg);
+            });
+
+            console.log("received client connection!");
         });
     }
 }
