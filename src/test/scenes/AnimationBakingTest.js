@@ -20,6 +20,7 @@ import PsyanimAnimationBaker from '../../core/components/utils/PsyanimAnimationB
 import PsyanimAnimationPlayer from '../../core/components/utils/PsyanimAnimationPlayer';
 
 import PsyanimClientNetworkManager from '../../core/components/networking/PsyanimClientNetworkManager';
+import PsyanimVideoRecorder from '../../core/components/utils/PsyanimVideoRecorder';
 
 export default class AnimationBakingTest extends PsyanimScene {
 
@@ -48,6 +49,13 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         this.networkManager = testManager.addComponent(PsyanimClientNetworkManager);
         this.networkManager.connect();
+
+        this.videoRecorder = testManager.addComponent(PsyanimVideoRecorder);
+        this.videoRecorder.events.on('videoFileReady', () => {
+
+            let data = this.videoRecorder.getVideoBlob();
+            this.networkManager.sendBlob(data);
+        })
 
         // setup mouse follow target
         this.mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
@@ -150,31 +158,14 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         this.mouseTarget.addComponent(PsyanimAnimationPlayer)
             .play(mouseTargetAnimationClip);
-    
-        let chunks = [];
 
-        let canvas_stream = this.game.canvas.captureStream(60);
-
-        this.media_recorder = new MediaRecorder(canvas_stream, {mimeType: "video/webm"});
-
-        this.media_recorder.ondataavailable = (e) => {
-            chunks.push(e.data);
-        };
-
-        this.media_recorder.onstop = () => {
-
-            let videoBlob = new Blob(chunks, { type: "video/webm" });
-
-            console.log("stopped recording! blob length = " + videoBlob.size);
-
-            this.networkManager.sendBlob(videoBlob);
-        };
-
-        this.media_recorder.start();
+        // start video recording
+        this.videoRecorder.start();
 
         animationPlayer.events.on('playbackComplete', () => {
+
             console.log("playback complete!")
-            this.media_recorder.stop();
+            this.videoRecorder.stop();
         });
     }
 }
