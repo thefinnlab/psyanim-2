@@ -19,13 +19,6 @@ import PsyanimExperimentTimer from '../../core/components/utils/PsyanimExperimen
 import PsyanimAnimationBaker from '../../core/components/utils/PsyanimAnimationBaker';
 import PsyanimAnimationPlayer from '../../core/components/utils/PsyanimAnimationPlayer';
 
-/**
- *  TODO: 
- *      
- *      - for now, animation baking will take place in memory only and generate an AnimationClip
- *      - once an animation clip is generated, it can be played back on any entity for video recording
- */
-
 export default class AnimationBakingTest extends PsyanimScene {
 
     constructor() {
@@ -142,9 +135,11 @@ export default class AnimationBakingTest extends PsyanimScene {
         this.mouseTarget.getComponents().forEach(c => c.destroy());
 
         // add the PsyanimAnimationPlayer component to playback your animation!
-        this.agent1.addComponent(PsyanimAnimationPlayer)
-            .play(agent1AnimationClip);
+        let animationPlayer = this.agent1.addComponent(PsyanimAnimationPlayer);
 
+        animationPlayer.play(agent1AnimationClip);
+        animationPlayer.events.on('playbackComplete', () => console.log("playback complete!"));
+            
         this.agent2.addComponent(PsyanimAnimationPlayer)
             .play(agent2AnimationClip);
 
