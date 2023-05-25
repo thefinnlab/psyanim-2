@@ -2,6 +2,11 @@ import express from 'express';
 import path from 'path';
 import fs from 'fs';
 
+import http from 'http';
+import WebSocket, { WebSocketServer } from 'ws';
+
+import bodyParser from 'body-parser';
+
 export default class PsyanimEditorServer {
 
     constructor() {
@@ -15,29 +20,13 @@ export default class PsyanimEditorServer {
     _initHandlers() {
 
         this.app.use(express.json());
+
         this.app.use('/', express.static('./devdist'));
-
-        this.app.post('/data', (req, res) => {
-
-            console.log("received req: " + req.body.message);
-
-            let outputFileName = 'video1.webm';
-            let outputFilePath = path.resolve('./experiments/videos/' + outputFileName);
-
-            fs.writeFile(outputFilePath, req.body.message, (err) => {
-
-                if (err) {
-                    console.log(err);
-                }
-
-                console.log("successfully wrote post body to file!");
-            });
-        });
     }
 
     start() {
 
-        this.app.listen(this.port, () => {
+        this.httpServer = this.app.listen(this.port, () => {
             console.log('Psyanim Editor server listening on port: ' + this.port);
         });
     }
