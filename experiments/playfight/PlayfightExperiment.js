@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimExperiment from '../../src/core/scene/PsyanimExperiment';
+import PsyanimEditorExperiment from '../../src/core/scene/PsyanimEditorExperiment';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 
@@ -14,7 +14,7 @@ import PsyanimAdvancedFleeBehavior from '../../src/core/components/steering/Psya
 import PsyanimPlayfightBehavior from '../../src/core/components/steering/PsyanimPlayfightBehavior';
 import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent';
 
-export default class PlayfightExperiment extends PsyanimExperiment {
+export default class PlayfightExperiment extends PsyanimEditorExperiment {
 
     constructor() {
 
@@ -60,6 +60,9 @@ export default class PlayfightExperiment extends PsyanimExperiment {
 
             this.addParameterSet(parameterSet);
         }
+
+        // set output directory path + filename scheme for videos (if generating)
+        this.setVideoSavePath('./experiments/videos', 'playfight', 'playfight');
     }
 
     init() {

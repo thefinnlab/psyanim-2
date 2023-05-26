@@ -4,7 +4,9 @@ import PsyanimScene from './PsyanimScene';
 
 import PsyanimExperimentTimer from '../components/utils/PsyanimExperimentTimer';
 
-export default class PsyanimExperiment extends PsyanimScene {
+import PsyanimClientNetworkManager from '../components/networking/PsyanimClientNetworkManager';
+
+export default class PsyanimEditorExperiment extends PsyanimScene {
 
     constructor(key) {
 
@@ -14,6 +16,9 @@ export default class PsyanimExperiment extends PsyanimScene {
 
         this._currentParameterSetIndex = 0;
         this._parameterSets = [];
+
+        this._networkManager = this.addEntity('networkManager')
+            .addComponent(PsyanimClientNetworkManager);
     };
 
     addParameterSet(parameterSet) {
@@ -31,6 +36,15 @@ export default class PsyanimExperiment extends PsyanimScene {
     get currentParameterSet() {
 
         return this._currentParameterSet;
+    }
+
+    setVideoSavePath(rootDirPath, subdirName, filenameBase) {
+
+        this._networkManager.doPost('/video-save-path', JSON.stringify({
+            rootDirPath: rootDirPath,
+            subdirName: subdirName,
+            filenameBase: filenameBase
+        }));
     }
 
     init() {
