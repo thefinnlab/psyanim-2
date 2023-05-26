@@ -24,6 +24,35 @@ export default class PsyanimEditorServer {
         this.app.use('/', express.static('./devdist'));
     }
 
+    _getNextValidVideoFilePath() {
+
+        // TODO: make this configurable by client
+        let rootDirName = "./experiments/videos";
+        let subdirName = "playfight";
+        let filenameBase = "playfight";
+        let filenameExt = ".webm";
+
+        let filenameIndex = 1;
+
+        // TODO: make sure the directories exist!
+
+        // use string.prototype.padStart(3, '0') to pad with zeroes
+        let filePath = rootDirName + "/" + subdirName + "/"
+            + filenameBase + (filenameIndex.toString().padStart(3, '0'))
+            + filenameExt;
+
+        while (fs.existsSync(filePath))
+        {
+            filenameIndex++;
+
+            filePath = rootDirName + "/" + subdirName + "/"
+                + filenameBase + (filenameIndex.toString().padStart(3, '0'))
+                + filenameExt;
+        }
+
+        return filePath;
+    }
+
     start() {
 
         let server = this.app.listen(this.port, () => {
@@ -40,7 +69,9 @@ export default class PsyanimEditorServer {
 
                 let buffer = Buffer.from(msg, 'binary');
 
-                fs.writeFile('./experiments/videos/video1.webm', buffer, (err) => {
+                let filePath = this._getNextValidVideoFilePath();
+
+                fs.writeFile(filePath, buffer, (err) => {
                     
                 });
             });
