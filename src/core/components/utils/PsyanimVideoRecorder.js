@@ -40,6 +40,8 @@ export default class PsyanimVideoRecorder extends PsyanimComponent {
 
         this._state = PsyanimVideoRecorder.STATE.RECORDING;
 
+        this._chunks = [];
+
         this._mediaRecorder.start();
     }
 

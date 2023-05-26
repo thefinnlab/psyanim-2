@@ -24,28 +24,35 @@ import PsyanimVideoRecorder from '../../core/components/utils/PsyanimVideoRecord
 
 export default class AnimationBakingTest extends PsyanimScene {
 
+    static STATE = {
+        IDLE: 0x0000,
+        BAKING_SIMULATION: 0x0001,
+        RECORDING_ANIMATION: 0x0002,
+    }
+
     constructor() {
 
         super('Animation Baking Test');
+
+        this._state = AnimationBakingTest.STATE.IDLE;
+        this._experimentDuration = 5000;
     }
 
     create() {
 
         super.create();
 
-        let experimentDuration = 8000;
-
         // setup scene controls
+        this._keys = {
+            L: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.L)
+        };
+
         let testManager = this.addEntity('testManager')
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController).entity;
 
-        testManager.addComponent(PsyanimExperimentTimer)
-            .setOnTimerElapsed(experimentDuration, () => {
-
-                this.initPlayback();
-        });
+        this.experimentTimer = testManager.addComponent(PsyanimExperimentTimer);
 
         this.networkManager = testManager.addComponent(PsyanimClientNetworkManager);
         this.networkManager.connect();
@@ -76,8 +83,6 @@ export default class AnimationBakingTest extends PsyanimScene {
             width: 60, height: 30,
             color: 0xffff00            
         });
-
-        this.initSimulation();
     }
     
     initSimulation() {
@@ -115,6 +120,8 @@ export default class AnimationBakingTest extends PsyanimScene {
         this.mouseTarget.addComponent(PsyanimAnimationBaker);
         this.agent1.addComponent(PsyanimAnimationBaker);
         this.agent2.addComponent(PsyanimAnimationBaker);
+
+        this._state = AnimationBakingTest.STATE.BAKING_SIMULATION;
     }
 
     initPlayback() {
@@ -164,8 +171,28 @@ export default class AnimationBakingTest extends PsyanimScene {
 
         animationPlayer.events.on('playbackComplete', () => {
 
-            console.log("playback complete!")
+            console.log("playback complete!");
+
             this.videoRecorder.stop();
+
+            this._state = AnimationBakingTest.STATE.IDLE;
         });
+
+        this._state = AnimationBakingTest.STATE.RECORDING_ANIMATION;
+    }
+
+    update(t, dt) {
+
+        super.update(t, dt);
+
+        if (Phaser.Input.Keyboard.JustDown(this._keys.L))
+        {
+            if (this._state == AnimationBakingTest.STATE.IDLE)
+            {
+                this.experimentTimer.setOnTimerElapsed(this._experimentDuration, () => this.initPlayback());
+                
+                this.initSimulation();
+            }
+        }
     }
 }
