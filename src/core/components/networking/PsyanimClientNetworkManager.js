@@ -25,6 +25,7 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
         }
 
         this._ws = new WebSocket("ws://" + this.host + ":" + this.port);
+        this._ws.binaryType = "blob";
     }
 
     close() {
@@ -35,9 +36,16 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
         }
     }
 
+    doPost(path, data) {
+
+        let xhttp = new XMLHttpRequest();
+        xhttp.open('POST', path);
+        xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhttp.send(data);
+    }
+
     sendBlob(data) {
 
-        this._ws.binaryData = "blob";
         this._ws.send(data);
     }
 

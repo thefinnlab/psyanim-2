@@ -57,6 +57,13 @@ export default class AnimationBakingTest extends PsyanimScene {
         this.networkManager = testManager.addComponent(PsyanimClientNetworkManager);
         this.networkManager.connect();
 
+        // configure the server's output directory + file names for videos we send
+        this.networkManager.doPost('/video-save-path', JSON.stringify({
+            rootDirPath: "./experiments/videos",
+            subdirName: "playfight",
+            filenameBase: "playfight",
+        }));
+
         this.videoRecorder = testManager.addComponent(PsyanimVideoRecorder);
         this.videoRecorder.events.on('videoFileReady', () => {
 

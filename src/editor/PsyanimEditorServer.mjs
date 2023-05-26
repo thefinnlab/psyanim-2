@@ -15,6 +15,14 @@ export default class PsyanimEditorServer {
         this.port = 3000;
 
         this._initHandlers();
+
+        this._videoSaveConfig = {
+
+            rootDirPath: "./experiments/videos",
+            subdirName: "unknown",
+            filenameBase: "unknown",
+            filenameExt: ".webm"
+        };
     }
 
     _initHandlers() {
@@ -22,22 +30,44 @@ export default class PsyanimEditorServer {
         this.app.use(express.json());
 
         this.app.use('/', express.static('./devdist'));
+
+        this.app.post('/video-save-path', (req, res) => {
+
+            console.log("received video config: " + JSON.stringify(req.body));
+
+            let videoSaveConfig = req.body;
+
+            if (Object.hasOwn(videoSaveConfig, 'rootDirPath'))
+            {
+                this._videoSaveConfig.rootDirPath = videoSaveConfig.rootDirPath;
+            }
+
+            if (Object.hasOwn(videoSaveConfig, 'subdirName'))
+            {
+                this._videoSaveConfig.subdirName = videoSaveConfig.subdirName;
+            }
+
+            if (Object.hasOwn(videoSaveConfig, 'filenameBase'))
+            {
+                this._videoSaveConfig.filenameBase = videoSaveConfig.filenameBase;
+            }
+
+            res.sendStatus(200);
+        });
     }
 
     _getNextValidVideoFilePath() {
 
-        // TODO: make this configurable by client
-        let rootDirName = "./experiments/videos";
-        let subdirName = "playfight";
-        let filenameBase = "playfight";
-        let filenameExt = ".webm";
+        let rootDirPath = this._videoSaveConfig.rootDirPath;
+        let subdirName = this._videoSaveConfig.subdirName;
+        let filenameBase = this._videoSaveConfig.filenameBase;
+        let filenameExt = this._videoSaveConfig.filenameExt;
 
         let filenameIndex = 1;
 
         // TODO: make sure the directories exist!
 
-        // use string.prototype.padStart(3, '0') to pad with zeroes
-        let filePath = rootDirName + "/" + subdirName + "/"
+        let filePath = rootDirPath + "/" + subdirName + "/"
             + filenameBase + (filenameIndex.toString().padStart(3, '0'))
             + filenameExt;
 
@@ -45,7 +75,7 @@ export default class PsyanimEditorServer {
         {
             filenameIndex++;
 
-            filePath = rootDirName + "/" + subdirName + "/"
+            filePath = rootDirPath + "/" + subdirName + "/"
                 + filenameBase + (filenameIndex.toString().padStart(3, '0'))
                 + filenameExt;
         }
@@ -64,8 +94,6 @@ export default class PsyanimEditorServer {
         this.wss.on('connection', (ws) => {
 
             ws.on('message', (msg) => {
-                console.log("message received!");
-                console.log(msg);
 
                 let buffer = Buffer.from(msg, 'binary');
 
