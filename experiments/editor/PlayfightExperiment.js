@@ -60,6 +60,8 @@ export default class PlayfightExperiment extends PsyanimEditorExperiment {
 
             this.addParameterSet(parameterSet);
         }
+
+        this.recordVideo = true;
     }
 
     init() {

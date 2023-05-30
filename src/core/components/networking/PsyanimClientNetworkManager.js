@@ -28,11 +28,12 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
         this._ws.binaryType = "blob";
     }
 
-    close() {
+    disconnect() {
 
         if (this._ws)
         {
             this._ws.close();
+            this._ws = null;
         }
     }
 

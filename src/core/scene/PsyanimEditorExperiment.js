@@ -6,12 +6,16 @@ import PsyanimExperimentTimer from '../components/utils/PsyanimExperimentTimer';
 
 import PsyanimClientNetworkManager from '../components/networking/PsyanimClientNetworkManager';
 
+import PsyanimVideoRecorder from '../components/utils/PsyanimVideoRecorder';
+
 export default class PsyanimEditorExperiment extends PsyanimScene {
+
+    recordVideo = false;
 
     constructor(key) {
 
         super(key);
-
+        
         this._duration = 200;
 
         this._currentParameterSetIndex = 0;
@@ -80,21 +84,50 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
         super.create();
 
-        this._networkManager = this.addEntity('networkManager')
-            .addComponent(PsyanimClientNetworkManager);
-
         let sceneKey = this.scene.key;
 
         if (this._currentParameterSetIndex == -1)
         {
-            sceneKey = 'EmptyScene';
+            sceneKey = 'Empty Scene';
+        }
+
+        this._testManager = this.addEntity('testManager');
+
+        this._networkManager = this.addEntity('networkManager')
+            .addComponent(PsyanimClientNetworkManager);
+
+        if (this.recordVideo)
+        {
+            this._networkManager.connect();
+
+            this._videoRecorder = this._testManager.addComponent(PsyanimVideoRecorder);
+            this._videoRecorder.events.on('videoFileReady', () => {
+
+                let data = this._videoRecorder.getVideoBlob();
+
+                this._networkManager.sendBlob(data);
+
+                this._networkManager.disconnect();
+
+                this.scene.start(sceneKey);
+            });
+
+            this._videoRecorder.start();
         }
 
         this.addEntity('_experimentTimer')
             .addComponent(PsyanimExperimentTimer)
             .setOnTimerElapsed(this._duration, () => {
 
-                this.scene.start(sceneKey);
+                // if video was recording, wait until it's done before changing scenes
+                if (this._videoRecorder != null)
+                {
+                    this._videoRecorder.stop();
+                }
+                else
+                {
+                    this.scene.start(sceneKey);
+                }
         });
     }
 
