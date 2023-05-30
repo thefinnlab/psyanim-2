@@ -60,9 +60,6 @@ export default class PlayfightExperiment extends PsyanimEditorExperiment {
 
             this.addParameterSet(parameterSet);
         }
-
-        // set output directory path + filename scheme for videos (if generating)
-        this.setVideoSavePath('./experiments/videos', 'playfight', 'playfight');
     }
 
     init() {
@@ -73,6 +70,9 @@ export default class PlayfightExperiment extends PsyanimEditorExperiment {
     create() {
 
         super.create();
+
+        // set output directory path + filename scheme for videos (if generating)
+        this.setVideoSavePath('./experiments/videos', 'playfight', 'playfight');
 
         /**
          *  Get the current parameter set for this experiment run

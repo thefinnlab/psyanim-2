@@ -16,9 +16,6 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
         this._currentParameterSetIndex = 0;
         this._parameterSets = [];
-
-        this._networkManager = this.addEntity('networkManager')
-            .addComponent(PsyanimClientNetworkManager);
     };
 
     addParameterSet(parameterSet) {
@@ -82,6 +79,9 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
     create() {
 
         super.create();
+
+        this._networkManager = this.addEntity('networkManager')
+            .addComponent(PsyanimClientNetworkManager);
 
         let sceneKey = this.scene.key;
 

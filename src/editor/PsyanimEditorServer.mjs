@@ -29,7 +29,7 @@ export default class PsyanimEditorServer {
 
         this.app.use(express.json());
 
-        this.app.use('/', express.static('./devdist'));
+        this.app.use('/', express.static('./dist'));
 
         this.app.post('/video-save-path', (req, res) => {
 

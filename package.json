@@ -5,14 +5,19 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "build": "webpack",
-    "start": "webpack serve --open",
-    "watch": "webpack --watch",
-    "devbuild": "webpack --config ./webpack.dev.config.js",
-    "devwatch": "webpack --config ./webpack.dev.config.js --watch",
-    "devstart": "webpack serve --config ./webpack.dev.config.js --open ",
-    "editor": "npx nodemon ./src/editor/main.mjs",
-    "deveditor": "npx nodemon ./src/editor/main.mjs"
+
+    "watch": "rimraf -v ./dist && webpack --watch",
+    "devwatch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
+    
+    "editor": "rimraf -v ./dist && webpack && npx nodemon ./src/editor/main.mjs",
+    "deveditor": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/editor/main.mjs",
+
+    "build": "rimraf -v ./dist && webpack",
+    "devbuild": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
+
+    "buildengine": "TODO: make this build the engine for jsPsych integration",
+
+    "clean": "rimraf -v ./dist"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +26,7 @@
     "express": "^4.18.2",
     "nodemon": "^2.0.22",
     "phaser": "^3.60.0",
+    "rimraf": "^5.0.1",
     "ws": "^8.13.0"
   },
   "devDependencies": {
