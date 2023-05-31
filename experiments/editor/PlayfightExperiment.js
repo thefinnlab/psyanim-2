@@ -62,16 +62,10 @@ export default class PlayfightExperiment extends PsyanimEditorExperiment {
         }
 
         this.recordVideo = true;
+        this.addAgentNamesToRecord(["agent0", "agent1"]);
     }
 
-    init() {
-
-        super.init();
-    }
-
-    create() {
-
-        super.create();
+    setupExperiment() {
 
         // set output directory path + filename scheme for videos (if generating)
         this.setVideoSavePath('./experiments/videos', 'playfight', 'playfight');
