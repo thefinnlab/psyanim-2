@@ -4,18 +4,32 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimExperimentControls extends PsyanimComponent {
 
+    editorExperiment = null;
+
     constructor(entity) {
 
         super(entity);
 
         this._startButton = document.createElement("button");
-        this._startButton.innerHTML = "Click Me!";
 
-        this._startButton.onclick = () =>  console.log("it works o/");
+        this._startButton.innerHTML = "Run Experiment";
+
+        this._startButton.onclick = () => this.start();
 
         this._parentElement = document.getElementById("experiment-controls");
 
         this._parentElement.appendChild(this._startButton);
+    }
+
+    start() {
+
+        this.editorExperiment.start();
+        this.setStartButtonEnabled(false);
+    }
+
+    setStartButtonEnabled(enabled) {
+
+        this._startButton.disabled = !enabled;
     }
 
     destroy() {

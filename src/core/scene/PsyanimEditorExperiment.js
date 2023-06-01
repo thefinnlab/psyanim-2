@@ -15,6 +15,7 @@ import PsyanimExperimentControls from '../components/ui/PsyanimExperimentControl
 export default class PsyanimEditorExperiment extends PsyanimScene {
 
     static STATE = {
+        IDLE: 0x0000,
         SIMULATING: 0x0001,
         RECORDING: 0x0002,
     };
@@ -30,12 +31,12 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
         this._currentParameterSet = null;
         this._currentAnimationClipSet = [];
 
-        this._nextParameterSetIndex = 0;
+        this._currentParameterSetIndex = 0;
         this._parameterSets = [];
 
         this._agentNamesToRecord = [];
 
-        this._state = PsyanimEditorExperiment.STATE.SIMULATING;
+        this._state = PsyanimEditorExperiment.STATE.IDLE;
     };
 
     addParameterSet(parameterSet) {
@@ -81,32 +82,60 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
             this.scene.start('EmptyScene');
         }
 
-        if (this._state == PsyanimEditorExperiment.STATE.SIMULATING)
+        if (this._state == PsyanimEditorExperiment.STATE.IDLE)
         {
-            // transition to next parameter set
-            this._currentParameterSet = this._parameterSets[this._nextParameterSetIndex];
-            this._currentAnimationClipSet = [];
+            this._transitionToNextParameterSet();
+        }
+        else if (this._state == PsyanimEditorExperiment.STATE.SIMULATING)
+        {
+            this._currentParameterSetIndex++;
 
-            this._duration = this._currentParameterSet.experimentDuration;
-    
-            console.log("Experiment" + (this._nextParameterSetIndex + 1) + " start time: " + this.time.now / 1000);
-            console.log("Experiment " + (this._nextParameterSetIndex + 1) + " duration: " + this._duration / 1000);
-
-            this._nextParameterSetIndex++;
-            
-            this._nextSceneKey = this.scene.key;
-
-            if (!this.recordVideo && this._nextParameterSetIndex >= this._parameterSets.length)
+            this._transitionToNextParameterSet();
+        }
+        else if (this._state == PsyanimEditorExperiment.STATE.RECORDING)
+        {
+            if (this._currentParameterSetIndex >= this._parameterSets.length - 1)
             {
                 this._nextSceneKey = 'Empty Scene';
             }
         }
-        else if (this._state == PsyanimEditorExperiment.STATE.RECORDING)
-        {
-            if (this._nextParameterSetIndex >= this._parameterSets.length)
+    }
+
+    _getAgentsToRecord() {
+
+        let agents = [];
+
+        this._agentNamesToRecord.forEach(name => {
+
+            let agent = this.getEntityByName(name);
+
+            if (!agent)
             {
-                this._nextSceneKey = 'Empty Scene';
-            }            
+                console.error("ERROR: failed to find agent by name '" + name + "'!");
+            }
+
+            agents.push(agent);
+        });
+
+        return agents;
+    }
+
+    _transitionToNextParameterSet() {
+
+        // transition to next parameter set
+        this._currentParameterSet = this._parameterSets[this._currentParameterSetIndex];
+        this._currentAnimationClipSet = [];
+
+        this._duration = this._currentParameterSet.experimentDuration;
+
+        console.log("Experiment" + (this._currentParameterSetIndex + 1) + " start time: " + this.time.now / 1000);
+        console.log("Experiment " + (this._currentParameterSetIndex + 1) + " duration: " + this._duration / 1000);
+
+        this._nextSceneKey = this.scene.key;
+
+        if (!this.recordVideo && this._currentParameterSetIndex >= this._parameterSets.length - 1)
+        {
+            this._nextSceneKey = 'Empty Scene';
         }
     }
 
@@ -121,7 +150,20 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
         // create test manager
         this._testManager = this.addEntity('testManager');
-        this._testManager.addComponent(PsyanimExperimentControls);
+
+        this._experimentControls = this._testManager
+            .addComponent(PsyanimExperimentControls);
+
+        this._experimentControls.editorExperiment = this;
+
+        if (this._state == PsyanimEditorExperiment.STATE.IDLE)
+        {
+            this._experimentControls.setStartButtonEnabled(true);
+        }
+        else
+        {
+            this._experimentControls.setStartButtonEnabled(false);            
+        }
 
         // create network manager
         this._networkManager = this.addEntity('networkManager')
@@ -129,6 +171,38 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
         // call child class experiment setup code
         this.setupExperiment();
+
+        if (this._state == PsyanimEditorExperiment.STATE.IDLE)
+        {
+            // disable all components on the relevant agents for now
+            let agents = this._getAgentsToRecord();
+
+            agents.forEach(agent => {
+                let components = agent.getComponents();
+                components.forEach(c => c.enabled = false);
+            });
+
+            this._state = PsyanimEditorExperiment.STATE.SIMULATING;
+        }
+        else
+        {
+            this._run();
+        }
+    }
+
+    start() {
+
+        let agents = this._getAgentsToRecord();
+
+        agents.forEach(agent => {
+            let components = agent.getComponents();
+            components.forEach(c => c.enabled = true);
+        });
+
+        this._run();
+    }
+
+    _run() {
 
         // simulate and record
         if (this._state == PsyanimEditorExperiment.STATE.SIMULATING)
@@ -146,19 +220,7 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
     _initSimulation() {
 
         // add animation baker components to relevant agents
-        let agents = [];
-
-        this._agentNamesToRecord.forEach(name => {
-
-            let agent = this.getEntityByName(name);
-
-            if (!agent)
-            {
-                console.error("ERROR: failed to find agent by name '" + name + "'!");
-            }
-
-            agents.push(agent);
-        });
+        let agents = this._getAgentsToRecord();
 
         if (this.recordVideo)
         {
@@ -199,19 +261,7 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
     _initVideoRecording() {
 
         // get all the agents we're working with
-        let agents = [];
-
-        this._agentNamesToRecord.forEach(name => {
-
-            let agent = this.getEntityByName(name);
-
-            if (!agent)
-            {
-                console.error("ERROR: failed to find agent by name '" + name + "'!");
-            }
-
-            agents.push(agent);        
-        });
+        let agents = this._getAgentsToRecord();
 
         // setup animation playback components
         agents.forEach(agent => {
