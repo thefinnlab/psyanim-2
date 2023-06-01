@@ -8,6 +8,8 @@ export default class PsyanimScene extends Phaser.Scene {
     constructor(key) {
 
         super(key);
+
+        // this.events.on('shutdown', () => this._destroyAllEntities());
     }
 
     addEntity(name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
@@ -22,6 +24,15 @@ export default class PsyanimScene extends Phaser.Scene {
     getEntityByName(name) {
 
         return this._entities.find(e => e.name == name);
+    }
+
+    _destroyAllEntities() {
+
+        this._entities.forEach( (e) => {
+            e.destroy();
+        });
+
+        this._entities = [];
     }
 
     init() {

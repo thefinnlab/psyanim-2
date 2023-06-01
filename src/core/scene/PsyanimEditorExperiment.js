@@ -10,6 +10,8 @@ import PsyanimVideoRecorder from '../components/utils/PsyanimVideoRecorder';
 import PsyanimAnimationBaker from '../components/utils/PsyanimAnimationBaker';
 import PsyanimAnimationPlayer from '../components/utils/PsyanimAnimationPlayer';
 
+import PsyanimExperimentControls from '../components/ui/PsyanimExperimentControls';
+
 export default class PsyanimEditorExperiment extends PsyanimScene {
 
     static STATE = {
@@ -116,6 +118,10 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
     create() {
 
         super.create();
+
+        // create test manager
+        this._testManager = this.addEntity('testManager');
+        this._testManager.addComponent(PsyanimExperimentControls);
 
         // create network manager
         this._networkManager = this.addEntity('networkManager')
@@ -232,8 +238,6 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
         this._networkManager.connect();
 
         // setup video recording
-        this._testManager = this.addEntity('testManager');
-
         this._videoRecorder = this._testManager.addComponent(PsyanimVideoRecorder);
         this._videoRecorder.events.on('videoFileReady', () => {
 
