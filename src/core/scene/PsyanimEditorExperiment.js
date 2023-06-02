@@ -148,6 +148,10 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
         super.create();
 
+        // create network manager
+        this._networkManager = this.addEntity('networkManager')
+            .addComponent(PsyanimClientNetworkManager);
+
         // create test manager
         this._testManager = this.addEntity('testManager');
 
@@ -155,19 +159,16 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
             .addComponent(PsyanimExperimentControls);
 
         this._experimentControls.editorExperiment = this;
+        this._experimentControls.networkManager = this._networkManager;
 
         if (this._state == PsyanimEditorExperiment.STATE.IDLE)
         {
-            this._experimentControls.setStartButtonEnabled(true);
+            this._experimentControls.setControlsEnabled(true);
         }
         else
         {
-            this._experimentControls.setStartButtonEnabled(false);            
+            this._experimentControls.setControlsEnabled(false);            
         }
-
-        // create network manager
-        this._networkManager = this.addEntity('networkManager')
-            .addComponent(PsyanimClientNetworkManager);
 
         // call child class experiment setup code
         this.setupExperiment();

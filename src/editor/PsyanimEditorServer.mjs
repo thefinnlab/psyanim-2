@@ -1,6 +1,6 @@
 import express from 'express';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
 
 import http from 'http';
 import WebSocket, { WebSocketServer } from 'ws';
@@ -30,6 +30,37 @@ export default class PsyanimEditorServer {
         this.app.use(express.json());
 
         this.app.use('/', express.static('./dist'));
+
+        this.app.post('/delete-videos', (req, res) => {
+
+            console.log("Deleting all videos!");
+
+            let rootDirPath = this._videoSaveConfig.rootDirPath;
+            let subdirName = this._videoSaveConfig.subdirName;
+    
+            let directoryPath = rootDirPath + "/" + subdirName;
+
+            fs.readdir(directoryPath, (err, files) => {
+                
+                if (err) 
+                {
+                    console.log("ERROR deleting videos" + err);
+                }
+
+                files.forEach(file => {
+
+                    fs.unlink(path.join(directoryPath, file), (err) => {
+
+                        if (err)
+                        {
+                            console.log("ERROR unlinking file: " + err);
+                        }
+                    });
+                });
+            });
+
+            res.sendStatus(200);
+        });
 
         this.app.post('/video-save-path', (req, res) => {
 
