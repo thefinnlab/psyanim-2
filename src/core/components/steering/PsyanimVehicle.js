@@ -23,8 +23,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     nSamplesForLookSmoothing = 6;
 
-    useAcceleration = false;
-
     constructor(entity) {
 
         super(entity);
