@@ -100,6 +100,6 @@ export default class PsyanimVehicle extends PsyanimComponent {
         // apply steering
         this.entity.applyForce(steering);
 
-        this._lookWhereYoureGoing();
+        this.lookWhereYoureGoing();
     }
 }

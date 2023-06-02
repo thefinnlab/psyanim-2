@@ -14,6 +14,7 @@ import AdvancedFleeTest from './scenes/AdvancedFleeTest';
 import PsyanimInteractivePlayfightTest from './scenes/PsyanimInteractivePlayfightTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 import ChargeTest from './scenes/ChargeTest';
+import PsyanimAdvancedPlayfightTest from './scenes/PsyanimAdvancedPlayfightTest';
 
 import HTMLCaptureStreamTest from './scenes/HTMLCaptureStreamTest';
 
@@ -31,7 +32,8 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [ChargeTest, AnimationBakingTest, HTMLCaptureStreamTest, PsyanimPlayfightTest, SimpleCollisionAvoidanceTest, WanderTest, SeekTest, FleeTest, EvadeTest, 
+            scene: [PsyanimAdvancedPlayfightTest, ChargeTest, AnimationBakingTest, HTMLCaptureStreamTest, 
+                PsyanimPlayfightTest, SimpleCollisionAvoidanceTest, WanderTest, SeekTest, FleeTest, EvadeTest, 
                 RayCastTest, SensorTest, DebugGraphicsTest, ArriveTest, PathFollowTest,
                 AdvancedFleeTest],
             physics: {
