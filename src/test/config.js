@@ -8,13 +8,11 @@ import SensorTest from './scenes/SensorTest';
 import PathFollowTest from './scenes/PathFollowTest';
 import EvadeTest from './scenes/EvadeTest';
 import SimpleCollisionAvoidanceTest from './scenes/SimpleCollisionAvoidanceTest';
-import ComplexCollisionAvoidanceTest from './scenes/ComplexCollisionAvoidanceTest';
 import RayCastTest from './scenes/RayCastTest';
 import AdvancedFleeTest from './scenes/AdvancedFleeTest';
-import PsyanimInteractivePlayfightTest from './scenes/PsyanimInteractivePlayfightTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 import ChargeTest from './scenes/ChargeTest';
-import PsyanimAdvancedPlayfightTest from './scenes/PsyanimAdvancedPlayfightTest';
+import AdvancedPlayfightTest from './scenes/AdvancedPlayfightTest';
 
 import HTMLCaptureStreamTest from './scenes/HTMLCaptureStreamTest';
 
@@ -32,7 +30,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [PsyanimAdvancedPlayfightTest, ChargeTest, AnimationBakingTest, HTMLCaptureStreamTest, 
+            scene: [AdvancedPlayfightTest, ChargeTest, AnimationBakingTest, HTMLCaptureStreamTest, 
                 PsyanimPlayfightTest, SimpleCollisionAvoidanceTest, WanderTest, SeekTest, FleeTest, EvadeTest, 
                 RayCastTest, SensorTest, DebugGraphicsTest, ArriveTest, PathFollowTest,
                 AdvancedFleeTest],

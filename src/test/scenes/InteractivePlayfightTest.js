@@ -14,7 +14,7 @@ import PsyanimSceneChangeController from '../../core/components/controllers/Psya
 
 import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 
-export default class PsyanimInteractivePlayfightTest extends PsyanimScene {
+export default class InteractivePlayfightTest extends PsyanimScene {
 
     constructor() {
 

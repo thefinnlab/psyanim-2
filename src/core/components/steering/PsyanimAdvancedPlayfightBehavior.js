@@ -52,7 +52,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
-                return this.arriveBehavior.maxSpeed;
+                return this.chargeBehavior.maxSpeed;
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
@@ -70,7 +70,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
-                return this.arriveBehavior.maxAcceleration;
+                return this.chargeBehavior.maxAcceleration;
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 

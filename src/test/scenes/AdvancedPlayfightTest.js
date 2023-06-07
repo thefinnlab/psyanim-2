@@ -18,7 +18,7 @@ import PsyanimSceneChangeController from '../../core/components/controllers/Psya
 
 import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 
-export default class PsyanimAdvancedPlayfightTest extends PsyanimScene {
+export default class AdvancedPlayfightTest extends PsyanimScene {
 
     constructor() {
 
@@ -109,7 +109,7 @@ export default class PsyanimAdvancedPlayfightTest extends PsyanimScene {
             let playfight = agent.addComponent(PsyanimAdvancedPlayfightBehavior);
             playfight.breakDuration = breakDuration;
             playfight.fleeBehavior = flee;
-            playfight.arriveBehavior = arrive;
+            playfight.chargeBehavior = arrive;
             playfight.wanderBehavior = wander;
             
             let playfightAgent = agent.addComponent(PsyanimAdvancedPlayfightAgent);
