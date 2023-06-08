@@ -12,6 +12,8 @@ import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 import PsyanimAdvancedArriveBehavior from '../../core/components/steering/PsyanimAdvancedArriveBehavior';
 import PsyanimAdvancedArriveAgent from '../../core/components/steering/agents/PsyanimAdvancedArriveAgent';
 
+import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
+
 export default class AdvancedArriveTest extends PsyanimScene {
 
     constructor() {
@@ -29,7 +31,7 @@ export default class AdvancedArriveTest extends PsyanimScene {
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController);
 
-        this.target = this.addEntity('target', 750, 550, {
+        this.target = this.addEntity('target', 0, 0, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 4, color: 0x0000ff
         },
@@ -37,6 +39,8 @@ export default class AdvancedArriveTest extends PsyanimScene {
             isSensor: true,
             isSleeping: true
         });
+
+        this.target.addComponent(PsyanimMouseFollowTarget);
 
         this.agent1 = this.addEntity('agent1', 50, 50, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
@@ -62,15 +66,17 @@ export default class AdvancedArriveTest extends PsyanimScene {
         advancedArrive.outerDecelerationRadius = 40;
         advancedArrive.maxAcceleration = 1;
 
-        let adancedArriveAgent = this.agent1.addComponent(PsyanimAdvancedArriveAgent);
+        this.advancedArriveAgent = this.agent1.addComponent(PsyanimAdvancedArriveAgent);
 
-        adancedArriveAgent.vehicle = vehicle1;
-        adancedArriveAgent.advancedArriveBehavior = advancedArrive;
-
-        adancedArriveAgent.setTarget(this.target);
+        this.advancedArriveAgent.vehicle = vehicle1;
+        this.advancedArriveAgent.advancedArriveBehavior = advancedArrive;
 
         this._timer = 0;
         this._running = true;
+
+        this._keys = {
+            C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
+        }
     }
 
     update(t, dt) {
@@ -78,6 +84,14 @@ export default class AdvancedArriveTest extends PsyanimScene {
         super.update(t, dt);
 
         this._timer += dt;
+
+        if (Phaser.Input.Keyboard.JustDown(this._keys.C))
+        {
+            this.advancedArriveAgent.setTargetPosition(this.target.position);
+
+            this._running = true;
+            this._timer = 0;
+        }
 
         if (this._running)
         {

@@ -10,12 +10,17 @@ export default class PsyanimAdvancedArriveAgent extends PsyanimComponent {
     constructor(entity) {
         
         super(entity);
+
+        this._target = this.entity.scene
+            .addEntity(this.entity.name + "_target", 0, 0, {
+                isEmpty: true
+        });
     }
 
-    setTarget(target) {
+    setTargetPosition(position) {
 
-        this._target = target;
-        this.advancedArriveBehavior.computeMaxSpeed(target);
+        this._target.position = position;
+        this.advancedArriveBehavior.computeMaxSpeed(this._target);
     }
 
     update(t, dt) {
