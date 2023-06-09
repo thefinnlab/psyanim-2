@@ -10,10 +10,12 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
         FLEEING: 0x0004
     }
 
+    // TODO: can we just change 'collision frequency' & 'break duration' to seconds instead of ms?
+    collisionFrequency = 2000;
     breakDuration = 1500;
 
     fleeBehavior = null;
-    chargeBehavior = null;
+    advancedArriveBehavior = null;
     wanderBehavior = null;
 
     constructor(entity) {
@@ -23,6 +25,9 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
         this._breakTimer = 0;
 
         this._setState(PsyanimAdvancedPlayfightBehavior.STATE.WANDERING);
+
+        this._arriveTarget = this.entity.scene
+            .addEntity(this.name + '_arriveTarget', 0, 0, { isEmpty: true });
     }
 
     setTarget(target) {
@@ -52,7 +57,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
-                return this.chargeBehavior.maxSpeed;
+                return this.advancedArriveBehavior.maxSpeed;
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
@@ -70,7 +75,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
-                return this.chargeBehavior.maxAcceleration;
+                return this.advancedArriveBehavior.maxAcceleration;
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
@@ -89,6 +94,20 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
         switch (this._state) {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
+
+                // move the arrive target to the midpoint between this.entity and this._target
+                this._arriveTarget.position = this._target.position
+                    .subtract(this.entity.position)
+                    .scale(0.5)
+                    .add(this.entity.position);
+
+                // compute charge duration necessary to satisfy collision frequency
+                this.advancedArriveBehavior.chargeDuration = (this.collisionFrequency - this._breakTimer) / 1000;
+
+                console.log("charge duration = " + this.advancedArriveBehavior.chargeDuration);
+
+                // recompute max speed based on distance to target at start of charge
+                this.advancedArriveBehavior.computeMaxSpeed(this._arriveTarget);
 
                 break;
 
@@ -134,7 +153,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
-                return this.chargeBehavior.getSteering(this._target);
+                return this.advancedArriveBehavior.getSteering(this._target);
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
@@ -144,10 +163,13 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
                 if (distanceToTarget < this.fleeBehavior.panicDistance)
                 {
+                    // transition to fleeing and fall through to the next case
                     this._setState(PsyanimAdvancedPlayfightBehavior.STATE.FLEEING);
                 }
-
-                return this.wanderBehavior.getSteering();
+                else
+                {
+                    return this.wanderBehavior.getSteering();
+                }
 
             case PsyanimAdvancedPlayfightBehavior.STATE.FLEEING:
 

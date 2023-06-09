@@ -10,7 +10,7 @@ import PsyanimAdvancedPlayfightBehavior from '../../core/components/steering/Psy
 import PsyanimAdvancedPlayfightAgent from '../../core/components/steering/agents/PsyanimAdvancedPlayfightAgent';
 
 import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
-import PsyanimArriveBehavior from '../../core/components/steering/PsyanimArriveBehavior';
+import PsyanimAdvancedArriveBehavior from '../../core/components/steering/PsyanimAdvancedArriveBehavior';
 import PsyanimAdvancedFleeBehavior from '../../core/components/steering/PsyanimAdvancedFleeBehavior';
 
 import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
@@ -30,24 +30,13 @@ export default class AdvancedPlayfightTest extends PsyanimScene {
         super.create();
 
         /**
-         *  TODO:
-         * 
-         *      - create a PsyanimTextRenderer component that allows you to write text to the screen
-         *          and updates it when it's 'text' property is changed
-         * 
-         *      - create a component that runs an 'experiment' and when it ends, it shows a UI overlay
-         *          (white screen) and throws an event of some sort
-         * 
-         */
-
-        /**
          *  Global Test Parameters
          */
 
-        let breakDuration = 2000;
+        let collisionFrequency = 2000;
+        let breakDuration = 1650;
 
-        let maxChargeSpeed = 9;
-        let maxChargeAcceleration = 0.4;
+        let maxChargeAcceleration = 1.0;
 
         let circleAgentRadius = 12;
         let outerDecelerationRadius = 30;
@@ -85,11 +74,10 @@ export default class AdvancedPlayfightTest extends PsyanimScene {
     
             let vehicle = agent.addComponent(PsyanimVehicle);
     
-            let arrive = agent.addComponent(PsyanimArriveBehavior);
-            arrive.maxSpeed = maxChargeSpeed;
-            arrive.maxAcceleration = maxChargeAcceleration;
-            arrive.innerDecelerationRadius = circleAgentRadius;
-            arrive.outerDecelerationRadius = outerDecelerationRadius;
+            let advancedArrive = agent.addComponent(PsyanimAdvancedArriveBehavior);
+            advancedArrive.maxAcceleration = maxChargeAcceleration;
+            advancedArrive.innerDecelerationRadius = circleAgentRadius;
+            advancedArrive.outerDecelerationRadius = outerDecelerationRadius;
     
             let flee = agent.addComponent(PsyanimAdvancedFleeBehavior);
             flee.maxSpeed = maxFleeSpeed;
@@ -107,9 +95,10 @@ export default class AdvancedPlayfightTest extends PsyanimScene {
             wander.maxWanderAngleChangePerFrame = maxWanderAngleChangePerFrame;
 
             let playfight = agent.addComponent(PsyanimAdvancedPlayfightBehavior);
+            playfight.collisionFrequency = collisionFrequency;
             playfight.breakDuration = breakDuration;
             playfight.fleeBehavior = flee;
-            playfight.chargeBehavior = arrive;
+            playfight.advancedArriveBehavior = advancedArrive;
             playfight.wanderBehavior = wander;
             
             let playfightAgent = agent.addComponent(PsyanimAdvancedPlayfightAgent);
