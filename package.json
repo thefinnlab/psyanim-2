@@ -5,17 +5,17 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-
-    "watch": "rimraf -v ./dist && webpack --watch",
-    "devwatch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
     
-    "editor": "rimraf -v ./dist && webpack && npx nodemon ./src/editor/main.mjs",
-    "deveditor": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/editor/main.mjs",
+    "experiment-watch": "rimraf -v ./dist && webpack --watch",
+    "editor-watch": "rimraf -v ./dist && webpack --config ./webpack.editor.config.js --watch",
+    "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
+    
+    "experiment": "rimraf -v ./dist && webpack && npx nodemon ./src/editor/main.mjs",
+    "editor": "rimraf -v ./dist && webpack --config ./webpack.editor.config.js && npx nodemon ./src/editor/main.mjs",
+    "dev-editor": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/editor/main.mjs",
 
-    "build": "rimraf -v ./dist && webpack",
-    "devbuild": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
-
-    "buildengine": "TODO: make this build the engine for jsPsych integration",
+    "experiment-build": "rimraf -v ./dist && webpack",
+    "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
 
     "clean": "rimraf -v ./dist"
   },
@@ -23,7 +23,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@jspsych/plugin-html-keyboard-response": "^1.1.2",
     "express": "^4.18.2",
+    "jspsych": "^7.3.3",
     "nodemon": "^2.0.22",
     "phaser": "^3.60.0",
     "rimraf": "^5.0.1",

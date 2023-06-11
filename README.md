@@ -12,7 +12,7 @@ See instructions below for building & running Psyanim 2.0.
 
 **3. To run editor server locally: `npm run editor` and then navigate to 'localhost:3000' in your Chrome browser**
 
-**4. To watch for code changes while dev server is running, in a separate terminal run: `npm run watch`**
+**4. To watch for code changes while dev server is running, in a separate terminal run: `npm run editor-watch`**
 
 **5. (Optional) Install recommended VS Code Extensions [Link](./docs/helpful_vscode_extensions.md)**
 
@@ -22,9 +22,9 @@ See instructions below for building & running Psyanim 2.0.
 
 # Getting started (for core development):
 
-**1. To run local dev server: `npm run deveditor` and then navigate to 'localhost:3000' in your Chrome browser**
+**1. To run local dev server: `npm run dev-editor` and then navigate to 'localhost:3000' in your Chrome browser**
 
-**2. To watch for code changes while dev server is running, in a separate terminal run: `npm run devwatch`**
+**2. To watch for code changes while dev server is running, in a separate terminal run: `npm run dev-watch`**
 
 ## Test Scene Keyboard Controls:
 

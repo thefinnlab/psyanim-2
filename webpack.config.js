@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     // mode: 'production',
     mode: 'development',
-    entry: './experiments/index.js',
+    entry: './experiments/src/index.js',
     devtool: 'inline-source-map',
     devServer: {
         static: './dist',
@@ -16,7 +16,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
           title: 'Output Management',
-          template: './experiments/index.html'
+          template: './experiments/src/index.html'
         }),
       ],
     output: {

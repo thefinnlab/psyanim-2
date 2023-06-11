@@ -2,16 +2,21 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    // mode: 'production',
     mode: 'development',
-    entry: './src/test/index.js',
+    entry: './experiments/editor/index.js',
     devtool: 'inline-source-map',
     devServer: {
         static: './dist',
     },
+    performance: {
+        maxEntrypointSize: 100000000,
+        maxAssetSize: 100000000,
+    },
     plugins: [
         new HtmlWebpackPlugin({
           title: 'Output Management',
-          template: './src/test/index.html'
+          template: './experiments/editor/index.html'
         }),
       ],
     output: {

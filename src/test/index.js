@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
 
-import Config from './test/config';
+import Config from './config';
 
 const game = new Phaser.Game(Config.get());
