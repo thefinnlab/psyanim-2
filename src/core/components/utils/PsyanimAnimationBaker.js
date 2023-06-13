@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-import PsyanimAnimationClip from '../../../utils/PsyanimAnimationClip';
+import PsyanimAnimationClip from '../../../utils/PsyanimAnimationClip.mjs';
 
 export default class PsyanimAnimationBaker extends PsyanimComponent {
 
