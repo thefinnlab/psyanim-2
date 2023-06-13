@@ -1,3 +1,5 @@
+import PsyanimMessaging from "./PsyanimMessaging.mjs";
+
 export default class PsyanimAnimationClip {
 
     // sampleLength is number of floats necessary to represent a sample
@@ -10,22 +12,31 @@ export default class PsyanimAnimationClip {
 
     static fromBuffer(buffer) {
 
-        let data = new  Float32Array(buffer);
+        let header = PsyanimMessaging.getHeader(buffer);
+
+        if (header != PsyanimMessaging.MESSAGE_TYPES.ANIMATION_CLIP)
+        {
+            console.error("ERROR: invalid animation clip header = " + header);
+        }
+
+        let data = new Float32Array(buffer);
 
         let clip = new PsyanimAnimationClip();
 
-        let nSamples = data.length / PsyanimAnimationClip.SAMPLE_LENGTH;
+        let nSamples = (data.length - PsyanimMessaging.MESSAGE_HEADER_LENGTH) / PsyanimAnimationClip.SAMPLE_LENGTH;
 
         for (let i = 0; i < nSamples; ++i)
         {
+            let offset = PsyanimMessaging.MESSAGE_HEADER_LENGTH + PsyanimAnimationClip.SAMPLE_LENGTH * i;
+
             clip._transformData.push({
 
-                t: data[PsyanimAnimationClip.SAMPLE_LENGTH * i],
+                t: data[offset],
 
-                x: data[PsyanimAnimationClip.SAMPLE_LENGTH * i + 1], 
-                y: data[PsyanimAnimationClip.SAMPLE_LENGTH * i + 2],
+                x: data[offset + 1], 
+                y: data[offset + 2],
 
-                rotation: data[PsyanimAnimationClip.SAMPLE_LENGTH * i + 3]
+                rotation: data[offset + 3]
             });
         }
 
@@ -35,17 +46,23 @@ export default class PsyanimAnimationClip {
     toFloat32Array() {
 
         let nSamples = this._transformData.length;
-        let data = new Float32Array(nSamples * PsyanimAnimationClip.SAMPLE_LENGTH);
+
+        let data = new Float32Array(PsyanimMessaging.MESSAGE_HEADER_LENGTH + 
+            nSamples * PsyanimAnimationClip.SAMPLE_LENGTH);
+
+        PsyanimMessaging.setHeader(data.buffer, PsyanimMessaging.MESSAGE_TYPES.ANIMATION_CLIP);
 
         for (let i = 0; i < nSamples; ++i)
         {
             let transform = this._transformData[i];
 
+            let offset = PsyanimMessaging.MESSAGE_HEADER_LENGTH + PsyanimAnimationClip.SAMPLE_LENGTH * i;
+
             // we store data in this order: t, x, y, angle
-            data[PsyanimAnimationClip.SAMPLE_LENGTH * i] = transform.t;
-            data[PsyanimAnimationClip.SAMPLE_LENGTH * i + 1] = transform.x;
-            data[PsyanimAnimationClip.SAMPLE_LENGTH * i + 2] = transform.y;
-            data[PsyanimAnimationClip.SAMPLE_LENGTH * i + 3] = transform.rotation;
+            data[offset] = transform.t;
+            data[offset + 1] = transform.x;
+            data[offset + 2] = transform.y;
+            data[offset + 3] = transform.rotation;
         }
 
         return data;
