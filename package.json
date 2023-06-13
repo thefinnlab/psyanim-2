@@ -13,7 +13,7 @@
     "dev-editor": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/editor/main.mjs",
     "experiment-build": "rimraf -v ./dist && webpack",
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
-    "test": "jasmine",
+    "test": "jasmine --config=src/test/unit/jasmine.json",
     "clean": "rimraf -v ./dist"
   },
   "keywords": [],

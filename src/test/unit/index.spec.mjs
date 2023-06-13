@@ -1,4 +1,4 @@
-import PsyanimAnimationClip from '../../src/utils/PsyanimAnimationClip.mjs';
+import PsyanimAnimationClip from '../../utils/PsyanimAnimationClip.mjs';
 
 describe('simple tests', () => {
     it('should find true to be true', () => {
