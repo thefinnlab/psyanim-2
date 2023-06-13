@@ -5,18 +5,15 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    
     "experiment-watch": "rimraf -v ./dist && webpack --watch",
     "editor-watch": "rimraf -v ./dist && webpack --config ./webpack.editor.config.js --watch",
     "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
-    
     "experiment": "rimraf -v ./dist && webpack && npx nodemon ./src/editor/main.mjs",
     "editor": "rimraf -v ./dist && webpack --config ./webpack.editor.config.js && npx nodemon ./src/editor/main.mjs",
     "dev-editor": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/editor/main.mjs",
-
     "experiment-build": "rimraf -v ./dist && webpack",
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
-
+    "test": "node ./node_modules/mocha/bin/mocha.js ./src/test/unit/",
     "clean": "rimraf -v ./dist"
   },
   "keywords": [],
@@ -34,6 +31,7 @@
   "devDependencies": {
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
+    "mocha": "^10.2.0",
     "webpack": "^5.79.0",
     "webpack-cli": "^5.0.1",
     "webpack-dev-server": "^4.13.2"

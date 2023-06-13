@@ -148,15 +148,6 @@ export default class AnimationBakingTest extends PsyanimScene {
             .getComponent(PsyanimAnimationBaker)
             .bake();
 
-        console.log("mouseTarget animation clip file size = " + mouseTargetAnimationClip.getFileSize() + 
-            ", sample count = " + mouseTargetAnimationClip.getSampleCount());
-
-        console.log("agent 1 animation clip file size = " + agent1AnimationClip.getFileSize() + 
-            ", sample count = " + agent1AnimationClip.getSampleCount());
-
-        console.log("agent 2 animation clip file size = " + agent2AnimationClip.getFileSize() + 
-            ", sample count = " + agent2AnimationClip.getSampleCount());
-
         // destroy all components on each entity
         this.agent1.getComponents().forEach(c => c.destroy());
         this.agent2.getComponents().forEach(c => c.destroy());

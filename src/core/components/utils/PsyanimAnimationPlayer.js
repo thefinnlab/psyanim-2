@@ -32,8 +32,10 @@ export default class PsyanimAnimationPlayer extends PsyanimComponent {
             {
                 let currentSample = this._clip.getSample(this._currentIndex);
 
-                this.entity.position = currentSample.pos;
-                this.entity.rotation = currentSample.rot;
+                this.entity.position = new Phaser.Math.Vector2(
+                    currentSample.x, currentSample.y);
+
+                this.entity.rotation = currentSample.rotation;
 
                 this._currentIndex++;
             }

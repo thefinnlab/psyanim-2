@@ -1,0 +1,13 @@
+// const PsyanimAnimationClip = require("../../utils/PsyanimAnimationClip");
+import PsyanimAnimationClip from "../../utils/PsyanimAnimationClip";
+
+describe('Phaser Test', function() {
+    describe('vector2', function() {
+        it('should be able to create a vector 2 and read its contents', function() {
+
+            let clip = new PsyanimAnimationClip();
+
+            assert.equal(clip.getSampleCount(), 0);
+        });
+    });
+});
