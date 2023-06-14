@@ -1,8 +1,30 @@
 import fs from 'fs';
+import path from 'path';
 
 export default class PsyanimIOHelper {
 
-    static absolutePath(dirpath, filename) {
+    static absoluteDirectoryPath(...args) {
+
+        return path.resolve(path.join(...args));
+    }
+
+    static deleteAllSubdirs(dirPath) {
+
+        fs.readdir(dirPath, (err, fileNames) => {
+
+            if (err)
+            {
+                console.log("ERROR reading files in dirPath: " + dirPath);
+            }
+
+            fileNames.forEach(fileName => {
+
+                fs.rmSync(path.join(dirPath, fileName), { recursive: true, force: true });
+            });
+        });
+    }
+
+    static absoluteFilePath(dirpath, filename) {
 
         return path.resolve(path.join(dirpath, filename));
     }
@@ -15,30 +37,51 @@ export default class PsyanimIOHelper {
         }
     }
 
-    static getNextAvailableFileIndex(dirpath, filenameBase) {
+    static getNextRunVariationFilePath(dirpath, fileExtension) {
+
+        const filenameBase = 'variation_';
 
         PsyanimIOHelper.createDir(dirpath);
 
         let filenameIndex = 0;
 
-        // TODO: implement
+        let filePath = PsyanimIOHelper.absoluteFilePath(
+            dirpath, filenameBase + filenameIndex.toString().padStart(4, '0') + fileExtension);
 
-        // let filePath = dirpath + 
+        while (fs.existsSync(filePath))
+        {
+            filenameIndex++;
 
-        // while (fs.existsSync())
+            filePath = PsyanimIOHelper.absoluteFilePath(
+                dirpath, filenameBase + filenameIndex.toString().padStart(4, '0') + fileExtension);    
+        }
+
+        return filePath;
     }
 
-    static createSubdir(dirpath, subdirName) {
-     
-        // TODO: implement
-    }
+    static createExperimentRunFolders(projectDir, experimentName, runName) {
 
-    static createExperimentRunFolders(projectDir, experimentName) {
+        let videosDir = PsyanimIOHelper.absoluteDirectoryPath(
+            projectDir, 'videos', experimentName);
 
-        // TODO: let's use Date.now() for uniquely capturing experiment runs in /videos and /anim
-        // let timestamp = Date.now();
+        let videoRunDir = PsyanimIOHelper.absoluteDirectoryPath(videosDir, runName);
 
-        // TODO: make sure projectDir/videos/experimentName/timestamp/ dir exitsts
-        // and also make sure projectDir/anim/experimentName/timestamp/ dir exists!
+        let animsDir = PsyanimIOHelper.absoluteDirectoryPath(
+            projectDir, 'anims', experimentName);
+
+        let animRunDir = PsyanimIOHelper.absoluteDirectoryPath(
+            animsDir, runName);
+
+        PsyanimIOHelper.createDir(videoRunDir);
+        PsyanimIOHelper.createDir(animRunDir);
+
+        return {
+
+            videosDir: videosDir,
+            videoRunDir: videoRunDir,
+
+            animsDir: animsDir,
+            animRunDir: animRunDir
+        };
     }
 }

@@ -14,7 +14,8 @@
     "experiment-build": "rimraf -v ./dist && webpack",
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
     "test": "jasmine --config=src/test/unit/jasmine.json",
-    "clean": "rimraf -v ./dist"
+    "clean": "rimraf -v ./dist",
+    "clean-experiments":"node ./src/test/etc/clean_experiment_artifacts.mjs"
   },
   "keywords": [],
   "author": "",

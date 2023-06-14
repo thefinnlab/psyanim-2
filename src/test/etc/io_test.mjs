@@ -1,20 +1,23 @@
-import path from 'path';
+import fs from 'fs';
+import PsyanimIOHelper from "../../utils/PsyanimIOHelper.mjs";
 
-let rootDirPath = './check/';
+let projectDir = './experiments';
+let experimentName = 'playfight';
+let runName = Date.now().toString();
 
-let subdirA = '/this/';
+let experimentPaths = PsyanimIOHelper.createExperimentRunFolders(
+    projectDir, experimentName, runName);
 
-let subdirB = '/works/';
+console.log(JSON.stringify(experimentPaths, null, '\n') + '\n');
 
-let filename = 'myfile.txt';
+for (let i = 0; i < 42; ++i)
+{
+    let nextVideoRunVariationFilePath = PsyanimIOHelper.getNextRunVariationFilePath(
+        experimentPaths.videoRunDir, ".txt");    
 
-let fullPath = path.resolve(path.join(rootDirPath, subdirA, subdirB, filename));
+    let nextAnimRunVariationFilePath = PsyanimIOHelper.getNextRunVariationFilePath(
+        experimentPaths.animRunDir, ".txt");        
 
-console.log(fullPath);
-
-// let dirPath = rootDirPath + '/' + timestamp;
-
-// if (!fs.existsSync(dirPath))
-// {
-//     fs.mkdirSync(dirPath, { recursive: true });
-// }
+    fs.writeFileSync(nextVideoRunVariationFilePath, 'hello video o/');   
+    fs.writeFileSync(nextAnimRunVariationFilePath, 'hello anim o/');   
+}
