@@ -65,10 +65,12 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         matterOptions.collisionFilter = Object.hasOwn(matterOptions, 'collisionFilter') 
             ? matterOptions.collisionFilter : PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER;
 
-        this._shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
-        this._color = (shapeParams.color) ? shapeParams.color : defaultShapeParams.color;
+        let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
+        let color = (shapeParams.color) ? shapeParams.color : defaultShapeParams.color;
 
-        switch(this._shapeType)
+        let geomParams = null;
+
+        switch(shapeType)
         {
             case PsyanimConstants.SHAPE_TYPE.CIRCLE:
 
@@ -78,11 +80,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
                     radius: radius
                 };
 
-                this._geomParams = circleGeomParams;
+                geomParams = circleGeomParams;
 
                 if (generateNewTexture)
                 {
-                    PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, this._color);
+                    PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, color);
                 }
 
                 matterConfig.type = 'circle';
@@ -99,11 +101,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
                     base: base, altitude: altitude
                 };
 
-                this._geomParams = triangleGeomParams;
+                geomParams = triangleGeomParams;
 
                 if (generateNewTexture)
                 {
-                    PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, this._color);
+                    PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, color);
                 }
 
                 matterConfig.type = 'fromVertices';
@@ -120,11 +122,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
                     width: width, height: height
                 };
 
-                this._geomParams = rectangleGeomParams;
+                geomParams = rectangleGeomParams;
 
                 if (generateNewTexture)
                 {
-                    PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, this._color);
+                    PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, color);
                 }
 
                 matterConfig.type = 'rectangle';
@@ -136,6 +138,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
         super(scene.matter.world, x, y, textureKey);
 
+        this._color = color;
+        this._geomParams = geomParams;
+        this._shapeType = shapeType;
+        
         this.name = name;
 
         // setup new physics body
