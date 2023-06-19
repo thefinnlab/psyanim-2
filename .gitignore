@@ -10,6 +10,16 @@ lerna-debug.log*
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
+# Firebase cache
+.firebase/
+
+# Firebase config
+
+# Uncomment this if you'd like others to create their own Firebase project.
+# For a team working on the same Firebase project(s), it is recommended to leave
+# it commented so all members can deploy to the same project(s) in .firebaserc.
+# .firebaserc
+
 # Runtime data
 pids
 *.pid
@@ -87,10 +97,11 @@ web_modules/
 .next
 out
 
-# Nuxt.js build / generate output
+# build / generate output
 .nuxt
 dist
 devdist
+public
 
 # Gatsby files
 .cache/
@@ -132,3 +143,4 @@ devdist
 
 #other
 *.webm
+**/firebase.config.json
