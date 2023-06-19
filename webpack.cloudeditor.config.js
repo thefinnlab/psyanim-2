@@ -7,7 +7,7 @@ module.exports = {
     entry: './experiments/cloudeditor/index.js',
     devtool: 'inline-source-map',
     devServer: {
-        static: './public',
+        static: './dist',
     },
     performance: {
         maxEntrypointSize: 100000000,
@@ -21,7 +21,7 @@ module.exports = {
       ],
     output: {
         filename: '[name].bundle.js',
-        path: path.resolve(__dirname, 'public'),
+        path: path.resolve(__dirname, 'dist'),
         clean: true,
     },
     optimization: {

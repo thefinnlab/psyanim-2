@@ -18,26 +18,14 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
-import firebaseConfig from '../../firebase.config.json';
-
 export default class MainScene extends PsyanimScene {
 
     constructor() {
 
         super('Main Scene');
 
-        // Initialize Firebase
-        firebase.initializeApp(firebaseConfig);
-
         // add a document to firestore db
-        const db = firebase.firestore();
-
-        db.collection("animation-clips").add({
-            name: "test_clip"})
-        .then((docRef) => {
-            console.log("Document written with ID: ", docRef.id);
-        })
-        .catch((error) => console.error("Error adding document: ", error));
+        this._db = firebase.firestore();
     }
 
     create() {
@@ -76,5 +64,29 @@ export default class MainScene extends PsyanimScene {
         arriveAgent.arriveBehavior = arriveBehavior;
         arriveAgent.target = mouseTarget;
         arriveAgent.vehicle = vehicle;
+
+        this._keys = {
+            I: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
+        };
+    }
+
+    update(t, dt) {
+
+        super.update(t, dt);
+
+        if (Phaser.Input.Keyboard.JustDown(this._keys.I))
+        {
+            this._db.collection("animation-clips").add({
+                projectName: "test",
+                experimentName: "interaction",
+                runName: "run_1",
+                data: [0.1, 1.2, 3.4, 5.6, 7.8, 8.9],
+                time: firebase.firestore.FieldValue.serverTimestamp()
+            })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+            })
+            .catch((error) => console.error("Error adding document: ", error));    
+        }
     }
 }
