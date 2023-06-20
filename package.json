@@ -6,6 +6,7 @@
   "main": "index.js",
   "scripts": {
     "experiment-watch": "rimraf -v ./dist && webpack --watch",
+    "cloudeditor-watch": "rimraf -v ./dist && webpack --config ./webpack.cloudeditor.config.js --watch",
     "editor-watch": "rimraf -v ./dist && webpack --config ./webpack.editor.config.js --watch",
     "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
     "experiment": "rimraf -v ./dist && webpack && npx nodemon ./src/editor/main.mjs",
@@ -13,10 +14,12 @@
     "dev-editor": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/editor/main.mjs",
     "experiment-build": "rimraf -v ./dist && webpack",
     "cloudeditor-build": "rimraf -v ./public && webpack --config ./webpack.cloudeditor.config.js",
+    "cloudeditor-deploy":"firebase deploy",
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
     "test": "jasmine --config=src/test/unit/jasmine.json",
     "clean": "rimraf -v ./dist",
-    "clean-experiments": "node ./src/test/etc/clean_experiment_artifacts.mjs"
+    "clean-experiments": "node ./src/test/etc/clean_experiment_artifacts.mjs",
+    "delete-cloud-animationclips":"firebase firestore:delete -r /animation-clips"
   },
   "keywords": [],
   "author": "",

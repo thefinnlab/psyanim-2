@@ -43,7 +43,31 @@ export default class PsyanimAnimationClip {
         return clip;
     }
 
-    toFloat32Array() {
+    static fromJsonArray(data) {
+
+        let floatArray = JSON.parse(data);
+
+        let nSamples = floatArray.length / PsyanimAnimationClip.SAMPLE_LENGTH;
+
+        let clip = new PsyanimAnimationClip();
+
+        for (let i = 0 ;i < nSamples; ++i)
+        {
+            let offset = i * PsyanimAnimationClip.SAMPLE_LENGTH;
+
+            let t = floatArray[offset];
+            let position = { x: floatArray[offset + 1], y: floatArray[offset + 2] };
+            let rotation = floatArray[offset + 3];
+
+            this.addSample(t, position, rotation);
+        }
+
+        return clip;
+    }
+
+    toBuffer() {
+
+        console.error("TODO: needs to return a PsyanimFloat32ArrayMessage!");
 
         let nSamples = this._transformData.length;
 
@@ -65,12 +89,33 @@ export default class PsyanimAnimationClip {
             data[offset + 3] = transform.rotation;
         }
 
+        return Buffer.from(data.buffer);
+    }
+
+    toArray() {
+
+        let nSamples = this._transformData.length;
+
+        let data = [];
+
+        for (let i = 0; i < nSamples; ++i)
+        {
+            let transform = this._transformData[i];
+
+            let offset = PsyanimAnimationClip.SAMPLE_LENGTH * i;
+
+            data[offset] = transform.t;
+            data[offset + 1] = transform.x;
+            data[offset + 2] = transform.y;
+            data[offset + 3] = transform.rotation;
+        }
+
         return data;
     }
 
-    toBuffer() {
+    toJsonArray() {
 
-        return Buffer.from(this.toFloat32Array().buffer);
+        return JSON.stringify(this.toArray());
     }
 
     addSample(time, position, rotation) {
@@ -81,6 +126,11 @@ export default class PsyanimAnimationClip {
             y: position.y,
             rotation: rotation
         });
+    }
+
+    clear() {
+
+        this._transformData = [];
     }
 
     getSample(index) {

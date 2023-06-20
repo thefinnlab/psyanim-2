@@ -1,4 +1,4 @@
-import Phaser from 'phaser';
+import Phaser, { Curves } from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
@@ -8,16 +8,46 @@ export default class PsyanimExperimentTimer extends PsyanimComponent {
 
         super(entity);
 
+        this._callback = null;
+        this._callbackArgs = null;
+        this._callbackScope = null;
+
+        this._currentTimer = null;
     }
 
-    setOnTimerElapsed(duration, callback, args = [], callbackScope = null) {
+    setOnTimerElapsed(callback, args = [], callbackScope = null) {
 
-        this.entity.scene.time.delayedCall(
-            duration, callback, args, callbackScope
+        this._callback = callback;
+        this._callbackArgs = args;
+        this._callbackScope = callbackScope;
+    }
+
+    start(duration) {
+
+        if (this.isRunning)
+        {
+            this.stop();
+        }
+
+        this._currentTimer = this.entity.scene.time.delayedCall(
+            duration, this._callback, this._args, this._callbackScope
         );
     }
 
-    update(t, dt) {
+    get isRunning() {
 
+        return this._currentTimer != null;
+    }
+
+    stop() {
+
+        if (this._currentTimer == null)
+        {
+            return;
+        }
+
+        this._currentTimer.paused = true;
+        this._currentTimer.remove();
+        this._currentTimer = null;
     }
 }

@@ -14,12 +14,16 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
+import PsyanimAnimationBaker from '../../src/core/components/utils/PsyanimAnimationBaker';
+
+import PsyanimExperimentTimer from '../../src/core/components/utils/PsyanimExperimentTimer';
+
 // firebase imports
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
 export default class MainScene extends PsyanimScene {
-
+    
     constructor() {
 
         super('Main Scene');
@@ -33,10 +37,12 @@ export default class MainScene extends PsyanimScene {
         super.create();
 
         // setup scene controls
-        this.addEntity('sceneControls')
+        this._sceneControls = this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
+            .addComponent(PsyanimSceneChangeController).entity;
+            
+        this._timer = this._sceneControls.addComponent(PsyanimExperimentTimer);
 
         // setup mouse follow target
         let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
@@ -65,8 +71,10 @@ export default class MainScene extends PsyanimScene {
         arriveAgent.target = mouseTarget;
         arriveAgent.vehicle = vehicle;
 
+        this._agentAnimationBaker = agent.addComponent(PsyanimAnimationBaker);
+
         this._keys = {
-            I: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I)
+            I: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.I),
         };
     }
 
@@ -76,17 +84,41 @@ export default class MainScene extends PsyanimScene {
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.I))
         {
-            this._db.collection("animation-clips").add({
-                projectName: "test",
-                experimentName: "interaction",
-                runName: "run_1",
-                data: [0.1, 1.2, 3.4, 5.6, 7.8, 8.9],
-                time: firebase.firestore.FieldValue.serverTimestamp()
-            })
-            .then((docRef) => {
-                console.log("Document written with ID: ", docRef.id);
-            })
-            .catch((error) => console.error("Error adding document: ", error));    
+            console.log("beginning animation recording...");
+
+            if  (this._agentAnimationBaker.isRunning)
+            {
+                this._agentAnimationBaker.stop();
+            }
+
+            this._agentAnimationBaker.start();
+
+            this._agentAnimationBaker.clear();
+
+            this._timer.setOnTimerElapsed(() => {
+
+                this._agentAnimationBaker.stop();
+
+                let data = this._agentAnimationBaker.clip.toArray();
+
+                this._db.collection("animation-clips").add({
+                    projectName: "test",
+                    experimentName: "interaction",
+                    runName: "run_1",
+                    data: data,
+                    time: firebase.firestore.FieldValue.serverTimestamp()
+                })
+                .then((docRef) => {
+                    console.log("Document written with ID: ", docRef.id);
+                })
+                .catch((error) => console.error("Error adding document: ", error));    
+
+                let jsonData = JSON.stringify(data);
+
+                console.log("finished baking data size: " + jsonData.length);
+            });
+
+            this._timer.start(2000);
         }
     }
 }
