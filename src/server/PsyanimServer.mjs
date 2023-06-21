@@ -7,7 +7,7 @@ import WebSocket, { WebSocketServer } from 'ws';
 
 import bodyParser from 'body-parser';
 
-export default class PsyanimEditorServer {
+export default class PsyanimServer {
 
     constructor() {
 
@@ -117,7 +117,7 @@ export default class PsyanimEditorServer {
     start() {
 
         let server = this.app.listen(this.port, () => {
-            console.log('Psyanim Editor server listening on port: ' + this.port);
+            console.log('Psyanim server listening on port: ' + this.port);
         });
 
         this.wss = new WebSocketServer({ server });

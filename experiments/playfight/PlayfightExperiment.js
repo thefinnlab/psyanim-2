@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimEditorExperiment from '../../src/core/scene/PsyanimEditorExperiment';
+import PsyanimExperiment from '../../src/core/scene/PsyanimExperiment';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 
@@ -25,7 +25,7 @@ class PsyanimVideoMetadata {
     }
 }
 
-export default class PlayfightExperiment extends PsyanimEditorExperiment {
+export default class PlayfightExperiment extends PsyanimExperiment {
 
     constructor() {
 
@@ -79,7 +79,7 @@ export default class PlayfightExperiment extends PsyanimEditorExperiment {
     setupExperiment() {
 
         // TODO: this could be done in constructor!  just have setSaveVideoPath() set in-memory variable
-        // and have the PsyanimEditorExperiment class set it everytime the scene reloads in its own create() method
+        // and have the PsyanimExperiment class set it everytime the scene reloads in its own create() method
         // set output directory path + filename scheme for videos (if generating)
         this.setVideoSavePath('./experiments/videos', 'playfight', 'playfight');
 

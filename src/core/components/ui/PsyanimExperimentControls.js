@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimExperimentControls extends PsyanimComponent {
 
-    editorExperiment = null;
+    experiment = null;
     networkManager = null;
 
     constructor(entity) {
@@ -38,7 +38,7 @@ export default class PsyanimExperimentControls extends PsyanimComponent {
 
     start() {
 
-        this.editorExperiment.start();
+        this.experiment.start();
         this.setControlsEnabled(false);
     }
 

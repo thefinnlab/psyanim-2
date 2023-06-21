@@ -12,7 +12,7 @@ import PsyanimAnimationPlayer from '../components/utils/PsyanimAnimationPlayer';
 
 import PsyanimExperimentControls from '../components/ui/PsyanimExperimentControls';
 
-export default class PsyanimEditorExperiment extends PsyanimScene {
+export default class PsyanimExperiment extends PsyanimScene {
 
     static STATE = {
         IDLE: 0x0000,
@@ -36,7 +36,7 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
         this._agentNamesToRecord = [];
 
-        this._state = PsyanimEditorExperiment.STATE.IDLE;
+        this._state = PsyanimExperiment.STATE.IDLE;
     };
 
     addParameterSet(parameterSet) {
@@ -82,17 +82,17 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
             this.scene.start('EmptyScene');
         }
 
-        if (this._state == PsyanimEditorExperiment.STATE.IDLE)
+        if (this._state == PsyanimExperiment.STATE.IDLE)
         {
             this._transitionToNextParameterSet();
         }
-        else if (this._state == PsyanimEditorExperiment.STATE.SIMULATING)
+        else if (this._state == PsyanimExperiment.STATE.SIMULATING)
         {
             this._currentParameterSetIndex++;
 
             this._transitionToNextParameterSet();
         }
-        else if (this._state == PsyanimEditorExperiment.STATE.RECORDING)
+        else if (this._state == PsyanimExperiment.STATE.RECORDING)
         {
             if (this._currentParameterSetIndex >= this._parameterSets.length - 1)
             {
@@ -158,10 +158,10 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
         this._experimentControls = this._testManager
             .addComponent(PsyanimExperimentControls);
 
-        this._experimentControls.editorExperiment = this;
+        this._experimentControls.experiment = this;
         this._experimentControls.networkManager = this._networkManager;
 
-        if (this._state == PsyanimEditorExperiment.STATE.IDLE)
+        if (this._state == PsyanimExperiment.STATE.IDLE)
         {
             this._experimentControls.setControlsEnabled(true);
         }
@@ -173,7 +173,7 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
         // call child class experiment setup code
         this.setupExperiment();
 
-        if (this._state == PsyanimEditorExperiment.STATE.IDLE)
+        if (this._state == PsyanimExperiment.STATE.IDLE)
         {
             // disable all components on the relevant agents for now
             let agents = this._getAgentsToRecord();
@@ -183,7 +183,7 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
                 components.forEach(c => c.enabled = false);
             });
 
-            this._state = PsyanimEditorExperiment.STATE.SIMULATING;
+            this._state = PsyanimExperiment.STATE.SIMULATING;
         }
         else
         {
@@ -206,12 +206,12 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
     _run() {
 
         // simulate and record
-        if (this._state == PsyanimEditorExperiment.STATE.SIMULATING)
+        if (this._state == PsyanimExperiment.STATE.SIMULATING)
         {
             console.log("Running simulation!");
             this._initSimulation();
         }
-        else if (this._state == PsyanimEditorExperiment.STATE.RECORDING)
+        else if (this._state == PsyanimExperiment.STATE.RECORDING)
         {
             console.log("Recording baked animation to video!");
             this._initVideoRecording();
@@ -248,11 +248,11 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
                 if (this.recordVideo)
                 {
-                    this._state = PsyanimEditorExperiment.STATE.RECORDING;
+                    this._state = PsyanimExperiment.STATE.RECORDING;
                 }
                 else
                 {
-                    this._state = PsyanimEditorExperiment.STATE.SIMULATING;
+                    this._state = PsyanimExperiment.STATE.SIMULATING;
                 }
     
                 this.scene.start(this._nextSceneKey);
@@ -298,7 +298,7 @@ export default class PsyanimEditorExperiment extends PsyanimScene {
 
             this._networkManager.disconnect();
 
-            this._state = PsyanimEditorExperiment.STATE.SIMULATING;
+            this._state = PsyanimExperiment.STATE.SIMULATING;
 
             this.scene.start(this._nextSceneKey);
         });
