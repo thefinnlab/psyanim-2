@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import MainScene from './MainScene';
+import PlaybackScene from './PlaybackScene';
 
 export default class Config {
 
@@ -12,7 +13,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [MainScene],
+            scene: [MainScene, PlaybackScene],
             physics: {
                 default: 'matter',
                 matter: {

@@ -43,26 +43,31 @@ export default class PsyanimAnimationClip {
         return clip;
     }
 
+    static fromArray(data) {
+
+        let nSamples = data.length / PsyanimAnimationClip.SAMPLE_LENGTH;
+
+        let clip = new PsyanimAnimationClip();
+
+        for (let i = 0; i < nSamples; ++i)
+        {
+            let offset = i * PsyanimAnimationClip.SAMPLE_LENGTH;
+
+            let t = data[offset];
+            let position = { x: data[offset + 1], y: data[offset + 2] };
+            let rotation = data[offset + 3];
+
+            clip.addSample(t, position, rotation);
+        }
+
+        return clip;
+    }
+
     static fromJsonArray(data) {
 
         let floatArray = JSON.parse(data);
 
-        let nSamples = floatArray.length / PsyanimAnimationClip.SAMPLE_LENGTH;
-
-        let clip = new PsyanimAnimationClip();
-
-        for (let i = 0 ;i < nSamples; ++i)
-        {
-            let offset = i * PsyanimAnimationClip.SAMPLE_LENGTH;
-
-            let t = floatArray[offset];
-            let position = { x: floatArray[offset + 1], y: floatArray[offset + 2] };
-            let rotation = floatArray[offset + 3];
-
-            this.addSample(t, position, rotation);
-        }
-
-        return clip;
+        return PsyanimAnimationClip.fromArray(floatArray);
     }
 
     toBuffer() {

@@ -12,6 +12,15 @@ export default class PsyanimSceneChangeController extends PsyanimComponent {
             J: this.entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.J),
             K: this.entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.K)
         };
+
+        this.events = new Phaser.Events.EventEmitter();
+    }
+
+    _loadScene(phaserScene) {
+
+        this.events.emit('beforeLoadScene');
+
+        this.entity.scene.scene.start(phaserScene);
     }
 
     update(t, dt) {
@@ -32,7 +41,7 @@ export default class PsyanimSceneChangeController extends PsyanimComponent {
                 nextSceneIndex = scenes.length - 1;
             }
 
-            this.entity.scene.scene.start(scenes[nextSceneIndex]);
+            this._loadScene(scenes[nextSceneIndex]);
         }
         else if (Phaser.Input.Keyboard.JustDown(this._keys.K)) {
 
@@ -48,7 +57,7 @@ export default class PsyanimSceneChangeController extends PsyanimComponent {
                 nextSceneIndex = 0;
             }
 
-            this.entity.scene.scene.start(scenes[nextSceneIndex]);
+            this._loadScene(scenes[nextSceneIndex]);
         }
     }
 }

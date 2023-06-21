@@ -4,6 +4,7 @@ import Config from './config';
 
 // firebase imports
 import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
 
 import firebaseConfig from '../../firebase.config.json';
 
