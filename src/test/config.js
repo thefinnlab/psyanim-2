@@ -22,6 +22,8 @@ import AnimationBakingTest from './scenes/AnimationBakingTest';
 
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
+import SingletonTest from './scenes/SingletonTest';
+
 export default class Config {
 
     static get() {
@@ -32,7 +34,7 @@ export default class Config {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [AdvancedPlayfightTest, AdvancedArriveTest, ChargeTest, AnimationBakingTest, HTMLCaptureStreamTest, 
+            scene: [SingletonTest, AdvancedPlayfightTest, AdvancedArriveTest, ChargeTest, AnimationBakingTest, HTMLCaptureStreamTest, 
                 PsyanimPlayfightTest, SimpleCollisionAvoidanceTest, WanderTest, SeekTest, FleeTest, EvadeTest, 
                 RayCastTest, SensorTest, DebugGraphicsTest, ArriveTest, PathFollowTest,
                 AdvancedFleeTest],

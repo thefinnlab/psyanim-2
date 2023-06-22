@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     // mode: 'production',
     mode: 'development',
-    entry: './experiments/cloudeditor/index.js',
+    entry: './experiments/pointclick_interaction/index.js',
     devtool: 'inline-source-map',
     devServer: {
         static: './dist',
@@ -16,7 +16,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
           title: 'Output Management',
-          template: './experiments/cloudeditor/index.html'
+          template: './experiments/pointclick_interaction/index.html'
         }),
       ],
     output: {
