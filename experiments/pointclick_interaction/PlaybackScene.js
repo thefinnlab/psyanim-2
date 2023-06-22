@@ -16,13 +16,13 @@ import PsyanimConstants from '../../src/core/PsyanimConstants';
 import PsyanimAnimationPlayer from '../../src/core/components/utils/PsyanimAnimationPlayer';
 import PsyanimAnimationClip from '../../src/utils/PsyanimAnimationClip.mjs';
 
+import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
+
 export default class PlaybackScene extends PsyanimScene {
 
     constructor() {
 
         super('Playback Scene');
-
-        this._db = firebase.firestore();
     }
 
     create() {
@@ -34,6 +34,8 @@ export default class PlaybackScene extends PsyanimScene {
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController).entity;
+
+        this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
 
         // add agent with playback component
         let agent = this.addEntity('agent1', 600, 450, {
@@ -47,18 +49,17 @@ export default class PlaybackScene extends PsyanimScene {
         // query db for available documents
         this._docs = [];
 
-        this._db.collection("animation-clips").get()
-            .then((querySnapshot) => {
+        this._firebaseClient.getAllAnimationClipDocumentsAsync((querySnapshot) => {
 
-                querySnapshot.forEach((doc) => {
+            querySnapshot.forEach((doc) => {
 
-                    this._docs.push(doc);
+                this._docs.push(doc);
 
-                    console.log("retrieved doc id = " + doc.id);
-                });
-
-                this._setupExperimentControls();
+                console.log("retrieved doc id = " + doc.id);
             });
+
+            this._setupExperimentControls();
+        });
     }
 
     _setupExperimentControls() {

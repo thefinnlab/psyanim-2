@@ -18,9 +18,9 @@ import PsyanimAnimationBaker from '../../src/core/components/utils/PsyanimAnimat
 
 import PsyanimExperimentTimer from '../../src/core/components/utils/PsyanimExperimentTimer';
 
-// firebase imports
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+import PsyanimClickToMoveBasic from '../../src/core/components/controllers/PsyanimClickToMoveBasic';
+
+import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
 
 export default class MainScene extends PsyanimScene {
     
@@ -28,8 +28,6 @@ export default class MainScene extends PsyanimScene {
 
         super('Main Scene');
 
-        // add a document to firestore db
-        this._db = firebase.firestore();
     }
 
     create() {
@@ -42,16 +40,11 @@ export default class MainScene extends PsyanimScene {
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController).entity;
             
+        this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
+
+        let clickToMove = this._sceneControls.addComponent(PsyanimClickToMoveBasic);
+
         this._timer = this._sceneControls.addComponent(PsyanimExperimentTimer);
-
-        // setup mouse follow target
-        let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 4,
-            color: 0x00ff00
-        });
-
-        mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
         // add agents with vehicle components to this scene
         let agent = this.addEntity('agent1', 600, 450, {
@@ -68,8 +61,9 @@ export default class MainScene extends PsyanimScene {
 
         let arriveAgent = agent.addComponent(PsyanimArriveAgent);
         arriveAgent.arriveBehavior = arriveBehavior;
-        arriveAgent.target = mouseTarget;
         arriveAgent.vehicle = vehicle;
+
+        clickToMove.arriveAgent = arriveAgent;
 
         this._agentAnimationBaker = agent.addComponent(PsyanimAnimationBaker);
 
@@ -101,17 +95,12 @@ export default class MainScene extends PsyanimScene {
 
                 let data = this._agentAnimationBaker.clip.toArray();
 
-                this._db.collection("animation-clips").add({
-                    projectName: "test",
-                    experimentName: "interaction",
-                    runName: "run_1",
-                    data: data,
-                    time: firebase.firestore.FieldValue.serverTimestamp()
-                })
-                .then((docRef) => {
-                    console.log("Document written with ID: ", docRef.id);
-                })
-                .catch((error) => console.error("Error adding document: ", error));    
+                this._firebaseClient.addAnimationClip(
+                    'test',
+                    'interaction',
+                    'run_' + Date.now(),
+                    data,
+                );
 
                 let jsonData = JSON.stringify(data);
 

@@ -7,6 +7,7 @@ export default class PsyanimComponent {
     constructor(entity) {
 
         this.entity = entity;
+        this.scene = entity.scene;
 
         this._enabled = true;
     }

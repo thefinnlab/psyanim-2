@@ -37,6 +37,9 @@ export default class PsyanimExperiment extends PsyanimScene {
         this._agentNamesToRecord = [];
 
         this._state = PsyanimExperiment.STATE.IDLE;
+
+        console.warn("WARNING: this class is DEPRECATED.  " + 
+            "Please migrate to using the new PsyanimExperimentManager component!");
     };
 
     addParameterSet(parameterSet) {
