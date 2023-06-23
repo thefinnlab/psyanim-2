@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimAnimationClip from '../../../utils/PsyanimAnimationClip.mjs';
+
 // firebase imports
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -69,13 +71,30 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
 
     /**
      * 
-     * @param {*} callback - receives a querySnapshot
+     * @param {*} callback - receives a clipData array containing clip IDs and data
      */
-    getAllAnimationClipDocumentsAsync(callback) {
+    getAllAnimationClipAsync(callback) {
 
         _PsyanimFirebaseClient.Instance.db
             .collection("animation-clips").get()
-            .then(callback);
+            .then((querySnapshot) => {
+
+                let clipData = [];
+
+                querySnapshot.forEach((doc) => {
+
+                    let clip = PsyanimAnimationClip.fromArray(doc.data().data);
+
+                    clipData.push({
+                        id: doc.id,
+                        clip: clip
+                    });
+    
+                    console.log("retrieved doc id = " + doc.id);
+                });
+
+                callback(clipData);
+            });
     }
 
     update(t, dt) {

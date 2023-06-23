@@ -46,17 +46,10 @@ export default class PlaybackScene extends PsyanimScene {
 
         this._animationPlayer = agent.addComponent(PsyanimAnimationPlayer);
 
-        // query db for available documents
-        this._docs = [];
+        // query db for available animation clips
+        this._firebaseClient.getAllAnimationClipAsync((clipData) => {
 
-        this._firebaseClient.getAllAnimationClipDocumentsAsync((querySnapshot) => {
-
-            querySnapshot.forEach((doc) => {
-
-                this._docs.push(doc);
-
-                console.log("retrieved doc id = " + doc.id);
-            });
+            this._clipData = clipData;
 
             this._setupExperimentControls();
         });
@@ -83,11 +76,11 @@ export default class PlaybackScene extends PsyanimScene {
         selectElement.id = 'documentSelector';
         experimentControlsElement.appendChild(selectElement);
 
-        for (let i = 0; i < this._docs.length; ++i)
+        for (let i = 0; i < this._clipData.length; ++i)
         {
             let option = document.createElement('option');
-            option.value = this._docs[i].id;
-            option.text = this._docs[i].id;
+            option.value = this._clipData[i].id;
+            option.text = this._clipData[i].id;
             selectElement.appendChild(option);
         }
 
@@ -103,13 +96,13 @@ export default class PlaybackScene extends PsyanimScene {
         });
     }
 
-    _playAnimation(documentID) {
+    _playAnimation(id) {
 
-        let doc = this._docs.find((doc) => doc.id == documentID);
+        let clipObj = this._clipData.find((clipObj) => clipObj.id == id);
 
-        console.log("playing clip for doc ID: " + doc.id);
+        console.log("playing clip for clip ID: " + clipObj.id);
 
-        let clip = PsyanimAnimationClip.fromArray(doc.data().data);
+        let clip = clipObj.clip;
 
         this._animationPlayer.play(clip);
     }
