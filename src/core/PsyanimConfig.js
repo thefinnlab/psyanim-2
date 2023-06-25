@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimExperimentLoaderScene from './components/experiments/PsyanimExperimentLoaderScene';
+import PsyanimExperimentLoadingScene from './components/experiments/PsyanimExperimentLoadingScene';
 
 export default class PsyanimConfig {
 
@@ -12,7 +12,7 @@ export default class PsyanimConfig {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [PsyanimExperimentLoaderScene],
+            scene: [PsyanimExperimentLoadingScene],
             physics: {
                 default: 'matter',
                 matter: {
@@ -99,11 +99,6 @@ export default class PsyanimConfig {
         {
             this._phaserConfig.physics.matter.debug = false;
         }
-    }
-
-    registerScene(scene) {
-
-        this._phaserConfig.scene.push(scene);
     }
 
     get phaserConfig() {

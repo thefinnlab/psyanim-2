@@ -4,11 +4,26 @@ export default class PsyanimApp {
 
     constructor(config) {
 
-        this.game = new Phaser.Game(config.phaserConfig);
+        this._config = config;
+        this._sceneKeys = [];
     }
 
-    // TODO: the experiment runs & scenes should be configured in index.js
-    // file by adding data to the game.registry().  this will determine
-    // what scenes get loaded, etc.  maybe the first scene for an experiment
-    // should always be a 'PsyanimExperimentLoader' scene
+    registerScene(scene) {
+
+        if (!scene.KEY)
+        {
+            console.error("ERROR: to register a PsyanimScene, it must contain a static string field called 'KEY'!");
+        }
+
+        this._config.phaserConfig.scene.push(scene);
+
+        this._sceneKeys.push(scene.KEY);
+    }
+
+    run() {
+
+        this._game = new Phaser.Game(this._config.phaserConfig);
+
+        this._game.registry.set('psyanimExperimentSceneKeys', this._sceneKeys);
+    }
 }
