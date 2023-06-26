@@ -10,7 +10,8 @@ import PsyanimFleeBehavior from '../../src/core/components/steering/PsyanimFleeB
 import PsyanimFleeAgent from '../../src/core/components/steering/agents/PsyanimFleeAgent';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimExperimentController from '../../src/core/components/experiments/PsyanimExperimentController';
+
+import PsyanimExperimentManager from '../../src/core/components/experiments/PsyanimExperimentManager';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
@@ -28,10 +29,11 @@ export default class FleeScene extends PsyanimScene {
         super.create();
 
         // setup scene controls
-        this.addEntity('sceneControls')
+        this._sceneControls = this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimExperimentController);
+            .addComponent(PsyanimPhysicsSettingsController).entity;
+
+        this._experimentManager = this._sceneControls.addComponent(PsyanimExperimentManager);
 
         // setup mouse follow target
         let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {

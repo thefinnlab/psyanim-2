@@ -1,22 +1,8 @@
 import PsyanimApp from '../../src/core/PsyanimApp';
 
-import PsyanimConfig from '../../src/core/PsyanimConfig';
+import ExperimentDefinition from './ExperimentDefinition';
 
-import PointClickMovementScene from './PointClickMovementScene';
-import WanderScene from './WanderScene';
-import FleeScene from './FleeScene';
-
-// create Psyanim config 
-let config = new PsyanimConfig();
-
-// create Psyanim app
-const app = new PsyanimApp(config);
-
-app.registerScene(PointClickMovementScene);
-app.registerScene(WanderScene);
-app.registerScene(FleeScene);
-
-app.run();
+PsyanimApp.Instance.run(ExperimentDefinition);
 
 /**
  *  Remove before flight:

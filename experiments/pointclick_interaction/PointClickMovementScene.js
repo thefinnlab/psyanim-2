@@ -10,7 +10,6 @@ import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArr
 import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimExperimentController from '../../src/core/components/experiments/PsyanimExperimentController';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
@@ -19,6 +18,8 @@ import PsyanimAnimationBaker from '../../src/core/components/utils/PsyanimAnimat
 import PsyanimExperimentTimer from '../../src/core/components/utils/PsyanimExperimentTimer';
 
 import PsyanimClickToMoveBasic from '../../src/core/components/controllers/PsyanimClickToMoveBasic';
+
+import PsyanimExperimentManager from '../../src/core/components/experiments/PsyanimExperimentManager';
 
 import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
 
@@ -38,9 +39,10 @@ export default class PointClickMovementScene extends PsyanimScene {
         // setup scene controls
         this._sceneControls = this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimExperimentController).entity;
-            
+            .addComponent(PsyanimPhysicsSettingsController).entity;
+
+        this._experimentManager = this._sceneControls.addComponent(PsyanimExperimentManager);
+
         this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
 
         let clickToMove = this._sceneControls.addComponent(PsyanimClickToMoveBasic);
