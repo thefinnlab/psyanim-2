@@ -19,8 +19,6 @@ export default class PsyanimApp {
     constructor() {
 
         this._config = new PsyanimConfig();
-
-        this._experimentVariations = [];
     }
 
     get config() {
@@ -35,6 +33,8 @@ export default class PsyanimApp {
 
     _loadExperimentDefinition(experimentDefinition) {
 
+        let experimentVariations = [];
+
         for (let i = 0; i < experimentDefinition.runs.length; ++i)
         {
             let run = experimentDefinition.runs[i];
@@ -44,18 +44,24 @@ export default class PsyanimApp {
                 console.error("ERROR: to register a PsyanimScene type, it must contain a static string field called 'KEY'!");
             }
 
-            this._config.phaserConfig.scene.push(run.sceneType);
+            if (!this._config.phaserConfig.scene.includes(run.sceneType))
+            {
+                this._config.phaserConfig.scene.push(run.sceneType);
+            }
 
             for (let j = 0; j < run.variations; ++j)
             {
-                this._experimentVariations.push({
+                experimentVariations.push({
                     sceneKey: run.sceneType.KEY,
                     parameterSet: run.parameterSet,
                     runNumber: i,
-                    variationNumber: j
+                    variationNumber: j,
+                    agentNamesToRecord: run.agentNamesToRecord
                 });
             }
         }
+
+        return experimentVariations;
     }
 
     run(experimentDefinition) {
@@ -66,10 +72,10 @@ export default class PsyanimApp {
             this._config = new PsyanimConfig();
         }
 
-        this._loadExperimentDefinition(experimentDefinition);
+        let experimentVariations = this._loadExperimentDefinition(experimentDefinition);
 
         this._game = new Phaser.Game(this._config.phaserConfig);
 
-        this._game.registry.set('psyanim_experimentVariations', this._experimentVariations);
+        this._game.registry.set('psyanim_experimentVariations', experimentVariations);
     }
 }

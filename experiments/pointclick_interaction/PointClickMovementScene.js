@@ -43,14 +43,20 @@ export default class PointClickMovementScene extends PsyanimScene {
 
         this._experimentManager = this._sceneControls.addComponent(PsyanimExperimentManager);
 
+        let currentParameterSet = this._experimentManager.currentParameterSet;
+
+        console.log(currentParameterSet);
+
         this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
 
         let clickToMove = this._sceneControls.addComponent(PsyanimClickToMoveBasic);
 
         this._timer = this._sceneControls.addComponent(PsyanimExperimentTimer);
 
+        let r0 = currentParameterSet.initialPos;
+
         // add agents with vehicle components to this scene
-        let agent = this.addEntity('agent1', 600, 450, {
+        let agent = this.addEntity('agent1', r0.x, r0.y, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, 
             color: 0xffc0cb            
@@ -79,7 +85,8 @@ export default class PointClickMovementScene extends PsyanimScene {
 
         super.update(t, dt);
 
-        if (Phaser.Input.Keyboard.JustDown(this._keys.I))
+        // if (Phaser.Input.Keyboard.JustDown(this._keys.I))
+        if (false)
         {
             console.log("beginning animation recording...");
 
@@ -88,9 +95,9 @@ export default class PointClickMovementScene extends PsyanimScene {
                 this._agentAnimationBaker.stop();
             }
 
-            this._agentAnimationBaker.start();
-
             this._agentAnimationBaker.clear();
+
+            this._agentAnimationBaker.start();
 
             this._timer.setOnTimerElapsed(() => {
 

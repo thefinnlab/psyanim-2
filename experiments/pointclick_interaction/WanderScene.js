@@ -31,9 +31,13 @@ export default class WanderScene extends PsyanimScene {
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity;
 
-        this._sceneControls.addComponent(PsyanimExperimentManager);
+        this._experimentManager = this._sceneControls.addComponent(PsyanimExperimentManager);
 
-        let nAgents = 20;
+        let currentParameterSet = this._experimentManager.currentParameterSet;
+
+        console.log(currentParameterSet);
+        
+        let nAgents = currentParameterSet.nAgents;
 
         for (let i = 0; i < nAgents; ++i)
         {

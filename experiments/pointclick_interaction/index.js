@@ -35,7 +35,6 @@ PsyanimApp.Instance.run(ExperimentDefinition);
 /**
  *  TODOs:
  * 
- *      - build out experiment manager and run multiple variations of these scenes
  *      - add optional automatic animation baking to experiment manager
  *      - implement dedicated animation browser app and add to firebase web apps
  *      - implement metadata saving in experiment manager with experiment playback

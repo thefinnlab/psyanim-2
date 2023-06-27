@@ -6,6 +6,10 @@ import PsyanimApp from '../../PsyanimApp';
 
 import PsyanimExperimentLoadingScene from './PsyanimExperimentLoadingScene';
 
+import PsyanimAnimationBaker from '../utils/PsyanimAnimationBaker';
+
+import PsyanimFirebaseClient from '../networking/PsyanimFirebaseClient';
+
 /**
  *  Data Model
  */
@@ -52,7 +56,7 @@ class _PsyanimExperimentManager {
 
     constructor() {
 
-        this._currentSceneIndex = 0;
+        this._currentSceneIndex = -1;
 
         this._experimentVariations = PsyanimApp.Instance.game.registry.get('psyanim_experimentVariations');
 
@@ -67,6 +71,11 @@ class _PsyanimExperimentManager {
         {
             return PsyanimExperimentLoadingScene.KEY;
         }
+        else if (this._isComplete)
+        {
+            // TODO: create a scene for experiment completion w/ it's own key, too.
+            return PsyanimExperimentLoadingScene.KEY;
+        }
         else
         {
             return this._experimentVariations[this._currentSceneIndex].sceneKey;
@@ -78,7 +87,14 @@ class _PsyanimExperimentManager {
         return this._currentSceneIndex;
     }
 
+    get agentNamesToRecord() {
+
+        return this._experimentVariations[this._currentSceneIndex].agentNamesToRecord;
+    }
+
     get currentParameterSet() {
+
+        console.log("this._currentSceneIndex = " + this._currentSceneIndex);
 
         return this._experimentVariations[this._currentSceneIndex].parameterSet;
     }
@@ -98,11 +114,11 @@ class _PsyanimExperimentManager {
         return this._isComplete;
     }
 
-    getNextSceneKey() {
+    transitionToNextScene() {
 
         if (this._isLoadingScene)
         {
-            if (this._currentSceneIndex >= this.totalVariations)
+            if (this._currentSceneIndex >= this.totalVariations - 1)
             {
                 this._isComplete = true;
                 return;
@@ -110,21 +126,12 @@ class _PsyanimExperimentManager {
 
             this._isLoadingScene = false;
 
-            let nextSceneKey = this._experimentVariations[this._currentSceneIndex].sceneKey;
-
             this._currentSceneIndex++;
-
-            return nextSceneKey;
         }
         else if (!this._isComplete)
         {
             this._isLoadingScene = true;
-
-            return PsyanimExperimentLoadingScene.KEY;
         }
-
-        // TODO: create a scene for experiment completion too.  
-        return null;
     }
 }
 
@@ -134,6 +141,11 @@ class _PsyanimExperimentManager {
 
 export default class PsyanimExperimentManager extends PsyanimComponent {
     
+    static STATE = {
+        INITIALIZING: 0x0001,
+        RUNNING: 0x0002,
+    }
+
     constructor(entity) {
 
         super(entity);
@@ -149,6 +161,15 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
         this._keys = {
 
             ENTER: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
+        };
+
+        this._state = PsyanimExperimentManager.STATE.INITIALIZING;
+
+        this._firebaseClient = this.entity.getComponent(PsyanimFirebaseClient);
+
+        if (this._firebaseClient == null)
+        {
+            this._firebaseClient = this.entity.addComponent(PsyanimFirebaseClient);
         }
     }
 
@@ -156,7 +177,34 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
 
         if (!this.isComplete)
         {
-            let nextSceneKey = _PsyanimExperimentManager.Instance.getNextSceneKey();
+            // save off baked animations
+            if (this._agents)
+            {
+                this._agents.forEach(agent => {
+                    
+                    let animationBaker = agent.getComponent(PsyanimAnimationBaker);
+
+                    animationBaker.stop();
+
+                    let data = animationBaker.clip.toArray();
+
+                    this._firebaseClient.addAnimationClip(
+                        'test',
+                        'interaction',
+                        'run_' + Date.now(),
+                        data,
+                    );
+
+                    let jsonData = JSON.stringify(data);
+
+                    console.log("finished baking data size: " + jsonData.length);
+                });
+            }
+
+            // load next scene
+            _PsyanimExperimentManager.Instance.transitionToNextScene();
+
+            let nextSceneKey = _PsyanimExperimentManager.Instance.currentSceneKey;
 
             this.scene.scene.start(nextSceneKey);    
         }
@@ -195,6 +243,39 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
     update(t, dt) {
 
         super.update(t, dt);
+
+        if (this._state == PsyanimExperimentManager.STATE.INITIALIZING)
+        {
+            this._state = PsyanimExperimentManager.STATE.RUNNING;
+
+            if (!this.isLoadingScene)
+            {
+                this._agents = [];
+
+                let agentNamesToRecord = _PsyanimExperimentManager.Instance.agentNamesToRecord;
+
+                console.log(agentNamesToRecord);
+
+                agentNamesToRecord.forEach(name => {
+
+                    let agent = this.scene.getEntityByName(name);
+
+                    if (agent)
+                    {
+                        this._agents.push(agent);
+                    }
+                    else
+                    {
+                        console.error("ERROR: invalid agent name to record: " + name);
+                    }
+                });
+
+                this._agents.forEach(agent => {
+
+                    agent.addComponent(PsyanimAnimationBaker).start();
+                });
+            }
+        }
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.ENTER))
         {
