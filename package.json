@@ -16,9 +16,13 @@
     "playfight-watch":"rimraf -v ./dist && webpack --config ./webpack.playfight.config.js --watch",
     "playfight":"rimraf -v ./dist && webpack --config ./webpack.playfight.config.js && npx nodemon ./src/server/main.mjs",
 
-    "pointclick-interaction-build":"rimraf -v ./public && webpack --config ./webpack.pointclickinteraction.config.js",
+    "pointclick-interaction-build":"rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js",
     "pointclick-interaction-watch":"rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js --watch",
     "pointclick-interaction":"firebase deploy",
+
+    "animviewer-build":"rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js",
+    "animviewer-watch":"rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js --watch",
+    "animviewer": "firebase deploy",
 
     "clean": "rimraf -v ./dist",
     "delete-cloud-animationclips":"firebase firestore:delete -r /animation-clips"

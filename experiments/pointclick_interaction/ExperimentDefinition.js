@@ -16,10 +16,10 @@ export default {
         {
             sceneType: WanderScene,
             parameterSet: {
-                nAgents: 5,
+                nAgents: 2,
             },
             variations: 1,
-            agentNamesToRecord: [] // TODO: we need to add support for an 'agent*' type of parameter
+            agentNamesToRecord: ['agent*']
         },
         {
             sceneType: FleeScene,
@@ -32,10 +32,10 @@ export default {
         {
             sceneType: WanderScene,
             parameterSet: {
-                nAgents: 30,
+                nAgents: 3,
             },
             variations: 2,
-            agentNamesToRecord: [] // TODO: we need to add support for an 'agent*' type of parameter
+            agentNamesToRecord: ['agent*']
         },
         {
             sceneType: PointClickMovementScene,

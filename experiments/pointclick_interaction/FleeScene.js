@@ -35,10 +35,6 @@ export default class FleeScene extends PsyanimScene {
 
         this._experimentManager = this._sceneControls.addComponent(PsyanimExperimentManager);
 
-        let currentParameterSet = this._experimentManager.currentParameterSet;
-
-        console.log(currentParameterSet);
-
         // setup mouse follow target
         let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,

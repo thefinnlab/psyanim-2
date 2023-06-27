@@ -24,7 +24,7 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
         this._angle = 270;
         this._targetVector = null;
 
-        this.target = this.entity.scene.addEntity(this.entity.name + '_wanderTarget', 0, 0, { isEmpty: true });
+        this.target = this.entity.scene.addEntity("_" + this.entity.name + '_wanderTarget', 0, 0, { isEmpty: true });
 
         this._circleCenterVector = Phaser.Math.Vector2.ZERO.clone();
         this._targetVector = Phaser.Math.Vector2.ZERO.clone();

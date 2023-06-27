@@ -94,8 +94,6 @@ class _PsyanimExperimentManager {
 
     get currentParameterSet() {
 
-        console.log("this._currentSceneIndex = " + this._currentSceneIndex);
-
         return this._experimentVariations[this._currentSceneIndex].parameterSet;
     }
 
@@ -195,9 +193,7 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
                         data,
                     );
 
-                    let jsonData = JSON.stringify(data);
-
-                    console.log("finished baking data size: " + jsonData.length);
+                    console.log('finished baking, data size = ' + data.length);
                 });
             }
 
@@ -258,17 +254,49 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
 
                 agentNamesToRecord.forEach(name => {
 
-                    let agent = this.scene.getEntityByName(name);
+                    let agent = null;
 
-                    if (agent)
+                    let hasWildcard = name.split('*').length > 1;
+
+                    if (hasWildcard)
                     {
-                        this._agents.push(agent);
+                        let nameRoot = name.split('*')[0];
+
+                        let entityNames = this.scene.getAllEntityNames();
+
+                        entityNames.forEach(entityName => {
+
+                            if (entityName.startsWith(nameRoot))
+                            {
+                                agent = this.scene.getEntityByName(entityName);
+
+                                if (agent)
+                                {
+                                    console.log("adding entity named: " + agent.name);
+
+                                    this._agents.push(agent);
+                                }
+                                else
+                                {
+                                    console.error("ERROR: invalid name to record: " + entityName);
+                                }
+                            }
+                        })
                     }
                     else
                     {
-                        console.error("ERROR: invalid agent name to record: " + name);
+                        agent = this.scene.getEntityByName(name);
+
+                        if (agent)
+                        {
+                            this._agents.push(agent);
+                        }
+                        else
+                        {
+                            console.error("ERROR: invalid agent name to record: " + name);
+                        }    
                     }
-                });
+                 });
 
                 this._agents.forEach(agent => {
 

@@ -19,6 +19,11 @@ export default class PsyanimScene extends Phaser.Scene {
         return entity;
     }
 
+    getAllEntityNames() {
+
+        return this._entities.map(e => e.name);
+    }
+
     getEntityByName(name) {
 
         return this._entities.find(e => e.name == name);

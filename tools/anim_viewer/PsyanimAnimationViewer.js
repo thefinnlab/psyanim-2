@@ -7,22 +7,17 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-// firebase imports
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 
 import PsyanimAnimationPlayer from '../../src/core/components/utils/PsyanimAnimationPlayer';
-import PsyanimAnimationClip from '../../src/utils/PsyanimAnimationClip.mjs';
 
 import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
 
-export default class PlaybackScene extends PsyanimScene {
+export default class PsyanimAnimationViewer extends PsyanimScene {
 
     constructor() {
 
-        super('Playback Scene');
+        super('Psyanim Animation Viewer');
     }
 
     create() {

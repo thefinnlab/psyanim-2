@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
 import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
@@ -35,8 +33,6 @@ export default class WanderScene extends PsyanimScene {
 
         let currentParameterSet = this._experimentManager.currentParameterSet;
 
-        console.log(currentParameterSet);
-        
         let nAgents = currentParameterSet.nAgents;
 
         for (let i = 0; i < nAgents; ++i)
