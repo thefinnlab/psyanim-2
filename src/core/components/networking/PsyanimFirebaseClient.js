@@ -118,6 +118,11 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
             });
     }
 
+    getAllExperimentMetadataAsync(callback) {
+
+        
+    }
+
     update(t, dt) {
 
         super.update(t, dt);

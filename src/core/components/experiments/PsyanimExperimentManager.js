@@ -146,11 +146,6 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
          *      - providing access to the run parameters
          */
 
-        this._keys = {
-
-            ENTER: this.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER)
-        };
-
         this._state = PsyanimExperimentManager.STATE.INITIALIZING;
 
         this._firebaseClient = this.entity.getComponent(PsyanimFirebaseClient);
@@ -300,20 +295,28 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
 
                     agent.addComponent(PsyanimAnimationBaker).start();
 
-                    console.warn("TODO:  you need to populate shapeParams and initialPosition below still!");
+                    let r0 = agent.position;
 
                     // save off agent metadata
                     agentMetadata.push({
                         name: agent.name,
-                        initialPosition: {x: -1, y: -1},
-                        shapeParams: {},
+                        initialPosition: { x: r0.x, y: r0.y },
+                        shapeParams: agent.shapeParams,
                         animationClipId: -1
                     });
                 });
 
+                let playerID = PsyanimApp.Instance.currentPlayerID;
+
+                if (!playerID)
+                {
+                    console.error("ERROR: player ID is null!");
+                }
+
                 // save off metadata for this run variation
                 this._runMetadata = {
 
+                    playerID: playerID,
                     experimentName: _PsyanimExperimentManager.Instance.experimentName,
                     runNumber: _PsyanimExperimentManager.Instance.currentRunNumber,
                     variationNumber: _PsyanimExperimentManager.Instance.currentVariationNumber,
@@ -321,11 +324,6 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
                     agentMetadata: agentMetadata
                 };
             }
-        }
-
-        if (Phaser.Input.Keyboard.JustDown(this._keys.ENTER))
-        {
-            this.loadNextScene();
         }
     }
 }

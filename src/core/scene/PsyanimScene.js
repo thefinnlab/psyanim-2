@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import PsyanimApp from '../PsyanimApp';
+
 import PsyanimScreenBoundary from './PsyanimScreenBoundary';
 import PsyanimEntity from '../PsyanimEntity';
 
@@ -29,6 +31,18 @@ export default class PsyanimScene extends Phaser.Scene {
         return this._entities.find(e => e.name == name);
     }
 
+    getComponentByType(componentType) {
+
+        let entity = this._entities.find(e => e.getComponent(componentType) != null);
+
+        if (entity != null)
+        {
+            return entity.getComponent(componentType);
+        }
+
+        return null;
+    }
+
     _destroyAllEntities() {
 
         this._entities.forEach( (e) => {
@@ -41,6 +55,8 @@ export default class PsyanimScene extends Phaser.Scene {
     init() {
 
         this._entities = [];
+
+        PsyanimApp.Instance.currentScene = this;
     }
 
     preload() {

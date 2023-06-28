@@ -19,6 +19,18 @@ export default class PsyanimApp {
     constructor() {
 
         this._config = new PsyanimConfig();
+
+        window.psyanimApp = this;
+    }
+
+    get currentScene() {
+
+        return this._currentScene;
+    }
+
+    set currentScene(value) {
+
+        this._currentScene = value;
     }
 
     get config() {
@@ -62,6 +74,21 @@ export default class PsyanimApp {
         }
 
         return experimentVariations;
+    }
+
+    get currentPlayerID() {
+
+        return this._game.registry.get('psyanim_currentPlayerID');
+    }
+
+    set currentPlayerID(value) {
+
+        this._game.registry.set('psyanim_currentPlayerID', value);
+    }
+
+    get experimentName() {
+
+        return this._game.registry.get('psyanim_experimentName');
     }
 
     run(experimentDefinition) {

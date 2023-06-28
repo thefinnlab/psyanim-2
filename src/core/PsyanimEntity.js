@@ -138,6 +138,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
         super(scene.matter.world, x, y, textureKey);
 
+        this._shapeParams = shapeParams;
+        this._matterOptions = matterOptions;
+
         this._color = color;
         this._geomParams = geomParams;
         this._shapeType = shapeType;
@@ -180,6 +183,16 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
          */
 
         this._components = [];
+    }
+
+    get shapeParams() {
+
+        return this._shapeParams;
+    }
+
+    get matterOptions() {
+
+        return this._matterOptions;
     }
 
     get geomParams() {

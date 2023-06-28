@@ -14,12 +14,13 @@
     "playfight": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js && npx nodemon ./src/server/main.mjs",
     "pointclick-interaction-build": "rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js",
     "pointclick-interaction-watch": "rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js --watch",
-    "pointclick-interaction": "firebase deploy",
     "animviewer-build": "rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js",
     "animviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js --watch",
-    "animviewer": "firebase deploy",
+    "experimentviewer-build": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js",
+    "experimentviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js --watch",
     "clean": "rimraf -v ./dist",
-    "delete-cloud-animationclips": "firebase firestore:delete -r /animation-clips"
+    "delete-cloud-animclips": "firebase firestore:delete -r /animation-clips",
+    "delete-cloud-metadata": "firebase firestore:delete -r /experiment-metadata"
   },
   "keywords": [],
   "author": "",
