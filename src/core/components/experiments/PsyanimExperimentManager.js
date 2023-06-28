@@ -11,32 +11,6 @@ import PsyanimAnimationBaker from '../utils/PsyanimAnimationBaker';
 import PsyanimFirebaseClient from '../networking/PsyanimFirebaseClient';
 
 /**
- *  Data Model
- */
-
-class PsyanimExperimentMetadata {
-
-    constructor() {
-
-        this._sceneInfo = [];
-    }
-
-    addAgent(scene, name, x, y, shapeParams, matterOptions) {
-
-        let sceneInfo = this._sceneInfo.find(s => s.name == scene.name);
-
-        sceneInfo._agentInfo.push({
-
-            sceneName: scene.name,
-            name: name,
-            initialPosition: { x: x, y: y },
-            shapeParams: shapeParams,
-            matterOptions: matterOptions
-        });
-    }
-}
-
-/**
  *  Experiment Manager Singleton
  */
 
@@ -59,10 +33,16 @@ class _PsyanimExperimentManager {
         this._currentSceneIndex = -1;
 
         this._experimentVariations = PsyanimApp.Instance.game.registry.get('psyanim_experimentVariations');
+        this._experimentName = PsyanimApp.Instance.game.registry.get('psyanim_experimentName');
 
         this._isLoadingScene = true;
 
         this._isComplete = false;
+    }
+
+    get experimentName() {
+
+        return this._experimentName;
     }
 
     get currentSceneKey() {
@@ -90,6 +70,16 @@ class _PsyanimExperimentManager {
     get agentNamesToRecord() {
 
         return this._experimentVariations[this._currentSceneIndex].agentNamesToRecord;
+    }
+
+    get currentRunNumber() {
+
+        return this._experimentVariations[this._currentSceneIndex].runNumber;
+    }
+
+    get currentVariationNumber() {
+
+        return this._experimentVariations[this._currentSceneIndex].variationNumber;
     }
 
     get currentParameterSet() {
@@ -175,26 +165,31 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
 
         if (!this.isComplete)
         {
-            // save off baked animations
+            // save off baked animations + agent metadata
             if (this._agents)
             {
                 this._agents.forEach(agent => {
                     
+                    // save off baked animations
                     let animationBaker = agent.getComponent(PsyanimAnimationBaker);
 
                     animationBaker.stop();
 
                     let data = animationBaker.clip.toArray();
 
-                    this._firebaseClient.addAnimationClip(
-                        'test',
-                        'interaction',
-                        'run_' + Date.now(),
-                        data,
-                    );
+                    let docId = this._firebaseClient.addAnimationClip(data);
 
                     console.log('finished baking, data size = ' + data.length);
+
+                    // update agent metadata animation clip Id
+                    let metadata = this._runMetadata.agentMetadata.find(a => a.name == agent.name);
+                    metadata.animationClipId = docId;
                 });
+            }
+
+            if (!this.isLoadingScene)
+            {
+                this._firebaseClient.addExperimentRunMetadata(this._runMetadata);
             }
 
             // load next scene
@@ -296,12 +291,35 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
                             console.error("ERROR: invalid agent name to record: " + name);
                         }    
                     }
-                 });
+                });
+
+                // save off metadata
+                let agentMetadata = [];
 
                 this._agents.forEach(agent => {
 
                     agent.addComponent(PsyanimAnimationBaker).start();
+
+                    console.warn("TODO:  you need to populate shapeParams and initialPosition below still!");
+
+                    // save off agent metadata
+                    agentMetadata.push({
+                        name: agent.name,
+                        initialPosition: {x: -1, y: -1},
+                        shapeParams: {},
+                        animationClipId: -1
+                    });
                 });
+
+                // save off metadata for this run variation
+                this._runMetadata = {
+
+                    experimentName: _PsyanimExperimentManager.Instance.experimentName,
+                    runNumber: _PsyanimExperimentManager.Instance.currentRunNumber,
+                    variationNumber: _PsyanimExperimentManager.Instance.currentVariationNumber,
+                    sceneName: this.scene.scene.key,
+                    agentMetadata: agentMetadata
+                };
             }
         }
 

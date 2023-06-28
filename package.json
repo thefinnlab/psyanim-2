@@ -5,27 +5,21 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-
     "test": "jasmine --config=src/test/unit/jasmine.json",
-
-    "dev-build":"rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
-    "dev-watch":"rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
-    "dev":"rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/server/main.mjs",
-
-    "playfight-build":"rimraf -v ./dist && webpack --config ./webpack.playfight.config.js",
-    "playfight-watch":"rimraf -v ./dist && webpack --config ./webpack.playfight.config.js --watch",
-    "playfight":"rimraf -v ./dist && webpack --config ./webpack.playfight.config.js && npx nodemon ./src/server/main.mjs",
-
-    "pointclick-interaction-build":"rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js",
-    "pointclick-interaction-watch":"rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js --watch",
-    "pointclick-interaction":"firebase deploy",
-
-    "animviewer-build":"rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js",
-    "animviewer-watch":"rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js --watch",
+    "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
+    "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
+    "dev": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js && npx nodemon ./src/server/main.mjs",
+    "playfight-build": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js",
+    "playfight-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js --watch",
+    "playfight": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js && npx nodemon ./src/server/main.mjs",
+    "pointclick-interaction-build": "rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js",
+    "pointclick-interaction-watch": "rimraf -v ./dist && webpack --config ./webpack.pointclickinteraction.config.js --watch",
+    "pointclick-interaction": "firebase deploy",
+    "animviewer-build": "rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js",
+    "animviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js --watch",
     "animviewer": "firebase deploy",
-
     "clean": "rimraf -v ./dist",
-    "delete-cloud-animationclips":"firebase firestore:delete -r /animation-clips"
+    "delete-cloud-animationclips": "firebase firestore:delete -r /animation-clips"
   },
   "keywords": [],
   "author": "",
@@ -38,6 +32,7 @@
     "nodemon": "^2.0.22",
     "phaser": "^3.60.0",
     "rimraf": "^5.0.1",
+    "uuid": "^9.0.0",
     "ws": "^8.13.0"
   },
   "devDependencies": {

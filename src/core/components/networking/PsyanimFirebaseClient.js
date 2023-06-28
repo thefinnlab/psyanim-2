@@ -9,6 +9,8 @@ import "firebase/compat/firestore";
 
 import firebaseConfig from '../../../../firebase.config.json';
 
+import { v4 as uuidv4 } from 'uuid';
+
 /**
  *  Singleton firebase client
  */
@@ -54,19 +56,38 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
         super(entity);
     }
 
-    addAnimationClip(projectName, experimentName, runName, data) {
+    addAnimationClip(data) {
+
+        let newId = uuidv4();
 
         _PsyanimFirebaseClient.Instance.db
             .collection('animation-clips')
-            .add({
-                projectName: projectName,
-                experimentName: experimentName,
-                runName: runName,
+            .doc(newId)
+            .set({
                 data: data,
                 time: _PsyanimFirebaseClient.Instance.serverTimestamp
             })
-            .then((docRef) => console.log("Document written with ID: " + docRef.id))
+            .then(() => console.log("Animation clip document written!"))
             .catch((error) => console.error('Error adding document: ', error));
+
+        return newId;
+    }
+
+    addExperimentRunMetadata(data) {
+        
+        let docId = data.experimentName + "_" + data.runNumber + "_" + data.variationNumber;
+
+        _PsyanimFirebaseClient.Instance.db
+            .collection('experiment-metadata')
+            .doc(docId)
+            .set({
+                data: data,
+                time: _PsyanimFirebaseClient.Instance.serverTimestamp
+            })
+            .then(() => console.log("Experiment metadata document written!"))
+            .catch((error) => console.error("Error adding document: ", error));
+
+        return docId;
     }
 
     /**

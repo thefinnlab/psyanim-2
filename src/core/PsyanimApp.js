@@ -31,7 +31,7 @@ export default class PsyanimApp {
         return this._game;
     }
 
-    _loadExperimentDefinition(experimentDefinition) {
+    _loadExperimentVariations(experimentDefinition) {
 
         let experimentVariations = [];
 
@@ -72,10 +72,11 @@ export default class PsyanimApp {
             this._config = new PsyanimConfig();
         }
 
-        let experimentVariations = this._loadExperimentDefinition(experimentDefinition);
+        let experimentVariations = this._loadExperimentVariations(experimentDefinition);
 
         this._game = new Phaser.Game(this._config.phaserConfig);
 
+        this._game.registry.set('psyanim_experimentName', experimentDefinition.name);
         this._game.registry.set('psyanim_experimentVariations', experimentVariations);
     }
 }

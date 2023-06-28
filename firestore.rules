@@ -9,5 +9,9 @@ service cloud.firestore {
     match /animation-clips/{docId} {
     	allow read, write: if true;
     }
+
+    match /experiment-metadata/{docId} {
+    	allow read, write: if true;
+    }
   }
 }
