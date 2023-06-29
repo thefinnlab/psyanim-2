@@ -2,9 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
@@ -26,9 +23,7 @@ export default class PsyanimAnimationViewer extends PsyanimScene {
 
         // setup scene controls
         this._sceneControls = this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController).entity;
+            .addComponent(PsyanimSceneTitle).entity;
 
         this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
 
@@ -46,30 +41,21 @@ export default class PsyanimAnimationViewer extends PsyanimScene {
 
             this._clipData = clipData;
 
-            this._setupExperimentControls();
+            this._setupViewerControls();
         });
     }
 
-    _setupExperimentControls() {
+    // TODO: rename this - it's no longer part of an experiment!
+    _setupViewerControls() {
 
         // setup experiment controls
-        let experimentControlsElement = document.getElementById('experiment-controls');
-
-        // make sure we clear the controls before we load any other scenes
-        this._sceneControls.getComponent(PsyanimSceneChangeController)
-            .events.on('beforeLoadScene', () => {
-                while (experimentControlsElement.firstChild)
-                {
-                    experimentControlsElement.removeChild(
-                        experimentControlsElement.lastChild
-                    );
-                }        
-            });
+        let viewerControlsElement = document.getElementById('experiment-controls');
 
         // setup our document selector element
         let selectElement = document.createElement('select');
         selectElement.id = 'documentSelector';
-        experimentControlsElement.appendChild(selectElement);
+        
+        viewerControlsElement.appendChild(selectElement);
 
         for (let i = 0; i < this._clipData.length; ++i)
         {
@@ -100,10 +86,5 @@ export default class PsyanimAnimationViewer extends PsyanimScene {
         let clip = clipObj.clip;
 
         this._animationPlayer.play(clip);
-    }
-
-    update(t, dt) {
-
-        super.update(t, dt);
     }
 }

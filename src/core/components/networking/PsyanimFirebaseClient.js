@@ -12,6 +12,65 @@ import firebaseConfig from '../../../../firebase.config.json';
 import { v4 as uuidv4 } from 'uuid';
 
 /**
+ *  Query types
+ */
+
+class AnimationClipQuery {
+
+    constructor(db) {
+
+        this._db = db;
+        
+        this._clips = [];
+    }
+
+    execute(clipIDs) {
+
+        this._clipCount = clipIDs.length;
+        this._receivedClipCount = 0;
+
+        let promise = new Promise((resolve, reject) => {
+
+            this._resolve = resolve;
+            this._reject = reject;
+        });
+
+        for (let i = 0; i < this._clipCount; ++i)
+        {
+            let docRef = this._db.collection('animation-clips').doc(clipIDs[i]);
+
+            docRef.get().then((doc) => {
+                
+                if (doc.exists) 
+                {
+                    this._clips.push(doc.data());
+
+                    this._receivedClipCount++;
+
+                    this._checkIfReceivedAllClips();
+                }
+                else
+                {
+                    let errorMsg = "ERROR: document id not found: " + clipIDs[i];
+
+                    this._reject(new Error(errorMsg));
+                }
+            });
+        };
+
+        return promise;
+    }
+
+    _checkIfReceivedAllClips() {
+
+        if (this._receivedClipCount == this._clipCount)
+        {
+            this._resolve(this._clips);
+        }
+    }
+}
+
+/**
  *  Singleton firebase client
  */
 class _PsyanimFirebaseClient {
@@ -97,6 +156,7 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
     }
 
     /**
+     *  TODO: switch to returning a promise to make client code simpler
      * 
      * @param {*} callback - receives a clipData array containing clip IDs and data
      */
@@ -116,17 +176,35 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
                         id: doc.id,
                         clip: clip
                     });
-    
-                    console.log("retrieved doc id = " + doc.id);
                 });
 
                 callback(clipData);
             });
     }
 
+    getAnimationClipsByIdAsync(clipIDs) {
+
+        let query = new AnimationClipQuery(_PsyanimFirebaseClient.Instance.db);
+
+        return query.execute(clipIDs);
+    }
+
+    // TODO: switch to returning a promise to make client code simpler
     getAllExperimentMetadataAsync(callback) {
 
-        
+        _PsyanimFirebaseClient.Instance.db
+            .collection('experiment-metadata').get()
+            .then((querySnapshot) => {
+
+                let experimentMetadata = [];
+
+                querySnapshot.forEach((doc) => {
+
+                    experimentMetadata.push(doc);
+                });
+
+                callback(experimentMetadata);
+            });
     }
 
     update(t, dt) {

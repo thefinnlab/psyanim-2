@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 
-import PsyanimApp from '../PsyanimApp';
-
 import PsyanimScreenBoundary from './PsyanimScreenBoundary';
 import PsyanimEntity from '../PsyanimEntity';
 
@@ -56,7 +54,7 @@ export default class PsyanimScene extends Phaser.Scene {
 
         this._entities = [];
 
-        PsyanimApp.Instance.currentScene = this;
+        this.registry.set('psyanim_currentScene', this);
     }
 
     preload() {

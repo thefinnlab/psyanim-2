@@ -2,14 +2,9 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
-
-import PsyanimAnimationPlayer from '../../src/core/components/utils/PsyanimAnimationPlayer';
 
 import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
 
@@ -17,7 +12,7 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
     constructor() {
 
-        super('Psyanim Animation Viewer');
+        super('Psyanim Experiment Viewer');
     }
 
     create() {
@@ -26,84 +21,80 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
         // setup scene controls
         this._sceneControls = this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController).entity;
+            .addComponent(PsyanimSceneTitle).entity;
 
         this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
 
-        // add agent with playback component
-        let agent = this.addEntity('agent1', 600, 450, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, 
-            color: 0xffc0cb            
-        });
-
-        this._animationPlayer = agent.addComponent(PsyanimAnimationPlayer);
-
         // query db for available animation clips
-        this._firebaseClient.getAllAnimationClipAsync((clipData) => {
+        this._firebaseClient.getAllExperimentMetadataAsync((docs) => {
 
-            this._clipData = clipData;
+            console.log(docs);
 
-            this._setupExperimentControls();
+            this._docs = docs;
+
+            this._setupViewerControls();
         });
     }
 
-    _setupExperimentControls() {
+    _setupViewerControls() {
 
-        // setup experiment controls
-        let experimentControlsElement = document.getElementById('experiment-controls');
+        let viewerControlsElement = document.getElementById('experiment-controls');
 
-        // make sure we clear the controls before we load any other scenes
-        this._sceneControls.getComponent(PsyanimSceneChangeController)
-            .events.on('beforeLoadScene', () => {
-                while (experimentControlsElement.firstChild)
-                {
-                    experimentControlsElement.removeChild(
-                        experimentControlsElement.lastChild
-                    );
-                }        
-            });
-
-        // setup our document selector element
         let selectElement = document.createElement('select');
-        selectElement.id = 'documentSelector';
-        experimentControlsElement.appendChild(selectElement);
+        selectElement.id = 'experimentSelector';
 
-        for (let i = 0; i < this._clipData.length; ++i)
+        viewerControlsElement.appendChild(selectElement);
+
+        for (let i = 0; i < this._docs.length; ++i)
         {
             let option = document.createElement('option');
-            option.value = this._clipData[i].id;
-            option.text = this._clipData[i].id;
+            option.value = this._docs[i].id;
+            option.text = this._docs[i].id;
+
             selectElement.appendChild(option);
         }
 
-        console.log("initial selected doc id: " + selectElement.value);
-
-        this._playAnimation(selectElement.value);
+        this._loadExperimentDataAsync(selectElement.value);
 
         selectElement.addEventListener('change', (event) => {
-
-            console.log("selected doc id: " + event.target.value);
-
-            this._playAnimation(event.target.value);
+            this._handleNewDocumentSelected(event.target.value);
         });
     }
 
-    _playAnimation(id) {
+    _handleNewDocumentSelected(docId) {
 
-        let clipObj = this._clipData.find((clipObj) => clipObj.id == id);
+        console.log('selected experiment id = ' + docId);
 
-        console.log("playing clip for clip ID: " + clipObj.id);
+        let doc = this._docs.find(d => d.id == docId);
 
-        let clip = clipObj.clip;
+        console.log(doc.data());
 
-        this._animationPlayer.play(clip);
+        this._loadExperimentDataAsync(doc.id);
     }
 
-    update(t, dt) {
+    _loadExperimentDataAsync(docId) {
 
-        super.update(t, dt);
+        this._currentDoc = this._docs.find(d => d.id == docId).data();
+
+        let agentMetadata = this._currentDoc.data.agentMetadata;
+
+        let clipIDs = [];
+
+        for (let i = 0; i < agentMetadata.length; ++i)
+        {
+            let metadata = agentMetadata[i];
+
+            clipIDs.push(metadata.animationClipId);
+        }
+
+        this._firebaseClient.getAnimationClipsByIdAsync(clipIDs)
+            .then((clips) => {
+
+                this._clips = clips;
+                console.log("received animation clips length = " + this._clips.length);
+                console.log(this._clips);
+            });
+
+        console.log("querying for clip IDs: " + JSON.stringify(clipIDs));
     }
 }

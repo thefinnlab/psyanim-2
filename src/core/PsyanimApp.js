@@ -25,12 +25,7 @@ export default class PsyanimApp {
 
     get currentScene() {
 
-        return this._currentScene;
-    }
-
-    set currentScene(value) {
-
-        this._currentScene = value;
+        return this._game.registry.get('psyanim_currentScene');
     }
 
     get config() {
