@@ -19,7 +19,7 @@
     "experimentviewer-build": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js",
     "experimentviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js --watch",
     "firebase-deploy":"firebase deploy",
-    "firebase-emulator":"firebase emulators:start",
+    "firebase-emulator":"firebase emulators:start --import=./src/test/data/test_data_0",
     "clean": "rimraf -v ./dist",
     "delete-cloud-db":"firebase firestore:delete --all-collections",
     "delete-cloud-animclips": "firebase firestore:delete -r /animation-clips",
