@@ -21,7 +21,7 @@ class AnimationClipQuery {
 
         this._db = db;
         
-        this._clips = [];
+        this._clipData = [];
     }
 
     execute(clipIDs) {
@@ -43,7 +43,12 @@ class AnimationClipQuery {
                 
                 if (doc.exists) 
                 {
-                    this._clips.push(doc.data());
+                    let clip = PsyanimAnimationClip.fromArray(doc.data().data);
+
+                    this._clipData.push({
+                        id: doc.id,
+                        clip: clip
+                    });
 
                     this._receivedClipCount++;
 
@@ -65,7 +70,7 @@ class AnimationClipQuery {
 
         if (this._receivedClipCount == this._clipCount)
         {
-            this._resolve(this._clips);
+            this._resolve(this._clipData);
         }
     }
 }

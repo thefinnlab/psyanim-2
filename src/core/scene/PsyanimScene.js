@@ -29,6 +29,21 @@ export default class PsyanimScene extends Phaser.Scene {
         return this._entities.find(e => e.name == name);
     }
 
+    destroyEntityByName(name) {
+
+        let entity = this._entities.find(e => e.name == name);
+
+        if (entity) {
+
+            this._entities = this._entities.filter(e => e.name != entity.name);
+            entity.destroy();
+        }
+        else
+        {
+            console.warn("WARNING: failed to find entity named '" + name + "'!");
+        }
+    }
+
     getComponentByType(componentType) {
 
         let entity = this._entities.find(e => e.getComponent(componentType) != null);

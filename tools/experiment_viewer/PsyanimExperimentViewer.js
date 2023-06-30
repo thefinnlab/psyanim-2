@@ -4,9 +4,9 @@ import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-
 import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
+
+import PsyanimExperimentPlayer from '../../src/core/components/experiments/PsyanimExperimentPlayer';
 
 export default class PsyanimExperimentViewer extends PsyanimScene {
 
@@ -23,6 +23,7 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
         this._sceneControls = this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity;
 
+        this._experimentPlayer = this._sceneControls.addComponent(PsyanimExperimentPlayer);
         this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
 
         // query db for available animation clips
@@ -63,7 +64,7 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
     _handleNewDocumentSelected(docId) {
 
-        console.log('selected experiment id = ' + docId);
+        // console.log('selected experiment id = ' + docId);
 
         let doc = this._docs.find(d => d.id == docId);
 
@@ -74,9 +75,9 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
     _loadExperimentDataAsync(docId) {
 
-        this._currentDoc = this._docs.find(d => d.id == docId).data();
+        this._currentExperimentDoc = this._docs.find(d => d.id == docId).data();
 
-        let agentMetadata = this._currentDoc.data.agentMetadata;
+        let agentMetadata = this._currentExperimentDoc.data.agentMetadata;
 
         let clipIDs = [];
 
@@ -88,13 +89,24 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
         }
 
         this._firebaseClient.getAnimationClipsByIdAsync(clipIDs)
-            .then((clips) => {
+            .then((clipData) => {
 
-                this._clips = clips;
-                console.log("received animation clips length = " + this._clips.length);
-                console.log(this._clips);
+                this._clipData = clipData;
+
+                // console.log("received animation clips length = " + this._clipData.length);
+
+                console.log(this._clipData);
+
+                this._runExperiment();
             });
 
-        console.log("querying for clip IDs: " + JSON.stringify(clipIDs));
+        // console.log("querying for clip IDs: " + JSON.stringify(clipIDs));
+    }
+
+    _runExperiment() {
+
+        console.log("setting up experiment...");
+
+        this._experimentPlayer.loadExperiment(this._currentExperimentDoc.data, this._clipData);
     }
 }
