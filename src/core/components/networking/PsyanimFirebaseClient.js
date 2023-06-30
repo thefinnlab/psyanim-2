@@ -145,11 +145,11 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
 
     addExperimentRunMetadata(data) {
         
-        let docId = data.experimentName + "_" + data.runNumber + "_" + data.variationNumber;
+        let newId = uuidv4();
 
         _PsyanimFirebaseClient.Instance.db
             .collection('experiment-metadata')
-            .doc(docId)
+            .doc(newId)
             .set({
                 data: data,
                 time: _PsyanimFirebaseClient.Instance.serverTimestamp
@@ -157,7 +157,7 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
             .then(() => console.log("Experiment metadata document written!"))
             .catch((error) => console.error("Error adding document: ", error));
 
-        return docId;
+        return newId;
     }
 
     /**

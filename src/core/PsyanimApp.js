@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimConfig from './PsyanimConfig';
 
+import { v4 as uuidv4 } from 'uuid';
+
 export default class PsyanimApp {
 
     static get Instance() {
@@ -20,7 +22,14 @@ export default class PsyanimApp {
 
         this._config = new PsyanimConfig();
 
+        this._sessionID = uuidv4();
+
         window.psyanimApp = this;
+    }
+
+    get sessionID() {
+
+        return this._sessionID;
     }
 
     get currentScene() {

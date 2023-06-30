@@ -48,9 +48,14 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
         for (let i = 0; i < this._docs.length; ++i)
         {
+            let docData = this._docs[i].data().data;
+
+            let docDisplayName = docData.experimentName + "_" + docData.runNumber + "_" + 
+                docData.variationNumber + "_" + docData.sessionID;
+
             let option = document.createElement('option');
             option.value = this._docs[i].id;
-            option.text = this._docs[i].id;
+            option.text = docDisplayName;
 
             selectElement.appendChild(option);
         }

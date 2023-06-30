@@ -316,6 +316,7 @@ export default class PsyanimExperimentManager extends PsyanimComponent {
                 // save off metadata for this run variation
                 this._runMetadata = {
 
+                    sessionID: PsyanimApp.Instance.sessionID.toString(),
                     playerID: playerID,
                     experimentName: _PsyanimExperimentManager.Instance.experimentName,
                     runNumber: _PsyanimExperimentManager.Instance.currentRunNumber,
