@@ -2,9 +2,9 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../scene/PsyanimScene';
 
-export default class PsaynimSceneName extends PsyanimScene {
+export default class ___sceneName extends PsyanimScene {
 
-    static KEY = '_PsyanimSceneName';
+    static KEY = '___sceneName';
 
     constructor() {
 
