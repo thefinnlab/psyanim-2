@@ -58,8 +58,6 @@ else
         process.exit();
     }
 
-    console.log('Experiment Name: ' + experimentName);
-
     // gather template file paths
     let srcDir = findRootDir('src');
 
@@ -81,10 +79,9 @@ else
     if (!fs.existsSync(experimentDirectory))
     {
         fs.mkdirSync(experimentDirectory, { recursive: true });
-    }
 
-    // TODO: read in files, replace names as expected and write out to experimentDirectory
-    // with the appropriate names
+        console.log("Created experiment directory at: " + experimentDirectory);
+    }
 
     let experimentFilePaths = {
         webpack: path.join(findRootDir(''), 'webpack.' + experimentName + '.config.js'),
@@ -121,6 +118,8 @@ else
         if (modified)
         {
             fs.writeFileSync(templateFilePaths.packageJson, JSON.stringify(packageJson, null, 2));
+
+            console.log("Updated package.json with new build commands!");
         }
     }
 
@@ -131,6 +130,8 @@ else
         webpackTemplate = webpackTemplate.replace(/___experimentName/g, experimentName);
 
         fs.writeFileSync(experimentFilePaths.webpack, webpackTemplate);
+
+        console.log("Created webpack config at: " + experimentFilePaths.webpack);
     }
 
     if (!fs.existsSync(experimentFilePaths.indexHtml))
@@ -138,6 +139,8 @@ else
         let indexHtmlTemplate = fs.readFileSync(templateFilePaths.indexHtml, { encoding: 'utf8' });
 
         fs.writeFileSync(experimentFilePaths.indexHtml, indexHtmlTemplate);
+
+        console.log("Created index.html at: " + experimentFilePaths.indexHtml);
     }
 
     if (!fs.existsSync(experimentFilePaths.indexJs))
@@ -145,6 +148,8 @@ else
         let indexJsTemplate = fs.readFileSync(templateFilePaths.indexJs, { encoding: 'utf8' });
 
         fs.writeFileSync(experimentFilePaths.indexJs, indexJsTemplate);
+
+        console.log("Created index.js at: " + experimentFilePaths.indexJs);
     }
 
     if (!fs.existsSync(experimentFilePaths.experimentDefinition))
@@ -154,6 +159,8 @@ else
         experimentDefinitionTemplate = experimentDefinitionTemplate.replace(/___experimentName/g, experimentName);
 
         fs.writeFileSync(experimentFilePaths.experimentDefinition, experimentDefinitionTemplate);
+
+        console.log("Created ExperimentDefinition.js at: " + experimentFilePaths.experimentDefinition);
     }
 
     // create components
@@ -173,7 +180,23 @@ else
             componentNames = argv.component.split(',');
         }
 
-        console.log("Component Names: " + JSON.stringify(componentNames));
+        let componentTemplate = fs.readFileSync(templateFilePaths.component, { encoding: 'utf8' });
+
+        for (let i = 0; i < componentNames.length; ++i)
+        {
+            let componentName = componentNames[i];
+
+            let componentFilePath = path.join(experimentDirectory, componentName + '.js');
+
+            if (!fs.existsSync(componentFilePath))
+            {
+                let componentCode = componentTemplate.replace(/___componentName/g, componentName);
+
+                fs.writeFileSync(componentFilePath, componentCode);
+
+                console.log("Created component at path: " + componentFilePath);
+            }
+        }
     }
 
     // create scenes
@@ -190,6 +213,23 @@ else
             sceneNames = argv.scene.split(',');
         }
 
-        console.log("Scene Name: " + JSON.stringify(sceneNames));
+        let sceneTemplate = fs.readFileSync(templateFilePaths.scene, { encoding: 'utf8' });
+
+        for (let i = 0; i < sceneNames.length; ++i)
+        {
+            let sceneName = sceneNames[i];
+
+            let sceneFilePath = path.join(experimentDirectory, sceneName + '.js');
+
+            if (!fs.existsSync(sceneFilePath))
+            {
+                let sceneCode = sceneTemplate.replace(/___sceneName/g, sceneName);
+                sceneCode = sceneCode.replace(/___sceneKey/g, '___' + sceneName);
+
+                fs.writeFileSync(sceneFilePath, sceneCode);
+
+                console.log("Created scene at path: " + sceneFilePath);
+            }
+        }
     }
 }

@@ -4,11 +4,11 @@ import PsyanimScene from '../scene/PsyanimScene';
 
 export default class ___sceneName extends PsyanimScene {
 
-    static KEY = '___sceneName';
+    static KEY = '___sceneKey';
 
     constructor() {
 
-        super(PsyanimSceneName.KEY);
+        super(___sceneName.KEY);
     }
 
     init() {
