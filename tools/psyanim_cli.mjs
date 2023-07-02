@@ -1,6 +1,6 @@
 import minimist from 'minimist';
 
-import path from 'path';
+import path, { dirname } from 'path';
 import fs from 'fs';
 
 let argv = minimist(process.argv.slice(2));
@@ -14,6 +14,30 @@ const showHelp = () => {
         "-c, --component                        create new component in an existing project\n" +
         "-s, --scene                            create new scene\n");
 };
+
+// root dirs can be relative to ./tools, so we check this dir ./ as well as ../
+const findRootDir = (name) => {
+
+    let dirPath = path.resolve("./", name);
+
+    if (!fs.existsSync(dirPath) || path.basename(dirPath) == 'tools')
+    {
+        dirPath = path.join('../', name);
+
+        if (!fs.existsSync(dirPath))
+        {
+            console.log("\nERROR: failed to find /" + name + " directory!\n");
+            process.exit();
+        }
+    }
+
+    if (!isDirectory(dirPath))
+    {
+        console.log("ERROR: " + dirPath + " is not a directory!");
+    }
+
+    return dirPath;
+}
 
 const convertToPosixPath = (pathString) => pathString.split(path.sep).join(path.posix.sep);
 const isDirectory = (pathString) => fs.lstatSync(pathString).isDirectory();
@@ -37,66 +61,101 @@ else
     console.log('Experiment Name: ' + experimentName);
 
     // gather template file paths
-    let srcDir = './src';
+    let srcDir = findRootDir('src');
 
-    if (!fs.existsSync(srcDir))
-    {
-        srcDir = '../src';
-
-        if (!fs.existsSync(srcDir))
-        {
-            console.log("\nERROR: failed to find /src directory!\n");
-            process.exit();
-        }
-    }
-
-    let templateFiles = {
-        indexHtmlPath: path.join(srcDir, 'test/core/templates/experiment/index.template.html'),
-        indexJsPath: path.join(srcDir, 'test/core/templates/experiment/index.template.js'),
-        webpackPath: path.join(srcDir, 'test/core/templates/experiment/webpack.template.config.js'),
-        experimentDefinitionPath: path.join(srcDir, 'test/core/templates/experiment/ExperimentDefinition.template.js'),
-        componentPath: path.join(srcDir, 'test/core/templates/PsyanimComponent.template.js'),
-        scenePath: path.join(srcDir, 'test/core/templates/PsyanimScene.template.js'),
+    let templateFilePaths = {
+        packageJson: path.join(findRootDir(''), 'package.json'),
+        indexHtml: path.join(srcDir, 'core/templates/experiment/index.template.html'),
+        indexJs: path.join(srcDir, 'core/templates/experiment/index.template.js'),
+        webpack: path.join(srcDir, 'core/templates/experiment/webpack.template.config.js'),
+        experimentDefinition: path.join(srcDir, 'core/templates/experiment/ExperimentDefinition.template.js'),
+        component: path.join(srcDir, 'core/templates/PsyanimComponent.template.js'),
+        scene: path.join(srcDir, 'core/templates/PsyanimScene.template.js'),
     };
 
-    console.log(templateFiles);
-
     // setup experiment directory
-    let rootDir = './experiments';
-
-    if (!fs.existsSync(rootDir))
-    {
-        rootDir = '../experiments';
-
-        if (!fs.existsSync(rootDir))
-        {
-            console.log("\nERROR: failed to find experiment directory!\n");
-            process.exit();
-        }
-    }
-
-    if (!isDirectory(rootDir))
-    {
-        console.log("ERROR: " + rootDir + " is not a directory!");
-    }
+    let rootDir = findRootDir('experiments');
 
     let experimentDirectory = path.join(rootDir, experimentName);
 
     if (!fs.existsSync(experimentDirectory))
     {
-        // let's create the directory
         fs.mkdirSync(experimentDirectory, { recursive: true });
-
-        // TODO: read in files, replace names as expected and write out to experimentDirectory
-        // with the appropriate names
-
-        // TODO: update package.json to have commands to build and run this experiment
     }
 
+    // TODO: read in files, replace names as expected and write out to experimentDirectory
+    // with the appropriate names
 
+    let experimentFilePaths = {
+        webpack: path.join(findRootDir(''), 'webpack.' + experimentName + '.config.js'),
+        indexHtml: path.join(experimentDirectory, 'index.html'),
+        indexJs: path.join(experimentDirectory, 'index.js'),
+        experimentDefinition: path.join(experimentDirectory, 'ExperimentDefinition.js'),
+    }
 
+    if (!fs.existsSync(experimentFilePaths.packageJson))
+    {
+        let packageJson = JSON.parse(fs.readFileSync(templateFilePaths.packageJson, { encoding: 'utf8' }));
 
-    
+        let modified = false;
+
+        let buildCmdName = experimentName + '-build';
+        let watchCmdName = experimentName + '-watch';
+
+        if (!Object.hasOwn(packageJson.scripts, buildCmdName))
+        {
+            packageJson.scripts[buildCmdName] = 
+                "rimraf -v ./dist && webpack --config ./webpack." + experimentName + ".config.js";
+
+            modified = true;
+        }
+
+        if (!Object.hasOwn(packageJson.scripts, watchCmdName))
+        {
+            packageJson.scripts[watchCmdName] = 
+                "rimraf -v ./dist && webpack --config ./webpack." + experimentName + ".config.js --watch";
+
+            modified = true;
+        }
+
+        if (modified)
+        {
+            fs.writeFileSync(templateFilePaths.packageJson, JSON.stringify(packageJson, null, 2));
+        }
+    }
+
+    if (!fs.existsSync(experimentFilePaths.webpack))
+    {
+        let webpackTemplate = fs.readFileSync(templateFilePaths.webpack, { encoding: 'utf8' });
+
+        webpackTemplate = webpackTemplate.replace(/___experimentName/g, experimentName);
+
+        fs.writeFileSync(experimentFilePaths.webpack, webpackTemplate);
+    }
+
+    if (!fs.existsSync(experimentFilePaths.indexHtml))
+    {
+        let indexHtmlTemplate = fs.readFileSync(templateFilePaths.indexHtml, { encoding: 'utf8' });
+
+        fs.writeFileSync(experimentFilePaths.indexHtml, indexHtmlTemplate);
+    }
+
+    if (!fs.existsSync(experimentFilePaths.indexJs))
+    {
+        let indexJsTemplate = fs.readFileSync(templateFilePaths.indexJs, { encoding: 'utf8' });
+
+        fs.writeFileSync(experimentFilePaths.indexJs, indexJsTemplate);
+    }
+
+    if (!fs.existsSync(experimentFilePaths.experimentDefinition))
+    {
+        let experimentDefinitionTemplate = fs.readFileSync(templateFilePaths.experimentDefinition, { encoding: 'utf8' });
+
+        experimentDefinitionTemplate = experimentDefinitionTemplate.replace(/___experimentName/g, experimentName);
+
+        fs.writeFileSync(experimentFilePaths.experimentDefinition, experimentDefinitionTemplate);
+    }
+
     // create components
     let createComponent = argv.c || argv.component;
     let createScene = argv.s || argv.scene;
