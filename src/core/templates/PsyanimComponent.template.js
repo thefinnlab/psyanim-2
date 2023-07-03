@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
+import PsyanimComponent from '../../src/core/PsyanimComponent';
 
 export default class ___componentName extends PsyanimComponent {
 
@@ -11,5 +11,6 @@ export default class ___componentName extends PsyanimComponent {
 
     update(t, dt) {
         
+        super.update(t, dt);
     }
 }

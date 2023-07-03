@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from '../scene/PsyanimScene';
+import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
 export default class ___sceneName extends PsyanimScene {
 
@@ -13,6 +13,7 @@ export default class ___sceneName extends PsyanimScene {
 
     init() {
         
+        super.init();
     }
 
     create() {

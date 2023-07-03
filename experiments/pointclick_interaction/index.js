@@ -4,14 +4,6 @@ import PsyanimExperimentManager from '../../src/core/components/experiments/Psya
 
 import ExperimentDefinition from './ExperimentDefinition';
 
-/**
- *  TODOs:
- * 
- *      - implement playback viewer for psyanim experiments!
- *      - update README!
- * 
- */
-
 // startup PsyanimApp
 PsyanimApp.Instance.run(ExperimentDefinition);
 
