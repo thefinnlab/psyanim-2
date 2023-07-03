@@ -161,6 +161,12 @@ You should see MyFirstMovementComponent.js
         }
     }
 
+In the `create` method above, we add 3 entities.  Two the entities, `'sceneControls'` and `'experimentManager'` have no visual representation in the scene.  Hence, there is only 1 parameter supplied to the `addEntity` method of the scene.
+
+The `agent1` entity has a red circle representation in the scene and is centered at pixel coordinates `(400, 300)` in the scene.
+
+Notice we add our `MyFirstMovementComponent` to our `agent1` entity with a simple call to `addComponent`.
+
 **c. Open MyFirstMovementComponent.js and add the following code to have the agent move back and forth horizontally:**
 
     import Phaser from 'phaser';
@@ -200,6 +206,12 @@ You should see MyFirstMovementComponent.js
         }
     }
 
-Rebuild your ./dist bundle and reload the page in your browser and you should be able to see your agent moving back and forth on-screen by using the 'enter' key to load the experiment scenes!
+The `update` method above is called every frame (60 times per second).
+
+Inside the `update` method, we've added code to compute the speed of the entity, then compute it's displacement from it's speed and the `dt` (or 'delta time') parameter supplied to `update`, and then add that displacement to the entity's current position.
+
+Note that using `this.entity` within a component will return a reference to the entity which the component is attached to.
+
+**d. Rebuild your ./dist bundle and reload the page in your browser and you should be able to see your agent moving back and forth on-screen by using the 'enter' key to load the experiment scenes!**
 
 ### Congratulations, you've created your first movement component and attached it to an entity in the scene to control its movement!

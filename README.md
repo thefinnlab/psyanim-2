@@ -2,4 +2,4 @@
 
 Psyanim 2.0 is a tool for rapid design, prototyping and deployment of psychology research experiments involving 2D procedural animation.
 
-See /docs/getting_started.md to get started!
+For a quick intro to Psyanim 2.0, check out our [Getting Started](/docs/getting_started.md) tutorial!
