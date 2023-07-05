@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="shortcut icon" href="#">
+
+    <title>My experiment</title>
+    <script src="https://unpkg.com/jspsych@7.3.3"></script>
+    <script src="./hello_jsPsych_plugins.js"></script>
+    <link href="https://unpkg.com/jspsych@7.3.3/css/jspsych.css" rel="stylesheet" type="text/css" />
+  </head>
+  <body></body>
+  <script>
+
+    const jsPsych = initJsPsych();
+
+    let experimentIndex = -1;
+
+    let getExperimentIndex = function() {
+        return experimentIndex++;
+    };
+
+    let reportExperimentIndex = function() {
+        console.log("experiment index = " + experimentIndex);
+    }
+
+    // basic trial w/ custom parameters and function parameters
+    let myCustomTrial1 = {
+        type: MyJsPsychPlugin,
+        speed: 98,
+        target: "i'm a target!",
+        myObject: {
+            name: "bob",
+            age: 42,
+            itWorks: true
+        },
+        myEvaluatedFunctionParameter: getExperimentIndex,
+        myUnevaluatedFunctionParameter: reportExperimentIndex
+    };
+
+    // basic trial with custom parameters + function parameters where myObject has different fields than the 1st
+    let myCustomTrial2 = {
+        type: MyJsPsychPlugin,
+        speed: 38,
+        target: "I'm the next target!",
+        myObject: {
+            name: "elsa",
+            age: 31,
+            itWorkedAgain: true
+        },
+        myEvaluatedFunctionParameter: getExperimentIndex,
+        myUnevaluatedFunctionParameter: reportExperimentIndex
+    };
+
+    let myCustomTrial3 = myCustomTrial2;
+
+    jsPsych.run([myCustomTrial1, myCustomTrial2, myCustomTrial3]);
+
+  </script>
+</html>
