@@ -2,8 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimConfig from './PsyanimConfig';
 
-import { v4 as uuidv4 } from 'uuid';
-
 export default class PsyanimApp {
 
     static get Instance() {
@@ -22,19 +20,37 @@ export default class PsyanimApp {
 
         this._config = new PsyanimConfig();
 
-        this._sessionID = uuidv4();
-
         window.psyanimApp = this;
+
+        // TODO: consider the case where 'phaser-app' div doesn't exist in DOM yet!
+        this._domElement = document.getElementById('phaser-app');
     }
 
-    get sessionID() {
+    setCanvasVisible(visible) {
 
-        return this._sessionID;
+        if (visible)
+        {
+            let canvas = this._game.canvas;
+
+            if (canvas.parentElement == null)
+            {
+                this._domElement.appendChild(canvas);
+            }
+        }
+        else
+        {
+            this._domElement.innerHTML = '';
+        }
     }
 
     get currentScene() {
 
         return this._game.registry.get('psyanim_currentScene');
+    }
+
+    get domElement() {
+
+        return this._domElement;
     }
 
     get config() {
@@ -90,24 +106,8 @@ export default class PsyanimApp {
         this._game.registry.set('psyanim_currentPlayerID', value);
     }
 
-    get experimentName() {
-
-        return this._game.registry.get('psyanim_experimentName');
-    }
-
-    run(experimentDefinition) {
-
-        if (this._config == null)
-        {
-            // use default config
-            this._config = new PsyanimConfig();
-        }
-
-        let experimentVariations = this._loadExperimentVariations(experimentDefinition);
+    run() {
 
         this._game = new Phaser.Game(this._config.phaserConfig);
-
-        this._game.registry.set('psyanim_experimentName', experimentDefinition.name);
-        this._game.registry.set('psyanim_experimentVariations', experimentVariations);
     }
 }

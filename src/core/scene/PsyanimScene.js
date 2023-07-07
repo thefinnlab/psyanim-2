@@ -8,6 +8,9 @@ export default class PsyanimScene extends Phaser.Scene {
     constructor(key) {
 
         super(key);
+
+        // canvas is always stored under div with id 'phaser-app'
+        this._canvasParent = document.getElementById('phaser-app');
     }
 
     addEntity(name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {

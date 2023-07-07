@@ -12,7 +12,7 @@ export default class PsyanimConfig {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
-            scene: [PsyanimExperimentLoadingScene],
+            scene: [],
             physics: {
                 default: 'matter',
                 matter: {
@@ -22,6 +22,18 @@ export default class PsyanimConfig {
                 }
             }
         };
+    }
+
+    registerScene(scene) {
+
+        if (!this._phaserConfig.scene.includes(scene))
+        {
+            this._phaserConfig.scene.push(scene);
+        }
+        else
+        {
+            console.error("ERROR: scene is already registered in app config!");
+        }
     }
 
     setDebugEnabled(enabled) {
