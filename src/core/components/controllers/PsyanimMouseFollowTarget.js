@@ -25,6 +25,9 @@ export default class PsyanimMouseFollowTarget extends PsyanimComponent {
         }
 
         this.entity.setBody({ type: 'circle', radius: 4 }, bodyOptions);
+
+        // give focus to the canvas so the mouse follow target starts working immediately
+        this.entity.scene.game.canvas.focus();
     }
 
     update(t, dt) {

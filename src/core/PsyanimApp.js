@@ -22,8 +22,15 @@ export default class PsyanimApp {
 
         window.psyanimApp = this;
 
-        // TODO: consider the case where 'phaser-app' div doesn't exist in DOM yet!
         this._domElement = document.getElementById('phaser-app');
+
+        if (this._domElement == null)
+        {
+            this._domElement = document.createElement('div');
+            this._domElement.setAttribute('id', 'phaser-app');
+            
+            document.body.appendChild(this._domElement);
+        }
     }
 
     setCanvasVisible(visible) {
@@ -61,6 +68,13 @@ export default class PsyanimApp {
     get game() {
 
         return this._game;
+    }
+
+    loadScene(sceneKey) {
+
+        console.log("load scene called with key: " + sceneKey);
+
+        this.currentScene.scene.start(sceneKey);
     }
 
     _loadExperimentVariations(experimentDefinition) {

@@ -1,40 +1,35 @@
 import { initJsPsych } from 'jspsych';
 
 import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
+import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';
+import preload from '@jspsych/plugin-preload';
 
 import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin';
 
 import PsyanimApp from '../../src/core/PsyanimApp';
 
+import EmptyScene from './EmptyScene';
 import PointClickMovementScene from './PointClickMovementScene';
+import FleeScene from './FleeScene';
+import WanderScene from './WanderScene';
 
 // register psyanim scenes and run the app o/
+PsyanimApp.Instance.config.registerScene(EmptyScene);
 PsyanimApp.Instance.config.registerScene(PointClickMovementScene);
+PsyanimApp.Instance.config.registerScene(WanderScene);
+PsyanimApp.Instance.config.registerScene(FleeScene);
 
 PsyanimApp.Instance.run();
 
 PsyanimApp.Instance.setCanvasVisible(false);
 
-// init jsPsych experiment
-const jsPsych = initJsPsych({
-    display_element: 'jspsych-target'
-});
-
-let experimentIndex = -1;
-
-let getExperimentIndex = function() {
-    return experimentIndex++;
-};
-
-let reportExperimentIndex = function() {
-    console.log("experiment index = " + experimentIndex);
-}
-
 /**
- *  Init jsPsysch experiment
+ *  Setup jsPsych experiment
  * 
  *  Test demonstrates mixing  'PsyanimJsPsychPlugin' trials with other types of plugins in jsPsych
  */
+
+const jsPsych = initJsPsych();
 
 let welcome = {
     type: htmlKeyboardResponse,
@@ -44,42 +39,62 @@ let welcome = {
 let keyboardResponseTrial = {
     type: htmlKeyboardResponse,
     stimulus: 'Press any key to continue...',
-    post_trial_gap: 2000,
+    post_trial_gap: 500,
 };
 
-// basic trial w/ custom parameters and function parameters
-let myCustomTrial1 = {
+var preloadTrial = {
+    type: preload,
+    images: ['img/blue.png', 'img/orange.png']
+};  
+
+var blue_trial = {
+    type: imageKeyboardResponse,
+    stimulus: 'img/blue.png',
+    choices: ['f', 'j']
+};
+
+var orange_trial = {
+    type: imageKeyboardResponse,
+    stimulus: 'img/orange.png',
+    choices: ['f', 'j']
+};  
+
+let pointclickTrial1 = {
     type: PsyanimJsPsychPlugin,
-    speed: 98,
-    target: "i'm a target!",
-    myObject: {
-        name: "bob",
-        age: 42,
-        itWorks: true
+    sceneKey: PointClickMovementScene.KEY,
+    sceneParameters: { 
+        initialPos: { x: 600, y: 100 }
     },
-    myEvaluatedFunctionParameter: getExperimentIndex,
-    myUnevaluatedFunctionParameter: reportExperimentIndex,
-    post_trial_gap: 2000,
+    post_trial_gap: 300,
 };
 
-// basic trial with custom parameters + function parameters where myObject has different fields than the 1st
-let myCustomTrial2 = {
+let pointclickTrial2 = {
     type: PsyanimJsPsychPlugin,
-    speed: 38,
-    target: "I'm the next target!",
-    myObject: {
-        name: "elsa",
-        age: 31,
-        itWorkedAgain: true
+    sceneKey: PointClickMovementScene.KEY,
+    sceneParameters: { 
+        initialPos: { x: 600, y: 500 }
     },
-    myEvaluatedFunctionParameter: getExperimentIndex,
-    myUnevaluatedFunctionParameter: reportExperimentIndex,
-    post_trial_gap: 2000,
+    post_trial_gap: 300,
 };
 
-let myCustomTrial3 = myCustomTrial2;
+let fleeTrial = {
+    type: PsyanimJsPsychPlugin,
+    sceneKey: FleeScene.KEY,
+    post_trial_gap: 300    
+}
 
-jsPsych.run([welcome, 
-    myCustomTrial1, keyboardResponseTrial, 
-    myCustomTrial2, keyboardResponseTrial, 
-    myCustomTrial3]);
+let wanderTrial = {
+    type: PsyanimJsPsychPlugin,
+    sceneKey: WanderScene.KEY,
+    sceneParameters: {
+        nAgents: 5
+    },
+    post_trial_gap: 300
+};
+
+jsPsych.run([preloadTrial, welcome, 
+    pointclickTrial1, keyboardResponseTrial, 
+    pointclickTrial2, keyboardResponseTrial, 
+    blue_trial, orange_trial,
+    fleeTrial, keyboardResponseTrial,
+    wanderTrial]);

@@ -8,7 +8,7 @@
     "test": "jasmine --config=src/test/unit/jasmine.json",
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
     "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
-    "devserver":"npx nodemon ./src/server/main.mjs",
+    "devserver": "npx nodemon ./src/server/main.mjs",
     "hello-jspsych": "rimraf -v ./dist && webpack --config ./webpack.hellojsPsych.config.js --watch",
     "playfight-build": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js",
     "playfight-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js --watch",
@@ -31,6 +31,8 @@
   "license": "ISC",
   "dependencies": {
     "@jspsych/plugin-html-keyboard-response": "^1.1.2",
+    "@jspsych/plugin-image-keyboard-response": "^1.1.2",
+    "@jspsych/plugin-preload": "^1.1.2",
     "express": "^4.18.2",
     "firebase": "^9.22.2",
     "jspsych": "^7.3.3",
@@ -42,6 +44,7 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^11.0.0",
     "file-loader": "^6.2.0",
     "html-webpack-plugin": "^5.5.0",
     "jasmine": "^5.0.1",
