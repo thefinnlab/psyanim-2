@@ -4,7 +4,7 @@ import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimFirebaseClient from '../../src/core/components/networking/PsyanimFirebaseClient';
+import PsyanimFirebaseClient from '../../src/utils/PsyanimFirebaseClient';
 
 import PsyanimExperimentPlayer from '../../src/core/components/experiments/PsyanimExperimentPlayer';
 
@@ -24,7 +24,7 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
             .addComponent(PsyanimSceneTitle).entity;
 
         this._experimentPlayer = this._sceneControls.addComponent(PsyanimExperimentPlayer);
-        this._firebaseClient = this._sceneControls.addComponent(PsyanimFirebaseClient);
+        this._firebaseClient = new PsyanimFirebaseClient();
 
         // query db for available animation clips
         this._firebaseClient.getAllExperimentMetadataAsync((docs) => {
@@ -46,19 +46,29 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
         viewerControlsElement.appendChild(selectElement);
 
+        let options = [];
+
         for (let i = 0; i < this._docs.length; ++i)
         {
             let docData = this._docs[i].data().data;
 
-            let docDisplayName = docData.experimentName + "_" + docData.runNumber + "_" + 
-                docData.variationNumber + "_" + docData.sessionID;
+            let docDisplayName = docData.experimentName + "_" + docData.sessionID + "_" + docData.trialNumber;
 
             let option = document.createElement('option');
             option.value = this._docs[i].id;
             option.text = docDisplayName;
 
-            selectElement.appendChild(option);
+            options.push(option);
         }
+
+        // sort by display name alphabetically
+        options.sort((a, b) => {
+            var textA = a.text.toUpperCase();
+            var textB = b.text.toUpperCase();
+            return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
+        });
+
+        options.forEach(o => selectElement.appendChild(o));
 
         this._loadExperimentDataAsync(selectElement.value);
 
@@ -68,8 +78,6 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
     }
 
     _handleNewDocumentSelected(docId) {
-
-        // console.log('selected experiment id = ' + docId);
 
         let doc = this._docs.find(d => d.id == docId);
 
@@ -102,13 +110,13 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
 
                 console.log(this._clipData);
 
-                this._runExperiment();
+                this._runTrial();
             });
 
         // console.log("querying for clip IDs: " + JSON.stringify(clipIDs));
     }
 
-    _runExperiment() {
+    _runTrial() {
 
         console.log("setting up experiment...");
 

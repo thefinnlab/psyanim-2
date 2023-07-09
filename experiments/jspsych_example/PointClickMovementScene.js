@@ -51,7 +51,5 @@ export default class PointClickMovementScene extends PsyanimScene {
         arriveAgent.vehicle = vehicle;
 
         clickToMove.arriveAgent = arriveAgent;
-
-        console.log("point click movement scene initialized!");
     }
 }

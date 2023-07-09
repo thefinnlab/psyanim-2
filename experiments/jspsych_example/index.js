@@ -13,8 +13,10 @@ import PointClickMovementScene from './PointClickMovementScene';
 import FleeScene from './FleeScene';
 import WanderScene from './WanderScene';
 
+import PsyanimFirebaseClient from '../../src/utils/PsyanimFirebaseClient';
+
 /**
- *  Register Psyanim scenes and run the app
+ *  Setup Psyanim
  */
 PsyanimApp.Instance.config.registerScene(EmptyScene);
 PsyanimApp.Instance.config.registerScene(PointClickMovementScene);
@@ -24,6 +26,14 @@ PsyanimApp.Instance.config.registerScene(FleeScene);
 PsyanimApp.Instance.run();
 
 PsyanimApp.Instance.setCanvasVisible(false);
+
+/**
+ *  Setup PsyanimJsPsychPlugin
+ */
+
+const firebaseClient = new PsyanimFirebaseClient();
+
+PsyanimJsPsychPlugin.setDocumentWriter(firebaseClient);
 
 /**
  *  Setup jsPsych experiment

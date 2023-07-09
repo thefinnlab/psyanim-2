@@ -2,8 +2,6 @@ import { ParameterType } from 'jspsych';
 
 import PsyanimApp from '../../src/core/PsyanimApp';
 
-import PsyanimFirebaseClient from '../utils/PsyanimFirebaseClient';
-
 import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBaker';
 
 /**
@@ -71,46 +69,49 @@ class _PsyanimJsPsychPlugin {
 
     endTrial() {
 
-        // send off data to cloud firestore
-        let agentMetadata = [];
-
-        if (this._currentTrial.agentNamesToRecord)
+        if (this._documentWriter)
         {
-            let agentsToRecord = this._getAgentsByName(this._currentTrial.agentNamesToRecord);
+            // save off documents
+            let agentMetadata = [];
 
-            agentsToRecord.forEach(agent => {
+            if (this._documentWriter && this._currentTrial.agentNamesToRecord)
+            {
+                let agentsToRecord = this._getAgentsByName(this._currentTrial.agentNamesToRecord);
 
-                let animationBaker = agent.getComponent(PsyanimAnimationBaker);
-                animationBaker.stop();
-    
-                let animData = animationBaker.clip.toArray();
-    
-                let animClipDocId = PsyanimFirebaseClient.Instance.addAnimationClip(animData);
+                agentsToRecord.forEach(agent => {
 
-                let r0 = agent.position;
-    
-                agentMetadata.push({
-                    name: agent.name,
-                    initialPosition: { x: r0.x, y: r0.y },
-                    shapeParams: agent.shapeParams,
-                    animationClipId: animClipDocId
+                    let animationBaker = agent.getComponent(PsyanimAnimationBaker);
+                    animationBaker.stop();
+        
+                    let animData = animationBaker.clip.toArray();
+        
+                    let animClipDocId = this._documentWriter.addAnimationClip(animData);
+
+                    let r0 = agent.position;
+        
+                    agentMetadata.push({
+                        name: agent.name,
+                        initialPosition: { x: r0.x, y: r0.y },
+                        shapeParams: agent.shapeParams,
+                        animationClipId: animClipDocId
+                    });
                 });
-            });
+            }
+
+            let trialMetadata = {
+
+                sessionID: PsyanimApp.Instance.sessionID,
+                userID: this._currentTrial.userID,
+                experimentName: this._currentTrial.experimentName,
+                trialNumber: this._currentTrialIndex,
+                sceneKey: this._currentTrial.sceneKey,
+                agentMetadata: agentMetadata,
+            };
+
+            this._documentWriter.addExperimentTrialMetadata(trialMetadata);
+
+            console.log(trialMetadata);
         }
-
-        let trialMetadata = {
-
-            sessionID: PsyanimApp.Instance.sessionID,
-            userID: this._currentTrial.userID,
-            experimentName: this._currentTrial.experimentName,
-            trialNumber: this._currentTrialIndex,
-            sceneKey: this._currentTrial.sceneKey,
-            agentMetadata: agentMetadata,
-        };
-
-        PsyanimFirebaseClient.Instance.addExperimentTrialMetadata(trialMetadata);
-
-        console.log(trialMetadata);
 
         this._currentTrialIndex++;
 
@@ -212,6 +213,11 @@ export default class PsyanimJsPsychPlugin {
                 },
             }
     };
+
+    static setDocumentWriter(writer) {
+
+        _PsyanimJsPsychPlugin.Instance._documentWriter = writer;
+    }
 
     constructor(jsPsych) {
 

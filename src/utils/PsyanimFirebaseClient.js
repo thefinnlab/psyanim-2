@@ -77,18 +77,6 @@ class AnimationClipQuery {
  */
 export default class PsyanimFirebaseClient {
 
-    static get Instance() {
-
-        if (PsyanimFirebaseClient._instance == null)
-        {
-            PsyanimFirebaseClient._instance = new PsyanimFirebaseClient();
-        }
-
-        return PsyanimFirebaseClient._instance;
-    }
-
-    static _instance = null;
-
     constructor() {
 
         firebase.initializeApp(firebaseConfig);
@@ -175,7 +163,7 @@ export default class PsyanimFirebaseClient {
 
     getAnimationClipsByIdAsync(clipIDs) {
 
-        let query = new AnimationClipQuery(PsyanimFirebaseClient.Instance.db);
+        let query = new AnimationClipQuery(this.db);
 
         return query.execute(clipIDs);
     }
@@ -184,7 +172,7 @@ export default class PsyanimFirebaseClient {
     getAllExperimentMetadataAsync(callback) {
 
         this.db
-            .collection('experiment-metadata').get()
+            .collection('trial-metadata').get()
             .then((querySnapshot) => {
 
                 let experimentMetadata = [];
