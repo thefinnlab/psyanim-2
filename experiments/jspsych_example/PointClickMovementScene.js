@@ -8,11 +8,7 @@ import PsyanimArriveAgent from '../../src/core/components/steering/agents/Psyani
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 
-import PsyanimAnimationBaker from '../../src/core/components/utils/PsyanimAnimationBaker';
-
 import PsyanimClickToMoveBasic from '../../src/core/components/controllers/PsyanimClickToMoveBasic';
-
-import PsyanimExperimentManager from '../../src/core/components/experiments/PsyanimExperimentManager';
 
 export default class PointClickMovementScene extends PsyanimScene {
     
@@ -35,8 +31,6 @@ export default class PointClickMovementScene extends PsyanimScene {
         this._sceneControls = this.addEntity('sceneControls')
             .addComponent(PsyanimPhysicsSettingsController).entity;
 
-        this._experimentManager = this._sceneControls.addComponent(PsyanimExperimentManager);
-
         let clickToMove = this._sceneControls.addComponent(PsyanimClickToMoveBasic);
 
         // add agents with vehicle components to this scene
@@ -57,5 +51,7 @@ export default class PointClickMovementScene extends PsyanimScene {
         arriveAgent.vehicle = vehicle;
 
         clickToMove.arriveAgent = arriveAgent;
+
+        console.log("point click movement scene initialized!");
     }
 }

@@ -1,7 +1,5 @@
 import Phaser from 'phaser';
 
-import PsyanimExperimentLoadingScene from './components/experiments/PsyanimExperimentLoadingScene';
-
 export default class PsyanimConfig {
 
     constructor() {

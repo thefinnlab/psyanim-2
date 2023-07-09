@@ -4,7 +4,7 @@ import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
 import imageKeyboardResponse from '@jspsych/plugin-image-keyboard-response';
 import preload from '@jspsych/plugin-preload';
 
-import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin';
+import PsyanimJsPsychPlugin from '../../src/integrations/PsyanimJsPsychPlugin';
 
 import PsyanimApp from '../../src/core/PsyanimApp';
 
@@ -13,7 +13,9 @@ import PointClickMovementScene from './PointClickMovementScene';
 import FleeScene from './FleeScene';
 import WanderScene from './WanderScene';
 
-// register psyanim scenes and run the app o/
+/**
+ *  Register Psyanim scenes and run the app
+ */
 PsyanimApp.Instance.config.registerScene(EmptyScene);
 PsyanimApp.Instance.config.registerScene(PointClickMovementScene);
 PsyanimApp.Instance.config.registerScene(WanderScene);
@@ -28,6 +30,9 @@ PsyanimApp.Instance.setCanvasVisible(false);
  * 
  *  Test demonstrates mixing  'PsyanimJsPsychPlugin' trials with other types of plugins in jsPsych
  */
+
+const userID = 'testerABCD1234';
+const experimentName = 'hello_jsPsych';
 
 const jsPsych = initJsPsych();
 
@@ -62,33 +67,45 @@ var orange_trial = {
 let pointclickTrial1 = {
     type: PsyanimJsPsychPlugin,
     sceneKey: PointClickMovementScene.KEY,
+    experimentName: experimentName,
+    userID: userID,
     sceneParameters: { 
         initialPos: { x: 600, y: 100 }
     },
+    agentNamesToRecord: ['agent1'],
     post_trial_gap: 300,
 };
 
 let pointclickTrial2 = {
     type: PsyanimJsPsychPlugin,
     sceneKey: PointClickMovementScene.KEY,
+    experimentName: experimentName,
+    userID: userID,
     sceneParameters: { 
         initialPos: { x: 600, y: 500 }
     },
+    agentNamesToRecord: ['agent1'],
     post_trial_gap: 300,
 };
 
 let fleeTrial = {
     type: PsyanimJsPsychPlugin,
     sceneKey: FleeScene.KEY,
+    experimentName: experimentName,
+    userID: userID,
+    agentNamesToRecord: ['mouseFollowTarget', 'agent1', 'agent2'],
     post_trial_gap: 300    
 }
 
 let wanderTrial = {
     type: PsyanimJsPsychPlugin,
     sceneKey: WanderScene.KEY,
+    experimentName: experimentName,
+    userID: userID,
     sceneParameters: {
         nAgents: 5
     },
+    agentNamesToRecord: ['agent*'],
     post_trial_gap: 300
 };
 

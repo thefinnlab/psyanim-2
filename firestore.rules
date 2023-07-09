@@ -10,7 +10,7 @@ service cloud.firestore {
     	allow read, write: if true;
     }
 
-    match /experiment-metadata/{docId} {
+    match /trial-metadata/{docId} {
     	allow read, write: if true;
     }
   }

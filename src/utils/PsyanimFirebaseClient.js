@@ -1,15 +1,12 @@
-import Phaser from 'phaser';
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimAnimationClip from '../../../utils/PsyanimAnimationClip.mjs';
-
 // firebase imports
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
-import firebaseConfig from '../../../../firebase.config.json';
+import firebaseConfig from '../../firebase.config.json';
 
 import { v4 as uuidv4 } from 'uuid';
+
+import PsyanimAnimationClip from './PsyanimAnimationClip.mjs';
 
 /**
  *  Query types
@@ -78,16 +75,16 @@ class AnimationClipQuery {
 /**
  *  Singleton firebase client
  */
-class _PsyanimFirebaseClient {
+export default class PsyanimFirebaseClient {
 
     static get Instance() {
 
-        if (_PsyanimFirebaseClient._instance == null)
+        if (PsyanimFirebaseClient._instance == null)
         {
-            _PsyanimFirebaseClient._instance = new _PsyanimFirebaseClient();
+            PsyanimFirebaseClient._instance = new PsyanimFirebaseClient();
         }
 
-        return _PsyanimFirebaseClient._instance;
+        return PsyanimFirebaseClient._instance;
     }
 
     static _instance = null;
@@ -114,28 +111,17 @@ class _PsyanimFirebaseClient {
 
         return firebase.firestore.FieldValue.serverTimestamp();
     }
-}
-
-/**
- *  Component interface to singleton firebase client
- */
-export default class PsyanimFirebaseClient extends PsyanimComponent {
-
-    constructor(entity) {
-
-        super(entity);
-    }
 
     addAnimationClip(data) {
 
         let newId = uuidv4();
 
-        _PsyanimFirebaseClient.Instance.db
+        this.db
             .collection('animation-clips')
             .doc(newId)
             .set({
                 data: data,
-                time: _PsyanimFirebaseClient.Instance.serverTimestamp
+                time: this.serverTimestamp
             })
             .then(() => console.log("Animation clip document written!"))
             .catch((error) => console.error('Error adding document: ', error));
@@ -143,16 +129,16 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
         return newId;
     }
 
-    addExperimentRunMetadata(data) {
+    addExperimentTrialMetadata(data) {
         
         let newId = uuidv4();
 
-        _PsyanimFirebaseClient.Instance.db
-            .collection('experiment-metadata')
+        this.db
+            .collection('trial-metadata')
             .doc(newId)
             .set({
                 data: data,
-                time: _PsyanimFirebaseClient.Instance.serverTimestamp
+                time: this.serverTimestamp
             })
             .then(() => console.log("Experiment metadata document written!"))
             .catch((error) => console.error("Error adding document: ", error));
@@ -167,7 +153,7 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
      */
     getAllAnimationClipAsync(callback) {
 
-        _PsyanimFirebaseClient.Instance.db
+        this.db
             .collection("animation-clips").get()
             .then((querySnapshot) => {
 
@@ -189,15 +175,15 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
 
     getAnimationClipsByIdAsync(clipIDs) {
 
-        let query = new AnimationClipQuery(_PsyanimFirebaseClient.Instance.db);
+        let query = new AnimationClipQuery(PsyanimFirebaseClient.Instance.db);
 
         return query.execute(clipIDs);
     }
 
-    // TODO: switch to returning a promise to make client code simpler
+    // TODO: switch to returning a promise to make calling code simpler
     getAllExperimentMetadataAsync(callback) {
 
-        _PsyanimFirebaseClient.Instance.db
+        this.db
             .collection('experiment-metadata').get()
             .then((querySnapshot) => {
 
@@ -210,10 +196,5 @@ export default class PsyanimFirebaseClient extends PsyanimComponent {
 
                 callback(experimentMetadata);
             });
-    }
-
-    update(t, dt) {
-
-        super.update(t, dt);
     }
 }

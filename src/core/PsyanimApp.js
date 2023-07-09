@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimConfig from './PsyanimConfig';
 
+import { v4 as uudiv4 } from 'uuid';
+
 export default class PsyanimApp {
 
     static get Instance() {
@@ -21,6 +23,8 @@ export default class PsyanimApp {
         this._config = new PsyanimConfig();
 
         window.psyanimApp = this;
+
+        this._sessionID = uudiv4();
 
         this._domElement = document.getElementById('phaser-app');
 
@@ -48,6 +52,10 @@ export default class PsyanimApp {
         {
             this._domElement.innerHTML = '';
         }
+    }
+
+    get sessionID() {
+        return this._sessionID;
     }
 
     get currentScene() {
