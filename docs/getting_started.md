@@ -18,7 +18,7 @@ Moreover, entities alone do not have any logic or behaviors.  While entities hav
 
 All user-defined state and behaviors are encapsulated in `PsyanimComponents`, which can be attached to a `PsyanimEntity`.
 
-When building experiments using jsPsych, we can run `trials` using the `PsyanimJsPsychPlugin` where each trial runs an instance of a `PsyanimScene`.
+When building experiments using [jsPsych](https://www.jspsych.org/), we can run `trials` using the `PsyanimJsPsychPlugin` where each trial runs an instance of a `PsyanimScene`.
 
 ## 2. Creating our first experiment using the Psyanim CLI
 
