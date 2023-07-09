@@ -18,6 +18,8 @@ Moreover, entities alone do not have any logic or behaviors.  While entities hav
 
 All user-defined state and behaviors are encapsulated in `PsyanimComponents`, which can be attached to a `PsyanimEntity`.
 
+When building experiments using jsPsych, we can run `trials` using the `PsyanimJsPsychPlugin` where each trial runs an instance of a `PsyanimScene`.
+
 ## 2. Creating our first experiment using the Psyanim CLI
 
 ***Pre-requisites: Requires NodeJS v18.16.0 or higher.***
@@ -42,13 +44,13 @@ Follow these steps to create a new project:
 
 You should now see the following files created under ./experiments/helloPsyanim:
 
-- `ExperimentDefinition.js`
+- `EmptyScene.js`
 - `index.html`
 - `index.js`
 
 You should also see a webpack config automatically generated for your experiment and package.json updated with a couple commands for building with webpack.
 
-At this stage, we have an experiment with no scenes.  Let's add a scene.
+At this stage, we have an experiment with just one empty scene.  Let's add another scene.
 
 **c. Back in the terminal, run the following command to create a scene named 'MyFirstScene':**
 
@@ -56,50 +58,99 @@ At this stage, we have an experiment with no scenes.  Let's add a scene.
 
 You should see `MyFirstScene.js` show up under `./experiments/helloPsyanim`.
 
-Let's see how to add this new scene to our `ExperimentDefinition.js` file.
+Let's see how to add this new scene to our `index.js` file.
 
-**d. Open `ExperimentDefinition.js` and add the following import to the top of the file:**
+**d. Open `index.js` and add the following import to the top of the file:**
 
     import MyFirstScene from './MyFirstScene';
 
-**e. Under the 'runs' array property, add the following JSON object:**
+**e. Let's register `MyFirstScene` with `PsyanimApp` by adding the following line right before `Psyanim.Instance.run()`:**
 
-    {
-        sceneType: MyFirstScene,
-        parameterSet: {},
-        variations: 1
-    }
+    PsyanimApp.Instance.config.registerScene(MyFirstScene);
 
-**f. Open `index.js` and add the following code to the imports at the top:**
+**e. Next, let's declare a trial `myfirstSceneTrial` after the `emptySceneTrial` is declared by adding the following code after it:**
 
-    import PsyanimExperimentManager from '../../src/core/components/experiments/PsyanimExperimentManager';
+    let myFirstSceneTrial = {
+        type: PsyanimJsPsychPlugin,
+        sceneKey: MyFirstScene.KEY,
+        experimentName: experimentName,
+        userID: userID,
+        sceneParameters: { }
+    };
 
-**g. at the bottom of the file to add a keyboard controller using 'enter' key to load the next scene:**
+**f. Now let's add this new trial we defined to the line with `jspsych.run()`, by replacing it with the following line:**
+
+    jsPsych.run([welcome, emptySceneTrial, myFirstSceneTrial, goodbye]);
+
+**g. After these modifications, your `index.js` should look like the following:**
+
+    import { initJsPsych } from 'jspsych';
+
+    import htmlKeyboardResponse from '@jspsych/plugin-html-keyboard-response';
+
+    import PsyanimJsPsychPlugin from '../../src/integrations/PsyanimJsPsychPlugin';
+
+    import PsyanimApp from '../../src/core/PsyanimApp';
+
+    import EmptyScene from './EmptyScene';
+    import MyFirstScene from './MyFirstScene';
 
     /**
-    *  Setup communication between other DOM scripts and PsyanimApp
+    *  Setup Psyanim and PsyanimJsPsychPlugin
+    */
+    PsyanimApp.Instance.config.registerScene(EmptyScene);
+    PsyanimApp.Instance.config.registerScene(MyFirstScene);
+
+    PsyanimApp.Instance.run();
+
+    PsyanimApp.Instance.setCanvasVisible(false);
+
+    /**
+    *  Setup jsPsych experiment
     */
 
-    window.psyanimApp = PsyanimApp.Instance;
+    const userID = 'Jason';
+    const experimentName = 'helloPsyanim';
 
-    window.psyanimApp.currentPlayerID = 'tester1234';
+    const jsPsych = initJsPsych();
 
-    document.addEventListener('keydown', (event) => {
+    let welcome = {
+        type: htmlKeyboardResponse,
+        stimulus: 'Welcome to the experiment.  Press any key to begin.'
+    };
 
-        if (event.key == 'Enter')
-        {
-            let experimentManager = PsyanimApp.Instance.currentScene
-                .getComponentByType(PsyanimExperimentManager);
+    let emptySceneTrial = {
+        type: PsyanimJsPsychPlugin,
+        sceneKey: EmptyScene.KEY,
+        experimentName: experimentName,
+        userID: userID,
+        sceneParameters: { },
+    };
 
-            experimentManager.loadNextScene();
-        }
-    });
+    let myFirstSceneTrial = {
+        type: PsyanimJsPsychPlugin,
+        sceneKey: MyFirstScene.KEY,
+        experimentName: experimentName,
+        userID: userID,
+        sceneParameters: { }
+    };
+
+    let goodbye = {
+        type: htmlKeyboardResponse,
+        stimulus: 'Congrats - you have completed your first experiment!  Press any key to end this trial.'
+    };
+
+    jsPsych.run([welcome, emptySceneTrial, myFirstSceneTrial, goodbye]);
 
 **h. Run `npm run helloPsyanim-build` in your terminal and then look in the ./dist directory to see your index.html.  Load this in your browser using whatever static file server you prefer.**
 
-### Congratulations, you've created your first scene!
+- If you hit `F12` to open the chrome debug tools, you'll be able to see the console output from the app.
+- To load the `EmptyScene` and `MyFirstScene` trials we added to jsPsych, just hit `Enter` on your keyboard.
+- You should see the console say what scenes are loaded as you move through the trials.
 
-## 2. Creating our first entity and component using the Psyanim CLI
+### Congratulations, you've created your first experiment with a user-defined scene!
+
+## 3. Creating our first entity and component using the Psyanim CLI
 
 **a. Back in our terminal, let's create our first component `MyFirstMovementComponent` by running the following command:**
 
@@ -113,18 +164,13 @@ You should see MyFirstMovementComponent.js
 
     import PsyanimScene from '../../src/core/scene/PsyanimScene';
 
-    import PsyanimExperimentManager from '../../src/core/components/experiments/PsyanimExperimentManager';
-
     import PsyanimConstants from '../../src/core/PsyanimConstants';
-    import PsyanimComponent from '../../src/core/PsyanimComponent';
-
-    import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
     import MyFirstMovementComponent from './MyFirstMovementComponent';
 
     export default class MyFirstScene extends PsyanimScene {
 
-        static KEY = '___MyFirstScene';
+        static KEY = 'MyFirstScene';
 
         constructor() {
 
@@ -139,12 +185,6 @@ You should see MyFirstMovementComponent.js
         create() {
 
             super.create();
-
-            this.addEntity('sceneControls')
-                .addComponent(PsyanimSceneTitle);
-
-            this.addEntity('experimentManager')
-                .addComponent(PsyanimExperimentManager);
 
             let agent1 = this.addEntity('agent1', 400, 300, {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
@@ -161,7 +201,7 @@ You should see MyFirstMovementComponent.js
         }
     }
 
-In the `create` method above, we add 3 entities.  Two the entities, `'sceneControls'` and `'experimentManager'` have no visual representation in the scene.  Hence, there is only 1 parameter supplied to the `addEntity` method of the scene.
+In the `create` method above, we add an entity called `agent1`.
 
 The `agent1` entity has a red circle representation in the scene and is centered at pixel coordinates `(400, 300)` in the scene.
 
@@ -213,5 +253,7 @@ Inside the `update` method, we've added code to compute the speed of the entity,
 Note that using `this.entity` within a component will return a reference to the entity which the component is attached to.
 
 **d. Rebuild your ./dist bundle and reload the page in your browser and you should be able to see your agent moving back and forth on-screen by using the 'enter' key to load the experiment scenes!**
+
+- Remember to watch the console to see what scene is loaded when you are in a `PsyanimJsPsychPlugin` trial.
 
 ### Congratulations, you've created your first movement component and attached it to an entity in the scene to control its movement!

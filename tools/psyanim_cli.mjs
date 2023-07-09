@@ -66,7 +66,6 @@ else
         indexHtml: path.join(srcDir, 'core/templates/experiment/index.template.html'),
         indexJs: path.join(srcDir, 'core/templates/experiment/index.template.js'),
         webpack: path.join(srcDir, 'core/templates/experiment/webpack.template.config.js'),
-        experimentDefinition: path.join(srcDir, 'core/templates/experiment/ExperimentDefinition.template.js'),
         component: path.join(srcDir, 'core/templates/PsyanimComponent.template.js'),
         scene: path.join(srcDir, 'core/templates/PsyanimScene.template.js'),
     };
@@ -87,42 +86,42 @@ else
         webpack: path.join(findRootDir(''), 'webpack.' + experimentName + '.config.js'),
         indexHtml: path.join(experimentDirectory, 'index.html'),
         indexJs: path.join(experimentDirectory, 'index.js'),
-        experimentDefinition: path.join(experimentDirectory, 'ExperimentDefinition.js'),
     }
 
-    if (!fs.existsSync(experimentFilePaths.packageJson))
+    // update package.json if it doesn't have the commands yet
+    let packageJson = JSON.parse(fs.readFileSync(templateFilePaths.packageJson, { encoding: 'utf8' }));
+
+    let modifiedPackageJson = false;
+
+    let buildCmdName = experimentName + '-build';
+    let watchCmdName = experimentName + '-watch';
+
+    if (!Object.hasOwn(packageJson.scripts, buildCmdName))
     {
-        let packageJson = JSON.parse(fs.readFileSync(templateFilePaths.packageJson, { encoding: 'utf8' }));
+        packageJson.scripts[buildCmdName] = 
+            "rimraf -v ./dist && webpack --config ./webpack." + experimentName + ".config.js";
 
-        let modified = false;
-
-        let buildCmdName = experimentName + '-build';
-        let watchCmdName = experimentName + '-watch';
-
-        if (!Object.hasOwn(packageJson.scripts, buildCmdName))
-        {
-            packageJson.scripts[buildCmdName] = 
-                "rimraf -v ./dist && webpack --config ./webpack." + experimentName + ".config.js";
-
-            modified = true;
-        }
-
-        if (!Object.hasOwn(packageJson.scripts, watchCmdName))
-        {
-            packageJson.scripts[watchCmdName] = 
-                "rimraf -v ./dist && webpack --config ./webpack." + experimentName + ".config.js --watch";
-
-            modified = true;
-        }
-
-        if (modified)
-        {
-            fs.writeFileSync(templateFilePaths.packageJson, JSON.stringify(packageJson, null, 2));
-
-            console.log("Updated package.json with new build commands!");
-        }
+        modifiedPackageJson = true;
     }
 
+    if (!Object.hasOwn(packageJson.scripts, watchCmdName))
+    {
+        packageJson.scripts[watchCmdName] = 
+            "rimraf -v ./dist && webpack --config ./webpack." + experimentName + ".config.js --watch";
+
+        modifiedPackageJson = true;
+    }
+
+    if (modifiedPackageJson)
+    {
+        fs.writeFileSync(templateFilePaths.packageJson, JSON.stringify(packageJson, null, 2));
+
+        console.log("Updated package.json with new build commands!");
+    }
+
+    let createdWebpackConfig = false;
+
+    // create webpack config if it doesn't exist
     if (!fs.existsSync(experimentFilePaths.webpack))
     {
         let webpackTemplate = fs.readFileSync(templateFilePaths.webpack, { encoding: 'utf8' });
@@ -131,9 +130,12 @@ else
 
         fs.writeFileSync(experimentFilePaths.webpack, webpackTemplate);
 
+        createdWebpackConfig = true;
+
         console.log("Created webpack config at: " + experimentFilePaths.webpack);
     }
 
+    // create index.html if it doesn't exist
     if (!fs.existsSync(experimentFilePaths.indexHtml))
     {
         let indexHtmlTemplate = fs.readFileSync(templateFilePaths.indexHtml, { encoding: 'utf8' });
@@ -143,29 +145,21 @@ else
         console.log("Created index.html at: " + experimentFilePaths.indexHtml);
     }
 
+    // create index.js if it doesn't exist
     if (!fs.existsSync(experimentFilePaths.indexJs))
     {
         let indexJsTemplate = fs.readFileSync(templateFilePaths.indexJs, { encoding: 'utf8' });
+
+        indexJsTemplate = indexJsTemplate.replace(/___experimentName/g, experimentName);
 
         fs.writeFileSync(experimentFilePaths.indexJs, indexJsTemplate);
 
         console.log("Created index.js at: " + experimentFilePaths.indexJs);
     }
 
-    if (!fs.existsSync(experimentFilePaths.experimentDefinition))
-    {
-        let experimentDefinitionTemplate = fs.readFileSync(templateFilePaths.experimentDefinition, { encoding: 'utf8' });
-
-        experimentDefinitionTemplate = experimentDefinitionTemplate.replace(/___experimentName/g, experimentName);
-
-        fs.writeFileSync(experimentFilePaths.experimentDefinition, experimentDefinitionTemplate);
-
-        console.log("Created ExperimentDefinition.js at: " + experimentFilePaths.experimentDefinition);
-    }
-
-    // create components
+    // create components if they don't already exist
     let createComponent = argv.c || argv.component;
-    let createScene = argv.s || argv.scene;
+    let createScene = argv.s || argv.scene || createdWebpackConfig;
 
     if (createComponent) {
 
@@ -199,18 +193,24 @@ else
         }
     }
 
-    // create scenes
+    // create scenes if they don't already exist
     if (createScene)
     {
-        let sceneNames = null;
+        let sceneNames = [];
 
         if (argv.s)
         {
             sceneNames = argv.s.split(',');
         }
-        else
+        else if (argv.scene)
         {
             sceneNames = argv.scene.split(',');
+        }
+
+        if (createdWebpackConfig) // if we have a new project
+        {
+            // make sure there's always a blank 'Empty Scene'
+            sceneNames.unshift('EmptyScene');
         }
 
         let sceneTemplate = fs.readFileSync(templateFilePaths.scene, { encoding: 'utf8' });
@@ -224,7 +224,7 @@ else
             if (!fs.existsSync(sceneFilePath))
             {
                 let sceneCode = sceneTemplate.replace(/___sceneName/g, sceneName);
-                sceneCode = sceneCode.replace(/___sceneKey/g, '___' + sceneName);
+                sceneCode = sceneCode.replace(/___sceneKey/g, sceneName);
 
                 fs.writeFileSync(sceneFilePath, sceneCode);
 

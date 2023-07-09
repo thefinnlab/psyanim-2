@@ -9,7 +9,7 @@
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
     "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
     "devserver": "npx nodemon ./src/server/main.mjs",
-    "hello-jspsych": "rimraf -v ./dist && webpack --config ./webpack.hellojsPsych.config.js --watch",
+    "jspsych_example": "rimraf -v ./dist && webpack --config ./webpack.jspsych_example.config.js --watch",
     "playfight-build": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js",
     "playfight-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js --watch",
     "playfight": "rimraf -v ./dist && webpack --config ./webpack.playfight.config.js && npx nodemon ./src/server/main.mjs",
