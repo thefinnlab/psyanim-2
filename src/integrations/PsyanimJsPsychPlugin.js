@@ -45,6 +45,9 @@ class _PsyanimJsPsychPlugin {
 
         console.log("starting next trial!");
 
+        this._jsPsych.pluginAPI.clearAllTimeouts();
+        this._jsPsych.pluginAPI.cancelAllKeyboardResponses();
+
         this._currentTrial = trial;
 
         // add phaser game canvas to display element
@@ -65,13 +68,34 @@ class _PsyanimJsPsychPlugin {
 
             trialScene.events.on('create', this._setupAnimationBaking, this);
         }
+
+        // setup any timeouts that are configured
+        if (trial.duration > 0)
+        {
+            this._jsPsych.pluginAPI.setTimeout(() => this.endTrial(), trial.duration);
+        }
+
+        // setup keyboard inputs
+        if (trial.endTrialKeys.length > 0) {
+
+            // let Psyanim process keys related to interactivity, but have jsPsych
+            // process keystrokes related to GUI & progressing the experiment trials
+            this._jsPsych.pluginAPI.getKeyboardResponse({
+                callback_function: () => this.endTrial(),
+                valid_responses: trial.endTrialKeys, // can also be any keycode, e.g. ' ' for space, 'i', 'u', etc...f
+                persist: false
+            });
+        }
     }
 
     endTrial() {
 
+        this._jsPsych.pluginAPI.clearAllTimeouts();
+        this._jsPsych.pluginAPI.cancelAllKeyboardResponses();
+
+        // save off documents if document writer configured
         if (this._documentWriter)
         {
-            // save off documents
             let agentMetadata = [];
 
             if (this._documentWriter && this._currentTrial.agentNamesToRecord)
@@ -113,6 +137,7 @@ class _PsyanimJsPsychPlugin {
             console.log(trialMetadata);
         }
 
+        // progress to the next trial
         this._currentTrialIndex++;
 
         // remove phaser game canvas from display element
@@ -211,6 +236,16 @@ export default class PsyanimJsPsychPlugin {
                     type: ParameterType.OBJECT,
                     default: {}
                 },
+
+                endTrialKeys: {
+                    type: ParameterType.KEYS,
+                    default: ['enter']
+                },
+
+                duration: {
+                    type: ParameterType.FLOAT,
+                    default: -1.0
+                }
             }
     };
 
@@ -227,20 +262,5 @@ export default class PsyanimJsPsychPlugin {
     trial(display_element, trial) {
 
         _PsyanimJsPsychPlugin.Instance.beginNextTrial(display_element, trial);;
-
-        // let Psyanim process keys related to interactivity, but have jsPsych
-        // process keystrokes related to GUI & progressing the experiment
-        _PsyanimJsPsychPlugin.Instance.jsPsych.pluginAPI.getKeyboardResponse({
-            callback_function: this.handleKeypress,
-            valid_responses: ['enter'], // can also be any keycode, e.g. ' ' for space, 'i', 'u', etc...f
-            persist: false
-        });
-    }
-
-    handleKeypress(info) {
-
-        // 'info.key' contains the character keycode pressed
-
-        _PsyanimJsPsychPlugin.Instance.endTrial();
     }
 }

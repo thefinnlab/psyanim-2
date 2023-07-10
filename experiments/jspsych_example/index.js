@@ -65,13 +65,15 @@ var preloadTrial = {
 var blue_trial = {
     type: imageKeyboardResponse,
     stimulus: 'img/blue.png',
-    choices: ['f', 'j']
+    choices: ['f', 'j'],
+    post_trial_gap: 500,
 };
 
 var orange_trial = {
     type: imageKeyboardResponse,
     stimulus: 'img/orange.png',
-    choices: ['f', 'j']
+    choices: ['f', 'j'],
+    post_trial_gap: 500,
 };  
 
 let pointclickTrial1 = {
@@ -83,6 +85,8 @@ let pointclickTrial1 = {
         initialPos: { x: 600, y: 100 }
     },
     agentNamesToRecord: ['agent1'],
+    endTrialKeys: ['k', 'enter'],
+    duration: 3000,
     post_trial_gap: 300,
 };
 
@@ -95,6 +99,8 @@ let pointclickTrial2 = {
         initialPos: { x: 600, y: 500 }
     },
     agentNamesToRecord: ['agent1'],
+    endTrialKeys: ['k', 'enter'],
+    duration: 3000,
     post_trial_gap: 300,
 };
 
