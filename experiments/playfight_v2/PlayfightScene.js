@@ -32,46 +32,48 @@ export default class PlayfightScene extends PsyanimScene {
 
         super.create();
 
+        let currentParameterSet = this.game.registry.get('psyanim_currentParameterSet');
+
+        console.log(currentParameterSet);
+
         /**
          *  Create playfight agents
          */
 
         this._agents = [];
 
-        let circleAgentRadius = 12;
-
         for (let i = 0 ; i < 2; ++i)
         {
             let agent = this.addEntity('agent' + i, 200 + i * 400, 300, {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-                radius: circleAgentRadius, color: (i == 0 ? 0xff0000 : 0x0000ff)
+                radius: currentParameterSet.circleAgentRadius, color: (i == 0 ? 0xff0000 : 0x0000ff)
             });
     
             let vehicle = agent.addComponent(PsyanimVehicle);
     
             let arrive = agent.addComponent(PsyanimArriveBehavior);
-            arrive.maxSpeed = 10;
-            arrive.maxAcceleration = 0.4;
-            arrive.innerDecelerationRadius = circleAgentRadius;
-            arrive.outerDecelerationRadius = 30;
+            arrive.maxSpeed = currentParameterSet.maxChargeSpeed;
+            arrive.maxAcceleration = currentParameterSet.maxChargeAcceleration;
+            arrive.innerDecelerationRadius = currentParameterSet.circleAgentRadius;
+            arrive.outerDecelerationRadius = currentParameterSet.outerDecelerationRadius;
     
             let flee = agent.addComponent(PsyanimAdvancedFleeBehavior);
-            flee.maxSpeed = 4;
-            flee.maxAcceleration = 0.2;
-            flee.panicDistance = 100;
+            flee.maxSpeed = currentParameterSet.maxFleeSpeed;
+            flee.maxAcceleration = currentParameterSet.maxFleeAcceleration;
+            flee.panicDistance = currentParameterSet.panicDistance;
     
             let seek = agent.addComponent(PsyanimSeekBehavior);
-            seek.maxSpeed = 4;
-            seek.maxAcceleration = 0.2;
+            seek.maxSpeed = currentParameterSet.maxWanderSpeed;
+            seek.maxAcceleration = currentParameterSet.maxWanderAcceleration;
     
             let wander = agent.addComponent(PsyanimWanderBehavior);
             wander.seekBehavior = seek;
-            wander.radius = 50;
-            wander.offset = 250;
-            wander.maxWanderAngleChangePerFrame = 20;
+            wander.radius = currentParameterSet.wanderRadius;
+            wander.offset = currentParameterSet.wanderOffset;
+            wander.maxWanderAngleChangePerFrame = currentParameterSet.maxWanderAngleChangePerFrame;
     
             let playfight = agent.addComponent(PsyanimPlayfightBehavior);
-            playfight.breakDuration = 2500;
+            playfight.breakDuration = currentParameterSet.breakDuration;
             playfight.fleeBehavior = flee;
             playfight.arriveBehavior = arrive;
             playfight.wanderBehavior = wander;

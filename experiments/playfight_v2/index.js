@@ -28,27 +28,68 @@ const experimentName = 'playfight_v2';
 
 const jsPsych = initJsPsych();
 
+let timeline = [];
+
 let welcome = {
     type: htmlKeyboardResponse,
     stimulus: 'Welcome to the experiment.  Press any key to begin.'
 };
+
+timeline.push(welcome);
 
 let loadingTrial = {
     type: htmlKeyboardResponse,
     stimulus: 'Press any key to begin the next trial!'
 };
 
-let playfightSceneTrial = {
-    type: PsyanimJsPsychPlugin,
-    sceneKey: PlayfightScene.KEY,
-    experimentName: experimentName,
-    userID: userID,
-    sceneParameters: { },
-};
+// declare your variables that vary from run to run in arrays
+let experimentDurations = [4000, 6000, 7000, 8000, 10000]; // every experiment run needs a duration set
+let breakDurations = [2000, 2500, 3000, 3500, 4000];
+
+let maxChargeSpeeds = [8, 9, 10, 11, 12];
+
+for (let i = 0; i < experimentDurations.length; ++i)
+{
+    let playfightSceneTrial = {
+        type: PsyanimJsPsychPlugin,
+        sceneKey: PlayfightScene.KEY,
+        experimentName: experimentName,
+        userID: userID,
+        sceneParameters: { 
+    
+            // declare the rest of your parameters that remain constant between runs
+            maxChargeAcceleration: 0.4,
+    
+            circleAgentRadius: 12,
+            outerDecelerationRadius: 30,
+    
+            maxWanderSpeed: 4,
+            maxWanderAcceleration: 0.2,
+    
+            wanderRadius: 50,
+            wanderOffset: 250,
+            maxWanderAngleChangePerFrame: 20,
+    
+            maxFleeSpeed: 4,
+            maxFleeAcceleration: 0.2,
+            panicDistance: 100,
+        },
+    };
+
+    playfightSceneTrial.sceneParameters.experimentDuration = experimentDurations[i];
+
+    playfightSceneTrial.sceneParameters.breakDuration = breakDurations[i];
+    playfightSceneTrial.sceneParameters.maxChargeSpeed = maxChargeSpeeds[i];
+
+    timeline.push(playfightSceneTrial);
+    timeline.push(loadingTrial);
+}
 
 let goodbye = {
     type: htmlKeyboardResponse,
     stimulus: 'Congrats - you have completed your first experiment!  Press any key to end this trial.'
 };
 
-jsPsych.run([welcome, loadingTrial, playfightSceneTrial, goodbye]);
+timeline.push(goodbye);
+
+jsPsych.run(timeline);
