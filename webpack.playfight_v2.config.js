@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
     // mode: 'production',
     mode: 'development',
-    entry: './experiments/playfight/index.js',
+    entry: './experiments/playfight_v2/index.js',
     devtool: 'inline-source-map',
     devServer: {
         static: './dist',
@@ -16,7 +16,7 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
           title: 'Output Management',
-          template: './experiments/playfight/index.html'
+          template: './experiments/playfight_v2/index.html'
         }),
       ],
     output: {

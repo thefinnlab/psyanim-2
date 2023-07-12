@@ -18,6 +18,8 @@ import PsyanimSceneChangeController from '../../core/components/controllers/Psya
 
 import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 
+import PsyanimComponentStateRecorder from '../../core/components/utils/PsyanimComponentStateRecorder';
+
 export default class PsyanimPlayfightTest extends PsyanimScene {
 
     constructor() {
@@ -74,7 +76,7 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
             .addComponent(PsyanimSceneChangeController);
 
         // setup agents
-        let agents = [];
+        this._agents = [];
 
         for (let i = 0 ; i < 2; ++i)
         {
@@ -116,18 +118,44 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
             playfightAgent.playfightBehavior = playfight;
             playfightAgent.vehicle = vehicle;
 
-            agents.push(agent);
+            let stateRecorder = agent.addComponent(PsyanimComponentStateRecorder);
+            stateRecorder.record(PsyanimPlayfightBehavior, playfight);
+
+            this._agents.push(agent);
         }
 
         /**
          *  Setup targets for the playfight agents
          */
-        let playfightAgent1 = agents[0].getComponent(PsyanimPlayfightAgent);
-        let playfightAgent2 = agents[1].getComponent(PsyanimPlayfightAgent);
+        let playfightAgent1 = this._agents[0].getComponent(PsyanimPlayfightAgent);
+        let playfightAgent2 = this._agents[1].getComponent(PsyanimPlayfightAgent);
 
-        playfightAgent1.setTarget(agents[1]);
-        playfightAgent2.setTarget(agents[0]);
+        playfightAgent1.setTarget(this._agents[1]);
+        playfightAgent2.setTarget(this._agents[0]);
 
         this.screenBoundary.wrap = false;
+
+        this._keys = {
+            O: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),
+            P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
+        };
+    }
+
+    update(t, dt) {
+
+        super.update(t, dt);
+
+        if (Phaser.Input.Keyboard.JustDown(this._keys.O)) 
+        {
+            let stateRecorder = this._agents[0].getComponent(PsyanimComponentStateRecorder);
+
+            console.log(stateRecorder.data);
+        }
+        else if (Phaser.Input.Keyboard.JustDown(this._keys.P))
+        {
+            let stateRecorder = this._agents[1].getComponent(PsyanimComponentStateRecorder);
+
+            console.log(stateRecorder.data);
+        }
     }
 }
