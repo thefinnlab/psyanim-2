@@ -20,8 +20,6 @@
     "delete-cloud-db": "firebase firestore:delete --all-collections",
     "delete-cloud-animclips": "firebase firestore:delete -r /animation-clips",
     "delete-cloud-metadata": "firebase firestore:delete -r /experiment-metadata",
-    "pointclick_interaction-build": "rimraf -v ./dist && webpack --config ./webpack.pointclick_interaction.config.js",
-    "pointclick_interaction-watch": "rimraf -v ./dist && webpack --config ./webpack.pointclick_interaction.config.js --watch",
     "playfight_v2-build": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js",
     "playfight_v2-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js --watch"
   },
