@@ -13,5 +13,9 @@ service cloud.firestore {
     match /trial-metadata/{docId} {
     	allow read, write: if true;
     }
+
+    match /state-logs/{docId} {
+      allow read, write: if true;
+    }
   }
 }

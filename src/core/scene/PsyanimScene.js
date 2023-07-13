@@ -47,6 +47,11 @@ export default class PsyanimScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * 
+     * @param {*} componentType 
+     * @returns the first component found of type 'componentType'
+     */
     getComponentByType(componentType) {
 
         let entity = this._entities.find(e => e.getComponent(componentType) != null);
@@ -57,6 +62,13 @@ export default class PsyanimScene extends Phaser.Scene {
         }
 
         return null;
+    }
+
+    getComponentsByType(componentType) {
+
+        return this._entities
+            .filter(e => e.getComponent(componentType) != null)
+            .map(e => e.getComponent(componentType));
     }
 
     _destroyAllEntities() {

@@ -117,6 +117,23 @@ export default class PsyanimFirebaseClient {
         return newId;
     }
 
+    addAgentStateLog(data) {
+
+        let newId = uuidv4();
+
+        this.db
+            .collection('state-logs')
+            .doc(newId)
+            .set({
+                data: data,
+                time: this.serverTimestamp
+            })
+            .then(() => console.log('Agent state log written!'))
+            .catch((error) => console.error('Error adding document: ', error));
+
+        return newId;
+    }
+
     addExperimentTrialMetadata(data) {
         
         let newId = uuidv4();

@@ -9,6 +9,8 @@ import PsyanimApp from '../../src/core/PsyanimApp';
 import EmptyScene from './EmptyScene';
 import PlayfightScene from './PlayfightScene';
 
+import PsyanimFirebaseClient from '../../src/utils/PsyanimFirebaseClient';
+
 /**
  *  Setup Psyanim and PsyanimJsPsychPlugin
  */
@@ -18,6 +20,14 @@ PsyanimApp.Instance.config.registerScene(PlayfightScene);
 PsyanimApp.Instance.run();
 
 PsyanimApp.Instance.setCanvasVisible(false);
+
+/**
+ *  Setup PsyanimJsPsychPlugin
+ */
+
+const firebaseClient = new PsyanimFirebaseClient();
+
+PsyanimJsPsychPlugin.setDocumentWriter(firebaseClient);
 
 /**
  *  Setup jsPsych experiment
@@ -74,6 +84,7 @@ for (let i = 0; i < experimentDurations.length; ++i)
             maxFleeAcceleration: 0.2,
             panicDistance: 100,
         },
+        agentNamesToRecord: ['agent0', 'agent1'],
     };
 
     playfightSceneTrial.sceneParameters.experimentDuration = experimentDurations[i];

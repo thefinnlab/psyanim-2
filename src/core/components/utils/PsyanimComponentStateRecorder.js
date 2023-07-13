@@ -4,6 +4,9 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimComponentStateRecorder extends PsyanimComponent {
 
+    componentType = null;
+    componentInstance = null;
+
     static STATE = {
         STOPPED: 0x0001,
         RECORDING: 0x0002,
@@ -15,9 +18,6 @@ export default class PsyanimComponentStateRecorder extends PsyanimComponent {
 
         this._stateBuffer = [];
 
-        this._componentType = null;
-        this._componentInstance = null;
-
         this._currentComponentState = null;
 
         this._state = PsyanimComponentStateRecorder.STATE.STOPPED;
@@ -27,23 +27,32 @@ export default class PsyanimComponentStateRecorder extends PsyanimComponent {
         return this._stateBuffer;
     }
 
-    record(componentType, componentInstance) {
+    record() {
 
-        if (!componentType.STATE || !componentInstance._state)
+        if (!this.componentType)
         {
-            console.error("ERROR: need to have a static 'STATE' property for componentType and componentInstance must have a '_state' field!");
-            console.error("failed to start recording for type: " + componentType.name);
+            console.error("ERROR: 'componentType' field is null on state recorder!");
             return;
         }
 
-        this._componentType = componentType;
-        this._componentInstance = componentInstance;
+        if (!this.componentInstance)
+        {
+            console.error("ERROR: 'componentInstance' field is null on state recorder!");
+            return;
+        }
 
-        this._currentComponentState = componentInstance._state;
+        if (!this.componentType.STATE || !this.componentInstance._state)
+        {
+            console.error("ERROR: need to have a static 'STATE' property for componentType and componentInstance must have a '_state' field!");
+            console.error("failed to start recording for type: " + this.componentType.name);
+            return;
+        }
+
+        this._currentComponentState = this.componentInstance._state;
 
         this._stateBuffer.push({
             t: this.entity.scene.time.now,
-            state: this._getStateName(this._componentType, this._currentComponentState)
+            state: this._getStateName(this.componentType, this._currentComponentState)
         });
 
         this._state = PsyanimComponentStateRecorder.STATE.RECORDING;
@@ -72,13 +81,13 @@ export default class PsyanimComponentStateRecorder extends PsyanimComponent {
 
         if (this._state == PsyanimComponentStateRecorder.STATE.RECORDING)
         {
-            if (this._currentComponentState != this._componentInstance._state)
+            if (this._currentComponentState != this.componentInstance._state)
             {
-                this._currentComponentState = this._componentInstance._state;
+                this._currentComponentState = this.componentInstance._state;
 
                 this._stateBuffer.push({
                     t: t,
-                    state: this._getStateName(this._componentType, this._currentComponentState)
+                    state: this._getStateName(this.componentType, this._currentComponentState)
                 });    
             }
         }

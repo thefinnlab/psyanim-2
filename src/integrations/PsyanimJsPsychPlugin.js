@@ -4,6 +4,8 @@ import PsyanimApp from '../../src/core/PsyanimApp';
 
 import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBaker';
 
+import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder';
+
 /**
  *  _PsyanimJsPsychPlugin is a private singleton instance that maintains state across all trials
  *  and handles all communication with PsyanimApp.
@@ -96,32 +98,59 @@ class _PsyanimJsPsychPlugin {
         // save off documents if document writer configured
         if (this._documentWriter)
         {
+            // gather agent metadata
             let agentMetadata = [];
 
-            if (this._documentWriter && this._currentTrial.agentNamesToRecord)
+            if (this._currentTrial.agentNamesToRecord)
             {
                 let agentsToRecord = this._getAgentsByName(this._currentTrial.agentNamesToRecord);
 
                 agentsToRecord.forEach(agent => {
 
-                    let animationBaker = agent.getComponent(PsyanimAnimationBaker);
-                    animationBaker.stop();
-        
-                    let animData = animationBaker.clip.toArray();
-        
-                    let animClipDocId = this._documentWriter.addAnimationClip(animData);
-
-                    let r0 = agent.position;
-        
-                    agentMetadata.push({
+                    let metadata = {
                         name: agent.name,
-                        initialPosition: { x: r0.x, y: r0.y },
-                        shapeParams: agent.shapeParams,
-                        animationClipId: animClipDocId
-                    });
+                        shapeParams: agent.shapeParams
+                    };
+
+                    if (this._currentTrial.recordAnimationClips)
+                    {
+                        // save baked animation data
+                        let animationBaker = agent.getComponent(PsyanimAnimationBaker);
+                        animationBaker.stop();
+            
+                        let animData = animationBaker.clip.toArray();
+
+                        metadata.animationClipId = this._documentWriter.addAnimationClip(animData);
+                    }
+
+                    // save agent state logs
+                    if (this._currentTrial.recordStateLogs)
+                    {
+                        let recorders = agent.getComponentsByType(PsyanimComponentStateRecorder);
+
+                        if (recorders)
+                        {
+                            metadata.stateLogs = [];
+
+                            recorders.forEach(recorder => {
+
+                                console.log(recorder.data);
+
+                                let stateLogId = this._documentWriter.addAgentStateLog(recorder.data);
+
+                                metadata.stateLogs.push({
+                                    stateLogId: stateLogId,
+                                    componentTypeName: recorder.componentType.name,
+                                });
+                            });
+                        }    
+                    }
+
+                    agentMetadata.push(metadata);
                 });
             }
 
+            // gather trial metadata
             let trialMetadata = {
 
                 sessionID: PsyanimApp.Instance.sessionID,
@@ -245,6 +274,21 @@ export default class PsyanimJsPsychPlugin {
                 duration: {
                     type: ParameterType.FLOAT,
                     default: -1.0
+                },
+
+                agentNamesToRecord: {
+                    type: ParameterType.OBJECT,
+                    default: []
+                },
+
+                recordAnimationClips: {
+                    type: ParameterType.BOOL,
+                    default: true
+                },
+
+                recordStateLogs: {
+                    type: ParameterType.BOOL,
+                    default: true
                 }
             }
     };

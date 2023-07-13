@@ -52,6 +52,11 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
         {
             let docData = this._docs[i].data().data;
 
+            if (!docData.agentMetadata || docData.agentMetadata.length == 0)
+            {
+                continue;
+            }
+
             let docDisplayName = docData.experimentName + "_" + docData.sessionID + "_" + docData.trialNumber;
 
             let option = document.createElement('option');

@@ -83,7 +83,9 @@ export default class PlayfightScene extends PsyanimScene {
             playfightAgent.vehicle = vehicle;
 
             let stateRecorder = agent.addComponent(PsyanimComponentStateRecorder);
-            stateRecorder.record(PsyanimPlayfightBehavior, playfight);
+            stateRecorder.componentType = PsyanimPlayfightBehavior;
+            stateRecorder.componentInstance = playfight;
+            stateRecorder.record();
 
             this._agents.push(agent);
 

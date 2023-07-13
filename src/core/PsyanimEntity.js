@@ -230,6 +230,18 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return components[0];
     }
 
+    getComponentsByType(componentType) {
+
+        let components = this._components.filter(c => c instanceof componentType);
+
+        if (components.length == 0)
+        {
+            return null;
+        }
+
+        return components;
+    }
+
     getComponents() {
 
         return this._components.slice();
