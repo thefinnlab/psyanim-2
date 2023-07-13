@@ -24,10 +24,9 @@ export default class PsyanimExperimentPlayer extends PsyanimComponent {
             let metadata = agentMetadata[i];
 
             let animationClipID = metadata.animationClipId;
-            let r0 = new Phaser.Math.Vector2(metadata.initialPosition.x, metadata.initialPosition.y);
             let shapeParams = metadata.shapeParams;
 
-            let agent = this.scene.addEntity(metadata.name, r0.x, r0.y, shapeParams);
+            let agent = this.scene.addEntity(metadata.name, 0, 0, shapeParams);
 
             let agentAnimData = animationClipData.find(ac => ac.id == animationClipID);
 

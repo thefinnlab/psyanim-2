@@ -88,11 +88,6 @@ export default class PlayfightScene extends PsyanimScene {
             stateRecorder.record();
 
             this._agents.push(agent);
-
-            this._keys = {
-                O: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O),
-                P: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.P)
-            };
         }
 
         /**
@@ -110,18 +105,5 @@ export default class PlayfightScene extends PsyanimScene {
     update(t, dt) {
 
         super.update(t, dt);
-
-        if (Phaser.Input.Keyboard.JustDown(this._keys.O)) 
-        {
-            let stateRecorder = this._agents[0].getComponent(PsyanimComponentStateRecorder);
-
-            console.log(stateRecorder.data);
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this._keys.P))
-        {
-            let stateRecorder = this._agents[1].getComponent(PsyanimComponentStateRecorder);
-
-            console.log(stateRecorder.data);
-        }
     }
 }

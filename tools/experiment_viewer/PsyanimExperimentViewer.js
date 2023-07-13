@@ -37,6 +37,23 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
         });
     }
 
+    _agentMetadataHasAnimationClips(agentMetadata) {
+
+        if (agentMetadata && agentMetadata.length > 0)
+        {
+            let agentsWithAnimationData = agentMetadata.find(agent => {
+                return agent.animationClipId;
+            });
+
+            if (agentsWithAnimationData)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     _setupViewerControls() {
 
         let viewerControlsElement = document.getElementById('experiment-controls');
@@ -52,7 +69,7 @@ export default class PsyanimExperimentViewer extends PsyanimScene {
         {
             let docData = this._docs[i].data().data;
 
-            if (!docData.agentMetadata || docData.agentMetadata.length == 0)
+            if (!this._agentMetadataHasAnimationClips(docData.agentMetadata))
             {
                 continue;
             }
