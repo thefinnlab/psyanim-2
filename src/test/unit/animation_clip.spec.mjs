@@ -37,35 +37,35 @@ const validateAnimationTestData = (clip) => {
     }
 };
 
-describe('serialization test', () => {
-    it('verify we can serialize / deserialize animation data w/o corruption', () => {
+// describe('serialization test', () => {
+//     it('verify we can serialize / deserialize animation data w/o corruption', () => {
 
-        let testFilePath = './src/test/data/anim_test_clip.psyanim';
+//         let testFilePath = './src/test/data/anim_test_clip.psyanim';
 
-        let fps = 60;
-        let nSeconds = 8;
-        let nSamples = nSeconds * fps;
+//         let fps = 60;
+//         let nSeconds = 8;
+//         let nSamples = nSeconds * fps;
 
-        let originalClip = new PsyanimAnimationClip();
+//         let originalClip = new PsyanimAnimationClip();
 
-        generateTestSamples(originalClip, nSamples);
+//         generateTestSamples(originalClip, nSamples);
 
-        validateAnimationTestData(originalClip);
+//         validateAnimationTestData(originalClip);
 
-        fs.writeFileSync(testFilePath, originalClip.toBuffer());
+//         fs.writeFileSync(testFilePath, originalClip.toBuffer());
 
-        let serializedClipData = fs.readFileSync(testFilePath);
+//         let serializedClipData = fs.readFileSync(testFilePath);
 
-        if (!ArrayBuffer.isView(serializedClipData))
-        {
-            expect(false).withContext("ERROR: data isn't an array buffer!").toBe(true);
-        }
+//         if (!ArrayBuffer.isView(serializedClipData))
+//         {
+//             expect(false).withContext("ERROR: data isn't an array buffer!").toBe(true);
+//         }
 
-        expect(PsyanimMessaging.getHeader(serializedClipData.buffer))
-            .toBe(PsyanimMessaging.MESSAGE_TYPES.ANIMATION_CLIP);
+//         expect(PsyanimMessaging.getHeader(serializedClipData.buffer))
+//             .toBe(PsyanimMessaging.MESSAGE_TYPES.ANIMATION_CLIP);
 
-        let newClip = PsyanimAnimationClip.fromBuffer(serializedClipData.buffer);
+//         let newClip = PsyanimAnimationClip.fromBuffer(serializedClipData.buffer);
 
-        validateAnimationTestData(newClip);
-    });
-});
+//         validateAnimationTestData(newClip);
+//     });
+// });

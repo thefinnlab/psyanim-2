@@ -20,12 +20,15 @@ import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 
 import ShowHideCanvasTest from './scenes/ShowHideCanvasTest';
 
+import PsyanimFOVSensorTest from './scenes/PsyanimFOVSensorTest';
+
 /**
  *  Register scenes
  */
 
 console.warn("TODO: advanced arrive test is broken");
 
+PsyanimApp.Instance.config.registerScene(PsyanimFOVSensorTest);
 PsyanimApp.Instance.config.registerScene(ArriveTest);
 PsyanimApp.Instance.config.registerScene(SeekTest);
 PsyanimApp.Instance.config.registerScene(FleeTest);
