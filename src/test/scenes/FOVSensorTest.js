@@ -10,13 +10,13 @@ import PsyanimFOVRenderer from "../../core/components/rendering/PsyanimFOVRender
 import PsyanimConstants from "../../core/PsyanimConstants";
 import PsyanimPlayerController from "../../core/components/controllers/PsyanimPlayerController";
 
-export default class PsyanimFOVSensorTest extends PsyanimScene {
+export default class FOVSensorTest extends PsyanimScene {
 
-    static KEY = 'Psyanim FOV Sensor Test';
+    static KEY = 'FOV Sensor Test';
 
     constructor() {
 
-        super(PsyanimFOVSensorTest.KEY);
+        super(FOVSensorTest.KEY);
     }
 
     create() {
@@ -41,14 +41,16 @@ export default class PsyanimFOVSensorTest extends PsyanimScene {
         this._player.addComponent(PsyanimPlayerController);
         
         this._fovSensor = this._player.addComponent(PsyanimFOVSensor);
-        this._fovSensorRenderer = this._player.addComponent(PsyanimFOVRenderer);
+        this._fovSensor.fovAngle = 120;
+        this._fovSensor.fovRange = 200;
 
+        this._fovSensorRenderer = this._player.addComponent(PsyanimFOVRenderer);
         this._fovSensorRenderer.fovSensor = this._fovSensor;
 
         // add some static objects into the scene
         this._box = this.addEntity('box', 700, 300, {
             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
-            width: 50, height: 125,
+            width: 10, height: 15,
             color: 0xffff00            
         },
         {
@@ -62,8 +64,22 @@ export default class PsyanimFOVSensorTest extends PsyanimScene {
 
         let entitiesInSight = this._fovSensor.getEntitiesInSight([this._box]);
 
-        console.log("found " + entitiesInSight.length + " entities in sight!");
+        if (entitiesInSight.length != 0)
+        {
+            console.log("found " + entitiesInSight.length + " entities!");
 
-        console.log(entitiesInSight);
+            if (entitiesInSight.includes(this._box))
+            {
+                entitiesInSight[0].setTint(0x00ff00);
+            }
+            else
+            {
+                this._box.setTint(0xffffff);
+            }
+        }
+        else
+        {
+            this._box.setTint(0xffffff);
+        }
     }
 }
