@@ -23,6 +23,7 @@ import ShowHideCanvasTest from './scenes/ShowHideCanvasTest';
 import FOVSensorTest from './scenes/FOVSensorTest';
 
 import PredatorTest from './scenes/PredatorTest';
+import PreyTest from './scenes/PreyTest';
 
 /**
  *  Register scenes
@@ -30,6 +31,7 @@ import PredatorTest from './scenes/PredatorTest';
 
 console.warn("TODO: advanced arrive test is broken");
 
+PsyanimApp.Instance.config.registerScene(PreyTest);
 PsyanimApp.Instance.config.registerScene(PredatorTest);
 PsyanimApp.Instance.config.registerScene(FOVSensorTest);
 PsyanimApp.Instance.config.registerScene(ArriveTest);

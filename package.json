@@ -21,7 +21,9 @@
     "delete-cloud-animclips": "firebase firestore:delete -r /animation-clips",
     "delete-cloud-metadata": "firebase firestore:delete -r /experiment-metadata",
     "playfight_v2-build": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js",
-    "playfight_v2-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js --watch"
+    "playfight_v2-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js --watch",
+    "interactive-predator-prey-build": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js",
+    "interactive-predator-prey-watch": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js --watch"
   },
   "keywords": [],
   "author": "",
