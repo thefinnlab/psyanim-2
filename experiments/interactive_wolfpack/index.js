@@ -8,15 +8,13 @@ import PsyanimApp from '../../src/core/PsyanimApp';
 
 import EmptyScene from './EmptyScene';
 
-import InteractivePredator from './InteractivePredator';
-import InteractivePrey from './InteractivePrey';
+import WolfpackScene from './WolfpackScene';
 
 /**
  *  Setup Psyanim and PsyanimJsPsychPlugin
  */
 PsyanimApp.Instance.config.registerScene(EmptyScene);
-PsyanimApp.Instance.config.registerScene(InteractivePredator);
-PsyanimApp.Instance.config.registerScene(InteractivePrey);
+PsyanimApp.Instance.config.registerScene(WolfpackScene);
 
 PsyanimApp.Instance.run();
 
@@ -27,7 +25,7 @@ PsyanimApp.Instance.setCanvasVisible(false);
  */
 
 const userID = 'Jason';
-const experimentName = 'interactive-predator-prey';
+const experimentName = 'interactive_wolfpack';
 
 const jsPsych = initJsPsych();
 
@@ -41,25 +39,35 @@ let pressAnyKeyToContinue = {
     stimulus: 'Press any key to continue to the next trial...'
 };
 
-let interactivePredatorTrial = {
+let predatorTrial = {
     type: PsyanimJsPsychPlugin,
-    sceneKey: InteractivePredator.KEY,
+    sceneKey: WolfpackScene.KEY,
     experimentName: experimentName,
     userID: userID,
-    sceneParameters: { },
-};
+    sceneParameters: {
+        nAgents: 100,
+        agentRadius: 6,
+        maxAgentSpeed: 1.5,
+        playerIsPredator: true
+    }
+}
 
-let interactivePreyTrial = {
+let preyTrial = {
     type: PsyanimJsPsychPlugin,
-    sceneKey: InteractivePrey.KEY,
+    sceneKey: WolfpackScene.KEY,
     experimentName: experimentName,
     userID: userID,
-    sceneParameters: { },
-};
+    sceneParameters: {
+        nAgents: 100,
+        agentRadius: 6,
+        maxAgentSpeed: 1.5,
+        playerIsPredator: false
+    }
+}
 
 let goodbye = {
     type: htmlKeyboardResponse,
     stimulus: 'Congrats - you have completed your first experiment!  Press any key to end this trial.'
 };
 
-jsPsych.run([welcome, interactivePredatorTrial, pressAnyKeyToContinue, interactivePreyTrial, goodbye]);
+jsPsych.run([welcome, preyTrial, pressAnyKeyToContinue, predatorTrial, goodbye]);

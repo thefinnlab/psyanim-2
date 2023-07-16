@@ -23,7 +23,9 @@
     "playfight_v2-build": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js",
     "playfight_v2-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js --watch",
     "interactive-predator-prey-build": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js",
-    "interactive-predator-prey-watch": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js --watch"
+    "interactive-predator-prey-watch": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js --watch",
+    "interactive_wolfpack-build": "rimraf -v ./dist && webpack --config ./webpack.interactive_wolfpack.config.js",
+    "interactive_wolfpack-watch": "rimraf -v ./dist && webpack --config ./webpack.interactive_wolfpack.config.js --watch"
   },
   "keywords": [],
   "author": "",
