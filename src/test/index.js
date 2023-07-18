@@ -25,12 +25,15 @@ import FOVSensorTest from './scenes/FOVSensorTest';
 import PredatorTest from './scenes/PredatorTest';
 import PreyTest from './scenes/PreyTest';
 
+import PathfindingTest from './scenes/PathfindingTest';
+
 /**
  *  Register scenes
  */
 
 console.warn("TODO: advanced arrive test is broken");
 
+PsyanimApp.Instance.config.registerScene(PathfindingTest);
 PsyanimApp.Instance.config.registerScene(PreyTest);
 PsyanimApp.Instance.config.registerScene(PredatorTest);
 PsyanimApp.Instance.config.registerScene(FOVSensorTest);
