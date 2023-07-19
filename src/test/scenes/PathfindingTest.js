@@ -1,9 +1,12 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../core/scene/PsyanimScene';
+import PsyanimConstants from '../../core/PsyanimConstants';
 
 import PsyanimPathfindingAgent from '../../core/components/pathfinding/PsyanimPathfindingAgent';
 import PsyanimPathfindingRenderer from '../../core/components/rendering/PsyanimPathfindingRenderer';
+
+import PsyanimNavigationGrid from '../../utils/PsyanimNavigationGrid';
 
 export default class PathfindingTest extends PsyanimScene {
 
@@ -18,29 +21,46 @@ export default class PathfindingTest extends PsyanimScene {
 
         super.create();
 
-        let pathfinder = this.addEntity('pathfindingRenderer');
+        // setup pathfinding agent
+        let pathfinder = this.addEntity('pathfindingRenderer', 50, 50);
 
-        let pathfindingRenderer = pathfinder.addComponent(PsyanimPathfindingRenderer);
-
-        // let rows = gridHeight / cellSize;
-        // let cols = gridWidth / cellSize;
-
-        let matrix = [
-            [0, 0, 0, 1, 0],
-            [1, 0, 0, 0, 1],
-            [0, 0, 1, 0, 0],
-        ];
+        // let matrix = [
+        //     [0, 0, 0, 1, 0],
+        //     [1, 0, 0, 0, 1],
+        //     [0, 0, 1, 0, 0],
+        // ];
 
         let pathfindingAgent = pathfinder.addComponent(PsyanimPathfindingAgent);
 
-        pathfindingAgent.gridMatrix = matrix;
+        // setup navigation grid w/ obstacles masked out
+        let obstacle = this.addEntity('obstacle', 170, 50, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 49,
+            color: 0x0000ff
+        });
 
-        let startPoint = new Phaser.Math.Vector2(1, 2);
-        let endPoint = new Phaser.Math.Vector2(4, 2);
+        console.log("bounds min = " + JSON.stringify(obstacle.body.bounds.min));
+        console.log("bounds max = " + JSON.stringify(obstacle.body.bounds.max));
 
-        let path = pathfindingAgent.computePath(startPoint, endPoint);
+        let grid = new PsyanimNavigationGrid(
+            pathfindingAgent.gridWidth, 
+            pathfindingAgent.gridHeight,
+            pathfindingAgent.cellSize);
 
-        console.log(path);
+        grid.createObstacleFromEntityBounds(obstacle);
+
+        pathfindingAgent.grid = grid;
+
+        console.log(grid.matrix);
+
+        let destinationPoint = new Phaser.Math.Vector2(12, 2);
+
+        pathfindingAgent.setDestination(destinationPoint);
+
+        // setup path renderer
+        let pathfindingRenderer = pathfinder.addComponent(PsyanimPathfindingRenderer);
+
+        pathfindingRenderer.pathfindingAgent = pathfindingAgent;
     }
 
     update(t, dt) {
