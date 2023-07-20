@@ -6,10 +6,6 @@ export default class PsyanimPathfindingAgent extends PsyanimComponent {
 
     grid = null;
 
-    destination = null;
-
-    cellSize = 20;
-
     constructor(entity) {
 
         super(entity);
@@ -25,62 +21,45 @@ export default class PsyanimPathfindingAgent extends PsyanimComponent {
         return this._currentPath;
     }
 
-    get gridWidth() {
-
-        return Math.floor(this._canvasWidth / this.cellSize);
-    }
-
-    get gridHeight() {
-
-        return Math.floor(this._canvasHeight / this.cellSize);
-    }
-
-    _computeWorldPathFromGridPath(gridPath) {
-
-        let worldPath = [];
-
-        for (let i = 0; i < gridPath.length; ++i)
-        {
-            let gridPoint = gridPath[i];
-            
-            let worldPoint = {
-                x: (gridPoint[0] + 0.5) * this.cellSize,
-                y: (gridPoint[1] + 0.5) * this.cellSize
-            };
-
-            worldPath.push(worldPoint);
-        }
-
-        return worldPath;
-    }
-
     setDestination(destinationPoint) {
 
         if (destinationPoint == null) {
             this._currentPath = null;
         }
 
+        // check if destinationPoint is inside the canvas
+        if (destinationPoint.x >= this._canvasWidth || destinationPoint.x < 0.0)
+        {
+            console.warn("destination is not on canvas! destinationPoint = " + JSON.stringify(destinationPoint));
+            this._currentPath = null;
+            return;
+        }
+
+        if (destinationPoint.y >= this._canvasHeight || destinationPoint.y < 0.0)
+        {
+            console.warn("destination is not on canvas! destinationPoint = " + JSON.stringify(destinationPoint));
+            this._currentPath = null;
+            return;
+        }
+
         let pathfindingGrid = new Pathfinding.Grid(this.grid.matrix);
 
         let entityPositionOnGrid = this.grid.convertToGridFromWorldCoords(this.entity.position);
-
-        console.log('entity pos on grid = ' + JSON.stringify(entityPositionOnGrid));
+        let destinationPositionOnGrid = this.grid.convertToGridFromWorldCoords(destinationPoint);
 
         let gridPath = this._finder.findPath(
             entityPositionOnGrid.x, entityPositionOnGrid.y,
-            destinationPoint.x, destinationPoint.y,
+            destinationPositionOnGrid.x, destinationPositionOnGrid.y,
             pathfindingGrid);
 
-        // let gridPath = [
-        //     [2, 2],
-        //     [6, 2],
-        //     [6, 6],
-        //     [12, 6],
-        //     [12, 2],
-        // ];
-
-        console.log(gridPath);
-
-        this._currentPath = this._computeWorldPathFromGridPath(gridPath);
+        if (gridPath.length == 0)
+        {
+            console.warn("No viable path found to destination!");
+            this._currentPath = null;
+        }
+        else
+        {
+            this._currentPath = this.grid.computeWorldPathFromGridPath(gridPath);
+        }
     }
 }

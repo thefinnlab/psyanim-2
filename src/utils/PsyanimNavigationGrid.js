@@ -1,45 +1,52 @@
  export default class PsyanimNavigationGrid {
     
-    constructor(nRows, nColumns, cellSize) {
+    constructor(cellSize, canvasWidth, canvasHeight) {
+
+        if (canvasWidth % cellSize != 0)
+        {
+            console.error("ERROR: canvas width must be an integer multiple of cell size!");
+        }
+
+        if (canvasHeight % cellSize != 0)
+        {
+            console.error("ERROR: canvas height must be an integer multiple of cell size!");
+        }
+
+        this._obstacles = [];
 
         this._cellSize = cellSize;
-        this._nRows = nRows;
-        this._nColumns = nColumns;
+
+        this._canvasWidth = canvasWidth;
+        this._canvasHeight = canvasHeight;
 
         this._grid = [];
         
-        for (let i = 0; i < nRows; ++i)
+        for (let i = 0; i < this.rows; ++i)
         {
             let row = [];
 
-            for (let j = 0; j < nColumns; ++j)
+            for (let j = 0; j < this.columns; ++j)
             {
                 row.push(0);
             }
 
             this._grid.push(row);
         }
-
-        console.log('initialized grid o/');
     }
 
-    clone() {
+    get rows() {
 
-        let grid = [];
+        return Math.floor(this._canvasHeight / this._cellSize);
+    }
 
-        for (let i = 0; i < this._nRows; ++i)
-        {
-            let row = [];
+    get columns() {
 
-            for (let j = 0; j < this._nColumns; ++j)
-            {
-                row.push(this._grid[i][j]);
-            }
+        return Math.floor(this._canvasWidth / this._cellSize);
+    }
 
-            grid.push(row);
-        }
+    get cellSize() {
 
-        return grid;
+        return this._cellSize;
     }
 
     get matrix() {
@@ -47,27 +54,41 @@
         return this._grid;
     }
 
-    setGridValue(row, column, value) {
+    addObstacle(entity) {
 
-        if (row >= this._nRows)
+        this._obstacles.push(entity);
+    }
+
+    bake() {
+
+        for (let i = 0; i < this._obstacles.length; ++i)
         {
-            console.error("ERROR: row index out of bounds: " + row);
+            this._createObstacleFromEntityBounds(this._obstacles[i]);
+        }
+    }
+
+    isWorldPointInWalkableRegion(point) {
+
+        let gridPoint = this.convertToGridFromWorldCoords(point);
+
+        if (gridPoint.x < 0 || gridPoint.x >= this.columns)
+        {
+            return false;
+        }
+        else if (gridPoint.y < 0 || gridPoint.y >= this.rows)
+        {
+            return false;
         }
 
-        if (column >= this._nColumns)
+        if (this._grid[gridPoint.y][gridPoint.x] == 0)
         {
-            console.error("ERROR: column index out of bounds: " + column);
+            return true;
         }
 
-        this._grid[row][column] = value;
+        return false;
     }
 
     convertToGridFromWorldCoords(point) {
-
-        let xRaw = point.x / this._cellSize;
-        let yRaw = point.y / this._cellSize;
-
-        // if ()
 
         let x = Math.floor(point.x / this._cellSize);
         let y = Math.floor(point.y / this._cellSize);
@@ -75,27 +96,63 @@
         return { x: x, y: y };
     }
 
-    createObstacleFromEntityBounds(entity) {
+    convertToWorldCoordsFromGrid(point) {
+
+        let x = (point.x + 0.5) * this._cellSize;
+        let y = (point.y + 0.5) * this._cellSize;
+
+        return { x: x, y: y };
+    }
+
+    computeWorldPathFromGridPath(gridPath) {
+
+        let worldPath = [];
+
+        for (let i = 0; i < gridPath.length; ++i)
+        {
+            let gridPoint = gridPath[i];
+
+            let worldPoint = this.convertToWorldCoordsFromGrid({
+                x: gridPoint[0],
+                y: gridPoint[1]
+            });
+
+            worldPath.push(worldPoint);
+        }
+
+        return worldPath;
+    }
+
+    _createObstacleFromEntityBounds(entity) {
 
         // min / max XY values of bounds in world coords
         let minXYWorld = entity.body.bounds.min;
         let maxXYWorld = entity.body.bounds.max;
 
-        console.log('minXYWorld = ' + JSON.stringify(minXYWorld));
-        console.log('maxXYWorld = ' + JSON.stringify(maxXYWorld));
-
         let minXY = this.convertToGridFromWorldCoords(minXYWorld);
         let maxXY = this.convertToGridFromWorldCoords(maxXYWorld);
-
-        console.log('minXY = ' + JSON.stringify(minXY));
-        console.log('maxXY = ' + JSON.stringify(maxXY));
 
         for (let i = minXY.x; i <= maxXY.x; ++i)
         {
             for (let j = minXY.y; j <= maxXY.y; ++j)
             {
-                this._grid[j][i] = 1; // need to transpose the bounds in our grid matrix!
+                this._setGridValue(j, i, 1);
             }
         }
+    }
+
+    _setGridValue(row, column, value) {
+
+        if (row >= this.rows)
+        {
+            console.error("ERROR: row index out of bounds: " + row + "... row count = " + this.rows);
+        }
+
+        if (column >= this.columns)
+        {
+            console.error("ERROR: column index out of bounds: " + column + "... column count = " + this.columns);
+        }
+
+        this._grid[row][column] = value;
     }
 }

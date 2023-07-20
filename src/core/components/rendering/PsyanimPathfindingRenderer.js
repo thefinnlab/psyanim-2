@@ -1,11 +1,13 @@
 import Phaser from 'phaser';
 
 import PsyanimComponent from "../../PsyanimComponent";
-import PsyanimPathfindingAgent from '../pathfinding/PsyanimPathfindingAgent';
 
 export default class PsyanimPathfindingRenderer extends PsyanimComponent {
 
-    pathfindingAgent = null;
+    pathfinder = null;
+
+    pathColor = 0xBF40BF;
+    pathLineWidth = 3;
 
     constructor(entity) {
 
@@ -23,11 +25,7 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
             0xffffff, 0.0, 0x000000, 0.3
         );
 
-        this._pathGraphics = this.entity.scene.add.graphics({
-            lineStyle: {
-                width: 4, color: 0xBF40BF
-            }
-        });
+        this._pathGraphics = this.entity.scene.add.graphics();
 
         this._line = new Phaser.Geom.Line(0, 0, 0, 0);
 
@@ -38,7 +36,7 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
 
         this._pathPoints = [];
 
-        let currentPath = this.pathfindingAgent.currentPath;
+        let currentPath = this.pathfinder.currentPath;
 
         if (currentPath)
         {
@@ -50,9 +48,16 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
 
         super.update(t, dt);
 
+        // update parameters
+        this._grid.cellHeight = this.pathfinder.grid.cellSize;
+        this._grid.cellWidth = this.pathfinder.grid.cellSize;
+
         this._updatePathPoints();
 
+        // draw path
         this._pathGraphics.clear();
+
+        this._pathGraphics.lineStyle(this.pathLineWidth, this.pathColor);
 
         for (let i = 1; i < this._pathPoints.length; ++i)
         {
