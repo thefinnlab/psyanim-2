@@ -21,8 +21,6 @@ export default class PathfindingTest extends PsyanimScene {
 
         super.create();
 
-        this._destinationPoint = new Phaser.Math.Vector2(250, 50);
-
         /**
          *  setup navigation grid w/ obstacles and bake it
          */
@@ -74,34 +72,40 @@ export default class PathfindingTest extends PsyanimScene {
          *  setup pathfinding agents 
          */
 
+        this._destinationPoint1 = new Phaser.Math.Vector2(250, 50);
+        this._destinationPoint2 = new Phaser.Math.Vector2(250, 50);
+        this._destinationPoint3 = new Phaser.Math.Vector2(250, 50);
+
         this._agent1 = this.addEntity('agent1', 50, 50);
         this._pathfinder1 = this._agent1.addComponent(PsyanimPathfindingAgent);
         this._pathfinder1.grid = this._grid;
-        this._pathfinder1.setDestination(this._destinationPoint);
+        this._pathfinder1.setDestination(this._destinationPoint1);
 
         this._agent2 = this.addEntity('agent2', 790, 590);
         this._pathfinder2 = this._agent2.addComponent(PsyanimPathfindingAgent);
         this._pathfinder2.grid = this._grid;
-        this._pathfinder2.setDestination(this._destinationPoint);
+        this._pathfinder2.setDestination(this._destinationPoint2);
 
         this._agent3 = this.addEntity('agent3', 50, 550);
         this._pathfinder3 = this._agent3.addComponent(PsyanimPathfindingAgent);
         this._pathfinder3.grid = this._grid;
-        this._pathfinder3.setDestination(this._destinationPoint);
+        this._pathfinder3.setDestination(this._destinationPoint3);
 
         /**
          *  setup renderers for each agent 
          */
-        let agent1PathRenderer = this._agent1.addComponent(PsyanimPathfindingRenderer);
-        agent1PathRenderer.pathfinder = this._pathfinder1;
+        this._agent1PathRenderer = this._agent1.addComponent(PsyanimPathfindingRenderer);
+        this._agent1PathRenderer.pathfinder = this._pathfinder1;
 
-        let agent2PathRenderer = this._agent2.addComponent(PsyanimPathfindingRenderer);
-        agent2PathRenderer.pathfinder = this._pathfinder2;
-        agent2PathRenderer.pathColor = 0xff0000;
+        this._agent2PathRenderer = this._agent2.addComponent(PsyanimPathfindingRenderer);
+        this._agent2PathRenderer.pathfinder = this._pathfinder2;
+        this._agent2PathRenderer.pathColor = 0xff0000;
 
-        let agent3PathRenderer = this._agent3.addComponent(PsyanimPathfindingRenderer);
-        agent3PathRenderer.pathfinder = this._pathfinder3;
-        agent3PathRenderer.pathColor = 0x008000;
+        this._agent3PathRenderer = this._agent3.addComponent(PsyanimPathfindingRenderer);
+        this._agent3PathRenderer.pathfinder = this._pathfinder3;
+        this._agent3PathRenderer.pathColor = 0x008000;
+
+        this._pathVisualizationEnabled = true;
 
         /**
          *  setup keyboard controls for testing
@@ -110,63 +114,85 @@ export default class PathfindingTest extends PsyanimScene {
             W: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
             A: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             S: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
-            D: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+            D: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+            O: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.O)
         };
+
+        this.input.on('pointerup', (pointer) => {
+
+            if (pointer.leftButtonReleased())
+            {
+                let newDestination = new Phaser.Math.Vector2(pointer.x, pointer.y);
+
+                if (this._grid.isWorldPointInWalkableRegion(newDestination))
+                {
+                    this._destinationPoint1 = newDestination;
+                    this._pathfinder1.setDestination(newDestination);
+                }
+            }
+        });
     }
 
     update(t, dt) {
 
         super.update(t, dt);
 
-        // console.log(this._destinationPoint);
+        if (Phaser.Input.Keyboard.JustDown(this._keys.O))
+        {
+            this._pathVisualizationEnabled = !this._pathVisualizationEnabled;
+
+            this._agent1PathRenderer.enabled = this._pathVisualizationEnabled;            
+            this._agent2PathRenderer.enabled = this._pathVisualizationEnabled;            
+            this._agent3PathRenderer.enabled = this._pathVisualizationEnabled;            
+        }
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.W))
         {
-            let newDestination = this._destinationPoint.clone()
+            let newDestination = this._destinationPoint3.clone()
                 .add(new Phaser.Math.Vector2(0, -this._grid.cellSize));
 
             if (this._grid.isWorldPointInWalkableRegion(newDestination))
             {
-                this._destinationPoint = newDestination;
+                this._destinationPoint3 = newDestination;
             }
 
-            this._pathfinder3.setDestination(this._destinationPoint);
+            this._pathfinder3.setDestination(this._destinationPoint3);
         }
         else if (Phaser.Input.Keyboard.JustDown(this._keys.S))
         {
-            let newDestination = this._destinationPoint.clone()
+            let newDestination = this._destinationPoint3.clone()
                 .add(new Phaser.Math.Vector2(0, this._grid.cellSize));
 
             if (this._grid.isWorldPointInWalkableRegion(newDestination))
             {
-                this._destinationPoint = newDestination;
+                this._destinationPoint3 = newDestination;
             }    
 
-            this._pathfinder3.setDestination(this._destinationPoint);
+            this._pathfinder3.setDestination(this._destinationPoint3);
         }
         else if (Phaser.Input.Keyboard.JustDown(this._keys.A))
         {
-            let newDestination = this._destinationPoint.clone()
+            let newDestination = this._destinationPoint3.clone()
                 .add(new Phaser.Math.Vector2(-this._grid.cellSize, 0));
 
             if (this._grid.isWorldPointInWalkableRegion(newDestination))
             {
-                this._destinationPoint = newDestination;
+                this._destinationPoint3 = newDestination;
             }    
     
-            this._pathfinder3.setDestination(this._destinationPoint);
+            this._pathfinder3.setDestination(this._destinationPoint3);
         }
         else if (Phaser.Input.Keyboard.JustDown(this._keys.D))
         {
-            let newDestination = this._destinationPoint.clone()
+            let newDestination = this._destinationPoint3.clone()
                 .add(new Phaser.Math.Vector2(this._grid.cellSize, 0));
 
             if (this._grid.isWorldPointInWalkableRegion(newDestination))
             {
-                this._destinationPoint = newDestination;
+                this._destinationPoint3 = newDestination;
             }    
     
-            this._pathfinder3.setDestination(this._destinationPoint);
+            this._pathfinder3.setDestination(this._destinationPoint3);
         }
     }
 }

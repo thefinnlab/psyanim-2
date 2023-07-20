@@ -44,6 +44,13 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
         }
     }
 
+    onDisable() {
+
+        super.onDisable();
+
+        this._pathGraphics.clear();
+    }
+
     update(t, dt) {
 
         super.update(t, dt);

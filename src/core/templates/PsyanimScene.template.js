@@ -16,6 +16,11 @@ export default class ___sceneName extends PsyanimScene {
         super.init();
     }
 
+    preload() {
+        
+        super.preload();
+    }
+
     create() {
 
         super.create();
