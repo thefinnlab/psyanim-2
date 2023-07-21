@@ -10,7 +10,10 @@ export default class PsyanimPathfindingAgent extends PsyanimComponent {
 
         super(entity);
 
-        this._finder = new Pathfinding.AStarFinder();
+        this._finder = new Pathfinding.AStarFinder({
+            allowDiagonal: true,
+            dontCrossCorners: true
+        });
 
         this._canvasWidth = this.scene.game.scale.width;
         this._canvasHeight = this.scene.game.scale.height;
@@ -59,7 +62,9 @@ export default class PsyanimPathfindingAgent extends PsyanimComponent {
         }
         else
         {
-            this._currentPath = this.grid.computeWorldPathFromGridPath(gridPath);
+            let smoothedGridPath = Pathfinding.Util.smoothenPath(pathfindingGrid, gridPath);
+
+            this._currentPath = this.grid.computeWorldPathFromGridPath(smoothedGridPath);
         }
     }
 }

@@ -6,7 +6,8 @@ import PsyanimPathFollowBehavior from '../../core/components/steering/PsyanimPat
 import PsyanimVehicle from '../../core/components/steering/PsyanimVehicle';
 import PsyanimPathFollowAgent from '../../core/components/steering/agents/PsyanimPathFollowAgent';
 import PsyanimSeekBehavior from '../../core/components/steering/PsyanimSeekBehavior';
-import PsyanimPathRenderer from '../../core/components/rendering/PsyanimPathRenderer';
+
+import PsyanimPathfindingRenderer from '../../core/components/rendering/PsyanimPathfindingRenderer';
 
 import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
@@ -43,20 +44,22 @@ export default class PathFollowTest extends PsyanimScene {
             color: 0xffc0cb            
         });
 
-        let predictionTime = 25;
-        let targetOffset = 50;
-
         let vehicle = this.agent.addComponent(PsyanimVehicle);
         vehicle.turnSpeed = Infinity;
         vehicle.maxSpeed = 3;
 
         let seek = this.agent.addComponent(PsyanimSeekBehavior);
 
+        let pathfinder = {
+            currentPath: [
+                new Phaser.Math.Vector2(30, 430),
+                new Phaser.Math.Vector2(770, 370)
+            ]
+        }
+
         this.pathFollow = this.agent.addComponent(PsyanimPathFollowBehavior);
-        this.pathFollow.p1 = new Phaser.Math.Vector2(30, 430);
-        this.pathFollow.p2 = new Phaser.Math.Vector2(770, 370);
-        this.pathFollow.predictionTime = predictionTime;
-        this.pathFollow.targetOffset = targetOffset;
+        this.pathFollow.p1 = pathfinder.currentPath[0];
+        this.pathFollow.p2 = pathfinder.currentPath[1];
         this.pathFollow.seekBehavior = seek;
 
         let pathFollowAgent = this.agent.addComponent(PsyanimPathFollowAgent);
@@ -64,14 +67,8 @@ export default class PathFollowTest extends PsyanimScene {
         pathFollowAgent.pathFollowBehavior = this.pathFollow;
 
         // setup path renderer
-        this.pathRenderer = this.agent.addComponent(PsyanimPathRenderer);
-        this.pathRenderer.setRadius(this.pathFollow.radius);
-        this.pathRenderer.p1 = this.pathFollow.p1;
-        this.pathRenderer.p2 = this.pathFollow.p2;
-        this.pathRenderer.setRadius(this.pathFollow.radius);
-
-        // setup stopping radius
-        this.stoppingRadius = predictionTime + targetOffset;
+        this.pathRenderer = this.agent.addComponent(PsyanimPathfindingRenderer);
+        this.pathRenderer.pathfinder = pathfinder;
     }
 
     update(t, dt) {
@@ -86,13 +83,6 @@ export default class PathFollowTest extends PsyanimScene {
         else if (Phaser.Input.Keyboard.JustDown(this._testKeys.I))
         {
             this.pathRenderer.enabled = true;
-        }
-
-        let distanceToPathEnd = this.agent.position.subtract(this.pathFollow.p2).length();
-
-        if (distanceToPathEnd < this.stoppingRadius)
-        {
-            this.pathFollow.reverseDirection();
         }
     }
 }

@@ -8,6 +8,11 @@ import PsyanimPathfindingRenderer from '../../core/components/rendering/PsyanimP
 
 import PsyanimNavigationGrid from '../../utils/PsyanimNavigationGrid';
 
+import PsyanimPhysicsSettingsController from '../../core/components/controllers/PsyanimPhysicsSettingsController';
+import PsyanimSceneChangeController from '../../core/components/controllers/PsyanimSceneController';
+
+import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
+
 export default class PathfindingTest extends PsyanimScene {
 
     static KEY = 'Pathfinding Test';
@@ -20,6 +25,12 @@ export default class PathfindingTest extends PsyanimScene {
     create() {
 
         super.create();
+
+        // setup scene controls
+        this.addEntity('sceneControls')
+            .addComponent(PsyanimSceneTitle).entity
+            .addComponent(PsyanimPhysicsSettingsController).entity
+            .addComponent(PsyanimSceneChangeController);
 
         /**
          *  setup navigation grid w/ obstacles and bake it
@@ -96,14 +107,17 @@ export default class PathfindingTest extends PsyanimScene {
          */
         this._agent1PathRenderer = this._agent1.addComponent(PsyanimPathfindingRenderer);
         this._agent1PathRenderer.pathfinder = this._pathfinder1;
+        this._agent1PathRenderer.setGridVisible(true);
 
         this._agent2PathRenderer = this._agent2.addComponent(PsyanimPathfindingRenderer);
         this._agent2PathRenderer.pathfinder = this._pathfinder2;
         this._agent2PathRenderer.pathColor = 0xff0000;
+        this._agent2PathRenderer.setGridVisible(true);
 
         this._agent3PathRenderer = this._agent3.addComponent(PsyanimPathfindingRenderer);
         this._agent3PathRenderer.pathfinder = this._pathfinder3;
         this._agent3PathRenderer.pathColor = 0x008000;
+        this._agent3PathRenderer.setGridVisible(true);
 
         this._pathVisualizationEnabled = true;
 

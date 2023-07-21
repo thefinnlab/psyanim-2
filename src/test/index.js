@@ -7,7 +7,7 @@ import WanderTest from './scenes/WanderTest';
 import SensorTest from './scenes/SensorTest';
 import PathFollowTest from './scenes/PathFollowTest';
 import EvadeTest from './scenes/EvadeTest';
-import SimpleCollisionAvoidanceTest from './scenes/SimpleCollisionAvoidanceTest';
+// import SimpleCollisionAvoidanceTest from './scenes/SimpleCollisionAvoidanceTest';
 import RayCastTest from './scenes/RayCastTest';
 import AdvancedFleeTest from './scenes/AdvancedFleeTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
@@ -32,8 +32,11 @@ import PathfindingTest from './scenes/PathfindingTest';
  */
 
 console.warn("TODO: advanced arrive test is broken");
+console.warn("TODO: SimpleCollisionAvoidanceTest is broken");
 
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
+PsyanimApp.Instance.config.registerScene(PathFollowTest);
+// PsyanimApp.Instance.config.registerScene(SimpleCollisionAvoidanceTest);
 PsyanimApp.Instance.config.registerScene(PreyTest);
 PsyanimApp.Instance.config.registerScene(PredatorTest);
 PsyanimApp.Instance.config.registerScene(FOVSensorTest);
@@ -42,8 +45,6 @@ PsyanimApp.Instance.config.registerScene(SeekTest);
 PsyanimApp.Instance.config.registerScene(FleeTest);
 PsyanimApp.Instance.config.registerScene(WanderTest);
 PsyanimApp.Instance.config.registerScene(SensorTest);
-PsyanimApp.Instance.config.registerScene(PathFollowTest);
-PsyanimApp.Instance.config.registerScene(SimpleCollisionAvoidanceTest);
 PsyanimApp.Instance.config.registerScene(EvadeTest);
 PsyanimApp.Instance.config.registerScene(RayCastTest);
 PsyanimApp.Instance.config.registerScene(AdvancedFleeTest);

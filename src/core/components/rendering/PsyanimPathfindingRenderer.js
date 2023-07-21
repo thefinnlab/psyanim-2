@@ -4,10 +4,13 @@ import PsyanimComponent from "../../PsyanimComponent";
 
 export default class PsyanimPathfindingRenderer extends PsyanimComponent {
 
+    lineWidth = 2;
+    radius = 12;
+
     pathfinder = null;
 
     pathColor = 0xBF40BF;
-    pathLineWidth = 3;
+    radiusColor = 0xcccccc;
 
     constructor(entity) {
 
@@ -25,23 +28,16 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
             0xffffff, 0.0, 0x000000, 0.3
         );
 
+        this._grid.visible = false;
+
         this._pathGraphics = this.entity.scene.add.graphics();
+        this._radiusGraphics = this.entity.scene.add.graphics();
+
+        this._pathGraphics.depth = -1;
+        this._radiusGraphics.depth = -2;
+        this._grid.depth = -3;
 
         this._line = new Phaser.Geom.Line(0, 0, 0, 0);
-
-        this._pathPoints = [];
-    }
-
-    _updatePathPoints() {
-
-        this._pathPoints = [];
-
-        let currentPath = this.pathfinder.currentPath;
-
-        if (currentPath)
-        {
-            currentPath.forEach(pt => this._pathPoints.push(pt));
-        }
     }
 
     onDisable() {
@@ -49,27 +45,38 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
         super.onDisable();
 
         this._pathGraphics.clear();
+        this._radiusGraphics.clear();
+    }
+
+    setGridVisible(visible) {
+
+        this._grid.visible = visible;
     }
 
     update(t, dt) {
 
         super.update(t, dt);
 
-        // update parameters
-        this._grid.cellHeight = this.pathfinder.grid.cellSize;
-        this._grid.cellWidth = this.pathfinder.grid.cellSize;
+        // update parameters from pathfinder if it has a grid
+        if (this.pathfinder.grid && this.pathfinder.grid.cellSize)
+        {
+            this._grid.cellHeight = this.pathfinder.grid.cellSize;
+            this._grid.cellWidth = this.pathfinder.grid.cellSize;    
+        }
 
-        this._updatePathPoints();
+        let pathPoints = this.pathfinder.currentPath;
 
         // draw path
         this._pathGraphics.clear();
+        this._radiusGraphics.clear();
 
-        this._pathGraphics.lineStyle(this.pathLineWidth, this.pathColor);
+        this._pathGraphics.lineStyle(this.lineWidth, this.pathColor);
+        this._radiusGraphics.lineStyle(this.radius, this.radiusColor);
 
-        for (let i = 1; i < this._pathPoints.length; ++i)
+        for (let i = 1; i < pathPoints.length; ++i)
         {
-            let fromPoint = this._pathPoints[i-1];
-            let toPoint = this._pathPoints[i];
+            let fromPoint = pathPoints[i-1];
+            let toPoint = pathPoints[i];
 
             this._line.setTo(
                 fromPoint.x, fromPoint.y,
@@ -77,6 +84,7 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
             );
 
             this._pathGraphics.strokeLineShape(this._line);
+            this._radiusGraphics.strokeLineShape(this._line);
         }
     }
 }
