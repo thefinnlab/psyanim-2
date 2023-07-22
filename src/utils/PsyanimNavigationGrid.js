@@ -1,3 +1,5 @@
+ import PsyanimPath from "./PsyanimPath.mjs";
+ 
  export default class PsyanimNavigationGrid {
     
     constructor(cellSize, canvasWidth, canvasHeight) {
@@ -106,7 +108,7 @@
 
     computeWorldPathFromGridPath(gridPath) {
 
-        let worldPath = [];
+        let worldPathVertices = [];
 
         for (let i = 0; i < gridPath.length; ++i)
         {
@@ -117,8 +119,10 @@
                 y: gridPoint[1]
             });
 
-            worldPath.push(worldPoint);
+            worldPathVertices.push(worldPoint);
         }
+
+        let worldPath = new PsyanimPath(worldPathVertices);
 
         return worldPath;
     }

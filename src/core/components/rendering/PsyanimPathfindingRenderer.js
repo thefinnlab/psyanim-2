@@ -64,7 +64,7 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
             this._grid.cellWidth = this.pathfinder.grid.cellSize;    
         }
 
-        let pathPoints = this.pathfinder.currentPath;
+        let pathSegments = this.pathfinder.currentPath.segments;
 
         // draw path
         this._pathGraphics.clear();
@@ -73,10 +73,12 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
         this._pathGraphics.lineStyle(this.lineWidth, this.pathColor);
         this._radiusGraphics.lineStyle(this.radius, this.radiusColor);
 
-        for (let i = 1; i < pathPoints.length; ++i)
+        for (let i = 1; i < pathSegments.length; ++i)
         {
-            let fromPoint = pathPoints[i-1];
-            let toPoint = pathPoints[i];
+            let segment = pathSegments[i];
+
+            let fromPoint = segment.p1;
+            let toPoint = segment.p2;
 
             this._line.setTo(
                 fromPoint.x, fromPoint.y,

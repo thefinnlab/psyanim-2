@@ -62,6 +62,6 @@ PsyanimApp.Instance.config.registerScene(ShowHideCanvasTest);
  *  Make config edits & run the app
  */
 
-PsyanimApp.Instance.config.setDebugEnabled(true);
+// PsyanimApp.Instance.config.setDebugEnabled(true);
 
 PsyanimApp.Instance.run();
