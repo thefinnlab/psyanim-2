@@ -87,6 +87,71 @@ export default class PsyanimPath {
         return parameter;
     }
 
+    getPosition(parameter) {
+
+        // clamp parameter within bounds
+        if (parameter > 1.0)
+        {
+            parameter = 1.0;
+        }
+        else if (parameter < 0.0)
+        {
+            parameter = 0.0;
+        }
+
+        // find segment parameter is in
+        let totalPathLength = this.getTotalLength();
+        let parameterDistance = parameter * totalPathLength;
+
+        let parameterSegment = null;
+
+        // TODO: can we simplify this at all?
+        if (this._segments.length == 1)
+        {
+            parameterSegment = this._segments[0];
+        }
+        else if (parameter == 0.0)
+        {
+            parameterSegment = this._segments[0];
+        }
+        else if (parameter == 1.0)
+        {
+            parameterSegment = this._segments[this._segments.length - 1];
+        }
+        else
+        {
+            for (let i = 1; i < this._segments.length; ++i)
+            {
+                let segment = this._segments[i];
+
+                if (segment.distanceToSegment > parameterDistance)
+                {
+                    parameterSegment = this._segments[i-1];
+                    break;
+                }
+                else if (segment.distanceToSegment + segment.length > parameterDistance)
+                {
+                    parameterSegment = this._segments[i];
+                    break;
+                }
+            }    
+        }
+
+        let direction = parameterSegment.p2.clone()
+            .subtract(parameterSegment.p1)
+            .normalize();
+
+        let distanceFromSegmentStart = parameterDistance
+            - parameterSegment.distanceToSegment;
+
+        let position = parameterSegment.p1.clone()
+            .add(
+                direction.scale(distanceFromSegmentStart)
+            );
+
+        return position;
+    }
+
     getParameterForSegment(segment, point) {
 
         let closestPoint = this.getClosestPointToSegment(point, segment);
@@ -113,7 +178,7 @@ export default class PsyanimPath {
         let closestDistance = Infinity;
         let closestSegment = null;
 
-        for (let i = 1; i < this._segments.length; ++i)
+        for (let i = 0; i < this._segments.length; ++i)
         {
             let segment = this._segments[i];
 

@@ -103,7 +103,7 @@
         let x = (point.x + 0.5) * this._cellSize;
         let y = (point.y + 0.5) * this._cellSize;
 
-        return { x: x, y: y };
+        return new Phaser.Math.Vector2( x, y );
     }
 
     computeWorldPathFromGridPath(gridPath) {

@@ -8,15 +8,14 @@ export default class PsyanimPathFollowBehavior extends PsyanimComponent {
 
     vehicle = null;
 
-    seekBehavior = null;
+    targetPositionOffset = 50;
+
+    arriveBehavior = null;
 
     p1 = new Phaser.Math.Vector2(0, 0);
     p2 = new Phaser.Math.Vector2(400, 300);
 
     radius = 30;
-
-    predictionTime = 25;
-    targetOffset = 50;
 
     constructor(entity) {
 
@@ -29,6 +28,11 @@ export default class PsyanimPathFollowBehavior extends PsyanimComponent {
         });
 
         this.computeSeekTargetLocation();
+    }
+
+    computeSeekTargetLocation() {
+
+        
     }
 
     computeSeekTargetLocation() {

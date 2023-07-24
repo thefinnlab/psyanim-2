@@ -40,6 +40,16 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
         this._line = new Phaser.Geom.Line(0, 0, 0, 0);
     }
 
+    setLineDepth(value) {
+
+        this._pathGraphics.depth = value;
+    }
+
+    setRadiusDepth(value) {
+
+        this._radiusGraphics.depth = value;
+    }
+
     onDisable() {
 
         super.onDisable();
@@ -73,7 +83,7 @@ export default class PsyanimPathfindingRenderer extends PsyanimComponent {
         this._pathGraphics.lineStyle(this.lineWidth, this.pathColor);
         this._radiusGraphics.lineStyle(this.radius, this.radiusColor);
 
-        for (let i = 1; i < pathSegments.length; ++i)
+        for (let i = 0; i < pathSegments.length; ++i)
         {
             let segment = pathSegments[i];
 

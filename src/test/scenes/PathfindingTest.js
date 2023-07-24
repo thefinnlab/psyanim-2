@@ -13,6 +13,10 @@ import PsyanimSceneChangeController from '../../core/components/controllers/Psya
 
 import PsyanimSceneTitle from '../../core/components/ui/PsyanimSceneTitle';
 
+import PsyanimMouseFollowTarget from '../../core/components/controllers/PsyanimMouseFollowTarget';
+
+import PsyanimLineRenderer from '../../core/components/rendering/PsyanimLineRenderer';
+
 export default class PathfindingTest extends PsyanimScene {
 
     static KEY = 'Pathfinding Test';
@@ -31,6 +35,15 @@ export default class PathfindingTest extends PsyanimScene {
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController);
+
+        // setup mouse follow target
+        this._mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 4,
+            color: 0x00ff00
+        });
+
+        this._mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
 
         /**
          *  setup navigation grid w/ obstacles and bake it
@@ -109,6 +122,9 @@ export default class PathfindingTest extends PsyanimScene {
         this._agent1PathRenderer.pathfinder = this._pathfinder1;
         this._agent1PathRenderer.setGridVisible(true);
 
+        this._agent1PathRenderer.setLineDepth(2);
+        this._agent1PathRenderer.setRadiusDepth(1);
+
         this._agent2PathRenderer = this._agent2.addComponent(PsyanimPathfindingRenderer);
         this._agent2PathRenderer.pathfinder = this._pathfinder2;
         this._agent2PathRenderer.pathColor = 0xff0000;
@@ -120,6 +136,21 @@ export default class PathfindingTest extends PsyanimScene {
         this._agent3PathRenderer.setGridVisible(true);
 
         this._pathVisualizationEnabled = true;
+
+        // setup seek target
+        this._pathFollowingTarget = this.addEntity('pathFollowingTarget', 700, 300, {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 4,
+            color: 0xFFA500
+        });
+
+        this._pathFollowingTarget.depth = 3;
+
+        // setup line renderer showing closest point to mouse cursor on closest path segment
+        this._closestPointRenderer = this.addEntity('closestPointRenderer')
+            .addComponent(PsyanimLineRenderer);
+
+        this._closestPointRenderer.lineColor = 0xff0000;
 
         /**
          *  setup keyboard controls for testing
@@ -140,6 +171,8 @@ export default class PathfindingTest extends PsyanimScene {
 
                 if (this._grid.isWorldPointInWalkableRegion(newDestination))
                 {
+                    // this is the code that would be executed by a unit that uses the pathfinding agent,
+                    // such as a PathFollowing agent.
                     this._destinationPoint1 = newDestination;
                     this._pathfinder1.setDestination(newDestination);
                 }
@@ -147,7 +180,37 @@ export default class PathfindingTest extends PsyanimScene {
         });
     }
 
+    _computePathfollowingTargetLocation() {
+
+        let targetPositionOffset = 50;
+        let targetParameterOffset = targetPositionOffset / this._pathfinder1.currentPath.getTotalLength();
+
+        let parameter = this._pathfinder1.currentPath
+            .getParameter(this._mouseTarget.position);
+
+        let targetParameter = parameter + targetParameterOffset;
+
+        let targetPosition = this._pathfinder1.currentPath
+            .getPosition(targetParameter);
+
+        this._pathFollowingTarget.x = targetPosition.x;
+        this._pathFollowingTarget.y = targetPosition.y;
+    }
+
+    _updateClosestPointToMouseCursor() {
+
+        let mousePos = this._mouseTarget.position;
+
+        let closestPoint = this._pathfinder1.currentPath.getClosestPoint(mousePos);
+
+        this._closestPointRenderer.originPoint = mousePos;
+        this._closestPointRenderer.endPoint = closestPoint;
+    }
+
     update(t, dt) {
+
+        this._computePathfollowingTargetLocation();
+        this._updateClosestPointToMouseCursor();
 
         super.update(t, dt);
 

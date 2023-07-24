@@ -27,6 +27,8 @@ import PreyTest from './scenes/PreyTest';
 
 import PathfindingTest from './scenes/PathfindingTest';
 
+import PathTest from './scenes/PathTest';
+
 import AdvancedPathFollowingTest from './scenes/AdvancedPathFollowingTest';
 
 /**
@@ -36,8 +38,9 @@ import AdvancedPathFollowingTest from './scenes/AdvancedPathFollowingTest';
 console.warn("TODO: advanced arrive test is broken");
 console.warn("TODO: SimpleCollisionAvoidanceTest is broken");
 
-PsyanimApp.Instance.config.registerScene(AdvancedPathFollowingTest);
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
+PsyanimApp.Instance.config.registerScene(AdvancedPathFollowingTest);
+PsyanimApp.Instance.config.registerScene(PathTest);
 PsyanimApp.Instance.config.registerScene(PathFollowTest);
 // PsyanimApp.Instance.config.registerScene(SimpleCollisionAvoidanceTest);
 PsyanimApp.Instance.config.registerScene(PreyTest);
