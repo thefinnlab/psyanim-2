@@ -17,10 +17,13 @@ export default class PsyanimArriveAgent extends PsyanimComponent {
 
         super.update(t, dt);
 
-        this.vehicle.maxSpeed = this.arriveBehavior.maxSpeed;
+        if (this.target)
+        {
+            this.vehicle.maxSpeed = this.arriveBehavior.maxSpeed;
 
-        let steering = this.arriveBehavior.getSteering(this.target);
-
-        this.vehicle.steer(steering);
+            let steering = this.arriveBehavior.getSteering(this.target);
+    
+            this.vehicle.steer(steering);    
+        }
     }
 }

@@ -32,17 +32,6 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         super.create();
 
         /**
-         *  TODO:
-         * 
-         *      - create a PsyanimTextRenderer component that allows you to write text to the screen
-         *          and updates it when it's 'text' property is changed
-         * 
-         *      - create a component that runs an 'experiment' and when it ends, it shows a UI overlay
-         *          (white screen) and throws an event of some sort
-         * 
-         */
-
-        /**
          *  Global Test Parameters
          */
 
@@ -119,7 +108,9 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
             playfightAgent.vehicle = vehicle;
 
             let stateRecorder = agent.addComponent(PsyanimComponentStateRecorder);
-            stateRecorder.record(PsyanimPlayfightBehavior, playfight);
+            stateRecorder.componentType = PsyanimPlayfightBehavior;
+            stateRecorder.componentInstance = playfight;
+            stateRecorder.record();
 
             this._agents.push(agent);
         }
