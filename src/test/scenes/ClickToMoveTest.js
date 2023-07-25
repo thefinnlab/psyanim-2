@@ -19,6 +19,8 @@ import PsyanimPathfindingAgent from '../../core/components/pathfinding/PsyanimPa
 
 import PsyanimClickToMove from '../../core/components/controllers/PsyanimClickToMove';
 
+import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
+
 export default class ClickToMoveTest extends PsyanimScene {
 
     constructor() {
@@ -136,9 +138,12 @@ export default class ClickToMoveTest extends PsyanimScene {
         this._arriveAgent.arriveBehavior = this._arriveBehavior;
         this._arriveAgent.vehicle = this._vehicle;
 
-        this._controller = this._player.addComponent(PsyanimClickToMove);
-        this._controller.grid = this._grid;
-        this._controller.pathfinder = this._pathfinder;
-        this._controller.arriveAgent = this._arriveAgent;
+        this._clickToMoveController = this._player.addComponent(PsyanimClickToMove);
+        this._clickToMoveController.grid = this._grid;
+        this._clickToMoveController.pathfinder = this._pathfinder;
+        this._clickToMoveController.arriveAgent = this._arriveAgent;
+
+        this._playerController = this._player.addComponent(PsyanimPlayerController);
+        this._playerController.clickToMoveController = this._clickToMoveController;
     }
 }

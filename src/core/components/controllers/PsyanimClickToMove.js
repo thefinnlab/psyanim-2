@@ -6,6 +6,11 @@ import PsyanimConstants from '../../PsyanimConstants';
 
 export default class PsyanimClickToMove extends PsyanimComponent {
 
+    static STATE = {
+        IDLE: 0x0000,
+        TRAVELING: 0x0001
+    };
+
     grid = null;
 
     pathfinder = null;
@@ -30,18 +35,36 @@ export default class PsyanimClickToMove extends PsyanimComponent {
         this._pathFollowingTarget.visible = false;
 
         this.scene.input.on('pointerup', this._handlePointerUp, this);
+
+        this._state = PsyanimClickToMove.STATE.IDLE;
+    }
+
+    get state() {
+
+        return this._state;
+    }
+
+    cancelMovementRequest() {
+
+        this._state = PsyanimClickToMove.STATE.IDLE;
+
+        this.arriveAgent.enabled = false;
     }
 
     _handlePointerUp(pointer) {
 
         if (pointer.leftButtonReleased())
         {
+            this.arriveAgent.enabled = true;
+
             let newDestination = new Phaser.Math.Vector2(pointer.x, pointer.y);
 
             if (this.grid.isWorldPointInWalkableRegion(newDestination))
             {
                 this.pathfinder.setDestination(newDestination);
             }
+
+            this._state = PsyanimClickToMove.STATE.TRAVELING;
         }
     }
 
@@ -66,11 +89,14 @@ export default class PsyanimClickToMove extends PsyanimComponent {
 
         super.update(t, dt);
 
-        if (this.arriveAgent)
+        if (this._state == PsyanimClickToMove.STATE.TRAVELING)
         {
-            this.arriveAgent.target = this._pathFollowingTarget;
+            if (this.arriveAgent)
+            {
+                this.arriveAgent.target = this._pathFollowingTarget;
+            }
+    
+            this._computePathfollowingTargetLocation();
         }
-
-        this._computePathfollowingTargetLocation();
     }
 }

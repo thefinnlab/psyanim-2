@@ -45,6 +45,9 @@ export default class PsyanimPathfindingAgent extends PsyanimComponent {
             return;
         }
 
+        // TODO: for shapes where the entity collider has a different area than the AABB collider,
+        // we should to move our 'entityPositionOnGrid' to closest corner of the AABB or pathfinding will fail!
+
         let pathfindingGrid = new Pathfinding.Grid(this.grid.matrix);
 
         let entityPositionOnGrid = this.grid.convertToGridFromWorldCoords(this.entity.position);
