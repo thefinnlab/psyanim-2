@@ -73,6 +73,7 @@
 
         let gridPoint = this.convertToGridFromWorldCoords(point);
 
+        // check if we're inside the canvas / grid
         if (gridPoint.x < 0 || gridPoint.x >= this.columns)
         {
             return false;
@@ -82,6 +83,7 @@
             return false;
         }
 
+        // check if the grid point is valid
         if (this._grid[gridPoint.y][gridPoint.x] == 0)
         {
             return true;
@@ -96,6 +98,47 @@
         let y = Math.floor(point.y / this._cellSize);
         
         return { x: x, y: y };
+    }
+
+    findClosestWalkableWorldPoint(point) {
+
+        let upPoint = point.clone();
+        let downPoint = point.clone();
+        let leftPoint = point.clone();
+        let rightPoint = point.clone();
+
+        while (true)
+        {
+            upPoint.add(new Phaser.Math.Vector2(0, this.cellSize));
+            downPoint.subtract(new Phaser.Math.Vector2(0, this.cellSize));
+
+            rightPoint.add(new Phaser.Math.Vector2(this.cellSize, 0));
+            leftPoint.subtract(new Phaser.Math.Vector2(this.cellSize, 0));
+
+            if (this.isWorldPointInWalkableRegion(upPoint))
+            {
+                return upPoint;
+            }
+
+            if (this.isWorldPointInWalkableRegion(downPoint))
+            {
+                return downPoint;
+            }
+
+            if (this.isWorldPointInWalkableRegion(rightPoint))
+            {
+                return rightPoint;
+            }
+
+            if  (this.isWorldPointInWalkableRegion(leftPoint))
+            {
+                return leftPoint;
+            }
+        }
+    }
+
+    findClosestValidCellToVertical(point) {
+
     }
 
     convertToWorldCoordsFromGrid(point) {

@@ -21,11 +21,13 @@ import PsyanimClickToMove from '../../core/components/controllers/PsyanimClickTo
 
 import PsyanimPlayerController from '../../core/components/controllers/PsyanimPlayerController';
 
+import PsyanimPathfindingRenderer from '../../core/components/rendering/PsyanimPathfindingRenderer';
+
 export default class ClickToMoveTest extends PsyanimScene {
 
     constructor() {
 
-        super('Advanced Path Following Test');
+        super('Click To Move Test');
     }
 
     create() {
@@ -125,6 +127,12 @@ export default class ClickToMoveTest extends PsyanimScene {
         this._pathfinder = this._player.addComponent(PsyanimPathfindingAgent);
         this._pathfinder.grid = this._grid;
         this._pathfinder.setDestination(playerStartPosition);
+
+        // setup path renderer
+        this._pathfindingRenderer = this._player.addComponent(PsyanimPathfindingRenderer);
+        this._pathfindingRenderer.pathfinder = this._pathfinder;
+        this._pathfindingRenderer.setGridVisible(true);
+        this._pathfindingRenderer.radius = 4;
 
         // setup path following
         this._vehicle = this._player.addComponent(PsyanimVehicle);
