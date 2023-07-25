@@ -137,10 +137,6 @@
         }
     }
 
-    findClosestValidCellToVertical(point) {
-
-    }
-
     convertToWorldCoordsFromGrid(point) {
 
         let x = (point.x + 0.5) * this._cellSize;
