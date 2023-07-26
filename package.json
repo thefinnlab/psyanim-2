@@ -1,8 +1,12 @@
 {
-  "name": "phaser_experiments",
+  "name": "psyanim2",
   "version": "1.0.0",
   "description": "",
   "private": true,
+  "files":[
+    "./src/**/*.js",
+    "./src/**/*.mjs"
+  ],
   "main": "index.js",
   "scripts": {
     "test": "jasmine --config=src/test/unit/jasmine.json",
