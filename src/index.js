@@ -3,7 +3,7 @@ import PsyanimConstants from './core/PsyanimConstants';
 import PsyanimScene from './core/scene/PsyanimScene';
 import PsyanimComponent from './core/PsyanimConstants';
 
-module.exports = {
+export {
     PsyanimApp,
     PsyanimConstants,
     PsyanimScene,
