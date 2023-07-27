@@ -7,7 +7,7 @@
     "./src/**/*.js",
     "./src/**/*.mjs"
   ],
-  "main": "index.js",
+  "main": "./src/index.js",
   "scripts": {
     "test": "jasmine --config=src/test/unit/jasmine.json",
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
