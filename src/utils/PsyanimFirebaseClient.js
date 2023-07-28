@@ -2,8 +2,6 @@
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
 
-import firebaseConfig from '../../firebase.config.json';
-
 import { v4 as uuidv4 } from 'uuid';
 
 import PsyanimAnimationClip from './PsyanimAnimationClip.mjs';
@@ -72,12 +70,9 @@ class AnimationClipQuery {
     }
 }
 
-/**
- *  Singleton firebase client
- */
 export default class PsyanimFirebaseClient {
 
-    constructor() {
+    constructor(firebaseConfig) {
 
         firebase.initializeApp(firebaseConfig);
 

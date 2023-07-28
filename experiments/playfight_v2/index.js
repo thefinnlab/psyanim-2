@@ -11,6 +11,9 @@ import PlayfightScene from './PlayfightScene';
 
 import PsyanimFirebaseClient from '../../src/utils/PsyanimFirebaseClient';
 
+import firebaseConfig from '../../firebase.config.json';
+
+
 /**
  *  Setup Psyanim and PsyanimJsPsychPlugin
  */
@@ -25,7 +28,7 @@ PsyanimApp.Instance.setCanvasVisible(false);
  *  Setup PsyanimJsPsychPlugin
  */
 
-const firebaseClient = new PsyanimFirebaseClient();
+const firebaseClient = new PsyanimFirebaseClient(firebaseConfig);
 
 PsyanimJsPsychPlugin.setDocumentWriter(firebaseClient);
 
