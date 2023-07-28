@@ -78,7 +78,6 @@ import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder';
 // utils
 import PsyanimAnimationClip from './utils/PsyanimAnimationClip.mjs';
 import PsyanimFloat32ArrayMessage from './utils/PsyanimFloat32ArrayMessage.mjs';
-import PsyanimIOHelper from './utils/PsyanimIOHelper.mjs';
 import PsyanimMessaging from './utils/PsyanimMessaging.mjs';
 import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid';
 import PsyanimPath from './utils/PsyanimPath.mjs';
@@ -171,7 +170,6 @@ export {
     // utils
     PsyanimAnimationClip,
     PsyanimFloat32ArrayMessage,
-    PsyanimIOHelper,
     PsyanimMessaging,
     PsyanimNavigationGrid,
     PsyanimPath,
