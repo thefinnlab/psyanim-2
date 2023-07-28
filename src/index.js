@@ -45,7 +45,6 @@ import PsyanimChargeBehavior from './core/components/steering/PsyanimChargeBehav
 import PsyanimCollisionAvoidanceBehavior from './core/components/steering/PsyanimCollisionAvoidanceBehavior';
 import PsyanimEvadeBehavior from './core/components/steering/PsyanimEvadeBehavior';
 import PsyanimFleeBehavior from './core/components/steering/PsyanimFleeBehavior';
-import PsyanimIdleBehavior from './core/components/steering/PsyanimIdleBehavior';
 import PsyanimPlayfightBehavior from './core/components/steering/PsyanimPlayfightBehavior';
 import PsyanimSeekBehavior from './core/components/steering/PsyanimSeekBehavior';
 import PsyanimWanderBehavior from './core/components/steering/PsyanimWanderBehavior';
@@ -57,7 +56,6 @@ import PsyanimArriveAgent from './core/components/steering/agents/PsyanimArriveA
 import PsyanimChargeAgent from './core/components/steering/agents/PsyanimChargeAgent';
 import PsyanimEvadeAgent from './core/components/steering/agents/PsyanimEvadeAgent';
 import PsyanimFleeAgent from './core/components/steering/agents/PsyanimFleeAgent';
-import PsyanimIdleAgent from './core/components/steering/agents/PsyanimIdleAgent';
 import PsyanimPlayfightAgent from './core/components/steering/agents/PsyanimPlayfightAgent';
 import PsyanimPredatorAgent from './core/components/steering/agents/PsyanimPredatorAgent';
 import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent';
@@ -86,7 +84,7 @@ import PsyanimGeomUtils from './core/PsyanimGeomUtils';
 
 // integrations
 import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin';
-import PsyanimFirebaseClient from './utils/PsyanimFirebaseClient';
+import PsyanimFirebaseClient from './integrations/PsyanimFirebaseClient';
 
 export {
 
@@ -137,7 +135,6 @@ export {
     PsyanimCollisionAvoidanceBehavior,
     PsyanimEvadeBehavior,
     PsyanimFleeBehavior,
-    PsyanimIdleBehavior,
     PsyanimPlayfightBehavior,
     PsyanimSeekBehavior,
     PsyanimWanderBehavior,
@@ -149,7 +146,6 @@ export {
     PsyanimChargeAgent,
     PsyanimEvadeAgent,
     PsyanimFleeAgent,
-    PsyanimIdleAgent,
     PsyanimPlayfightAgent,
     PsyanimPredatorAgent,
     PsyanimPreyAgent,
