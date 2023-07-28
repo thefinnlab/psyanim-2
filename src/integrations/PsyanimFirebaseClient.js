@@ -4,7 +4,7 @@ import "firebase/compat/firestore";
 
 import { v4 as uuidv4 } from 'uuid';
 
-import PsyanimAnimationClip from './PsyanimAnimationClip.mjs';
+import PsyanimAnimationClip from '../utils/PsyanimAnimationClip.mjs';
 
 /**
  *  Query types
