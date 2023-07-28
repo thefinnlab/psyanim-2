@@ -60,6 +60,7 @@ import PsyanimFleeAgent from './core/components/steering/agents/PsyanimFleeAgent
 import PsyanimIdleAgent from './core/components/steering/agents/PsyanimIdleAgent';
 import PsyanimPlayfightAgent from './core/components/steering/agents/PsyanimPlayfightAgent';
 import PsyanimPredatorAgent from './core/components/steering/agents/PsyanimPredatorAgent';
+import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent';
 import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent';
 import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent';
 
@@ -152,7 +153,7 @@ export {
     PsyanimIdleAgent,
     PsyanimPlayfightAgent,
     PsyanimPredatorAgent,
-    PsyanimBasicPreyBehavior,
+    PsyanimPreyAgent,
     PsyanimSeekAgent,
     PsyanimWanderAgent,
 
