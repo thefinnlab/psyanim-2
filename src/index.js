@@ -47,7 +47,7 @@ import PsyanimEvadeBehavior from './core/components/steering/PsyanimEvadeBehavio
 import PsyanimFleeBehavior from './core/components/steering/PsyanimFleeBehavior';
 import PsyanimIdleBehavior from './core/components/steering/PsyanimIdleBehavior';
 import PsyanimPlayfightBehavior from './core/components/steering/PsyanimPlayfightBehavior';
-import PsyanimSeekBehavior from '.core/components/steering/PsyanimSeekBehavior';
+import PsyanimSeekBehavior from './core/components/steering/PsyanimSeekBehavior';
 import PsyanimWanderBehavior from './core/components/steering/PsyanimWanderBehavior';
 
 import PsyanimAdvancedArriveAgent from './core/components/steering/agents/PsyanimAdvancedArriveAgent';
