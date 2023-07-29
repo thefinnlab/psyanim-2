@@ -166,6 +166,10 @@ class _PsyanimJsPsychPlugin {
             console.log(trialMetadata);
         }
 
+        // stop the current scene
+        PsyanimApp.Instance.currentScene.scene
+            .stop(this._currentTrial.sceneKey);
+
         // progress to the next trial
         this._currentTrialIndex++;
 
