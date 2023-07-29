@@ -74,13 +74,13 @@ import PsyanimExperimentTimer from './core/components/utils/PsyanimExperimentTim
 import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder';
 
 // utils
-import PsyanimAnimationClip from './utils/PsyanimAnimationClip.mjs';
-import PsyanimFloat32ArrayMessage from './utils/PsyanimFloat32ArrayMessage.mjs';
-import PsyanimMessaging from './utils/PsyanimMessaging.mjs';
-import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid';
-import PsyanimPath from './utils/PsyanimPath.mjs';
+import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.mjs';
+import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.mjs';
+import PsyanimMessaging from './core/utils/PsyanimMessaging.mjs';
+import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid';
+import PsyanimPath from './core/utils/PsyanimPath.mjs';
 
-import PsyanimGeomUtils from './core/PsyanimGeomUtils';
+import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils';
 
 // integrations
 import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin';

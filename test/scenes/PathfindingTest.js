@@ -6,7 +6,7 @@ import PsyanimConstants from '../../src/core/PsyanimConstants';
 import PsyanimPathfindingAgent from '../../src/core/components/pathfinding/PsyanimPathfindingAgent';
 import PsyanimPathfindingRenderer from '../../src/core/components/rendering/PsyanimPathfindingRenderer';
 
-import PsyanimNavigationGrid from '../../src/utils/PsyanimNavigationGrid';
+import PsyanimNavigationGrid from '../../src/core/utils/PsyanimNavigationGrid';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';

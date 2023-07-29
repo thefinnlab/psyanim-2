@@ -11,7 +11,7 @@ import PsyanimPhysicsSettingsController from '../../src/core/components/controll
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimPath from '../../src/utils/PsyanimPath.mjs';
+import PsyanimPath from '../../src/core/utils/PsyanimPath.mjs';
 
 import PsyanimLineRenderer from '../../src/core/components/rendering/PsyanimLineRenderer';
 

@@ -14,7 +14,7 @@ import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArr
 
 import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent';
 
-import PsyanimNavigationGrid from '../../src/utils/PsyanimNavigationGrid';
+import PsyanimNavigationGrid from '../../src/core/utils/PsyanimNavigationGrid';
 import PsyanimPathfindingAgent from '../../src/core/components/pathfinding/PsyanimPathfindingAgent';
 
 import PsyanimClickToMove from '../../src/core/components/controllers/PsyanimClickToMove';
