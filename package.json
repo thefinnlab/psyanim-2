@@ -25,7 +25,7 @@
     "clean": "rimraf -v ./dist",
     "delete-cloud-db": "firebase firestore:delete --all-collections",
     "delete-cloud-animclips": "firebase firestore:delete -r /animation-clips",
-    "delete-cloud-metadata": "firebase firestore:delete -r /experiment-metadata",
+    "delete-cloud-metadata": "firebase firestore:delete -r /experiment-metadata"
   },
   "keywords": [],
   "author": "",
