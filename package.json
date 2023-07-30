@@ -5,7 +5,11 @@
   "private": true,
   "files":[
     "./src/**/*.js",
-    "./src/**/*.mjs"
+    "./src/**/*.mjs",
+    "./.firebaserc",
+    "./firebase.json",
+    "./firestore.indexes.json",
+    "./firestore.rules"
   ],
   "main": "./src/index.js",
   "scripts": {
@@ -14,8 +18,6 @@
     "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
     "dev-server": "npx nodemon ./devserver/main.mjs",
     "jspsych_example": "rimraf -v ./dist && webpack --config ./webpack.jspsych_example.config.js --watch",
-    "animviewer-build": "rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js",
-    "animviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.animviewer.config.js --watch",
     "experimentviewer-build": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js",
     "experimentviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js --watch",
     "firebase-deploy": "firebase deploy",
@@ -24,12 +26,6 @@
     "delete-cloud-db": "firebase firestore:delete --all-collections",
     "delete-cloud-animclips": "firebase firestore:delete -r /animation-clips",
     "delete-cloud-metadata": "firebase firestore:delete -r /experiment-metadata",
-    "playfight_v2-build": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js",
-    "playfight_v2-watch": "rimraf -v ./dist && webpack --config ./webpack.playfight_v2.config.js --watch",
-    "interactive-predator-prey-build": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js",
-    "interactive-predator-prey-watch": "rimraf -v ./dist && webpack --config ./webpack.interactive-predator-prey.config.js --watch",
-    "interactive_wolfpack-build": "rimraf -v ./dist && webpack --config ./webpack.interactive_wolfpack.config.js",
-    "interactive_wolfpack-watch": "rimraf -v ./dist && webpack --config ./webpack.interactive_wolfpack.config.js --watch"
   },
   "keywords": [],
   "author": "",
