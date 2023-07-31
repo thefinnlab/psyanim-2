@@ -13,7 +13,6 @@
     "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
     "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
     "dev-server": "npx nodemon ./devserver/main.mjs",
-    "jspsych_example": "rimraf -v ./dist && webpack --config ./webpack.jspsych_example.config.js --watch",
     "experimentviewer-build": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js",
     "experimentviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js --watch",
     "firebase-deploy": "firebase deploy",
