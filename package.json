@@ -10,11 +10,9 @@
   "main": "./src/index.js",
   "scripts": {
     "test": "jasmine --config=src/test/unit/jasmine.json",
-    "dev-build": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js",
-    "dev-watch": "rimraf -v ./dist && webpack --config ./webpack.dev.config.js --watch",
-    "dev-server": "npx nodemon ./devserver/main.mjs",
-    "experimentviewer-build": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js",
-    "experimentviewer-watch": "rimraf -v ./dist && webpack --config ./webpack.experimentviewer.config.js --watch",
+    "dev-build": "webpack --config ./webpack.dev.config.js",
+    "dev-watch": "webpack --config ./webpack.dev.config.js --watch",
+    "dev-server": "npx nodemon ./test/devserver/main.mjs",
     "clean": "rimraf -v ./dist"
   },
   "keywords": [],
