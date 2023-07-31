@@ -1,7 +1,7 @@
 // core
 import PsyanimApp from './core/PsyanimApp';
 import PsyanimConstants from './core/PsyanimConstants';
-import PsyanimScene from './core/scene/PsyanimScene';
+import PsyanimScene from './core/PsyanimScene';
 import PsyanimComponent from './core/PsyanimConstants';
 import PsyanimEntity from './core/PsyanimEntity';
 
