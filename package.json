@@ -5,11 +5,7 @@
   "private": true,
   "files":[
     "./src/**/*.js",
-    "./src/**/*.mjs",
-    "./.firebaserc",
-    "./firebase.json",
-    "./firestore.indexes.json",
-    "./firestore.rules"
+    "./src/**/*.mjs"
   ],
   "main": "./src/index.js",
   "scripts": {
