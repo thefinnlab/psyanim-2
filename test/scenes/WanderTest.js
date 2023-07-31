@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from '../../src/core/scene/PsyanimScene';
+import PsyanimScene from '../../src/core/PsyanimScene';
 
 import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 import PsyanimWanderBehavior from '../../src/core/components/steering/PsyanimWanderBehavior';

@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import PsyanimScreenBoundary from './PsyanimScreenBoundary';
-import PsyanimEntity from '../PsyanimEntity';
+import PsyanimScreenBoundary from './utils/PsyanimScreenBoundary';
+import PsyanimEntity from './PsyanimEntity';
 
 export default class PsyanimScene extends Phaser.Scene {
 

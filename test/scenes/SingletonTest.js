@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from '../../src/core/scene/PsyanimScene';
+import PsyanimScene from '../../src/core/PsyanimScene';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';

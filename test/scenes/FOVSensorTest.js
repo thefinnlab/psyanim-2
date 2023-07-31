@@ -1,4 +1,4 @@
-import PsyanimScene from "../../src/core/scene/PsyanimScene";
+import PsyanimScene from '../../src/core/PsyanimScene';
 
 import PsyanimSceneTitle from "../../src/core/components/ui/PsyanimSceneTitle";
 import PsyanimPhysicsSettingsController from "../../src/core/components/controllers/PsyanimPhysicsSettingsController";

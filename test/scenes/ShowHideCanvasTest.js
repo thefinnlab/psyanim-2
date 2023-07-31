@@ -1,4 +1,4 @@
-import PsyanimScene from "../../src/core/scene/PsyanimScene"
+import PsyanimScene from '../../src/core/PsyanimScene';
 
 import PsyanimApp from "../../src/core/PsyanimApp";
 
