@@ -4,7 +4,7 @@ import Pathfinding from 'pathfinding';
 
 export default class PsyanimPathfindingAgent extends PsyanimComponent {
 
-    grid = null;
+    grid;
 
     constructor(entity) {
 

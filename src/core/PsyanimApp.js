@@ -4,6 +4,8 @@ import PsyanimConfig from './PsyanimConfig';
 
 import { v4 as uudiv4 } from 'uuid';
 
+PsyanimApp._instance = null;
+
 export default class PsyanimApp {
 
     static get Instance() {
@@ -15,8 +17,6 @@ export default class PsyanimApp {
 
         return PsyanimApp._instance;
     }
-
-    static _instance = null;
 
     constructor() {
 

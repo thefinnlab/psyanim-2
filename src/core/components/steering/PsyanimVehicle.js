@@ -15,17 +15,25 @@ export default class PsyanimVehicle extends PsyanimComponent {
      * 
      */
 
-    maxSpeed = 5;
+    maxSpeed;
 
-    turnSpeed = 0.2;
+    turnSpeed;
 
-    smoothLookDirection = true;
+    smoothLookDirection;
 
-    nSamplesForLookSmoothing = 6;
+    nSamplesForLookSmoothing;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxSpeed = 5;
+
+        this.turnSpeed = 0.2;
+    
+        this.smoothLookDirection = true;
+    
+        this.nSamplesForLookSmoothing = 6;    
 
         this._velocitySamples = [];
     }

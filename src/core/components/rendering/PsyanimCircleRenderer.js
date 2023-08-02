@@ -4,13 +4,17 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimCircleRenderer extends PsyanimComponent {
     
-    offset = 150;
-    angle = 0;
-    radius = 20;
+    offset;
+    angle;
+    radius;
 
     constructor(entity) {
 
         super(entity);
+
+        this.offset = 150;
+        this.angle = 0;
+        this.radius = 20;
 
         this.graphics = entity.scene.add.graphics({ lineStyle: { width: 2, color: 0xbf40bf, alpha: 0.6 } });
 

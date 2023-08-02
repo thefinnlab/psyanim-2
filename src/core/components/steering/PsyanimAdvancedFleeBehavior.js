@@ -22,18 +22,21 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
      *  It's also better to keep the panic distance radius smaller (maybe < 2-4 times the vehicle
      *  size) to avoid the situation where the target is sitting still inside the panic radius.
      * 
-     * @param {*} target 
-     * @returns 
      */
 
-    maxSpeed = 5;
-    maxAcceleration = 0.2;
+    maxSpeed;
+    maxAcceleration;
 
-    panicDistance = 250;
+    panicDistance;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxSpeed = 5;
+        this.maxAcceleration = 0.2;
+    
+        this.panicDistance = 250;
 
         this.setAdvancedFleeSearchDirection(true);
 

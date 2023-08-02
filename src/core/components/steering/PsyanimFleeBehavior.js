@@ -4,14 +4,19 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimFleeBehavior extends PsyanimComponent {
 
-    maxSpeed = 5;
-    maxAcceleration = 0.2;
+    maxSpeed;
+    maxAcceleration;
 
-    panicDistance = 250;
+    panicDistance;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxSpeed = 5;
+        this.maxAcceleration = 0.2;
+    
+        this.panicDistance = 250;    
     }
 
     getSteering(target) {

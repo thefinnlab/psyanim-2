@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimCollisionAvoidanceDebug extends PsyanimComponent {
 
-    collisionAvoidanceBehavior = null;
+    collisionAvoidanceBehavior;
 
     constructor(entity) {
 

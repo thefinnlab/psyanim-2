@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimWanderDebug extends PsyanimComponent {
 
-    wanderBehavior = null;
+    wanderBehavior;
 
     constructor(entity) {
 

@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimFOVRenderer extends PsyanimComponent {
 
-    fovSensor = null;
+    fovSensor;
 
     constructor(entity) {
         

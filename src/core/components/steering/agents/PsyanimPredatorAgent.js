@@ -4,11 +4,11 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimPredatorAgent extends PsyanimComponent {
 
-    target = null;
+    target;
 
-    vehicle = null;
+    vehicle;
 
-    predatorBehavior = null;
+    predatorBehavior;
 
     constructor(entity) {
 

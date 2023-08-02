@@ -4,12 +4,15 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimClientNetworkManager extends PsyanimComponent {
 
-    host = "localhost";
-    port = 3000;
+    host;
+    port;
 
     constructor(entity) {
 
         super(entity);
+
+        this.host = "localhost";
+        this.port = 3000;
     }
 
     connect(host = null, port = null) {

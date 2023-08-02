@@ -4,18 +4,18 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimConstants from '../../PsyanimConstants';
 
+PsyanimClickToMove.STATE = {
+    IDLE: 0x0000,
+    TRAVELING: 0x0001
+};
+
 export default class PsyanimClickToMove extends PsyanimComponent {
 
-    static STATE = {
-        IDLE: 0x0000,
-        TRAVELING: 0x0001
-    };
+    grid;
 
-    grid = null;
+    pathfinder;
 
-    pathfinder = null;
-
-    arriveAgent = null;
+    arriveAgent;
 
     constructor(entity) {
 

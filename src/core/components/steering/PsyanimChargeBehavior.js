@@ -4,13 +4,17 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimChargeBehavior extends PsyanimComponent {
 
-    chargeDuration = 2.0;
-    innerDecelerationRadius = 10;
-    outerDecelerationRadius = 300;
+    chargeDuration;
+    innerDecelerationRadius;
+    outerDecelerationRadius;
 
     constructor(entity) {
 
         super(entity);
+
+        this.chargeDuration = 2.0;
+        this.innerDecelerationRadius = 10;
+        this.outerDecelerationRadius = 300;    
 
         this._chargeAcceleration = new Phaser.Math.Vector2(0, 0);
         this._maxChargeSpeed = new Phaser.Math.Vector2(0, 0);

@@ -2,26 +2,29 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
+PsyanimAdvancedPlayfightBehavior.STATE = {
+    WANDERING: 0x0001,
+    CHARGING: 0x0002,
+    FLEEING: 0x0004
+};
+
 export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
-    static STATE = {
-        WANDERING: 0x0001,
-        CHARGING: 0x0002,
-        FLEEING: 0x0004
-    }
+    collisionFrequency;
+    breakDuration;
 
-    // TODO: can we just change 'collision frequency' & 'break duration' to seconds instead of ms?
-    collisionFrequency = 2000;
-    breakDuration = 1500;
-
-    fleeBehavior = null;
-    advancedArriveBehavior = null;
-    wanderBehavior = null;
+    fleeBehavior;
+    advancedArriveBehavior;
+    wanderBehavior;
 
     constructor(entity) {
 
         super(entity);
 
+        // TODO: can we just change 'collision frequency' & 'break duration' to seconds instead of ms?
+        this.collisionFrequency = 2000;
+        this.breakDuration = 1500;
+    
         this._breakTimer = 0;
 
         this._setState(PsyanimAdvancedPlayfightBehavior.STATE.WANDERING);

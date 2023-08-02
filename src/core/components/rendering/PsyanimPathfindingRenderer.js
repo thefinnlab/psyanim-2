@@ -4,17 +4,25 @@ import PsyanimComponent from "../../PsyanimComponent";
 
 export default class PsyanimPathfindingRenderer extends PsyanimComponent {
 
-    lineWidth = 2;
-    radius = 12;
+    lineWidth;
+    radius;
 
-    pathfinder = null;
+    pathfinder;
 
-    pathColor = 0xBF40BF;
-    radiusColor = 0xcccccc;
+    pathColor;
+    radiusColor;
 
     constructor(entity) {
 
         super(entity);
+
+        this.lineWidth = 2;
+        this.radius = 12;
+    
+        this.pathfinder = null;
+    
+        this.pathColor = 0xBF40BF;
+        this.radiusColor = 0xcccccc;
 
         this._gridWidth = this.scene.game.scale.width;
         this._gridHeight = this.scene.game.scale.height;

@@ -6,6 +6,8 @@ import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBake
 
 import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder';
 
+_PsyanimJsPsychPlugin._instance = null;
+
 /**
  *  _PsyanimJsPsychPlugin is a private singleton instance that maintains state across all trials
  *  and handles all communication with PsyanimApp.
@@ -21,8 +23,6 @@ class _PsyanimJsPsychPlugin {
 
         return _PsyanimJsPsychPlugin._instance;
     }
-
-    static _instance = null;
 
     constructor() {
 
@@ -254,48 +254,49 @@ class _PsyanimJsPsychPlugin {
     }
 }
 
+PsyanimJsPsychPlugin.info = {
+    
+    name: 'psyanim-jsPsych-plugin',
+    parameters: {
+
+        sceneKey: {
+            type: ParameterType.HTML_STRING,
+            default: undefined
+        },
+
+        sceneParameters: {
+            type: ParameterType.OBJECT,
+            default: {}
+        },
+
+        endTrialKeys: {
+            type: ParameterType.KEYS,
+            default: ['enter']
+        },
+
+        duration: {
+            type: ParameterType.FLOAT,
+            default: -1.0
+        },
+
+        agentNamesToRecord: {
+            type: ParameterType.OBJECT,
+            default: []
+        },
+
+        recordAnimationClips: {
+            type: ParameterType.BOOL,
+            default: true
+        },
+
+        recordStateLogs: {
+            type: ParameterType.BOOL,
+            default: true
+        }
+    }
+};
+
 export default class PsyanimJsPsychPlugin {
-
-    static info = {
-            name: 'psyanim-jsPsych-plugin',
-            parameters: {
-
-                sceneKey: {
-                    type: ParameterType.HTML_STRING,
-                    default: undefined
-                },
-
-                sceneParameters: {
-                    type: ParameterType.OBJECT,
-                    default: {}
-                },
-
-                endTrialKeys: {
-                    type: ParameterType.KEYS,
-                    default: ['enter']
-                },
-
-                duration: {
-                    type: ParameterType.FLOAT,
-                    default: -1.0
-                },
-
-                agentNamesToRecord: {
-                    type: ParameterType.OBJECT,
-                    default: []
-                },
-
-                recordAnimationClips: {
-                    type: ParameterType.BOOL,
-                    default: true
-                },
-
-                recordStateLogs: {
-                    type: ParameterType.BOOL,
-                    default: true
-                }
-            }
-    };
 
     static setDocumentWriter(writer) {
 

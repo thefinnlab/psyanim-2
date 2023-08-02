@@ -1,23 +1,26 @@
 import PsyanimComponent from "../../PsyanimComponent";
 
+PsyanimBasicPreyBehavior.STATE = {
+    WANDERING: 0x0001,
+    FLEEING: 0x0002,
+}; 
+
 export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
-    static STATE = {
-        WANDERING: 0x0001,
-        FLEEING: 0x0002,
-    };
+    subtletly; // 'degrees'
+    subtletlyLag; // ms
 
-    subtletly = 30; // 'degrees'
-    subtletlyLag = 500; // ms
+    fovSensor;
 
-    fovSensor = null;
-
-    fleeBehavior = null;
-    wanderBehavior = null;
+    fleeBehavior;
+    wanderBehavior;
 
     constructor(entity) {
 
         super(entity);
+
+        this.subtletly = 30; // 'degrees'
+        this.subtletlyLag = 500; // ms    
 
         this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
 

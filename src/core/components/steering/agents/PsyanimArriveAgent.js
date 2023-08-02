@@ -4,9 +4,9 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimArriveAgent extends PsyanimComponent {
 
-    target = null;
-    arriveBehavior = null;
-    vehicle = null;
+    target;
+    arriveBehavior;
+    vehicle;
 
     constructor(entity) {
 

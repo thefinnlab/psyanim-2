@@ -4,13 +4,15 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimEvadeBehavior extends PsyanimComponent {
 
-    maxPredictionTime = 1.0;
+    maxPredictionTime;
 
-    fleeBehavior = null;
+    fleeBehavior;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxPredictionTime = 1.0;
     }
 
     getSteering(target) {

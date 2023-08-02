@@ -6,12 +6,15 @@ import PsyanimSensor from '../physics/PsyanimSensor';
 
 export default class PsyanimCollisionAvoidanceBehavior extends PsyanimComponent {
 
-    collisionRadius = 8;
-    maxAcceleration = 0.2;
+    collisionRadius;
+    maxAcceleration;
 
     constructor(entity) {
 
         super(entity);
+
+        this.collisionRadius = 8;
+        this.maxAcceleration = 0.2;    
 
         this._collisionAvoidanceTarget = null;
 

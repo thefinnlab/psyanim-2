@@ -4,9 +4,9 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimWanderAgent extends PsyanimComponent {
 
-    vehicle = null;
+    vehicle;
 
-    wanderBehavior = null;
+    wanderBehavior;
 
     constructor(entity) {
 

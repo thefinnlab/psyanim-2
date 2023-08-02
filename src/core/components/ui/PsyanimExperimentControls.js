@@ -4,8 +4,8 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimExperimentControls extends PsyanimComponent {
 
-    experiment = null;
-    networkManager = null;
+    experiment;
+    networkManager;
 
     constructor(entity) {
 

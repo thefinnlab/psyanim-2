@@ -4,15 +4,19 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimFOVSensor extends PsyanimComponent {
 
-    fovAngle = 120; // degrees
+    fovAngle; // degrees
 
-    fovRange = 200; // pixels
+    fovRange; // pixels
 
-    resolution = 5; // degrees
+    resolution; // degrees
 
     constructor(entity) {
 
         super(entity);
+
+        this.fovAngle = 120;
+        this.fovRange = 200;
+        this.resolution = 5;
 
         this._computeRayEndpoints();
     }

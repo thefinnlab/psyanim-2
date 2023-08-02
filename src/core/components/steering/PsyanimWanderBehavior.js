@@ -6,18 +6,25 @@ import PsyanimVehicle from './PsyanimVehicle';
 
 export default class PsyanimWanderBehavior extends PsyanimComponent {
 
-    radius = 50;
-    offset = 150;
+    radius;
+    offset;
 
-    minScreenBoundaryDistance = 100;
+    minScreenBoundaryDistance;
 
-    maxAngleChangePerFrame = 20;
+    maxAngleChangePerFrame;
 
-    seekBehavior = null;
+    seekBehavior;
 
     constructor(entity) {
 
         super(entity);
+
+        this.radius = 50;
+        this.offset = 150;
+    
+        this.minScreenBoundaryDistance = 100;
+    
+        this.maxAngleChangePerFrame = 20;    
 
         this._debug = false;
 

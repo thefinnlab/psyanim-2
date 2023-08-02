@@ -2,6 +2,11 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from "../../PsyanimComponent";
 
+PsyanimBasicPredatorBehavior.STATE = {
+    WANDERING: 0x0001,
+    PURSUING: 0x0002,
+};
+
 export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
     /**
@@ -10,23 +15,21 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
      *  'arrive' behavior would approach at.
      */
 
-    static STATE = {
-        WANDERING: 0x0001,
-        PURSUING: 0x0002,
-    };
+    subtlety; // 'degrees'
+    subtletyLag; // 'ms'
 
-    subtlety = 30; // 'degrees'
-    subtletyLag = 500; // 'ms'
+    fovSensor;
 
-    fovSensor = null;
-
-    arriveBehavior = null;
-    wanderBehavior = null;
+    arriveBehavior;
+    wanderBehavior;
     
     constructor(entity) {
 
         super(entity);
 
+        this.subtlety = 30; // 'degrees'
+        this.subtletyLag = 500; // 'ms'
+    
         this._state = PsyanimBasicPredatorBehavior.STATE.WANDERING;
 
         this._arriveTarget = this.scene.addEntity(this.name + '_arriveTarget');

@@ -4,8 +4,8 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimChargeAgent extends PsyanimComponent {
 
-    chargeBehavior = null;
-    vehicle = null;
+    chargeBehavior;
+    vehicle;
 
     constructor(entity) {
 

@@ -4,12 +4,15 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimSeekBehavior extends PsyanimComponent {
 
-    maxSpeed = 5;
-    maxAcceleration = 0.2;
+    maxSpeed;
+    maxAcceleration;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxSpeed = 5;
+        this.maxAcceleration = 0.2;    
     }
 
     getSteering(target) {

@@ -4,9 +4,9 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimFleeAgent extends PsyanimComponent {
 
-    target = null;
-    fleeBehavior = null;
-    vehicle = null;
+    target;
+    fleeBehavior;
+    vehicle;
 
     constructor(entity) {
 

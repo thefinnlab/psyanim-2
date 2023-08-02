@@ -5,8 +5,9 @@ import PsyanimPlayfightBehavior from '../PsyanimPlayfightBehavior';
 
 export default class PsyanimPlayfightAgent extends PsyanimComponent {
 
-    playfightBehavior = null;
-    vehicle = null;
+    playfightBehavior;
+    vehicle;
+
     constructor(entity) {
 
         super(entity);

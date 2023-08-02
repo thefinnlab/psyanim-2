@@ -5,14 +5,17 @@ import PsyanimClickToMove from './PsyanimClickToMove';
 
 export default class PsyanimPlayerController extends PsyanimComponent {
 
-    speed = 8;
-    turnSpeed = 0.2;
+    speed;
+    turnSpeed;
 
-    clickToMoveController = null;
+    clickToMoveController;
 
     constructor(entity) {
 
         super(entity);
+
+        this.speed = 8;
+        this.turnSpeed = 0.2;
 
         this._keys = {
             W: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),

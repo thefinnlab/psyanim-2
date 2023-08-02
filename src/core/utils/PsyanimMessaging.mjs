@@ -1,10 +1,10 @@
+PsyanimMessaging.MESSAGE_HEADER_LENGTH = 4; // bytes
+
+PsyanimMessaging.MESSAGE_TYPES = {
+    ANIMATION_CLIP: 0x0001, 
+};
+
 export default class PsyanimMessaging {
-
-    static MESSAGE_HEADER_LENGTH = 4; // bytes
-
-    static MESSAGE_TYPES = {
-        ANIMATION_CLIP: 0x0001, 
-    };
 
     static getHeader(buffer) {
 

@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 export default class PsyanimComponent {
 
-    entity = null;
+    entity;
 
     constructor(entity) {
 

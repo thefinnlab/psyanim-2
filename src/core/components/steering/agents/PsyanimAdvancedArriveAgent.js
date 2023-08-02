@@ -4,8 +4,8 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimAdvancedArriveAgent extends PsyanimComponent {
 
-    advancedArriveBehavior = null;
-    vehicle = null;
+    advancedArriveBehavior;
+    vehicle;
 
     constructor(entity) {
         

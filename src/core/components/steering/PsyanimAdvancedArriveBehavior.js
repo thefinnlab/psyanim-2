@@ -4,16 +4,23 @@ import PsyanimComponent from "../../PsyanimComponent";
 
 export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
 
-    chargeDuration = 2.0;
+    chargeDuration;
 
-    maxAcceleration = 10;
+    maxAcceleration;
 
-    innerDecelerationRadius = 10;
-    outerDecelerationRadius = 150;
+    innerDecelerationRadius;
+    outerDecelerationRadius;
 
     constructor(entity) {
 
         super(entity);
+
+        this.chargeDuration = 2.0;
+
+        this.maxAcceleration = 10;
+    
+        this.innerDecelerationRadius = 10;
+        this.outerDecelerationRadius = 150;
 
         this._maxSpeed = 0;
     }

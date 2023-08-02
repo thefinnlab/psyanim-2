@@ -4,17 +4,25 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimLineRenderer extends PsyanimComponent {
 
-    originPoint = new Phaser.Math.Vector2(0, 0);
-    endPoint = new Phaser.Math.Vector2(100, 0);
+    originPoint;
+    endPoint;
 
-    lineColor = 0xa020f0;
-    lineWidth = 2;
+    lineColor;
+    lineWidth;
 
-    alpha = 0.6;
+    alpha;
 
     constructor(entity) {
 
         super(entity);
+
+        this.originPoint = new Phaser.Math.Vector2(0, 0);
+        this.endPoint = new Phaser.Math.Vector2(100, 0);
+    
+        this.lineColor = 0xa020f0;
+        this.lineWidth = 2;
+    
+        this.alpha = 0.6;
 
         this.graphics = entity.scene.add.graphics();
 

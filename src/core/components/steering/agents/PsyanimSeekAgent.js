@@ -4,9 +4,9 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimSeekAgent extends PsyanimComponent {
 
-    target = null;
-    seekBehavior = null;
-    vehicle = null;
+    target;
+    seekBehavior;
+    vehicle;
 
     constructor(entity) {
 

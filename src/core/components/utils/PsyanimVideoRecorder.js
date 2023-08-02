@@ -2,13 +2,13 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-export default class PsyanimVideoRecorder extends PsyanimComponent {
+PsyanimVideoRecorder.STATE = {
+    READY_TO_RECORD: 0x0001,
+    RECORDING: 0x0002,
+    VIDEO_READY: 0x0004
+};
 
-    static STATE = {
-        READY_TO_RECORD: 0x0001,
-        RECORDING: 0x0002,
-        VIDEO_READY: 0x0004
-    };
+export default class PsyanimVideoRecorder extends PsyanimComponent {
 
     constructor(entity) {
 

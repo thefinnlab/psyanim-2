@@ -4,15 +4,21 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimArriveBehavior extends PsyanimComponent {
 
-    maxSpeed = 5;
-    maxAcceleration = 0.2;
+    maxSpeed;
+    maxAcceleration;
 
-    innerDecelerationRadius = 25;
-    outerDecelerationRadius = 140;
+    innerDecelerationRadius;
+    outerDecelerationRadius;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxSpeed = 5;
+        this.maxAcceleration = 0.2;
+    
+        this.innerDecelerationRadius = 25;
+        this.outerDecelerationRadius = 140;
     }
 
     getSteering(target) {
