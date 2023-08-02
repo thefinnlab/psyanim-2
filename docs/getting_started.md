@@ -20,19 +20,61 @@ All user-defined state and behaviors are encapsulated in `PsyanimComponents`, wh
 
 When building experiments using [jsPsych](https://www.jspsych.org/), we can run `trials` using the `PsyanimJsPsychPlugin` where each trial runs an instance of a `PsyanimScene`.
 
-## 2. Creating our first experiment using the Psyanim CLI
+## 2. Creating new npm project & installing Psyanim 2 and Psyanim CLI
 
 ***Pre-requisites: Requires NodeJS v18.16.0 or higher.***
 
+***You'll need to make sure you have read access to our psyanim-2 and psyanim-cli private git repos***
+
+Create a directory named 'hello-psyanim2' and navigate to it in your terminal.
+
+Create a new npm project with:
+
+    npm init -y
+
+Install psyanim-2 package straight from the git repo via npm with:
+
+    npm install git+https://github.com/thefinnlab/psyanim-2.git
+
+Install psyanim-cli package straight from git repo via npm with:
+
+    npm install git+https://github.com/thefinnlab/psyanim-cli.git
+
+## 3. Creating our first psyanim-2 experiment using the Psyanim CLI
+
 Let's create a simple experiment to get familiar with using Psyanim 2.0.
 
-At any time, you can run `npm ./tools/psyanim_cli.mjs --help` to see the docs for Psyanim CLI.
+At any time, you can run `npx psyanim-cli --help` to see the docs for Psyanim CLI.
 
-Follow these steps to create a new project:
-
-**Optional: Install http-server (unless you have your own static file server tool) and refer to [npm](https://www.npmjs.com/package/http-server) docs to host your builds locally**
+**Optional:** Install http-server (unless you have your own static file server tool) and refer to the [docs](https://www.npmjs.com/package/http-server) to host your builds locally
 
     npm install --global http-server
+
+In the 'hello-psyanim2' directory we created in the previous step, create a new experiment using the Psyanim CLI:
+
+    npx psyanim-cli --init
+
+You should now see the following files created under ./src:
+
+- `EmptyScene.js`
+- `index.html`
+- `index.js`
+
+You should also see a `.gitignore` and a `webpack.config.js` automatically generated for your experiment, and your package.json updated with some helpful commands for building with webpack, deploying to firebase, etc.
+
+Let's go ahead and initialize a git repository and commit what we have so far!
+
+    git init
+    git add .
+    git commit -m "created my first psyanim experiment!"
+
+At this stage, we have an experiment with just one empty scene.  Let's add another scene.
+
+## TODO: everything after this still needs to be updated!
+
+## 3. Creating our first experiment using the Psyanim CLI
+
+Follow these steps to create a new project:
 
 **a. Open a terminal, navigate to the root of the Psyanim 2.0 repository and run:**
 
