@@ -144,3 +144,4 @@ public
 #other
 *.webm
 **/firebase.config.json
+docs/
