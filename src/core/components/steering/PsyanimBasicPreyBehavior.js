@@ -1,10 +1,5 @@
 import PsyanimComponent from "../../PsyanimComponent";
 
-PsyanimBasicPreyBehavior.STATE = {
-    WANDERING: 0x0001,
-    FLEEING: 0x0002,
-}; 
-
 export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
     subtletly; // 'degrees'
@@ -113,3 +108,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         }        
     }
 }
+
+PsyanimBasicPreyBehavior.STATE = {
+    WANDERING: 0x0001,
+    FLEEING: 0x0002,
+}; 

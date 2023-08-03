@@ -1,8 +1,5 @@
 import PsyanimMessaging from "./PsyanimMessaging.mjs";
 
-// sampleLength is number of floats necessary to represent a sample
-PsyanimAnimationClip.SAMPLE_LENGTH = 4;
-
 export default class PsyanimAnimationClip {
 
     constructor() {
@@ -164,3 +161,6 @@ export default class PsyanimAnimationClip {
         return clone;
     }
 }
+
+// sampleLength is number of floats necessary to represent a sample
+PsyanimAnimationClip.SAMPLE_LENGTH = 4;

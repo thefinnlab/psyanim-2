@@ -4,8 +4,6 @@ import PsyanimConfig from './PsyanimConfig';
 
 import { v4 as uudiv4 } from 'uuid';
 
-PsyanimApp._instance = null;
-
 export default class PsyanimApp {
 
     static get Instance() {
@@ -133,3 +131,5 @@ export default class PsyanimApp {
         this._game = new Phaser.Game(this._config.phaserConfig);
     }
 }
+
+PsyanimApp._instance = null;

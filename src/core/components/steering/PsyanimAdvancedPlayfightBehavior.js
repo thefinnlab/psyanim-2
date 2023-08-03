@@ -2,12 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-PsyanimAdvancedPlayfightBehavior.STATE = {
-    WANDERING: 0x0001,
-    CHARGING: 0x0002,
-    FLEEING: 0x0004
-};
-
 export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
     collisionFrequency;
@@ -180,3 +174,9 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
         }
     }
 }
+
+PsyanimAdvancedPlayfightBehavior.STATE = {
+    WANDERING: 0x0001,
+    CHARGING: 0x0002,
+    FLEEING: 0x0004
+};

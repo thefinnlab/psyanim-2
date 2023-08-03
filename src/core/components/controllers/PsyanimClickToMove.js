@@ -4,11 +4,6 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimConstants from '../../PsyanimConstants';
 
-PsyanimClickToMove.STATE = {
-    IDLE: 0x0000,
-    TRAVELING: 0x0001
-};
-
 export default class PsyanimClickToMove extends PsyanimComponent {
 
     grid;
@@ -100,3 +95,8 @@ export default class PsyanimClickToMove extends PsyanimComponent {
         }
     }
 }
+
+PsyanimClickToMove.STATE = {
+    IDLE: 0x0000,
+    TRAVELING: 0x0001
+};

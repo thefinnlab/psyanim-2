@@ -1,17 +1,4 @@
 /**
- *  Standard header consists of the following 4-byte integer fields, tightly packed:
- * 
- *  - Message Type
- *  - User-defined Header Length
- *  - Padding Bytes Length (inserted at the end of user-defined header, before payload)
- *  - Payload Length
- * 
- *  Note that the total message length should be an integer-multiple of 4 to make
- *  parsing the payload easy using TypedArray APIs.
- */
-PsyanimFloat32ArrayMessage.STANDARD_HEADER_LENGTH = 16;
-
-/**
  *  This is an immutable type - once instantiated, it can no longer be modified!
  */
 export default class PsyanimFloat32ArrayMessage {
@@ -136,3 +123,16 @@ export default class PsyanimFloat32ArrayMessage {
         return message;
     }
 }
+
+/**
+ *  Standard header consists of the following 4-byte integer fields, tightly packed:
+ * 
+ *  - Message Type
+ *  - User-defined Header Length
+ *  - Padding Bytes Length (inserted at the end of user-defined header, before payload)
+ *  - Payload Length
+ * 
+ *  Note that the total message length should be an integer-multiple of 4 to make
+ *  parsing the payload easy using TypedArray APIs.
+ */
+PsyanimFloat32ArrayMessage.STANDARD_HEADER_LENGTH = 16;

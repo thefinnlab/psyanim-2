@@ -4,12 +4,6 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 import PsyanimAnimationClip from '../../../core/utils/PsyanimAnimationClip.mjs';
 
-PsyanimAnimationBaker.STATE = {
-
-    IDLE: 0x0001,
-    BAKING: 0x0002,
-};
-
 export default class PsyanimAnimationBaker extends PsyanimComponent {
 
     constructor(entity) {
@@ -63,3 +57,9 @@ export default class PsyanimAnimationBaker extends PsyanimComponent {
         return this._clip;
     }
 }
+
+PsyanimAnimationBaker.STATE = {
+
+    IDLE: 0x0001,
+    BAKING: 0x0002,
+};

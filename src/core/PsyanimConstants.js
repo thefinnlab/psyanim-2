@@ -1,3 +1,5 @@
+export default class PsyanimConstants {}
+
 PsyanimConstants.SHAPE_TYPE = {
     CIRCLE: 'PSYANIM_SHAPE_CIRCLE',
     RECTANGLE: 'PSYANIM_SHAPE_RECTANGLE',
@@ -34,5 +36,3 @@ PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER = {
     category: PsyanimConstants.COLLISION_CATEGORIES.SCREEN_BOUNDARY,
     mask: PsyanimConstants.COLLISION_CATEGORIES.DEFAULT
 };
-
-export default class PsyanimConstants {}

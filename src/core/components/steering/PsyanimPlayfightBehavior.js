@@ -2,12 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-PsyanimPlayfightBehavior.STATE = {
-    WANDERING: 0x0001,
-    CHARGING: 0x0002,
-    FLEEING: 0x0004
-};
-
 export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     breakDuration;
@@ -157,3 +151,9 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
         }
     }
 }
+
+PsyanimPlayfightBehavior.STATE = {
+    WANDERING: 0x0001,
+    CHARGING: 0x0002,
+    FLEEING: 0x0004
+};

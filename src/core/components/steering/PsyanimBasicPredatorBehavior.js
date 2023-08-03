@@ -2,11 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from "../../PsyanimComponent";
 
-PsyanimBasicPredatorBehavior.STATE = {
-    WANDERING: 0x0001,
-    PURSUING: 0x0002,
-};
-
 export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
     /**
@@ -121,3 +116,8 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
         }
     }
 }
+
+PsyanimBasicPredatorBehavior.STATE = {
+    WANDERING: 0x0001,
+    PURSUING: 0x0002,
+};

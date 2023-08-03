@@ -2,11 +2,6 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
-PsyanimComponentStateRecorder.STATE = {
-    STOPPED: 0x0001,
-    RECORDING: 0x0002,
-};
-
 export default class PsyanimComponentStateRecorder extends PsyanimComponent {
 
     componentType;
@@ -93,3 +88,8 @@ export default class PsyanimComponentStateRecorder extends PsyanimComponent {
         }
     }
 }
+
+PsyanimComponentStateRecorder.STATE = {
+    STOPPED: 0x0001,
+    RECORDING: 0x0002,
+};

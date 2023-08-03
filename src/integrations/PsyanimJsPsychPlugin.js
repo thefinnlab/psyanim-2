@@ -6,8 +6,6 @@ import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBake
 
 import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder';
 
-_PsyanimJsPsychPlugin._instance = null;
-
 /**
  *  _PsyanimJsPsychPlugin is a private singleton instance that maintains state across all trials
  *  and handles all communication with PsyanimApp.
@@ -313,3 +311,5 @@ export default class PsyanimJsPsychPlugin {
         _PsyanimJsPsychPlugin.Instance.beginNextTrial(display_element, trial);;
     }
 }
+
+_PsyanimJsPsychPlugin._instance = null;
