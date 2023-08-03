@@ -2,7 +2,7 @@
 import PsyanimApp from './core/PsyanimApp';
 import PsyanimConstants from './core/PsyanimConstants';
 import PsyanimScene from './core/PsyanimScene';
-import PsyanimComponent from './core/PsyanimConstants';
+import PsyanimComponent from './core/PsyanimComponent';
 import PsyanimEntity from './core/PsyanimEntity';
 
 // controller components
