@@ -252,6 +252,24 @@ class _PsyanimJsPsychPlugin {
     }
 }
 
+export default class PsyanimJsPsychPlugin {
+
+    static setDocumentWriter(writer) {
+
+        _PsyanimJsPsychPlugin.Instance._documentWriter = writer;
+    }
+
+    constructor(jsPsych) {
+
+        _PsyanimJsPsychPlugin.Instance.jsPsych = jsPsych;
+    }
+
+    trial(display_element, trial) {
+
+        _PsyanimJsPsychPlugin.Instance.beginNextTrial(display_element, trial);;
+    }
+}
+
 PsyanimJsPsychPlugin.info = {
     
     name: 'psyanim-jsPsych-plugin',
@@ -293,23 +311,5 @@ PsyanimJsPsychPlugin.info = {
         }
     }
 };
-
-export default class PsyanimJsPsychPlugin {
-
-    static setDocumentWriter(writer) {
-
-        _PsyanimJsPsychPlugin.Instance._documentWriter = writer;
-    }
-
-    constructor(jsPsych) {
-
-        _PsyanimJsPsychPlugin.Instance.jsPsych = jsPsych;
-    }
-
-    trial(display_element, trial) {
-
-        _PsyanimJsPsychPlugin.Instance.beginNextTrial(display_element, trial);;
-    }
-}
 
 _PsyanimJsPsychPlugin._instance = null;
