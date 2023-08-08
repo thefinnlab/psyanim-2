@@ -45,6 +45,9 @@ export default class PsyanimComponent {
     onDisable() {
     }
 
+    afterCreate() {
+    }
+
     update(t, dt) {
     }
 }

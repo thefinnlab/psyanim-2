@@ -11,6 +11,8 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
+import AfterCreateTest from '../components/AfterCreateTest';
+
 export default class SensorTest extends PsyanimScene {
 
     constructor() {
@@ -26,7 +28,8 @@ export default class SensorTest extends PsyanimScene {
         this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
+            .addComponent(PsyanimSceneChangeController).entity
+            .addComponent(AfterCreateTest);
 
         let wall = this.addEntity('wall', 650, 200, {
             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,

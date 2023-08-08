@@ -85,6 +85,14 @@ export default class PsyanimScene extends Phaser.Scene {
         this._entities = [];
 
         this.registry.set('psyanim_currentScene', this);
+
+        // setup hook into the Phaser.Scene 'create' event only *once*
+        if (!this._boundAfterCreate)
+        {
+            this._boundAfterCreate = this._afterCreate.bind(this);
+
+            this.events.on('create', this._boundAfterCreate);    
+        }
     }
 
     preload() {
@@ -95,6 +103,11 @@ export default class PsyanimScene extends Phaser.Scene {
 
         // setup wrapping with screen boundary
         this.screenBoundary = new PsyanimScreenBoundary(this);
+    }
+
+    _afterCreate() {
+ 
+        this._entities.forEach(e => e.afterCreate());
     }
 
     update(t, dt) {

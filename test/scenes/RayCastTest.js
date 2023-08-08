@@ -10,6 +10,8 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
+import AfterCreateTest from '../components/AfterCreateTest';
+
 export default class RayCastTest extends PsyanimScene {
 
     constructor() {
@@ -25,7 +27,8 @@ export default class RayCastTest extends PsyanimScene {
         this.addEntity('sceneControls')
             .addComponent(PsyanimSceneTitle).entity
             .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);    
+            .addComponent(PsyanimSceneChangeController).entity
+            .addComponent(AfterCreateTest);
 
         // create player
         this.player = this.addEntity('player', 400, 300, {

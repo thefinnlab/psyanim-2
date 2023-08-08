@@ -297,6 +297,14 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
     }
 
+    afterCreate() {
+
+        this._components.forEach(c => {
+
+            c.afterCreate();
+        })
+    }
+
     update(t, dt) {
 
         this._components.forEach(c => {
