@@ -207,6 +207,20 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return this._color;
     }
 
+    enableFriction(friction = 0.1, frictionAir = 0.01, frictionStatic = 0.5) {
+
+        this.body.friction = friction;
+        this.body.frictionAir = frictionAir;
+        this.body.frictionStatic = frictionStatic;
+    }
+
+    disableFriction() {
+
+        this.body.friction = 0;
+        this.body.frictionAir = 0;
+        this.body.frictionStatic = 0;
+    }
+
     addComponent(componentType) {
 
         // TODO: let's make sure we don't add multiple entities of this component type

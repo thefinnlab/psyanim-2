@@ -11,26 +11,22 @@ export default class PsyanimAdvancedArriveAgent extends PsyanimComponent {
     constructor(entity) {
         
         super(entity);
+
+        this.entity.disableFriction();
     }
 
     // this component is enabled at the start of any charge
     onEnable() {
 
         // at the start of charge, disable friction and recompute max speed
-        this.entity.body.friction = 0;
-        this.entity.body.frictionAir = 0;
-        this.entity.body.frictionStatic = 0;
-
+        this.entity.disableFriction();
         this.advancedArriveBehavior.computeMaxSpeed(this.target);
     }
 
     // this component is disabled at the end of any charge
     onDisable() {
 
-        this.entity.body.friction = 0.1;
-        this.entity.body.frictionAir = 0.01;
-        this.entity.body.frictionStatic = 0.5;
-
+        this.entity.enableFriction();
         this.entity.setVelocity(0, 0);
     }
 

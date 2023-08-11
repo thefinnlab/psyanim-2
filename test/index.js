@@ -6,7 +6,6 @@ import FleeTest from './scenes/FleeTest';
 import WanderTest from './scenes/WanderTest';
 import SensorTest from './scenes/SensorTest';
 import EvadeTest from './scenes/EvadeTest';
-// import SimpleCollisionAvoidanceTest from './scenes/SimpleCollisionAvoidanceTest';
 import RayCastTest from './scenes/RayCastTest';
 import AdvancedFleeTest from './scenes/AdvancedFleeTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
@@ -26,13 +25,10 @@ import ClickToMoveTest from './scenes/ClickToMoveTest';
  *  Register scenes
  */
 
-console.warn("TODO: SimpleCollisionAvoidanceTest is broken");
-
-PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTest);
+PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
 PsyanimApp.Instance.config.registerScene(PathTest);
-// PsyanimApp.Instance.config.registerScene(SimpleCollisionAvoidanceTest);
 PsyanimApp.Instance.config.registerScene(PreyTest);
 PsyanimApp.Instance.config.registerScene(PredatorTest);
 PsyanimApp.Instance.config.registerScene(FOVSensorTest);
@@ -54,6 +50,6 @@ PsyanimApp.Instance.config.registerScene(ShowHideCanvasTest);
  *  Make config edits & run the app
  */
 
-// PsyanimApp.Instance.config.setDebugEnabled(true);
+PsyanimApp.Instance.config.setDebugEnabled(true);
 
 PsyanimApp.Instance.run();

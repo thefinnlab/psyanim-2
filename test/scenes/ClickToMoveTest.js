@@ -50,7 +50,7 @@ export default class ClickToMoveTest extends PsyanimScene {
             {
                 shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
                 base: 12, altitude: 24, 
-                color: 0xffc0cb            
+                color: 0xff0000            
             });
 
         // setup pathfinding grid with obstacles

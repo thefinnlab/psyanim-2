@@ -27,6 +27,16 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
             .addEntity(this.name + '_arriveTarget', 0, 0, { isEmpty: true });
     }
 
+    onEnable() {
+
+        this.entity.disableFriction();
+    }
+
+    onDisable() {
+
+        this.entity.enableFriction();
+    }
+
     setTarget(target) {
 
         if (this._target != null)
@@ -92,6 +102,8 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
+                this.entity.disableFriction();
+
                 // move the arrive target to the midpoint between this.entity and this._target
                 this._arriveTarget.position = this._target.position
                     .subtract(this.entity.position)
@@ -110,9 +122,13 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
+                this.entity.enableFriction();
+
                 break;
 
             case PsyanimAdvancedPlayfightBehavior.STATE.FLEEING:
+
+                this.entity.enableFriction();
 
                 break;
         }
