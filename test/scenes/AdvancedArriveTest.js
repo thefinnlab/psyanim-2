@@ -40,22 +40,12 @@ export default class AdvancedArriveTest extends PsyanimScene {
             isSleeping: true
         });
 
-        this.target.addComponent(PsyanimMouseFollowTarget);
+        this.mouseFollowTarget = this.target.addComponent(PsyanimMouseFollowTarget);
 
         this.agent1 = this.addEntity('agent1', 50, 50, {
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
             base: 12, altitude: 20, color: 0x00ff00
         });
-
-        // give it a random initial velocity
-        let v0_x = Phaser.Math.Between(0.0, 6.0);
-        let v0_y = Phaser.Math.Between(0.0, 6.0);
-
-        this.agent1.setVelocity(v0_x, v0_y);
-
-        this.agent1.body.friction = 0;
-        this.agent1.body.frictionAir = 0;
-        this.agent1.body.frictionStatic = 0;
 
         let vehicle1 = this.agent1.addComponent(PsyanimVehicle);
 
@@ -63,16 +53,18 @@ export default class AdvancedArriveTest extends PsyanimScene {
 
         advancedArrive.chargeDuration = 0.9;
         advancedArrive.innerDecelerationRadius = 10;
-        advancedArrive.outerDecelerationRadius = 40;
-        advancedArrive.maxAcceleration = 1;
+        advancedArrive.outerDecelerationRadius = 30;
+        advancedArrive.maxAcceleration = 0.4;
 
         this.advancedArriveAgent = this.agent1.addComponent(PsyanimAdvancedArriveAgent);
 
         this.advancedArriveAgent.vehicle = vehicle1;
         this.advancedArriveAgent.advancedArriveBehavior = advancedArrive;
+        this.advancedArriveAgent.target = this.target;
+
+        this.advancedArriveAgent.enabled = false;
 
         this._timer = 0;
-        this._running = true;
 
         this._keys = {
             C: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C)
@@ -87,13 +79,13 @@ export default class AdvancedArriveTest extends PsyanimScene {
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.C))
         {
-            this.advancedArriveAgent.setTargetPosition(this.target.position);
+            this.advancedArriveAgent.enabled = true;
+            this.mouseFollowTarget.enabled = false;
 
-            this._running = true;
             this._timer = 0;
         }
 
-        if (this._running)
+        if (this.advancedArriveAgent.enabled)
         {
             // check end condition
             let distanceToTarget = this.target.position
@@ -104,7 +96,8 @@ export default class AdvancedArriveTest extends PsyanimScene {
             {
                 console.log("reached target in " + (this._timer / 1000) + " seconds!");
 
-                this._running = false;
+                this.advancedArriveAgent.enabled = false;
+                this.mouseFollowTarget.enabled = true;
             }
         }
     }

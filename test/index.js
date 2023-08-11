@@ -12,7 +12,7 @@ import AdvancedFleeTest from './scenes/AdvancedFleeTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 import ChargeTest from './scenes/ChargeTest';
 import AdvancedPlayfightTest from './scenes/AdvancedPlayfightTest';
-// import AdvancedArriveTest from './scenes/AdvancedArriveTest';
+import AdvancedArriveTest from './scenes/AdvancedArriveTest';
 import DebugGraphicsTest from './scenes/DebugGraphicsTest';
 import ShowHideCanvasTest from './scenes/ShowHideCanvasTest';
 import FOVSensorTest from './scenes/FOVSensorTest';
@@ -26,9 +26,9 @@ import ClickToMoveTest from './scenes/ClickToMoveTest';
  *  Register scenes
  */
 
-console.warn("TODO: AdvancedArriveTest is broken");
 console.warn("TODO: SimpleCollisionAvoidanceTest is broken");
 
+PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTest);
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
 PsyanimApp.Instance.config.registerScene(PathTest);
@@ -47,7 +47,6 @@ PsyanimApp.Instance.config.registerScene(AdvancedFleeTest);
 PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTest);
 PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTest);
 PsyanimApp.Instance.config.registerScene(ChargeTest);
-// PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(DebugGraphicsTest);
 PsyanimApp.Instance.config.registerScene(ShowHideCanvasTest);
 
