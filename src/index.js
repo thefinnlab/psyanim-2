@@ -82,6 +82,8 @@ import PsyanimPath from './core/utils/PsyanimPath.mjs';
 
 import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils';
 
+import PsyanimDebug from './core/utils/PsyanimDebug';
+
 // integrations
 import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin';
 import PsyanimFirebaseClient from './integrations/PsyanimFirebaseClient';
@@ -171,6 +173,8 @@ export {
     PsyanimPath,
 
     PsyanimGeomUtils,
+
+    PsyanimDebug,
 
     // integrations
     PsyanimJsPsychPlugin,

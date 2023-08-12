@@ -20,6 +20,7 @@ import PreyTest from './scenes/PreyTest';
 import PathfindingTest from './scenes/PathfindingTest';
 import PathTest from './scenes/PathTest';
 import ClickToMoveTest from './scenes/ClickToMoveTest';
+import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest';
 
 /**
  *  Register scenes
@@ -45,6 +46,7 @@ PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTest);
 PsyanimApp.Instance.config.registerScene(ChargeTest);
 PsyanimApp.Instance.config.registerScene(DebugGraphicsTest);
 PsyanimApp.Instance.config.registerScene(ShowHideCanvasTest);
+PsyanimApp.Instance.config.registerScene(PsyanimDebugLoggerTest);
 
 /**
  *  Make config edits & run the app

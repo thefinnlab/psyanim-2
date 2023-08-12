@@ -146,6 +146,19 @@ export default class PsyanimFirebaseClient {
         return newId;
     }
 
+    writeSessionLogData(docId, data) {
+
+        this.db
+            .collection('session-logs')
+            .doc(docId)
+            .set({
+                data: data,
+                time: this.serverTimestamp
+            })
+            .then(() => console.log("Session logs document written!"))
+            .catch((error) => console.error("Error adding document: ", error));
+    }
+
     /**
      *  TODO: switch to returning a promise to make client code simpler
      * 

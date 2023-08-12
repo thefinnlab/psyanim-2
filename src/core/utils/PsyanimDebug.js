@@ -1,4 +1,34 @@
+class PsyanimConsoleLogger {
+
+    log(msg) {
+        console.log(msg);
+    }
+
+    warn(msg) {
+        console.warn(msg);
+    }
+
+    error(msg) {
+        console.error(msg);
+    }
+}
+
 export default class PsyanimDebug {
+
+    static log(msg) {
+
+        PsyanimDebug.logger.log(msg);
+    }
+
+    static warn(msg) {
+
+        PsyanimDebug.logger.warn(msg);
+    }
+
+    static error(msg) {
+
+        PsyanimDebug.logger.error(msg);
+    }
 
     static _vec2ToString(name, vector) {
 
@@ -11,3 +41,5 @@ export default class PsyanimDebug {
         return vecString;
     }
 }
+
+PsyanimDebug.logger = new PsyanimConsoleLogger();
