@@ -3,44 +3,30 @@ import Phaser from 'phaser';
 import PsyanimConstants from './PsyanimConstants';
 import PsyanimGeomUtils from './utils/PsyanimGeomUtils';
 
+/**
+ *  Some helpful tips:
+ *      - use 'this.visible' to toggle sprite visibility
+ *      - use 'this.body.isSleeping' to toggle whether or not this object receives physics updates
+ *      - use 'this.body.isSensor' to toggle whether this body collides with other bodies or not
+ * 
+ *  From: https://github.com/liabru/matter-js/issues/179
+ * 
+ *  "Internally the engine uses MKS (meters, kilograms, and seconds) units 
+ *  and radians for angles.
+ * 
+ *  If you use the built in renderer and and built in runner, with default 
+ *  settings this translates to:
+ *  
+ *      1 position = 1 px
+ *      1 speed = 1 px per step
+ *      1 step = 16.666ms"
+ */
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     constructor(scene, name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
 
-        /**
-         *  Some helpful tips:
-         *      - use 'this.visible' to toggle sprite visibility
-         *      - use 'this.body.isSleeping' to toggle whether or not this object receives physics updates
-         *      - use 'this.body.isSensor' to toggle whether this body collides with other bodies or not
-         * 
-         *  From: https://github.com/liabru/matter-js/issues/179
-         * 
-         *  "Internally the engine uses MKS (meters, kilograms, and seconds) units 
-         *  and radians for angles.
-         * 
-         *  If you use the built in renderer and and built in runner, with default 
-         *  settings this translates to:
-         *  
-         *      1 position = 1 px
-         *      1 speed = 1 px per step
-         *      1 step = 16.666ms"
-         */
-
-        // TODO: everywhere you're doing these checks for object properties, use Object.hasOwn()!!!
-        // otherwise, bools and ints may get evaluated unexpectedly!
-
-        // setup rendering
-        const defaultShapeParams = {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            base: 30, altitude: 60, 
-            width: 20, height: 20, 
-            radius: 4, 
-            color: 0xffff00,
-            visible: true
-        };
-
+        // before we call super(), let's generate the necessary textures and matter config
         let textureKey = null;
-        let generateNewTexture = false;
 
         if (shapeParams.textureKey) 
         {
@@ -51,93 +37,100 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             textureKey = scene.scene.key + "_" + name;
         }
 
-        // if textureKey doesn't exist in texture manager,
-        if ( !scene.textures.exists(textureKey) )
-        {
-            generateNewTexture = true;
-        }
-        
-        let matterConfig = {};
-
-        matterOptions.name = Object.hasOwn(matterOptions, 'name') ? matterOptions.name : name;
-        matterOptions.isSensor = (matterOptions.isSensor) ? matterOptions.isSensor : false;
-        matterOptions.isSleeping = (matterOptions.isSleeping) ? matterOptions.isSleeping : false;
-        matterOptions.collisionFilter = Object.hasOwn(matterOptions, 'collisionFilter') 
-            ? matterOptions.collisionFilter : PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER;
+        const defaultShapeParams = PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
 
         let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
         let color = (shapeParams.color) ? shapeParams.color : defaultShapeParams.color;
 
         let geomParams = null;
+        let matterConfig = { type: 'circle', radius: 1 };
 
-        switch(shapeType)
+        let isEmpty = Object.hasOwn(shapeParams, 'isEmpty') ? shapeParams.isEmpty : false;
+
+        if (isEmpty)
         {
-            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
+            textureKey = '';
+        }
+        else
+        {
+            let generateNewTexture = false;
 
-                let radius = (shapeParams.radius) ? shapeParams.radius : defaultShapeParams.radius;
+            if ( !scene.textures.exists(textureKey) )
+            {
+                generateNewTexture = true;
+            }    
 
-                let circleGeomParams = {
-                    radius: radius
-                };
+            switch(shapeType)
+            {
+                case PsyanimConstants.SHAPE_TYPE.CIRCLE:
 
-                geomParams = circleGeomParams;
+                    let radius = (shapeParams.radius) ? shapeParams.radius : defaultShapeParams.radius;
 
-                if (generateNewTexture)
-                {
-                    PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, color);
-                }
+                    let circleGeomParams = {
+                        radius: radius
+                    };
 
-                matterConfig.type = 'circle';
-                matterConfig.radius = circleGeomParams.radius;
+                    geomParams = circleGeomParams;
 
-                break;
+                    if (generateNewTexture)
+                    {
+                        PsyanimGeomUtils.generateCircleTexture(scene, textureKey, circleGeomParams, color);
+                    }
 
-            case PsyanimConstants.SHAPE_TYPE.TRIANGLE:
+                    matterConfig.type = 'circle';
+                    matterConfig.radius = circleGeomParams.radius;
 
-                let base = (shapeParams.base) ? shapeParams.base : defaultShapeParams.base;
-                let altitude = (shapeParams.altitude) ? shapeParams.altitude : defaultShapeParams.altitude;
-    
-                let triangleGeomParams = {
-                    base: base, altitude: altitude
-                };
+                    break;
 
-                geomParams = triangleGeomParams;
+                case PsyanimConstants.SHAPE_TYPE.TRIANGLE:
 
-                if (generateNewTexture)
-                {
-                    PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, color);
-                }
+                    let base = (shapeParams.base) ? shapeParams.base : defaultShapeParams.base;
+                    let altitude = (shapeParams.altitude) ? shapeParams.altitude : defaultShapeParams.altitude;
+        
+                    let triangleGeomParams = {
+                        base: base, altitude: altitude
+                    };
 
-                matterConfig.type = 'fromVertices';
-                matterConfig.verts = PsyanimGeomUtils.computeTriangleVertices(base, altitude);
-    
-                break;
+                    geomParams = triangleGeomParams;
 
-            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
+                    if (generateNewTexture)
+                    {
+                        PsyanimGeomUtils.generateTriangleTexture(scene, textureKey, triangleGeomParams, color);
+                    }
 
-                let width = (shapeParams.width) ? shapeParams.width : defaultShapeParams.width;
-                let height = (shapeParams.height) ? shapeParams.height : defaultShapeParams.height;
+                    matterConfig.type = 'fromVertices';
+                    matterConfig.verts = PsyanimGeomUtils.computeTriangleVertices(base, altitude);
+        
+                    break;
 
-                let rectangleGeomParams = {
-                    width: width, height: height
-                };
+                case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
 
-                geomParams = rectangleGeomParams;
+                    let width = (shapeParams.width) ? shapeParams.width : defaultShapeParams.width;
+                    let height = (shapeParams.height) ? shapeParams.height : defaultShapeParams.height;
 
-                if (generateNewTexture)
-                {
-                    PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, color);
-                }
+                    let rectangleGeomParams = {
+                        width: width, height: height
+                    };
 
-                matterConfig.type = 'rectangle';
-                matterConfig.width = width;
-                matterConfig.height = height;
+                    geomParams = rectangleGeomParams;
 
-                break;
+                    if (generateNewTexture)
+                    {
+                        PsyanimGeomUtils.generateRectangleTexture(scene, textureKey, rectangleGeomParams, color);
+                    }
+
+                    matterConfig.type = 'rectangle';
+                    matterConfig.width = width;
+                    matterConfig.height = height;
+
+                    break;
+            }
         }
 
+        // initialize Phaser.Physics.Matter.Sprite
         super(scene.matter.world, x, y, textureKey);
 
+        // save off this entity's properties
         this._shapeParams = shapeParams;
         this._matterOptions = matterOptions;
 
@@ -148,17 +141,24 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.name = name;
 
         // setup new physics body
+        matterOptions.name = Object.hasOwn(matterOptions, 'name') ? matterOptions.name : name;
+        matterOptions.isSensor = Object.hasOwn(matterOptions, 'isSensor') ? matterOptions.isSensor : false;
+        matterOptions.isSleeping = Object.hasOwn(matterOptions, 'isSleeping') ? matterOptions.isSleeping : false;
+        matterOptions.collisionFilter = Object.hasOwn(matterOptions, 'collisionFilter') 
+            ? matterOptions.collisionFilter : PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER;
+        
         this.setBody(matterConfig, matterOptions);
 
         // there's a bug in phaser where 'label' doesn't get set for non-primitive bodies
         this.body.label = this.name;
 
-        if (Object.hasOwn(shapeParams, 'isEmpty') && shapeParams.isEmpty == true)
+        // setup visibility and isSensor / isSleeping depending on whether this object is empty
+        if (isEmpty)
         {
             this.visible = false;
 
-            this.body.isSleeping = true;
             this.body.isSensor = true;
+            this.body.isSleeping = true;
         }
         else
         {
@@ -176,12 +176,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.body.inertia = Infinity;
         this.body.inverseInertia = 0;
 
+        // we add the entity to the scene in constructor to guarantee all entities always live in a scene
         scene.add.existing(this);
 
-        /**
-         *  Private fields
-         */
-
+        // setup private fields
         this._components = [];
     }
 
@@ -222,8 +220,6 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     addComponent(componentType) {
-
-        // TODO: let's make sure we don't add multiple entities of this component type
 
         let newComponent = new componentType(this);
 

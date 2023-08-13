@@ -104,7 +104,7 @@ export default class PsyanimFirebaseClient {
             .doc(newId)
             .set({
                 data: data,
-                time: this.serverTimestamp
+                lastTimeModified: this.serverTimestamp
             })
             .then(() => console.log("Animation clip document written!"))
             .catch((error) => console.error('Error adding document: ', error));

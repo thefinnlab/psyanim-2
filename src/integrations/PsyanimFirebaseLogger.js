@@ -67,7 +67,8 @@ export default class PsyanimFirebaseLogger {
 
         this._msgBuffer.push({
             type: 'log',
-            msg: msg
+            msg: msg,
+            clientTime: Date.now()
         });
 
         console.log(msg);
@@ -77,7 +78,8 @@ export default class PsyanimFirebaseLogger {
 
         this._msgBuffer.push({
             type: 'warn',
-            msg: msg
+            msg: msg,
+            clientTime: Date.now()
         });
 
         console.warn(msg);
@@ -87,7 +89,8 @@ export default class PsyanimFirebaseLogger {
 
         this._msgBuffer.push({
             type: 'error',
-            msg: msg
+            msg: msg,
+            clientTime: Date.now()
         });
 
         console.error(msg);
