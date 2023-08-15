@@ -22,6 +22,18 @@ export default class PsyanimScene extends Phaser.Scene {
         return entity;
     }
 
+    instantiatePrefab(prefab, instanceName, x = 0, y = 0) {
+
+        let entity = this.addEntity(
+            instanceName, x, y,
+            prefab.shapeParams, 
+            prefab.matterOptions);
+
+        prefab.create(entity);
+
+        return entity;
+    }
+
     getAllEntityNames() {
 
         return this._entities.map(e => e.name);

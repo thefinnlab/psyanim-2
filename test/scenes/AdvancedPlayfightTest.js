@@ -1,6 +1,7 @@
 import Phaser from 'phaser';
 
 import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimConstants from '../../src/core/PsyanimConstants';
 
 import PsyanimAdvancedPlayfightAgent from '../../src/core/components/steering/agents/PsyanimAdvancedPlayfightAgent';
 
@@ -9,7 +10,7 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimPlayfightAgentPrefab from '../prefabs/PsyanimPlayfightAgentPrefab';
+import PsyanimPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimPlayfightAgentPrefab';
 
 export default class AdvancedPlayfightTest extends PsyanimScene {
 
@@ -33,19 +34,22 @@ export default class AdvancedPlayfightTest extends PsyanimScene {
             .addComponent(PsyanimSceneChangeController);
 
         // setup agents from prefab
-        let playfightAgentPrefab = new PsyanimPlayfightAgentPrefab();
+        let playfightAgentPrefab = new PsyanimPlayfightAgentPrefab({
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+            radius: 12, color: 0xff0000
+        });
+
         playfightAgentPrefab.collisionFrequency = 2000;
         playfightAgentPrefab.breakDuration = 1650;
 
-        playfightAgentPrefab.color = 0xff0000;
-        playfightAgentPrefab.initialPosition = new Phaser.Math.Vector2(200, 300);
+        let agent1 = this.instantiatePrefab(playfightAgentPrefab, 'agent1', 200, 300);
 
-        let agent1 = playfightAgentPrefab.instantiate(this, 'agent1');
+        playfightAgentPrefab.name = 'agent2';
+        playfightAgentPrefab.shapeParams.color = 0x0000ff;
+        playfightAgentPrefab.shapeParams.x = 600;
+        playfightAgentPrefab.shapeParams.y = 300;
 
-        playfightAgentPrefab.color = 0x0000ff;
-        playfightAgentPrefab.initialPosition = new Phaser.Math.Vector2(600, 300);
-
-        let agent2 = playfightAgentPrefab.instantiate(this, 'agent2');
+        let agent2 = this.instantiatePrefab(playfightAgentPrefab, 'agent2', 600, 300);
 
         /**
          *  Setup targets for the playfight agents
