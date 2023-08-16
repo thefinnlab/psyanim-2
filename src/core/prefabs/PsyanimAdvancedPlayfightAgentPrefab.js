@@ -8,7 +8,7 @@ import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior"
 import PsyanimAdvancedPlayfightBehavior from "../components/steering/PsyanimAdvancedPlayfightBehavior";
 import PsyanimAdvancedPlayfightAgent from "../components/steering/agents/PsyanimAdvancedPlayfightAgent";
 
-export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
+export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPrefab {
 
     breakDuration;
     collisionFrequency;

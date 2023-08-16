@@ -9,9 +9,13 @@ export default class PsyanimArriveAgentPrefab extends PsyanimEntityPrefab {
 
     target;
 
+    maxSpeed;
+
     constructor(shapeParams) {
 
         super(shapeParams);
+
+        this.maxSpeed = 8;
     }
 
     create(entity) {
@@ -22,7 +26,7 @@ export default class PsyanimArriveAgentPrefab extends PsyanimEntityPrefab {
 
         let arriveBehavior = entity.addComponent(PsyanimArriveBehavior);
 
-        arriveBehavior.maxSpeed = 8;
+        arriveBehavior.maxSpeed = this.maxSpeed;
 
         let arriveAgent = entity.addComponent(PsyanimArriveAgent);
         arriveAgent.arriveBehavior = arriveBehavior;

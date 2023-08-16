@@ -4,6 +4,7 @@ import PsyanimConstants from './core/PsyanimConstants';
 import PsyanimScene from './core/PsyanimScene';
 import PsyanimComponent from './core/PsyanimComponent';
 import PsyanimEntity from './core/PsyanimEntity';
+import PsyanimEntityPrefab from './core/PsyanimEntityPrefab';
 
 // controller components
 import PsyanimClickToMove from './core/components/controllers/PsyanimClickToMove';
@@ -73,6 +74,15 @@ import PsyanimComponentStateRecorder from './core/components/utils/PsyanimCompon
 import PsyanimExperimentTimer from './core/components/utils/PsyanimExperimentTimer';
 import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder';
 
+// prefabs
+import PsyanimArriveAgentPrefab from './core/prefabs/PsyanimArriveAgentPrefab';
+import PsyanimAdvancedArriveAgentPrefab from './core/prefabs/PsyanimAdvancedArriveAgentPrefab';
+import PsyanimAdvancedPlayfightAgentPrefab from './core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
+import PsyanimClickToMovePlayerPrefab from './core/prefabs/PsyanimClickToMovePlayerPrefab';
+import PsyanimPreyPrefab from './core/prefabs/PsyanimPreyPrefab';
+import PsyanimPredatorPrefab from './core/prefabs/PsyanimPredatorPrefab';
+import PsyanimAdvancedFleeAgentPrefab from './core/prefabs/PsyanimAdvancedFleeAgentPrefab';
+
 // utils
 import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.mjs';
 import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.mjs';
@@ -96,6 +106,7 @@ export {
     PsyanimScene,
     PsyanimComponent,
     PsyanimEntity,
+    PsyanimEntityPrefab,
 
     // controller components
     PsyanimClickToMove,
@@ -164,6 +175,15 @@ export {
     PsyanimComponentStateRecorder,
     PsyanimExperimentTimer,
     PsyanimVideoRecorder,
+
+    // prefabs
+    PsyanimArriveAgentPrefab,
+    PsyanimAdvancedPlayfightAgentPrefab,
+    PsyanimClickToMovePlayerPrefab,
+    PsyanimAdvancedArriveAgentPrefab,
+    PsyanimAdvancedFleeAgentPrefab,
+    PsyanimPreyPrefab,
+    PsyanimPredatorPrefab,
 
     // utils
     PsyanimAnimationClip,

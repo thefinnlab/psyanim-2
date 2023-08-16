@@ -10,7 +10,7 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimPlayfightAgentPrefab';
+import PsyanimAdvancedPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
 
 export default class AdvancedPlayfightTest extends PsyanimScene {
 
@@ -34,7 +34,7 @@ export default class AdvancedPlayfightTest extends PsyanimScene {
             .addComponent(PsyanimSceneChangeController);
 
         // setup agents from prefab
-        let playfightAgentPrefab = new PsyanimPlayfightAgentPrefab({
+        let playfightAgentPrefab = new PsyanimAdvancedPlayfightAgentPrefab({
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
             radius: 12, color: 0xff0000
         });

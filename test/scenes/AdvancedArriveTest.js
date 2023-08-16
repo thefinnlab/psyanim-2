@@ -2,17 +2,16 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../src/core/PsyanimScene';
 import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimAdvancedArriveBehavior from '../../src/core/components/steering/PsyanimAdvancedArriveBehavior';
 import PsyanimAdvancedArriveAgent from '../../src/core/components/steering/agents/PsyanimAdvancedArriveAgent';
 
 import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
+import PsyanimAdvancedArriveAgentPrefab from '../../src/core/prefabs/PsyanimAdvancedArriveAgentPrefab';
 
 export default class AdvancedArriveTest extends PsyanimScene {
 
@@ -31,6 +30,7 @@ export default class AdvancedArriveTest extends PsyanimScene {
             .addComponent(PsyanimPhysicsSettingsController).entity
             .addComponent(PsyanimSceneChangeController);
 
+        // setup mouse controller
         this.target = this.addEntity('target', 0, 0, {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 4, color: 0x0000ff
@@ -42,24 +42,16 @@ export default class AdvancedArriveTest extends PsyanimScene {
 
         this.mouseFollowTarget = this.target.addComponent(PsyanimMouseFollowTarget);
 
-        this.agent1 = this.addEntity('agent1', 50, 50, {
+        // setup advanced arrive agent
+        let advancedArriveAgentPrefab = new PsyanimAdvancedArriveAgentPrefab({
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
             base: 12, altitude: 20, color: 0x00ff00
         });
 
-        let vehicle1 = this.agent1.addComponent(PsyanimVehicle);
+        this.agent1 = this.instantiatePrefab(advancedArriveAgentPrefab,'agent1', 50, 50);
 
-        let advancedArrive = this.agent1.addComponent(PsyanimAdvancedArriveBehavior);
+        this.advancedArriveAgent = this.agent1.getComponent(PsyanimAdvancedArriveAgent);
 
-        advancedArrive.chargeDuration = 0.9;
-        advancedArrive.innerDecelerationRadius = 10;
-        advancedArrive.outerDecelerationRadius = 30;
-        advancedArrive.maxAcceleration = 0.4;
-
-        this.advancedArriveAgent = this.agent1.addComponent(PsyanimAdvancedArriveAgent);
-
-        this.advancedArriveAgent.vehicle = vehicle1;
-        this.advancedArriveAgent.advancedArriveBehavior = advancedArrive;
         this.advancedArriveAgent.target = this.target;
 
         this.advancedArriveAgent.enabled = false;

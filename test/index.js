@@ -6,14 +6,11 @@ import FleeTest from './scenes/FleeTest';
 import WanderTest from './scenes/WanderTest';
 import SensorTest from './scenes/SensorTest';
 import EvadeTest from './scenes/EvadeTest';
-import RayCastTest from './scenes/RayCastTest';
 import AdvancedFleeTest from './scenes/AdvancedFleeTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 import ChargeTest from './scenes/ChargeTest';
 import AdvancedPlayfightTest from './scenes/AdvancedPlayfightTest';
 import AdvancedArriveTest from './scenes/AdvancedArriveTest';
-import DebugGraphicsTest from './scenes/DebugGraphicsTest';
-import ShowHideCanvasTest from './scenes/ShowHideCanvasTest';
 import FOVSensorTest from './scenes/FOVSensorTest';
 import PredatorTest from './scenes/PredatorTest';
 import PreyTest from './scenes/PreyTest';
@@ -39,13 +36,10 @@ PsyanimApp.Instance.config.registerScene(FleeTest);
 PsyanimApp.Instance.config.registerScene(WanderTest);
 PsyanimApp.Instance.config.registerScene(SensorTest);
 PsyanimApp.Instance.config.registerScene(EvadeTest);
-PsyanimApp.Instance.config.registerScene(RayCastTest);
 PsyanimApp.Instance.config.registerScene(AdvancedFleeTest);
 PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTest);
 PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTest);
 PsyanimApp.Instance.config.registerScene(ChargeTest);
-PsyanimApp.Instance.config.registerScene(DebugGraphicsTest);
-PsyanimApp.Instance.config.registerScene(ShowHideCanvasTest);
 PsyanimApp.Instance.config.registerScene(PsyanimDebugLoggerTest);
 
 /**
