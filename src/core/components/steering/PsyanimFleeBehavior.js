@@ -13,7 +13,7 @@ export default class PsyanimFleeBehavior extends PsyanimComponent {
 
         super(entity);
 
-        this.maxSpeed = 5;
+        this.maxSpeed = 6;
         this.maxAcceleration = 0.2;
     
         this.panicDistance = 250;    

@@ -6,7 +6,7 @@ import PsyanimConstants from '../../src/core/PsyanimConstants';
 import PsyanimPathfindingAgent from '../../src/core/components/pathfinding/PsyanimPathfindingAgent';
 import PsyanimPathfindingRenderer from '../../src/core/components/rendering/PsyanimPathfindingRenderer';
 
-import PsyanimNavigationGrid from '../../src/core/utils/PsyanimNavigationGrid';
+import TestGridWithObstacles from '../utils/TestGridWithObstacles';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
@@ -48,49 +48,7 @@ export default class PathfindingTest extends PsyanimScene {
         /**
          *  setup navigation grid w/ obstacles and bake it
          */
-        let canvasWidth = this.game.scale.width;
-        let canvasHeight = this.game.scale.height;
-        let cellSize = 10;
-
-        this._grid = new PsyanimNavigationGrid(cellSize, canvasWidth, canvasHeight);
-
-        let obstacle1 = this.addEntity('obstacle1', 170, 50, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 49,
-            color: 0x0000ff
-        });
-
-        let obstacle2 = this.addEntity('obstacle2', 170, 160, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
-            base: 98, altitude: 98,
-            color: 0x00ff00
-        });
-
-        let obstacle3 = this.addEntity('obstacle3', 170, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 49,
-            color: 0xffff00
-        });
-
-        let obstacle4 = this.addEntity('obstacle4', 730, 520, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
-            base: 98, altitude: 98,
-            color: 0x00ffff
-        });
-
-        let obstacle5 = this.addEntity('obstacle5', 400, 340, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
-            height: 500, width: 100,
-            color: 0xFFA500
-        });
-
-        this._grid.addObstacle(obstacle1);
-        this._grid.addObstacle(obstacle2);
-        this._grid.addObstacle(obstacle3);
-        this._grid.addObstacle(obstacle4);
-        this._grid.addObstacle(obstacle5);
-
-        this._grid.bake(); // baking generates masks from obstacles!
+        this._grid = TestGridWithObstacles.create(this);
 
         /**
          *  setup pathfinding agents 

@@ -48,11 +48,11 @@ export default class AdvancedArriveTest extends PsyanimScene {
             base: 12, altitude: 20, color: 0x00ff00
         });
 
+        advancedArriveAgentPrefab.target = this.target;
+
         this.agent1 = this.instantiatePrefab(advancedArriveAgentPrefab,'agent1', 50, 50);
 
         this.advancedArriveAgent = this.agent1.getComponent(PsyanimAdvancedArriveAgent);
-
-        this.advancedArriveAgent.target = this.target;
 
         this.advancedArriveAgent.enabled = false;
 

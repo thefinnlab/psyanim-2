@@ -2,16 +2,14 @@ import Phaser from 'phaser';
 
 import PsyanimScene from '../../src/core/PsyanimScene';
 import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
+
 import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
-import PsyanimFleeBehavior from '../../src/core/components/steering/PsyanimFleeBehavior';
-import PsyanimEvadeBehavior from '../../src/core/components/steering/PsyanimEvadeBehavior';
-import PsyanimEvadeAgent from '../../src/core/components/steering/agents/PsyanimEvadeAgent';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimEvadeAgentPrefab from '../../src/core/prefabs/PsyanimEvadeAgentPrefab';
 
 export default class EvadeTest extends PsyanimScene {
 
@@ -42,21 +40,13 @@ export default class EvadeTest extends PsyanimScene {
         player.addComponent(PsyanimPlayerController);
 
         // create evade agent
-        let agent = this.addEntity('evadeAgent', 600, 450, {
+        let agentPrefab = new PsyanimEvadeAgentPrefab({
             shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
             base: 16, altitude: 32, color: 0x00ff00         
         });
 
-        let evadeAgentVehicle = agent.addComponent(PsyanimVehicle);
+        agentPrefab.target = player;
 
-        let fleeBehavior = agent.addComponent(PsyanimFleeBehavior);
-
-        let evadeBehavior = agent.addComponent(PsyanimEvadeBehavior);
-        evadeBehavior.fleeBehavior = fleeBehavior;
-
-        let evadeAgent = agent.addComponent(PsyanimEvadeAgent);
-        evadeAgent.target = player;
-        evadeAgent.vehicle = evadeAgentVehicle;
-        evadeAgent.evadeBehavior = evadeBehavior;
+        let agent = this.instantiatePrefab(agentPrefab, 'agent1', 600, 450);
     }
 }
