@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimDebug from '../../utils/PsyanimDebug';
+
 export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
     collisionFrequency;
@@ -11,9 +13,13 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
     advancedArriveBehavior;
     wanderBehavior;
 
+    debug;
+
     constructor(entity) {
 
         super(entity);
+
+        this.debug = false;
 
         // TODO: can we just change 'collision frequency' & 'break duration' to seconds instead of ms?
         this.collisionFrequency = 2000;
@@ -41,7 +47,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
         if (this._target != null)
         {
-            this.setOnCollideWith(this._target.body, null);   
+            this.entity.setOnCollideWith(this._target.body, null);   
         }
 
         this._target = target;
@@ -51,7 +57,10 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
     _handleCollision() {
 
-        console.log("playfight collision occured at t = " + this.entity.scene.time.now / 1000);
+        if (this.debug)
+        {
+            PsyanimDebug.log("playfight collision occured at t = " + this.entity.scene.time.now / 1000);
+        }
 
         this._breakTimer = 0;
 
@@ -102,6 +111,11 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.CHARGING:
 
+                if (this.debug)
+                {
+                    PsyanimDebug.log(this.entity.name + ' entered playfight state: CHARGING');
+                }
+
                 this.entity.disableFriction();
 
                 // move the arrive target to the midpoint between this.entity and this._target
@@ -113,7 +127,10 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
                 // compute charge duration necessary to satisfy collision frequency
                 this.advancedArriveBehavior.chargeDuration = (this.collisionFrequency - this._breakTimer) / 1000;
 
-                console.log("charge duration = " + this.advancedArriveBehavior.chargeDuration);
+                if (this.debug)
+                {
+                    PsyanimDebug.log("charge duration = " + this.advancedArriveBehavior.chargeDuration);
+                }
 
                 // recompute max speed based on distance to target at start of charge
                 this.advancedArriveBehavior.computeMaxSpeed(this._arriveTarget);
@@ -122,11 +139,21 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
+                if (this.debug)
+                {
+                    PsyanimDebug.log(this.entity.name + ' entered playfight state: WANDERING');
+                }
+
                 this.entity.enableFriction();
 
                 break;
 
             case PsyanimAdvancedPlayfightBehavior.STATE.FLEEING:
+
+                if (this.debug)
+                {
+                    PsyanimDebug.log(this.entity.name + ' entered playfight state: FLEEING');
+                }
 
                 this.entity.enableFriction();
 

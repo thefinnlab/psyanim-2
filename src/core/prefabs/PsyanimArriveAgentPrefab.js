@@ -10,7 +10,9 @@ import PsyanimArriveAgent from '../components/steering/agents/PsyanimArriveAgent
  * 
  *  An `Arrive Agent` seeks the target, slowing down before reaching it, eventually coming to rest.
  * 
- *  An `Arrive Agent` has the following components: `PsyanimVehicle`, `PsyanimArriveBehavior`, `PsyanimArriveAgent`
+ *  An `Arrive Agent` has the following components: 
+ * 
+ *  `PsyanimVehicle`, `PsyanimArriveBehavior`, `PsyanimArriveAgent`
  */
 export default class PsyanimArriveAgentPrefab extends PsyanimEntityPrefab {
 

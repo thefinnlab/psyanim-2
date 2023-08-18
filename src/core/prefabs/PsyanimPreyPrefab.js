@@ -14,8 +14,10 @@ import PsyanimPreyAgent from '../components/steering/agents/PsyanimPreyAgent';
  *  A `Prey Agent` will wander until the target comes within its field-of-view and within the `panic distance`,
  *  at which point it will begin to flee from the target in a direction offset by the `subtlety` parameter.
  * 
- *  A `Prey Agent` has the following components: `PsyanimVehicle`, `PsyanimFleeBehavior`, `PsyanimSeekBehavior`,
- *  `PsyanimWanderBehavior`, `PsyanimFOVSensor`, `PsyanimBasicPreyBehavior`, `PsyanimPreyAgent`
+ *  A `Prey Agent` has the following components: 
+ * 
+ *  `PsyanimVehicle`, `PsyanimFleeBehavior`, `PsyanimSeekBehavior`, `PsyanimWanderBehavior`, 
+ *  `PsyanimFOVSensor`, `PsyanimBasicPreyBehavior`, `PsyanimPreyAgent`
  * 
  */
 export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {

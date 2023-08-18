@@ -14,8 +14,10 @@ import PsyanimPredatorAgent from "../components/steering/agents/PsyanimPredatorA
  *  A `Predator Agent` will wander until the target comes within its field-of-view and remains within the `boredom distance`,
  *  at which point it will begin to chase the target in a direction offset by the `subtlety` parameter.
  * 
- *  A `Predator Agent` has the following components: `PsyanimVehicle`, `PsyanimArriveBehavior`, `PsyanimSeekBehavior`,
- *  `PsyanimWanderBehavior`, `PsyanimFOVSensor`, `PsyanimBasicPredatorBehavior`, `PsyanimPredatorAgent`
+ *  A `Predator Agent` has the following components: 
+ * 
+ *  `PsyanimVehicle`, `PsyanimArriveBehavior`, `PsyanimSeekBehavior`, `PsyanimWanderBehavior`, 
+ *  `PsyanimFOVSensor`, `PsyanimBasicPredatorBehavior`, `PsyanimPredatorAgent`
  */
 export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
 

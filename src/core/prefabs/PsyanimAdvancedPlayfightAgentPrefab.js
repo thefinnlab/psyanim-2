@@ -8,25 +8,111 @@ import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior"
 import PsyanimAdvancedPlayfightBehavior from "../components/steering/PsyanimAdvancedPlayfightBehavior";
 import PsyanimAdvancedPlayfightAgent from "../components/steering/agents/PsyanimAdvancedPlayfightAgent";
 
+/**
+ *  Prefab for creating `Advanced Playfight Agents`.
+ * 
+ *  The `Advanced Playfight Agent` is a variant of the `Playfight Agent` which provides a more precisely
+ *  timed charge allowing us to keep frequency of collisions roughly constant throughout the playfight.
+ * 
+ *  An `Advanced Playfight Agent` has the following components:
+ * 
+ *  `PsyanimVehicle`, `PsyanimAdvancedArriveBehavior`, `PsyanimAdvancedFleeBehavior`, `PsyanimSeekBehavior`, 
+ *  `PsyanimWanderBehavior`, `PsyanimAdvancedPlayfightBehavior`, `PsyanimAdvancedPlayfightAgent`
+ */
 export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPrefab {
 
+    /** Advanced Playfight Algorithm Params */
+
+    /**
+     *  The break duration determines how long, in milliseconds, the agent wanders before attacking its target again.
+     *  @type {Number}
+     */
     breakDuration;
+
+    /**
+     *  Collision frequency determines how often, in milliseconds, the agent should attack it's target. `Collision frequency` = `break duration` + `charge duration`
+     * 
+     *  Note that this should be longer than the break duration so that the `break duration` + `charge duration` is always less than `collision frequency`.
+     * 
+     *  @type {Number}
+     */
     collisionFrequency;
 
+    /**
+     *  Maximum speed the agent can reach while charging towards target.
+     *  @type {Number}
+     */
     maxChargeSpeed;
 
-    wanderRadius;
-    wanderOffset;
-    maxWanderAngleChangePerFrame;
+    /** Wander params */
+
+    /**
+     *  Maximum speed at which the agent will wander.
+     *  @type {Number}
+     */
     maxWanderSpeed;
+
+    /**
+     *  Maximum acceleration the agent can attain during wander.
+     *  @type {Number}
+     */
     maxWanderAcceleration;
 
+    /**
+     *  Radius of the wander circle.
+     *  @type {Number}
+     */
+    wanderRadius;
+
+    /**
+     *  Distance the wander circle is offset from the agent's position.
+     *  @type {Number}
+     */
+    wanderOffset;
+
+    /**
+     *  Maximum number of degrees the wander target can move around the wander circle per frame.
+     *  @type {Number}
+     */
+    maxWanderAngleChangePerFrame;
+
+    /** Flee Params */
+
+    /**
+     *  Maximum speed this agent can flee from the target.
+     *  @type {Number}
+     */
     maxFleeSpeed;
+
+    /**
+     *  Maximum acceleration this agent can reach during flee from target.
+     *  @type {Number}
+     */
     maxFleeAcceleration;
+
+    /**
+     *  Distance from target at which the agent will begin fleeing.
+     *  @type {Number}
+     */
     panicDistance;
 
+    /** Charge Params */
+
+    /**
+     *  Maximum acceleration the agent can attain during a charge.
+     *  @type {Number}
+     */
     maxChargeAcceleration;
-    circleAgentRadius;
+
+    /**
+     *  Distance, in px, from target which the agent will come to rest.
+     */
+    innerDecelerationRadius;
+
+    /**
+     *  Distance, in px, from target which the agent will begin slowing down.
+     *  @type {Number}
+     */
     outerDecelerationRadius;
 
     constructor(shapeParams) {
@@ -60,7 +146,7 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
 
         let advancedArrive = entity.addComponent(PsyanimAdvancedArriveBehavior);
         advancedArrive.maxAcceleration = this.maxChargeAcceleration;
-        advancedArrive.innerDecelerationRadius = entity.shapeParams.radius;
+        advancedArrive.innerDecelerationRadius = this.innerDecelerationRadius;
         advancedArrive.outerDecelerationRadius = this.outerDecelerationRadius;
 
         let flee = entity.addComponent(PsyanimAdvancedFleeBehavior);

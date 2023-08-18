@@ -11,6 +11,7 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 import PsyanimAdvancedPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
+import PsyanimAdvancedPlayfightBehavior from '../../src/core/components/steering/PsyanimAdvancedPlayfightBehavior';
 
 export default class AdvancedPlayfightTest extends PsyanimScene {
 
@@ -43,6 +44,8 @@ export default class AdvancedPlayfightTest extends PsyanimScene {
         playfightAgentPrefab.breakDuration = 1650;
 
         let agent1 = this.instantiatePrefab(playfightAgentPrefab, 'agent1', 200, 300);
+
+        agent1.getComponent(PsyanimAdvancedPlayfightBehavior).debug = false;
 
         playfightAgentPrefab.name = 'agent2';
         playfightAgentPrefab.shapeParams.color = 0x0000ff;

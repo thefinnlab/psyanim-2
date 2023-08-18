@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimDebug from '../../utils/PsyanimDebug';
+
 export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     breakDuration;
@@ -10,13 +12,19 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
     arriveBehavior;
     wanderBehavior;
 
+    debug;
+
     constructor(entity) {
 
         super(entity);
 
+        this.debug = false;
+
         this.breakDuration = 1500;
 
         this._breakTimer = 0;
+
+        this._collisionHandler = this._handleCollision.bind(this);
 
         this._setState(PsyanimPlayfightBehavior.STATE.WANDERING);
     }
@@ -25,21 +33,24 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
         if (this._target != null)
         {
-            this.setOnCollideWith(this._target.body, null);   
+            this.entity.setOnCollideWith(this._target.body, null);   
         }
 
         this._target = target;
 
-        this.entity.setOnCollideWith(this._target.body, () => this._handleCollision());
+        this.entity.setOnCollideWith(this._target.body, (matterCollisionData) => this._handleCollision(matterCollisionData));
     }
 
-    _handleCollision() {
+    _handleCollision(matterCollisionData) {
 
-        console.log("playfight collision occured at t = " + this.entity.scene.time.now / 1000);
+        if (this.debug)
+        {
+            PsyanimDebug.log("playfight collision occured at t = " + this.entity.scene.time.now / 1000);
+        }
 
         this._breakTimer = 0;
 
-        this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);
+        this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);    
     }
 
     get maxSpeed() {
@@ -75,7 +86,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
             case PsyanimPlayfightBehavior.STATE.FLEEING:
 
                 return this.fleeBehavior.maxAcceleration;
-            }
+        }
     }
 
     _setState(state) {
@@ -86,13 +97,28 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimPlayfightBehavior.STATE.CHARGING:
 
+                if (this.debug)
+                {
+                    PsyanimDebug.log(this.entity.name + ' entered playfight state: CHARGING');
+                }
+
                 break;
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
 
+                if (this.debug)
+                {
+                    PsyanimDebug.log(this.entity.name + ' entered playfight state: WANDERING');
+                }
+
                 break;
 
             case PsyanimPlayfightBehavior.STATE.FLEEING:
+
+                if (this.debug)
+                {
+                    PsyanimDebug.log(this.entity.name + ' entered playfight state: FLEEING');
+                }
 
                 break;
         }
@@ -130,9 +156,13 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimPlayfightBehavior.STATE.CHARGING:
 
+                console.log('CHARGING!');
+
                 return this.arriveBehavior.getSteering(target);
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
+
+                console.log('WANDERING!');
 
                 let distanceToTarget = this.entity.position
                     .subtract(target.position)
@@ -146,6 +176,8 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
                 return this.wanderBehavior.getSteering();
 
             case PsyanimPlayfightBehavior.STATE.FLEEING:
+
+                console.log("FLEEING!");
 
                 return this.fleeBehavior.getSteering(target);
         }
