@@ -60,7 +60,7 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
         let arrive = entity.addComponent(PsyanimArriveBehavior);
         arrive.maxSpeed = this.maxChargeSpeed;
         arrive.maxAcceleration = this.maxChargeAcceleration;
-        arrive.innerDecelerationRadius = this.circleAgentRadius;
+        arrive.innerDecelerationRadius = this.innerDecelerationRadius;
         arrive.outerDecelerationRadius = this.outerDecelerationRadius;
 
         let flee = entity.addComponent(PsyanimAdvancedFleeBehavior);

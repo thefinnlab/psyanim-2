@@ -124,6 +124,7 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
 
         this.maxChargeAcceleration = 0.4;
 
+        this.innerDecelerationRadius = 12;
         this.outerDecelerationRadius = 30;
 
         this.maxWanderSpeed = 4;
