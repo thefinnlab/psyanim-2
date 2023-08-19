@@ -106,6 +106,7 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
 
     /**
      *  Distance, in px, from target which the agent will come to rest.
+     *  @type {Number}
      */
     innerDecelerationRadius;
 
