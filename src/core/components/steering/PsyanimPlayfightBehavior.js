@@ -156,13 +156,9 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimPlayfightBehavior.STATE.CHARGING:
 
-                console.log('CHARGING!');
-
                 return this.arriveBehavior.getSteering(target);
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
-
-                console.log('WANDERING!');
 
                 let distanceToTarget = this.entity.position
                     .subtract(target.position)
@@ -176,8 +172,6 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
                 return this.wanderBehavior.getSteering();
 
             case PsyanimPlayfightBehavior.STATE.FLEEING:
-
-                console.log("FLEEING!");
 
                 return this.fleeBehavior.getSteering(target);
         }
