@@ -76,12 +76,17 @@ import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder';
 
 // prefabs
 import PsyanimArriveAgentPrefab from './core/prefabs/PsyanimArriveAgentPrefab';
+import PsyanimPlayfightAgentPrefab from './core/prefabs/PsyanimPlayfightAgentPrefab';
 import PsyanimAdvancedArriveAgentPrefab from './core/prefabs/PsyanimAdvancedArriveAgentPrefab';
 import PsyanimAdvancedPlayfightAgentPrefab from './core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
 import PsyanimClickToMovePlayerPrefab from './core/prefabs/PsyanimClickToMovePlayerPrefab';
 import PsyanimPreyPrefab from './core/prefabs/PsyanimPreyPrefab';
 import PsyanimPredatorPrefab from './core/prefabs/PsyanimPredatorPrefab';
 import PsyanimAdvancedFleeAgentPrefab from './core/prefabs/PsyanimAdvancedFleeAgentPrefab';
+import PsyanimEvadeAgentPrefab from './core/prefabs/PsyanimEvadeAgentPrefab';
+import PsyanimFleeAgentPrefab from './core/prefabs/PsyanimFleeAgentPrefab';
+import PsyanimSeekAgentPrefab from './core/prefabs/PsyanimSeekAgentPrefab';
+import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab';
 
 // utils
 import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.mjs';
@@ -184,6 +189,11 @@ export {
     PsyanimAdvancedFleeAgentPrefab,
     PsyanimPreyPrefab,
     PsyanimPredatorPrefab,
+    PsyanimPlayfightAgentPrefab, 
+    PsyanimEvadeAgentPrefab,
+    PsyanimFleeAgentPrefab,
+    PsyanimSeekAgentPrefab,
+    PsyanimWanderAgentPrefab,
 
     // utils
     PsyanimAnimationClip,
