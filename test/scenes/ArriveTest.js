@@ -36,7 +36,7 @@ export default class ArriveTest extends PsyanimScene {
             color: 0x00ff00
         });
 
-        mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
+        mouseTarget.addComponent(PsyanimMouseFollowTarget);
 
         // create arrive agent from prefab
         let arriveAgentPrefab = new PsyanimArriveAgentPrefab({

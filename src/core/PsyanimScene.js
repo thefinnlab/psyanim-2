@@ -3,6 +3,8 @@ import Phaser from 'phaser';
 import PsyanimScreenBoundary from './utils/PsyanimScreenBoundary';
 import PsyanimEntity from './PsyanimEntity';
 
+import PsyanimDebug from './utils/PsyanimDebug';
+
 export default class PsyanimScene extends Phaser.Scene {
 
     constructor(key) {
@@ -14,6 +16,12 @@ export default class PsyanimScene extends Phaser.Scene {
     }
 
     addEntity(name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
+
+        if (this._entities.some(e => e.name == name))
+        {
+            PsyanimDebug.error("Scene '" + this.scene.key + "' already has an entity named '" + name + "'!");
+            return null;
+        }
 
         let entity = new PsyanimEntity(this, name, x, y, shapeParams, matterOptions);
 

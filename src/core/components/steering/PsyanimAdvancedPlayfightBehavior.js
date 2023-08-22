@@ -30,7 +30,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
         this._setState(PsyanimAdvancedPlayfightBehavior.STATE.WANDERING);
 
         this._arriveTarget = this.entity.scene
-            .addEntity(this.name + '_arriveTarget', 0, 0, { isEmpty: true });
+            .addEntity(this.entity.name + '_arriveTarget', 0, 0, { isEmpty: true });
     }
 
     onEnable() {

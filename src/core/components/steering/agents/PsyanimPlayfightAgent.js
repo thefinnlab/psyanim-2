@@ -1,7 +1,6 @@
 import Phaser from 'phaser';
 
 import PsyanimComponent from '../../../PsyanimComponent';
-import PsyanimPlayfightBehavior from '../PsyanimPlayfightBehavior';
 
 export default class PsyanimPlayfightAgent extends PsyanimComponent {
 
