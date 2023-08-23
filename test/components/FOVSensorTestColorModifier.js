@@ -17,8 +17,6 @@ export default class FOVSensorTestColorModifier extends PsyanimComponent {
 
         if (entitiesInSight.length != 0)
         {
-            console.log(entitiesInSight.length + " entities in sight!");
-
             if (entitiesInSight.includes(this.entity))
             {
                 entitiesInSight[0].setTint(0x00ff00);
