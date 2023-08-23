@@ -1,4 +1,4 @@
-import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimDataDrivenScene from '../../src/core/PsyanimDataDrivenScene';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 
@@ -6,42 +6,100 @@ import PsyanimPhysicsSettingsController from '../../src/core/components/controll
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import TestGridWithObstacles from '../utils/TestGridWithObstacles';
-
 import PsyanimClickToMovePlayerPrefab from '../../src/core/prefabs/PsyanimClickToMovePlayerPrefab';
 
-export default class ClickToMoveTest extends PsyanimScene {
+export default class ClickToMoveTest extends PsyanimDataDrivenScene {
 
     constructor() {
 
         super('Click To Move Test');
     }
 
-    create() {
+    init() {
 
-        super.create();
+        super.init();
 
-        this.screenBoundary.wrap = false;
+        // click to move test
+        this.registry.set('psyanim_currentSceneDefinition', {
 
-        // setup scene controls
-        this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
-
-        // create navigation grid for pathfinding based on environment obstacles
-        this._grid = TestGridWithObstacles.create(this);
-
-        // setup player agent
-        let playerPrefab = new PsyanimClickToMovePlayerPrefab({
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 12, altitude: 24, 
-            color: 0xff0000            
+            wrapScreenBoundary: false,
+            entities: [
+                {
+                    name: 'sceneControls',
+                    components: [
+                        { type: PsyanimSceneTitle },
+                        { type: PsyanimPhysicsSettingsController },
+                        { type: PsyanimSceneChangeController }
+                    ]
+                },
+                {
+                    name: 'player',
+                    initialPosition: { x: 700, y: 100 },
+                    shapeParams: {
+                        shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+                        base: 12, altitude: 24, 
+                        color: 0xff0000            
+                    },
+                    prefabType: PsyanimClickToMovePlayerPrefab,
+                    prefabParams: {
+                        grid: 'navgrid',
+                        debug: true,
+                    }
+                }
+            ],
+            navgrid: {
+                cellSize: 10,
+                obstacles: [
+                    {
+                        position: { x: 170, y: 50 },
+                        shapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                            radius: 49,
+                            color: 0x0000ff
+                        }
+                    },
+                    {
+                        position: { x: 170, y: 160 },
+                        shapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+                            base: 98, altitude: 98,
+                            color: 0x00ff00
+                        }
+                    },
+                    {
+                        position: { x: 170, y: 300 },
+                        shapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                            radius: 49,
+                            color: 0xffff00
+                        }
+                    },
+                    {
+                        position: { x: 730, y: 520 },
+                        shapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+                            base: 98, altitude: 98,
+                            color: 0x00ffff
+                        }
+                    },
+                    {
+                        position: { x: 400, y: 340 },
+                        shapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
+                            height: 500, width: 100,
+                            color: 0xFFA500
+                        }
+                    },
+                    {
+                        position: { x: 600, y: 300 },
+                        shapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                            radius: 100,
+                            color: 0xff00ff
+                        }
+                    },
+                ]
+            }
         });
-
-        playerPrefab.grid = this._grid;
-        playerPrefab.debug = true;
-
-        this._player = this.instantiatePrefab(playerPrefab, 'player', 700, 100);
     }
 }

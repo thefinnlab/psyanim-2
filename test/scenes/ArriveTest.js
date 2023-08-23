@@ -1,6 +1,4 @@
-import Phaser from 'phaser';
-
-import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimDataDrivenScene from '../../src/core/PsyanimDataDrivenScene';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
@@ -12,41 +10,57 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-export default class ArriveTest extends PsyanimScene {
+export default class ArriveTest extends PsyanimDataDrivenScene {
 
     constructor() {
 
         super('ArriveTest');
     }
 
-    create() {
+    init() {
 
-        super.create();
+        super.init();
 
-        // setup scene controls
-        this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
+        // arrive test
+        this.registry.set('psyanim_currentSceneDefinition', {
 
-        // setup mouse follow target
-        let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 4,
-            color: 0x00ff00
+            entities: [
+                {
+                    name: 'sceneControls',
+                    components: [
+                        { type: PsyanimSceneTitle },
+                        { type: PsyanimPhysicsSettingsController },
+                        { type: PsyanimSceneChangeController }
+                    ]
+                },
+                {
+                    name: 'mouseFollowTarget',
+                    initialPosition: { x: 400, y: 300 },
+                    shapeParams: {
+                        shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                        radius: 4,
+                        color: 0x00ff00
+                    },
+                    components: [
+                        { type: PsyanimMouseFollowTarget }
+                    ]
+                },
+                {
+                    name: 'agent1',
+                    initialPosition: { x: 600, y: 450 },
+                    shapeParams: {
+                        shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+                        base: 16, altitude: 32, 
+                        color: 0xffc0cb            
+                    },
+                    prefabType: PsyanimArriveAgentPrefab,
+                    prefabParams: {
+                        target: {
+                            entityName: 'mouseFollowTarget',
+                        },
+                    }
+                }
+            ]
         });
-
-        mouseTarget.addComponent(PsyanimMouseFollowTarget);
-
-        // create arrive agent from prefab
-        let arriveAgentPrefab = new PsyanimArriveAgentPrefab({
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, 
-            color: 0xffc0cb            
-        });
-        
-        arriveAgentPrefab.target = mouseTarget;
-
-        let agent1 = this.instantiatePrefab(arriveAgentPrefab, 'agent1', 600, 450);
     }
 }
