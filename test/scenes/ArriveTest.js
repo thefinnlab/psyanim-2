@@ -7,7 +7,6 @@ import PsyanimArriveAgentPrefab from '../../src/core/prefabs/PsyanimArriveAgentP
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 export default class ArriveTest extends PsyanimDataDrivenScene {

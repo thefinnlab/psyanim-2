@@ -72,9 +72,66 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         return (typeof(o) === 'object') && !Array.isArray(o) && (o !== null);
     }
 
-    _configureNonPrefabEntities() {
+    _configureNonPrefabEntity(entityDefinition, nameOverride = null) {
 
-        // TODO: 
+        let name = (nameOverride) ? nameOverride : entityDefinition.name;
+
+        let entityReference = this.getEntityByName(name);
+
+        let componentDefinitions = entityDefinition.components;
+
+        if (componentDefinitions)
+        {
+            for (let j = 0; j < componentDefinitions.length; ++j)
+            {
+                let componentDefinition = componentDefinitions[j];
+
+                let componentReference = entityReference.getComponent(componentDefinition.type);
+
+                let componentParams = componentDefinition.params;
+
+                if (componentParams)
+                {
+                    let paramNames = Object.keys(componentParams);
+
+                    for (let k = 0; k < paramNames.length; ++k)
+                    {
+                        let paramName = paramNames[k];
+
+                        let paramValue = componentParams[paramName];
+
+                        if (this._isObject(paramValue))
+                        {
+                            // param value an entity or component reference
+                            let targetEntityName = paramValue.entityName;
+                            
+                            let targetEntity = this.getEntityByName(targetEntityName);
+
+                            if (Object.hasOwn(paramValue, 'componentIndex'))
+                            {
+                                // target is a component reference
+                                let componentIndex = paramValue.componentIndex;
+                                let targetComponent = targetEntity.getComponentByIndex(componentIndex);
+
+                                componentReference[paramName] = targetComponent;
+                            }
+                            else
+                            {
+                                // target is an entity reference
+                                componentReference[paramName] = targetEntity;
+                            }
+                        }
+                        else
+                        {
+                            componentReference[paramName] = paramValue;
+                        }
+                    }
+                }
+            }    
+        }
+    }
+
+    _configureNonPrefabEntities() {
 
         let entityDefinitions = this._sceneDefinition.entities;
 
@@ -91,15 +148,25 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         {
             let entityDefinition = nonPrefabEntityDefinitions[i];
 
-            let componentDefinitions = entityDefinition.components;
+            let nInstances = Object.hasOwn(entityDefinition, 'instances') ? 
+                entityDefinition.instances : 1;
 
-            if (componentDefinitions)
+            if (nInstances < 1)
             {
-                for (let j = 0; j < componentDefinitions.length; ++j)
+                PsyanimDebug.error("'instances' can not be less than 1!  entity name: " + entityDefinition.name);
+            }
+
+            if (nInstances == 1)
+            {
+                this._configureNonPrefabEntity(entityDefinition);
+            }
+            else
+            {
+                for (let j = 0; j < nInstances; ++j)
                 {
-                    let componentDefinition = componentDefinitions[j];
-    
-                    // TODO: process component params!
+                    let instanceName = entityDefinition.name + '_' + (j + 1);
+
+                    this._configureNonPrefabEntity(entityDefinition, instanceName);
                 }    
             }
         }
@@ -179,6 +246,8 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
     _instantiatePrefabEntities() {
 
+        // TODO: this doesn't work in the case where a prefab entity references another prefab entity!
+
         let entityDefinitions = this._sceneDefinition.entities;
 
         if (!entityDefinitions || entityDefinitions.length == 0)
@@ -217,6 +286,52 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
     }
 
+    _instantiateNonPrefabEntity(entityDefinition, nameOverride = null) {
+
+        /** Instantiate the non-prefab entity first */
+        let name = (nameOverride) ? nameOverride : entityDefinition.name;
+
+        let initialPosition = null;
+
+        if (Object.hasOwn(entityDefinition, 'initialPosition'))
+        {
+            if (entityDefinition.initialPosition === 'random')
+            {
+                initialPosition = this._getRandomizedInitialPosition();
+            }
+            else
+            {
+                initialPosition = entityDefinition.initialPosition;
+            }
+        }
+        else
+        {
+            initialPosition = { x: 0, y: 0 };
+        }
+
+        let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
+            entityDefinition.shapeParams : PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
+
+        let matterOptions = Object.hasOwn(entityDefinition, 'matterOptions') ?
+            entityDefinition.matterOptions : {};
+
+        let newEntity = this.addEntity(name, initialPosition.x, initialPosition.y, 
+            shapeParams, matterOptions);
+
+        /** Then add all the components */
+        let componentDefinitions = entityDefinition.components;
+
+        if (componentDefinitions)
+        {
+            for (let j = 0; j < componentDefinitions.length; ++j)
+            {
+                let componentDefinition = componentDefinitions[j];
+
+                newEntity.addComponent(componentDefinition.type);
+            }    
+        }
+    }
+
     _instantiateNonPrefabEntities() {
 
         let entityDefinitions = this._sceneDefinition.entities;
@@ -239,27 +354,25 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                 return;
             }
 
-            /** Instantiate the non-prefab entity first */
-            let name = entityDefinition.name;
+            let nInstances = Object.hasOwn(entityDefinition, 'instances') ? 
+                entityDefinition.instances : 1;
 
-            let initialPosition = Object.hasOwn(entityDefinition, 'initialPosition') ? 
-                entityDefinition.initialPosition : { x: 0, y: 0 };
-
-            let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
-                entityDefinition.shapeParams : PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
-
-            let newEntity = this.addEntity(name, initialPosition.x, initialPosition.y, shapeParams);
-
-            /** Then add all the components */
-            let componentDefinitions = entityDefinition.components;
-
-            if (componentDefinitions)
+            if (nInstances < 1)
             {
-                for (let j = 0; j < componentDefinitions.length; ++j)
+                PsyanimDebug.error("'instances' can not be less than 1!  entity name: " + entityDefinition.name);
+            }
+
+            if (nInstances == 1)
+            {
+                this._instantiateNonPrefabEntity(entityDefinition);
+            }
+            else
+            {
+                for (let j = 0; j < nInstances; ++j)
                 {
-                    let componentDefinition = componentDefinitions[j];
-    
-                    newEntity.addComponent(componentDefinition.type);
+                    let instanceName = entityDefinition.name + '_' + (j + 1);
+
+                    this._instantiateNonPrefabEntity(entityDefinition, instanceName);
                 }    
             }
         }

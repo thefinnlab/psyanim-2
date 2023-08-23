@@ -28,13 +28,13 @@ import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest';
 // for components after PsyanimScene::create() is finished.  Then we can do everything declarative
 // and not have any imperative calls anywhere in create() ever from now on.
 
+PsyanimApp.Instance.config.registerScene(FOVSensorTest);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTest);
 PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
 PsyanimApp.Instance.config.registerScene(PathTest);
 PsyanimApp.Instance.config.registerScene(PreyTest);
 PsyanimApp.Instance.config.registerScene(PredatorTest);
-PsyanimApp.Instance.config.registerScene(FOVSensorTest);
 PsyanimApp.Instance.config.registerScene(ArriveTest);
 PsyanimApp.Instance.config.registerScene(SeekTest);
 PsyanimApp.Instance.config.registerScene(FleeTest);
