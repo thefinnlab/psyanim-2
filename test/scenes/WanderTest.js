@@ -41,9 +41,11 @@ export default class WanderTest extends PsyanimDataDrivenScene {
                         base: 16, altitude: 32, 
                         color: 0xffc0cb            
                     },
-                    prefabType: PsyanimWanderAgentPrefab,
-                    prefabParams: {
-                        debug: false
+                    prefab: {
+                        type: PsyanimWanderAgentPrefab,
+                        params: {
+                            debug: false
+                        }
                     }
                 }
             ]

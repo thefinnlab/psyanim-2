@@ -40,10 +40,12 @@ export default class ClickToMoveTest extends PsyanimDataDrivenScene {
                         base: 12, altitude: 24, 
                         color: 0xff0000            
                     },
-                    prefabType: PsyanimClickToMovePlayerPrefab,
-                    prefabParams: {
-                        grid: 'navgrid',
-                        debug: true,
+                    prefab: {
+                        type: PsyanimClickToMovePlayerPrefab,
+                        params: {
+                            grid: 'navgrid',
+                            debug: true
+                        }
                     }
                 }
             ],

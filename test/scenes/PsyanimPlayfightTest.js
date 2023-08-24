@@ -23,6 +23,52 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         super.create();
 
+        // playfight test scene definition:
+
+        // this.registry.set('psyanim_currentSceneDefinition', {
+        //     entities: [
+        //         {
+        //             name: 'sceneControls',
+        //             components: [
+        //                 { type: PsyanimSceneTitle },
+        //                 { type: PsyanimPhysicsSettingsController },
+        //                 { type: PsyanimSceneChangeController }
+        //             ]
+        //         },
+        //         {
+        //             name: 'agent1',
+        //             initialPosition: { x: 200, y: 300 },
+        //             shapeParams: {
+        //                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+        //                 base: 16, altitude: 32, radius: 12, color: 0xff0000
+        //             },
+        //             prefab: {
+        //                 type: PsyanimPlayfightAgentPrefab,
+        //                 target: {
+        //                     entityName: 'agent2'
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             name: 'agent2',
+        //             initialPosition: { x: 600, y: 300 },
+        //             shapeParams: {
+        //                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+        //                 base: 16, altitude: 32, radius: 12, color: 0x0000ff
+        //             },
+        //             prefab: {
+        //                 type: PsyanimPlayfightAgentPrefab,
+        //                 params: {
+        //                     debug: true,
+        //                     target: {
+        //                         entityName: 'agent1'
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     ]
+        // });
+
         /**
          *  Create playfight agents
          */

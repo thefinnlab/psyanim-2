@@ -52,11 +52,13 @@ export default class ArriveTest extends PsyanimDataDrivenScene {
                         base: 16, altitude: 32, 
                         color: 0xffc0cb            
                     },
-                    prefabType: PsyanimArriveAgentPrefab,
-                    prefabParams: {
-                        target: {
-                            entityName: 'mouseFollowTarget',
-                        },
+                    prefab: {
+                        type: PsyanimArriveAgentPrefab,
+                        params: {
+                            target: {
+                                entityName: 'mouseFollowTarget'
+                            }    
+                        }
                     }
                 }
             ]

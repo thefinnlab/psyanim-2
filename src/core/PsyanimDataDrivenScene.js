@@ -8,9 +8,12 @@ import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid';
 /**
  *  Algorithm (order is important!):
  * 
- *      - Instantiate all non-prefab entities & add their components to them
- *      - Configure and instantiate all prefabs
+ *      - Instantiate all non-prefab entities
+ *      - Add all components to non-prefab entities
+ *      - Configure all prefabs' value-type fields (non-entity or non-components fields)
+ *      - Instantiate all prefab entities in the scene
  *      - Configure all non-prefab entities
+ *      - Configure all prefab entities' Entity/Component reference fields
  * 
  */
 
@@ -141,7 +144,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
 
         let nonPrefabEntityDefinitions = entityDefinitions
-            .filter(e => !Object.hasOwn(e, 'prefabType'));
+            .filter(e => !Object.hasOwn(e, 'prefab'));
 
         /** finally, configure all the components */
         for (let i = 0; i < nonPrefabEntityDefinitions.length; ++i)
@@ -198,16 +201,16 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
             entityDefinition.shapeParams : PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
 
-        let prefab = new entityDefinition.prefabType(shapeParams);
+        let prefab = new entityDefinition.prefab.type(shapeParams);
 
-        let prefabParamNames = Object.keys(entityDefinition.prefabParams);
+        let prefabParamNames = Object.keys(entityDefinition.prefab.params);
 
         /** configure the prefab first */
         for (let j = 0; j < prefabParamNames.length; ++j)
         {
             let paramName = prefabParamNames[j];
 
-            let paramValue = entityDefinition.prefabParams[paramName];
+            let paramValue = entityDefinition.prefab.params[paramName];
 
             if (paramValue === 'navgrid')
             {
@@ -215,6 +218,10 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             }
             else if (this._isObject(paramValue))
             {
+                // TODO: we should not be configuring reference fields here!
+                // we need to wait until after all entities and prefabs have been instantiated,
+                // so we can handle the cases where prefabs reference other prefabs gracefully
+
                 // it's an entity or component reference!
                 let entityReferenceName = paramValue.entityName;
                 let componentReferenceIndex = paramValue.componentIndex;
@@ -256,7 +263,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
 
         let prefabEntityDefinitions = entityDefinitions
-            .filter(e => Object.hasOwn(e, 'prefabType'));
+            .filter(e => Object.hasOwn(e, 'prefab'));
 
         for (let i = 0; i < prefabEntityDefinitions.length; ++i)
         {
@@ -342,7 +349,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
 
         let nonPrefabEntityDefinitions = entityDefinitions
-            .filter(e => !Object.hasOwn(e, 'prefabType'));
+            .filter(e => !Object.hasOwn(e, 'prefab'));
 
         for (let i = 0; i < nonPrefabEntityDefinitions.length; ++i)
         {
