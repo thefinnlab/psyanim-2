@@ -12,13 +12,6 @@ export default class PsyanimPlayfightAgent extends PsyanimComponent {
         super(entity);
     }
 
-    setTarget(target) {
-
-        this._target = target;
-
-        this.playfightBehavior.setTarget(target);
-    }
-
     update(t, dt) {
 
         super.update(t, dt);
@@ -29,7 +22,7 @@ export default class PsyanimPlayfightAgent extends PsyanimComponent {
         // compute steering
         this.playfightBehavior.updateBreakTimer(dt);
 
-        let steering = this.playfightBehavior.getSteering(this._target);
+        let steering = this.playfightBehavior.getSteering();
 
         this.vehicle.steer(steering);
     }

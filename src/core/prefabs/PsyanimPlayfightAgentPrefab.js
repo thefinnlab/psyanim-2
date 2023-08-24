@@ -109,6 +109,12 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
      */
     panicDistance;
 
+    /**
+     *  Enables debug output for this agent's Playfight Behavior.
+     *  @type {Number}
+     */
+    debug;
+
     constructor(shapeParams) {
 
         super(shapeParams);
@@ -130,6 +136,8 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
         this.maxFleeSpeed = 4;
         this.maxFleeAcceleration = 0.2;
         this.panicDistance = 100;
+
+        this.debug = false;
     }
 
     create(entity) {
@@ -164,6 +172,7 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
         playfight.fleeBehavior = flee;
         playfight.arriveBehavior = arrive;
         playfight.wanderBehavior = wander;
+        playfight.debug = this.debug;
         
         let playfightAgent = entity.addComponent(PsyanimPlayfightAgent);
         playfightAgent.playfightBehavior = playfight;

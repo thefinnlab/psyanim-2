@@ -23,11 +23,6 @@ import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest';
  *  Register scenes
  */
 
-// TODO: for things like the playfight, where we call methods like PsyanimPlayfightBehavior::setTarget(), 
-// we should just extend the 'afterCreate()' concept to PsyanimComponents so we can add logic that runs 
-// for components after PsyanimScene::create() is finished.  Then we can do everything declarative
-// and not have any imperative calls anywhere in create() ever from now on.
-
 PsyanimApp.Instance.config.registerScene(FOVSensorTest);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTest);
 PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);

@@ -5,7 +5,6 @@ import PsyanimScene from '../../src/core/PsyanimScene';
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 
 import PsyanimPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimPlayfightAgentPrefab';
-import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
@@ -42,8 +41,7 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
 
         let agent1 = this.instantiatePrefab(agentPrefab, 'agent1', 200, 300);
 
-        agent1.getComponent(PsyanimPlayfightBehavior).debug = true;
-
+        agentPrefab.debug = true;
         agentPrefab.shapeParams.color = 0x0000ff;
 
         let agent2 = this.instantiatePrefab(agentPrefab, 'agent2', 600, 300);
@@ -51,11 +49,11 @@ export default class PsyanimPlayfightTest extends PsyanimScene {
         /**
          *  Setup targets for the playfight agents
          */
-        let playfightAgent1 = agent1.getComponent(PsyanimPlayfightAgent);
-        let playfightAgent2 = agent2.getComponent(PsyanimPlayfightAgent);
+        let playfight1 = agent1.getComponent(PsyanimPlayfightBehavior);
+        let playfight2 = agent2.getComponent(PsyanimPlayfightBehavior);
 
-        playfightAgent1.setTarget(agent2);
-        playfightAgent2.setTarget(agent1);
+        playfight1.target = agent2;
+        playfight2.target = agent1;
 
         this.screenBoundary.wrap = false;
     }
