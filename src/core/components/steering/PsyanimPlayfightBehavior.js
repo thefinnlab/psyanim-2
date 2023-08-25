@@ -6,8 +6,6 @@ import PsyanimDebug from '../../utils/PsyanimDebug';
 
 export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
-    target;
-
     breakDuration;
 
     fleeBehavior;
@@ -26,22 +24,10 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
         this._breakTimer = 0;
 
-        this._collisionHandler = this._handleCollision.bind(this);
-
         this._setState(PsyanimPlayfightBehavior.STATE.WANDERING);
     }
 
-    afterCreate() {
-
-        if (this.target)
-        {
-            this.entity.setOnCollideWith(this.target.body, (matterCollisionData) => {
-                this._handleCollision(matterCollisionData) 
-            });
-        }
-    }
-
-    _handleCollision(matterCollisionData) {
+    handleCollision(matterCollisionData) {
 
         if (this.debug)
         {
@@ -138,42 +124,48 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
         else if (this._state == PsyanimPlayfightBehavior.STATE.FLEEING)
         {
             this._breakTimer += dt;
-
-            let distanceToTarget = this.entity.position
-                .subtract(this.target.position)
-                .length();
-
-            if (distanceToTarget > this.fleeBehavior.panicDistance)
-            {
-                this._setState(PsyanimPlayfightBehavior.STATE.WANDERING);
-            }
         }
     }
 
-    getSteering() {
+    getSteering(target) {
+
+        let distanceToTarget = 0;
 
         switch (this._state) {
 
             case PsyanimPlayfightBehavior.STATE.CHARGING:
 
-                return this.arriveBehavior.getSteering(this.target);
+                return this.arriveBehavior.getSteering(target);
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
 
-                let distanceToTarget = this.entity.position
-                    .subtract(this.target.position)
+                distanceToTarget = this.entity.position
+                    .subtract(target.position)
                     .length();
 
                 if (distanceToTarget < this.fleeBehavior.panicDistance)
                 {
                     this._setState(PsyanimPlayfightBehavior.STATE.FLEEING);
+
+                    return this.fleeBehavior.getSteering(target);
                 }
 
                 return this.wanderBehavior.getSteering();
 
             case PsyanimPlayfightBehavior.STATE.FLEEING:
 
-                return this.fleeBehavior.getSteering(this.target);
+                distanceToTarget = this.entity.position
+                    .subtract(target.position)
+                    .length();
+
+                if (distanceToTarget > this.fleeBehavior.panicDistance)
+                {
+                    this._setState(PsyanimPlayfightBehavior.STATE.WANDERING);
+
+                    return this.wanderBehavior.getSteering();
+                }
+
+                return this.fleeBehavior.getSteering(target);
         }
     }
 }

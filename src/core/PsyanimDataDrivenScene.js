@@ -2,18 +2,23 @@ import Phaser from 'phaser';
 
 import PsyanimScene from './PsyanimScene';
 import PsyanimConstants from './PsyanimConstants';
+import PsyanimDebug from './utils/PsyanimDebug';
 
 import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid';
+import PsyanimAdvancedFleeBehavior from './components/steering/PsyanimAdvancedFleeBehavior';
+import PsyanimComponent from './PsyanimComponent';
+import PsyanimEntityPrefab from './PsyanimEntityPrefab';
 
 /**
  *  Algorithm (order is important!):
  * 
+ *      - Validate scene definition adheres to schema
+ *      - Setup navgrid, if configured
  *      - Instantiate all non-prefab entities
  *      - Add all components to non-prefab entities
  *      - Configure all prefabs' value-type fields (non-entity or non-components fields)
  *      - Instantiate all prefab entities in the scene
- *      - Configure all non-prefab entities
- *      - Configure all prefab entities' Entity/Component reference fields
+ *      - Configure all entities' components
  * 
  */
 
@@ -42,10 +47,145 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             this.screenBoundary.wrap = this._sceneDefinition.wrapScreenBoundary;
         }
 
+        this._validateSceneDefinition();
         this._setupNavgrid();
         this._instantiateNonPrefabEntities();
         this._instantiatePrefabEntities();
-        this._configureNonPrefabEntities();
+        this._configureEntities();
+    }
+
+    _validateSceneDefinition() {
+
+        // TODO: this isn't finished!
+
+        /**
+         *  Verify the following:
+         * 
+         *  - wrapScreenBoundary is a boolean
+         *  - entities: must be an array and all entity names must be unique
+         *  - each entity must have a name
+         *  - entity.shapeParams must be an object
+         *  - entity.initialPosition must be an object with an x & y
+         *  - entity.prefab must be an object and have a 'type' field
+         *  - entity.prefab 'params' must be an object
+         *  - entity.components must be an array
+         *  - each component must have a 'type' field
+         *  - component.params must be an object
+         *  - any prefab.params or component.params which are reference fields should be objects
+         *      with an 'entityName' and possibly a component index
+         * 
+         *  - we should verify that the 'entityName' and componentIndex are valid too
+         *      i.e. the entityName should match one in the def and componentIndex should be within
+         *      the possible valid indices
+         */
+
+        // validate scene definition exists
+        if (!this._sceneDefinition)
+        {
+            PsyanimDebug.error('No valid scene definition configured!');
+        }
+
+        // validate 'wrapScreenBoundary'
+        if (Object.hasOwn(this._sceneDefinition, 'wrapScreenBoundary'))
+        {
+            if (typeof(this._sceneDefinition.wrapScreenBoundary) != 'boolean')
+            {
+                PsyanimDebug.error("'wrapScreenBoundary' must be a boolean!");
+            }
+        }
+
+        // TODO: validate navgrid field
+
+        // validate entity configurations
+        let entityNames = [];
+
+        if (Object.hasOwn(this._sceneDefinition, 'entities'))
+        {
+            if (!Array.isArray(this._sceneDefinition.entities))
+            {
+                PsyanimDebug.error("'entities' must be an array!");
+            }
+
+            let entityDefinitions = this._sceneDefinition.entities;
+
+            for (let i = 0; i < entityDefinitions.length; ++i)
+            {
+                let entityDefinition = entityDefinitions[i];
+
+                if (Object.hasOwn(entityDefinition, 'name'))
+                {
+                    if (typeof(entityDefinition.name) != 'string')
+                    {
+                        PsyanimDebug.error("Entity 'name' must be of type 'string'!");
+                    }
+                }
+                else
+                {
+                    PsyanimDebug.error("Entity at index = " + i + " does not have a 'name' field.");
+                }
+
+                entityNames.push(entityDefinition.name);
+
+                if (Object.hasOwn(entityDefinition, 'initialPosition'))
+                {
+                    if (!this._isObject(entityDefinition.initialPosition) && entityDefinition.initialPosition !== 'random')
+                    {
+                        PsyanimDebug.error("Entity index '" + i + "' has an invalid 'initialPosition'!");
+                    }
+
+                    if (entityDefinition.initialPosition !== 'random')
+                    {
+                        if (!Object.hasOwn(entityDefinition.initialPosition, 'x'))
+                        {
+                            PsyanimDebug.error("Entity index '" + i + "' has an invalid 'initialPosition' - no 'x' value!");
+                        }
+    
+                        if (!Object.hasOwn(entityDefinition.initialPosition, 'y'))
+                        {
+                            PsyanimDebug.error("Entity index '" + i + "' has an invalid 'initialPosition' - no 'y' value!");
+                        }    
+                    }
+                }
+
+                if (Object.hasOwn(entityDefinition, 'shapeParams'))
+                {
+                    if (!this._isObject(entityDefinition.shapeParams))
+                    {
+                        PsyanimDebug.error("Entity index '" + i + "' has invalid 'shapeParams' parameter - shapeParams must be an object!");   
+                    }
+                }
+
+                if (Object.hasOwn(entityDefinition, 'prefab'))
+                {
+                    if (!this._isObject(entityDefinition.prefab))
+                    {
+                        PsyanimDebug.error("Entity index '" + i + "' has invalid 'prefab' parameter - must be an object!");
+                    }
+
+                    if (!Object.hasOwn(entityDefinition.prefab, 'type'))
+                    {
+                        PsyanimDebug.error("Entity index '" + i + "' has a 'prefab' parameter that's missing a 'type' field!");
+                    }
+
+                    if (!(entityDefinition.prefab.type.prototype instanceof PsyanimEntityPrefab))
+                    {
+                        PsyanimDebug.error("Entity index '" + i + "' has a 'prefab' type that doesn't inherit from PsyanimEntityPrefab!");
+                    }
+
+                    if (Object.hasOwn(entityDefinition.prefab, 'params'))
+                    {
+                        if (!this._isObject(entityDefinition.prefab.params))
+                        {
+                            PsyanimDebug.error("Entity index '" + i + "' has an invalid prefab 'params' field.");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            PsyanimDebug.warn('No entities added to the scene definition!');
+        }
     }
 
     _getRandomizedInitialPosition() {
@@ -75,7 +215,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         return (typeof(o) === 'object') && !Array.isArray(o) && (o !== null);
     }
 
-    _configureNonPrefabEntity(entityDefinition, nameOverride = null) {
+    _configureEntityComponents(entityDefinition, nameOverride = null) {
 
         let name = (nameOverride) ? nameOverride : entityDefinition.name;
 
@@ -134,7 +274,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
     }
 
-    _configureNonPrefabEntities() {
+    _configureEntities() {
 
         let entityDefinitions = this._sceneDefinition.entities;
 
@@ -143,13 +283,10 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             return;
         }
 
-        let nonPrefabEntityDefinitions = entityDefinitions
-            .filter(e => !Object.hasOwn(e, 'prefab'));
-
         /** finally, configure all the components */
-        for (let i = 0; i < nonPrefabEntityDefinitions.length; ++i)
+        for (let i = 0; i < entityDefinitions.length; ++i)
         {
-            let entityDefinition = nonPrefabEntityDefinitions[i];
+            let entityDefinition = entityDefinitions[i];
 
             let nInstances = Object.hasOwn(entityDefinition, 'instances') ? 
                 entityDefinition.instances : 1;
@@ -161,7 +298,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
             if (nInstances == 1)
             {
-                this._configureNonPrefabEntity(entityDefinition);
+                this._configureEntityComponents(entityDefinition);
             }
             else
             {
@@ -169,7 +306,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                 {
                     let instanceName = entityDefinition.name + '_' + (j + 1);
 
-                    this._configureNonPrefabEntity(entityDefinition, instanceName);
+                    this._configureEntityComponents(entityDefinition, instanceName);
                 }    
             }
         }
@@ -203,46 +340,29 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
         let prefab = new entityDefinition.prefab.type(shapeParams);
 
-        let prefabParamNames = Object.keys(entityDefinition.prefab.params);
-
         /** configure the prefab first */
-        for (let j = 0; j < prefabParamNames.length; ++j)
+        if (Object.hasOwn(entityDefinition.prefab, 'params'))
         {
-            let paramName = prefabParamNames[j];
+            let prefabParamNames = Object.keys(entityDefinition.prefab.params);
 
-            let paramValue = entityDefinition.prefab.params[paramName];
-
-            if (paramValue === 'navgrid')
+            for (let j = 0; j < prefabParamNames.length; ++j)
             {
-                prefab[paramName] = this._grid;
-            }
-            else if (this._isObject(paramValue))
-            {
-                // TODO: we should not be configuring reference fields here!
-                // we need to wait until after all entities and prefabs have been instantiated,
-                // so we can handle the cases where prefabs reference other prefabs gracefully
-
-                // it's an entity or component reference!
-                let entityReferenceName = paramValue.entityName;
-                let componentReferenceIndex = paramValue.componentIndex;
-                
-                let entityReference = this.getEntityByName(entityReferenceName);
-
-                if (componentReferenceIndex)
+                let paramName = prefabParamNames[j];
+    
+                let paramValue = entityDefinition.prefab.params[paramName];
+    
+                if (paramValue === 'navgrid')
                 {
-                    let componentReference = entityReference
-                        .getComponentByIndex(componentReferenceIndex);
-
-                    prefab[paramName] = componentReference;
+                    prefab[paramName] = this._grid;
+                }
+                else if (this._isObject(paramValue))
+                {
+                    PsyanimDebug.error('Prefab parameters should not reference other entities or components!');
                 }
                 else
                 {
-                    prefab[paramName] = entityReference;
+                    prefab[paramName] = paramValue;
                 }
-            }
-            else
-            {
-                prefab[paramName] = paramValue;
             }
         }
 

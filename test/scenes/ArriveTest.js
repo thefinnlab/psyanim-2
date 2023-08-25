@@ -4,6 +4,7 @@ import PsyanimConstants from '../../src/core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
 
 import PsyanimArriveAgentPrefab from '../../src/core/prefabs/PsyanimArriveAgentPrefab';
+import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
@@ -54,12 +55,17 @@ export default class ArriveTest extends PsyanimDataDrivenScene {
                     },
                     prefab: {
                         type: PsyanimArriveAgentPrefab,
-                        params: {
-                            target: {
-                                entityName: 'mouseFollowTarget'
-                            }    
+                    },
+                    components: [
+                        {
+                            type: PsyanimArriveAgent,
+                            params: {
+                                target: {
+                                    entityName: 'mouseFollowTarget'
+                                }
+                            }
                         }
-                    }
+                    ]
                 }
             ]
         });

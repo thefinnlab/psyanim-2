@@ -4,12 +4,24 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimPlayfightAgent extends PsyanimComponent {
 
+    target;
+
     playfightBehavior;
     vehicle;
 
     constructor(entity) {
 
         super(entity);
+    }
+
+    afterCreate() {
+
+        if (this.target)
+        {
+            this.entity.setOnCollideWith(this.target.body, (matterCollisionData) => {
+                this.playfightBehavior.handleCollision(matterCollisionData) 
+            });
+        }
     }
 
     update(t, dt) {
@@ -22,7 +34,7 @@ export default class PsyanimPlayfightAgent extends PsyanimComponent {
         // compute steering
         this.playfightBehavior.updateBreakTimer(dt);
 
-        let steering = this.playfightBehavior.getSteering();
+        let steering = this.playfightBehavior.getSteering(this.target);
 
         this.vehicle.steer(steering);
     }

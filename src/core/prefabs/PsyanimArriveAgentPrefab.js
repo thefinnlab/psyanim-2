@@ -17,12 +17,6 @@ import PsyanimArriveAgent from '../components/steering/agents/PsyanimArriveAgent
 export default class PsyanimArriveAgentPrefab extends PsyanimEntityPrefab {
 
     /**
-     *  Arrive algorithm target entity.
-     *  @type {PsyanimEntity}
-     */
-    target;
-
-    /**
      *  Maximum speed this entity's vehicle can travel.
      *  @type {Number}
      */
@@ -64,7 +58,6 @@ export default class PsyanimArriveAgentPrefab extends PsyanimEntityPrefab {
         let arriveAgent = entity.addComponent(PsyanimArriveAgent);
         arriveAgent.arriveBehavior = arriveBehavior;
         arriveAgent.vehicle = vehicle;
-        arriveAgent.target = this.target;
 
         return entity;
     }
