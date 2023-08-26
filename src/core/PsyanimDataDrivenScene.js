@@ -8,6 +8,7 @@ import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid';
 import PsyanimAdvancedFleeBehavior from './components/steering/PsyanimAdvancedFleeBehavior';
 import PsyanimComponent from './PsyanimComponent';
 import PsyanimEntityPrefab from './PsyanimEntityPrefab';
+import PsyanimEntity from './PsyanimEntity';
 
 /**
  *  Algorithm (order is important!):
@@ -56,21 +57,10 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
     _validateSceneDefinition() {
 
-        // TODO: this isn't finished!
-
         /**
-         *  Verify the following:
+         *  TODO: this isn't finished - still need to verify the following:
          * 
-         *  - wrapScreenBoundary is a boolean
          *  - entities: must be an array and all entity names must be unique
-         *  - each entity must have a name
-         *  - entity.shapeParams must be an object
-         *  - entity.initialPosition must be an object with an x & y
-         *  - entity.prefab must be an object and have a 'type' field
-         *  - entity.prefab 'params' must be an object
-         *  - entity.components must be an array
-         *  - each component must have a 'type' field
-         *  - component.params must be an object
          *  - any prefab.params or component.params which are reference fields should be objects
          *      with an 'entityName' and possibly a component index
          * 
@@ -94,11 +84,50 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             }
         }
 
-        // TODO: validate navgrid field
+        // validate 'navgrid' field
+        if (Object.hasOwn(this._sceneDefinition, 'navgrid'))
+        {
+            if (Object.hasOwn(this._sceneDefinition.navgrid, 'cellSize'))
+            {
+                if (typeof(this._sceneDefinition.navgrid.cellSize) !== 'number')
+                {
+                    PsyanimDebug.error("navgrid 'cellSize' must be a 'number'!");
+                }
+            }
+
+            if (Object.hasOwn(this._sceneDefinition.navgrid, 'obstacles'))
+            {
+                if (!Array.isArray(this._sceneDefinition.navgrid.obstacles))
+                {
+                    PsyanimDebug.error("navgrid 'obstacles' field must be an array!");
+                }
+
+                let obstacleDefinitions = this._sceneDefinition.navgrid.obstacles;
+
+                for (let i = 0; i < obstacleDefinitions.length; ++i)
+                {
+                    let obstacleDefinition = obstacleDefinitions[i];
+
+                    if (!obstacleDefinition.position || !this._isObject(obstacleDefinition.position) ||
+                        !Object.hasOwn(obstacleDefinition.position, 'x') ||
+                        !Object.hasOwn(obstacleDefinition.position, 'y'))
+                    {
+                        PsyanimDebug.error("Navgrid obstacle at index '" + i + "' must have a 'position' field of the form: " + 
+                            "{ x: 0, y: 0 }");
+                    }
+
+                    if (Object.hasOwn(obstacleDefinition, 'shapeParams'))
+                    {
+                        if (!this._isObject(obstacleDefinition.shapeParams))
+                        {
+                            PsyanimDebug.error("Navgrid obstacle at index '" + i + "' 'shapeParams' field must be an object!");
+                        }
+                    }
+                }
+            }
+        }
 
         // validate entity configurations
-        let entityNames = [];
-
         if (Object.hasOwn(this._sceneDefinition, 'entities'))
         {
             if (!Array.isArray(this._sceneDefinition.entities))
@@ -108,23 +137,38 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
             let entityDefinitions = this._sceneDefinition.entities;
 
+            // check entity name exists and is unique
+            let entityNames = entityDefinitions.map(e => e.name);
+
+            if (entityNames.includes(undefined))
+            {
+                let index = entityNames.indexOf(undefined);
+
+                PsyanimDebug.error("Entity at index '" + index + "' has no 'name' field!");
+            }
+
+            if (entityNames.length !== new Set(entityNames).size) // uniqueness check
+            {
+                PsyanimDebug.error("All entity names must be unique!");
+            }
+
+            // now do the detailed checks on each entity
             for (let i = 0; i < entityDefinitions.length; ++i)
             {
                 let entityDefinition = entityDefinitions[i];
 
-                if (Object.hasOwn(entityDefinition, 'name'))
+                if (typeof(entityDefinition.name) != 'string')
                 {
-                    if (typeof(entityDefinition.name) != 'string')
-                    {
-                        PsyanimDebug.error("Entity 'name' must be of type 'string'!");
-                    }
-                }
-                else
-                {
-                    PsyanimDebug.error("Entity at index = " + i + " does not have a 'name' field.");
+                    PsyanimDebug.error("Entity index '" + i + "': 'name' must be of type 'string'!");
                 }
 
-                entityNames.push(entityDefinition.name);
+                if (Object.hasOwn(entityDefinition, 'instances'))
+                {
+                    if (typeof(entityDefinition.instances) !== 'number')
+                    {
+                        PsyanimDebug.error("Entity at index = " + i + ": 'instances' field must be a number!");
+                    }
+                }
 
                 if (Object.hasOwn(entityDefinition, 'initialPosition'))
                 {
@@ -155,6 +199,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                     }
                 }
 
+                // validate entity prefabs
                 if (Object.hasOwn(entityDefinition, 'prefab'))
                 {
                     if (!this._isObject(entityDefinition.prefab))
@@ -178,6 +223,46 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                         {
                             PsyanimDebug.error("Entity index '" + i + "' has an invalid prefab 'params' field.");
                         }
+                    }
+                }
+
+                // validate components on entities
+                if (Object.hasOwn(entityDefinition, 'components'))
+                {
+                    let componentDefinitions = entityDefinition.components;
+
+                    if (!Array.isArray(componentDefinitions))
+                    {
+                        PsyanimDebug.error("Entity index '" + i +"': 'components' field must be an array!");
+                    }
+
+                    for (let j = 0; j < componentDefinitions.length; ++j)
+                    {
+                        let componentDefinition = componentDefinitions[j];
+
+                        if (!this._isObject(componentDefinition) || !Object.hasOwn(componentDefinition, 'type'))
+                        {
+                            PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                "': Component definition must be an object with a 'type' field!");
+                        }
+
+                        if (!(componentDefinition.type.prototype instanceof PsyanimComponent))
+                        {
+                            PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                "': Component definition 'type' must be a type that inherits from PsyanimComponent!");
+                        }
+
+                        if (Object.hasOwn(componentDefinition, 'params'))
+                        {
+                            if (!this._isObject(componentDefinition.params))
+                            {
+                                PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                "': Component 'params' must be an object!");
+                            }
+                        }
+
+                        // TODO: need to check that component parameter 'reference' fields point to a valid
+                        // component or entity!
                     }
                 }
             }
