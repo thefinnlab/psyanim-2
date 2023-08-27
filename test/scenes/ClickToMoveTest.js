@@ -10,9 +10,11 @@ import PsyanimClickToMovePlayerPrefab from '../../src/core/prefabs/PsyanimClickT
 
 export default class ClickToMoveTest extends PsyanimDataDrivenScene {
 
+    static KEY = 'Click To Move Test';
+
     constructor() {
 
-        super('Click To Move Test');
+        super(ClickToMoveTest.KEY);
     }
 
     init() {
@@ -22,6 +24,7 @@ export default class ClickToMoveTest extends PsyanimDataDrivenScene {
         // click to move test
         this.registry.set('psyanim_currentSceneDefinition', {
 
+            key: 'Click To Move Test',
             wrapScreenBoundary: false,
             entities: [
                 {

@@ -14,9 +14,11 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 export default class PsyanimPlayfightTest extends PsyanimDataDrivenScene {
 
+    static KEY = 'Playfight Test';
+
     constructor() {
 
-        super('Playfight Test');
+        super(PsyanimPlayfightTest.KEY);
     }
 
     init() {

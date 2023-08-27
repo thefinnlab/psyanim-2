@@ -18,9 +18,11 @@ import PsyanimSeekAgentPrefab from '../../src/core/prefabs/PsyanimSeekAgentPrefa
 
 export default class SeekTest extends PsyanimScene {
 
+    static KEY = 'Seek Test';
+
     constructor() {
 
-        super('Seek Test');
+        super(SeekTest.KEY);
     }
 
     create() {

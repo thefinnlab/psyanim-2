@@ -10,9 +10,11 @@ import PsyanimWanderAgentPrefab from '../../src/core/prefabs/PsyanimWanderAgentP
 
 export default class WanderTest extends PsyanimDataDrivenScene {
 
+    static KEY = 'WanderTest';
+
     constructor() {
 
-        super('WanderTest');
+        super(WanderTest.KEY);
     }
 
     init() {
@@ -22,6 +24,7 @@ export default class WanderTest extends PsyanimDataDrivenScene {
         // wander test
         this.registry.set('psyanim_currentSceneDefinition', {
 
+            key: 'Wander Test',
             entities: [
                 {
                     name: 'sceneControls',

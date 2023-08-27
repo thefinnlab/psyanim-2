@@ -12,9 +12,11 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 export default class ArriveTest extends PsyanimDataDrivenScene {
 
+    static KEY = 'ArriveTest';
+
     constructor() {
 
-        super('ArriveTest');
+        super(ArriveTest.KEY);
     }
 
     init() {
@@ -24,6 +26,7 @@ export default class ArriveTest extends PsyanimDataDrivenScene {
         // arrive test
         this.registry.set('psyanim_currentSceneDefinition', {
 
+            key: 'Arrive Test',
             entities: [
                 {
                     name: 'sceneControls',

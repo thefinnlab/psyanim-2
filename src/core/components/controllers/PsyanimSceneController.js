@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 
+import PsyanimApp from '../../PsyanimApp';
 import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimSceneChangeController extends PsyanimComponent {
@@ -29,35 +30,37 @@ export default class PsyanimSceneChangeController extends PsyanimComponent {
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.J)) {
 
-            // load previous scene
-            let currentSceneIndex = this.entity.scene.scene.getIndex(this.entity.scene.scene.key);
+            let sceneKeys = PsyanimApp.Instance.sceneKeys;
 
-            let scenes = this.entity.scene.scene.manager.scenes;
+            let currentSceneKey = PsyanimApp.Instance.currentSceneKey;
+
+            let currentSceneIndex = sceneKeys.indexOf(currentSceneKey);
 
             let nextSceneIndex = currentSceneIndex - 1;
 
             if (nextSceneIndex < 0)
             {
-                nextSceneIndex = scenes.length - 1;
+                nextSceneIndex = sceneKeys.length - 1;
             }
 
-            this._loadScene(scenes[nextSceneIndex]);
+            PsyanimApp.Instance.loadScene(sceneKeys[nextSceneIndex]);
         }
         else if (Phaser.Input.Keyboard.JustDown(this._keys.K)) {
 
-            // load next scene
-            let currentSceneIndex = this.entity.scene.scene.getIndex(this.entity.scene.scene.key);
+            let sceneKeys = PsyanimApp.Instance.sceneKeys;
 
-            let scenes = this.entity.scene.scene.manager.scenes;
+            let currentSceneKey = PsyanimApp.Instance.currentSceneKey;
+
+            let currentSceneIndex = sceneKeys.indexOf(currentSceneKey);
 
             let nextSceneIndex = currentSceneIndex + 1;
 
-            if (nextSceneIndex == scenes.length)
+            if (nextSceneIndex == sceneKeys.length)
             {
                 nextSceneIndex = 0;
             }
 
-            this._loadScene(scenes[nextSceneIndex]);
+            PsyanimApp.Instance.loadScene(sceneKeys[nextSceneIndex]);
         }
     }
 }

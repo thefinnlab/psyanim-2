@@ -15,9 +15,11 @@ import FOVSensorTestColorModifier from "../components/FOVSensorTestColorModifier
 
 export default class FOVSensorTest extends PsyanimDataDrivenScene {
 
+    static KEY = 'FOVSensor Test';
+
     constructor() {
 
-        super('FOVSensor Test');
+        super(FOVSensorTest.KEY);
     }
 
     init() {
@@ -26,6 +28,7 @@ export default class FOVSensorTest extends PsyanimDataDrivenScene {
 
         this.registry.set('psyanim_currentSceneDefinition', {
 
+            key: 'FOV Sensor Test',
             entities: [
                 {
                     name: 'sceneControls',

@@ -15,9 +15,11 @@ import PsyanimAdvancedPlayfightBehavior from '../../src/core/components/steering
 
 export default class AdvancedPlayfightTest extends PsyanimScene {
 
+    static KEY = 'Advanced Playfight Test';
+
     constructor() {
 
-        super('Advanced Playfight Test');
+        super(AdvancedPlayfightTest.KEY);
     }
 
     create() {

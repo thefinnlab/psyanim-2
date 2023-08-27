@@ -14,9 +14,11 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 export default class PsyanimDebugLoggerTest extends PsyanimScene {
 
+    static KEY = 'Psyanim Debug Logger Test';
+
     constructor() {
 
-        super('Psyanim Debug Logger Test');
+        super(PsyanimDebugLoggerTest.KEY);
     }
 
     create() {

@@ -15,9 +15,11 @@ import PsyanimAdvancedArriveAgentPrefab from '../../src/core/prefabs/PsyanimAdva
 
 export default class AdvancedArriveTest extends PsyanimScene {
 
+    static KEY = 'Advanced Arrive Test';
+
     constructor() {
 
-        super('Advanced Arrive Test');
+        super(AdvancedArriveTest.KEY);
     }
 
     create() {

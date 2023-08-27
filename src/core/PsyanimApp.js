@@ -61,6 +61,24 @@ export default class PsyanimApp {
         return this._game.registry.get('psyanim_currentScene');
     }
 
+    get currentSceneKey() {
+
+        let key = null;
+        let scene = this.currentScene;
+
+        if (scene)
+        {
+            key = scene.scene.key;
+        }
+
+        return key;
+    }
+
+    get sceneKeys() {
+
+        return this._config.sceneKeys;
+    }
+
     get domElement() {
 
         return this._domElement;

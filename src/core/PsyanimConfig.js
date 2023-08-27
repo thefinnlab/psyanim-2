@@ -1,5 +1,8 @@
 import Phaser from 'phaser';
 
+import PsyanimScene from './PsyanimScene';
+import PsyanimDebug from './utils/PsyanimDebug';
+
 export default class PsyanimConfig {
 
     constructor() {
@@ -20,18 +23,43 @@ export default class PsyanimConfig {
                 }
             }
         };
+        
+        this._sceneKeys = [];
     }
 
     registerScene(scene) {
 
         if (!this._phaserConfig.scene.includes(scene))
         {
-            this._phaserConfig.scene.push(scene);
+            if (scene.prototype instanceof PsyanimScene)
+            {
+                if (!scene.hasOwnProperty('KEY'))
+                {
+                    PsyanimDebug.error("Scene has no 'key' field!");
+                }
+
+                this._phaserConfig.scene.push(scene);
+                this._sceneKeys.push(scene.KEY);
+            }
+            else
+            {
+                if (!Object.hasOwn(scene, 'key'))
+                {
+                    PsyanimDebug.error('Scene has no key!');
+                }
+
+                this._sceneKeys.push(scene.key);
+            }
         }
         else
         {
             console.error("ERROR: scene is already registered in app config!");
         }
+    }
+
+    get sceneKeys() {
+
+        return this._sceneKeys.slice();
     }
 
     setDebugEnabled(enabled) {

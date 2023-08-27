@@ -15,9 +15,11 @@ import AfterCreateTest from '../components/AfterCreateTest';
 
 export default class SensorTest extends PsyanimScene {
 
+    static KEY = 'SensorTest';
+
     constructor() {
 
-        super('SensorTest');
+        super(SensorTest.KEY);
     }
 
     create() {

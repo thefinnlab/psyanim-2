@@ -19,9 +19,11 @@ import PsyanimAdvancedFleeAgentPrefab from '../../src/core/prefabs/PsyanimAdvanc
 
 export default class AdvancedFleeTest extends PsyanimScene {
 
+    static KEY = 'Advanced Flee Test';
+
     constructor() {
 
-        super('Advanced Flee Test');
+        super(AdvancedFleeTest.KEY);
     }
 
     create() {

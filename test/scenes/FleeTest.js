@@ -15,9 +15,11 @@ import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 
 export default class FleeTest extends PsyanimScene {
 
+    static KEY = 'Flee Test';
+
     constructor() {
 
-        super('Flee Test');
+        super(FleeTest.KEY);
     }
 
     create() {

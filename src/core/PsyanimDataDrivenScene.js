@@ -57,18 +57,6 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
     _validateSceneDefinition() {
 
-        /**
-         *  TODO: this isn't finished - still need to verify the following:
-         * 
-         *  - entities: must be an array and all entity names must be unique
-         *  - any prefab.params or component.params which are reference fields should be objects
-         *      with an 'entityName' and possibly a component index
-         * 
-         *  - we should verify that the 'entityName' and componentIndex are valid too
-         *      i.e. the entityName should match one in the def and componentIndex should be within
-         *      the possible valid indices
-         */
-
         // validate scene definition exists
         if (!this._sceneDefinition)
         {
@@ -223,6 +211,26 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                         {
                             PsyanimDebug.error("Entity index '" + i + "' has an invalid prefab 'params' field.");
                         }
+
+                        let paramKeys = Object.keys(entityDefinition.prefab.params);
+
+                        for (let j = 0; j < paramKeys.length; ++j)
+                        {
+                            let paramKey = paramKeys[j];
+                            let paramValue = entityDefinition.prefab.params[paramKey];
+    
+                            if (this._isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
+                            {
+                                PsyanimDebug.error("Entity index '" + i + "', prefab param index = '" + j + 
+                                    "': prefab parameters shouldn't reference entities!");
+
+                                if (Object.hasOwn(paramValue, 'componentIndex'))
+                                {
+                                    PsyanimDebug.error("Entity index '" + i + "', param key '" + paramKey + 
+                                        "': prefab parameters shouldn't reference other components!");
+                                }
+                            }
+                        }                        
                     }
                 }
 
@@ -259,10 +267,47 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                 PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
                                 "': Component 'params' must be an object!");
                             }
-                        }
 
-                        // TODO: need to check that component parameter 'reference' fields point to a valid
-                        // component or entity!
+                            let paramKeys = Object.keys(componentDefinition.params);
+
+                            for (let k = 0; k < paramKeys.length; ++k)
+                            {
+                                let paramKey = paramKeys[k];
+                                let paramValue = componentDefinition.params[paramKey];
+    
+                                if (this._isObject(paramValue))
+                                {
+                                    if (Object.hasOwn(paramValue, 'entityName'))
+                                    {
+                                        if (!entityNames.includes(paramValue.entityName))
+                                        {
+                                            PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                                "', param key '" + paramKey + "': entity name doesn't exist in scene definition!");
+                                        }
+        
+                                        if (Object.hasOwn(paramValue, 'componentIndex'))
+                                        {
+                                            let componentIndex = paramValue.componentIndex;
+                                            let entityDefinition = entityDefinitions.find(e => e.name == paramValue.entityName);
+        
+                                            if (!Object.hasOwn(entityDefinition, 'components'))
+                                            {
+                                                PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                                "', param key '" + paramKey + "': entity doesn't have any configured components!");
+                                            }
+        
+                                            let componentCount = entityDefinition.components.length;
+        
+                                            if (componentIndex >= componentCount)
+                                            {
+                                                PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                                "', param key '" + paramKey + "': component index is greater than number of components on entity!");
+                                            }
+                                        }
+                                    }
+                                }
+                            }                            
+                        }
                     }
                 }
             }

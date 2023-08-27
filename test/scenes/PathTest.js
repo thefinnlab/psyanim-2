@@ -17,9 +17,11 @@ import PsyanimLineRenderer from '../../src/core/components/rendering/PsyanimLine
 
 export default class PathTest extends PsyanimScene {
 
+    static KEY = 'Path Test';
+
     constructor() {
 
-        super('Path Test')
+        super(PathTest.KEY);
     }
 
     create() {

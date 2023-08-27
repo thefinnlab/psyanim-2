@@ -14,9 +14,11 @@ import PsyanimChargeAgent from '../../src/core/components/steering/agents/Psyani
 
 export default class ChargeTest extends PsyanimScene {
 
+    static KEY = 'Charge Test';
+
     constructor() {
 
-        super('Charge Test');
+        super(ChargeTest.KEY);
     }
 
     create() {

@@ -13,9 +13,11 @@ import PsyanimEvadeAgentPrefab from '../../src/core/prefabs/PsyanimEvadeAgentPre
 
 export default class EvadeTest extends PsyanimScene {
 
+    static KEY = 'Evade Test';
+
     constructor() {
 
-        super('Evade Test');
+        super(EvadeTest.KEY);
     }
 
     create() {
