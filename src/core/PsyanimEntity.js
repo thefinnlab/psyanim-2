@@ -3,6 +3,8 @@ import Phaser from 'phaser';
 import PsyanimConstants from './PsyanimConstants';
 import PsyanimGeomUtils from './utils/PsyanimGeomUtils';
 
+import PsyanimApp from './PsyanimApp';
+
 /**
  *  Some helpful tips:
  *      - use 'this.visible' to toggle sprite visibility
@@ -34,7 +36,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         }
         else
         {
-            textureKey = scene.scene.key + "_" + name;
+            textureKey = PsyanimApp.Instance.currentSceneKey + "_" + name;
         }
 
         const defaultShapeParams = PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;

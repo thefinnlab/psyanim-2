@@ -3,6 +3,8 @@ import Phaser from 'phaser';
 import PsyanimApp from '../../PsyanimApp';
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimDataDrivenScene from '../../PsyanimDataDrivenScene';
+
 export default class PsyanimSceneChangeController extends PsyanimComponent {
 
     constructor(entity) {

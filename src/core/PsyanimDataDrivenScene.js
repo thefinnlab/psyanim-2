@@ -27,7 +27,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
     constructor(key = null) {
 
-        let sceneKey = 'Psyanim Data Driven Scene';
+        let sceneKey = 'PsyanimDataDrivenScene';
 
         if (key)
         {
@@ -503,8 +503,6 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
     _instantiatePrefabEntities() {
 
-        // TODO: this doesn't work in the case where a prefab entity references another prefab entity!
-
         let entityDefinitions = this._sceneDefinition.entities;
 
         if (!entityDefinitions || entityDefinitions.length == 0)
@@ -668,3 +666,5 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         this._grid.bake();
     }
 }
+
+PsyanimDataDrivenScene.KEY = 'PsyanimDataDrivenScene';

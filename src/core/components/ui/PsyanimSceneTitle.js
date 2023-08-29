@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimApp from '../../PsyanimApp';
+
 export default class PsyanimSceneTitle extends PsyanimComponent {
 
     constructor(entity) {
@@ -10,6 +12,6 @@ export default class PsyanimSceneTitle extends PsyanimComponent {
 
         const sceneNameHeader = document.getElementById("sceneName");
 
-        sceneNameHeader.innerHTML = this.entity.scene.scene.key;
+        sceneNameHeader.innerHTML = PsyanimApp.Instance.currentSceneKey;
     }
 }

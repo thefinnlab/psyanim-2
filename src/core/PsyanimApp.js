@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 
 import PsyanimConfig from './PsyanimConfig';
+import PsyanimDebug from './utils/PsyanimDebug';
+import PsyanimDataDrivenScene from './PsyanimDataDrivenScene';
 
 import { v4 as uudiv4 } from 'uuid';
 
@@ -63,15 +65,7 @@ export default class PsyanimApp {
 
     get currentSceneKey() {
 
-        let key = null;
-        let scene = this.currentScene;
-
-        if (scene)
-        {
-            key = scene.scene.key;
-        }
-
-        return key;
+        return this._currentSceneKey;
     }
 
     get sceneKeys() {
@@ -96,9 +90,30 @@ export default class PsyanimApp {
 
     loadScene(sceneKey) {
 
-        console.log("load scene called with key: " + sceneKey);
+        PsyanimDebug.log("load scene called with key: " + sceneKey);
 
-        this.currentScene.scene.start(sceneKey);
+        if (!this.sceneKeys.includes(sceneKey))
+        {
+            PsyanimDebug.error("Failed to load scene '" + sceneKey + "' - no scene registered with that key!");
+        }
+
+        let psyanimScenes = this.config.phaserConfig.scene;
+        let psyanimSceneKeys = psyanimScenes.map(s => s.KEY);
+
+        if (psyanimSceneKeys.includes(sceneKey))
+        {
+            this.currentScene.scene.start(sceneKey);
+        }
+        else
+        {
+            let sceneDefinition = this._config.getSceneDefinition(sceneKey);
+
+            this._game.registry.set('psyanim_currentSceneDefinition', sceneDefinition);
+
+            this.currentScene.scene.start(PsyanimDataDrivenScene.KEY);
+        }
+
+        this._currentSceneKey = sceneKey;
     }
 
     _loadExperimentVariations(experimentDefinition) {
@@ -111,7 +126,7 @@ export default class PsyanimApp {
 
             if (!run.sceneType.KEY)
             {
-                console.error("ERROR: to register a PsyanimScene type, it must contain a static string field called 'KEY'!");
+                PsyanimDebug.error("ERROR: to register a PsyanimScene type, it must contain a static string field called 'KEY'!");
             }
 
             if (!this._config.phaserConfig.scene.includes(run.sceneType))
@@ -147,6 +162,17 @@ export default class PsyanimApp {
     run() {
 
         this._game = new Phaser.Game(this._config.phaserConfig);
+
+        this._currentSceneKey = this.sceneKeys[0];
+
+        let sceneDefinitionKeys = this.config.sceneDefinitions.map(s => s.key);
+
+        if (sceneDefinitionKeys.includes(this._currentSceneKey))
+        {
+            let sceneDefinition = this.config.getSceneDefinition(this._currentSceneKey);
+
+            this._game.registry.set('psyanim_currentSceneDefinition', sceneDefinition);
+        }
     }
 }
 

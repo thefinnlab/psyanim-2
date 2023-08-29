@@ -24,20 +24,20 @@ import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest';
  */
 
 PsyanimApp.Instance.config.registerScene(FOVSensorTest);
+PsyanimApp.Instance.config.registerScene(ArriveTest);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTest);
+PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTest);
 PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
 PsyanimApp.Instance.config.registerScene(PathTest);
 PsyanimApp.Instance.config.registerScene(PreyTest);
 PsyanimApp.Instance.config.registerScene(PredatorTest);
-PsyanimApp.Instance.config.registerScene(ArriveTest);
 PsyanimApp.Instance.config.registerScene(SeekTest);
 PsyanimApp.Instance.config.registerScene(FleeTest);
 PsyanimApp.Instance.config.registerScene(WanderTest);
 PsyanimApp.Instance.config.registerScene(SensorTest);
 PsyanimApp.Instance.config.registerScene(EvadeTest);
 PsyanimApp.Instance.config.registerScene(AdvancedFleeTest);
-PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTest);
 PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTest);
 PsyanimApp.Instance.config.registerScene(ChargeTest);
 PsyanimApp.Instance.config.registerScene(PsyanimDebugLoggerTest);

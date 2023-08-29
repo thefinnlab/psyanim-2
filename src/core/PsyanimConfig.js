@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimScene from './PsyanimScene';
 import PsyanimDebug from './utils/PsyanimDebug';
+import PsyanimDataDrivenScene from './PsyanimDataDrivenScene';
 
 export default class PsyanimConfig {
 
@@ -23,43 +24,62 @@ export default class PsyanimConfig {
                 }
             }
         };
-        
+
         this._sceneKeys = [];
+
+        this._dataDrivenScenes = [];
     }
 
     registerScene(scene) {
 
-        if (!this._phaserConfig.scene.includes(scene))
+        if (scene.prototype instanceof PsyanimScene)
         {
-            if (scene.prototype instanceof PsyanimScene)
+            if (!scene.hasOwnProperty('KEY'))
             {
-                if (!scene.hasOwnProperty('KEY'))
-                {
-                    PsyanimDebug.error("Scene has no 'key' field!");
-                }
+                PsyanimDebug.error("Scene has no 'key' field!");
+            }
 
+            if (!this._phaserConfig.scene.includes(scene))
+            {
                 this._phaserConfig.scene.push(scene);
                 this._sceneKeys.push(scene.KEY);
             }
             else
             {
-                if (!Object.hasOwn(scene, 'key'))
-                {
-                    PsyanimDebug.error('Scene has no key!');
-                }
-
-                this._sceneKeys.push(scene.key);
-            }
+                PsyanimDebug.error("ERROR: scene is already registered in app config!");
+            }    
         }
         else
         {
-            console.error("ERROR: scene is already registered in app config!");
+            if (!Object.hasOwn(scene, 'key'))
+            {
+                PsyanimDebug.error('Scene has no key!');
+            }
+
+            this._dataDrivenScenes.push(scene);
+            this._sceneKeys.push(scene.key);
+
+            // if user registers at least 1 data-driven scene, we need to register PsyanimDataDrivenScene
+            if (!this._phaserConfig.scene.includes(PsyanimDataDrivenScene))
+            {
+                this._phaserConfig.scene.push(PsyanimDataDrivenScene);
+            }
         }
     }
 
     get sceneKeys() {
 
         return this._sceneKeys.slice();
+    }
+
+    get sceneDefinitions() {
+
+        return this._dataDrivenScenes.slice();
+    }
+
+    getSceneDefinition(key) {
+
+        return this._dataDrivenScenes.find(s => s.key === key);
     }
 
     setDebugEnabled(enabled) {
