@@ -64,7 +64,7 @@ class _PsyanimJsPsychPlugin {
 
         if (trial.agentNamesToRecord && trial.agentNamesToRecord.length > 0)
         {
-            let trialScene = this._getScene(trial.sceneKey);
+            let trialScene = PsyanimApp.Instance.getSceneByKey(trial.sceneKey);
 
             trialScene.events.on('create', this._setupAnimationBaking, this);
         }
@@ -181,11 +181,6 @@ class _PsyanimJsPsychPlugin {
 
         // this must be called to end the trial and proceed to the next one!
         this._jsPsych.finishTrial();
-    }
-
-    _getScene(key) {
-
-        return PsyanimApp.Instance.currentScene.scene.get(key);
     }
 
     _setupAnimationBaking(scene) {

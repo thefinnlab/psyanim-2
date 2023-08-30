@@ -88,6 +88,28 @@ export default class PsyanimApp {
         return this._game;
     }
 
+    getSceneByKey(sceneKey) {
+
+        if (!this.sceneKeys.includes(sceneKey))
+        {
+            PsyanimDebug.error('No scene with key: ' + sceneKey);
+        }
+
+        let psyanimScenes = this.config.phaserConfig.scene;
+        let psyanimSceneKeys = psyanimScenes.map(s => s.KEY);
+
+        if (psyanimSceneKeys.includes(sceneKey))
+        {
+            // return the actual psyanim scene reference
+            return PsyanimApp.Instance.currentScene.scene.get(sceneKey);
+        }
+        else
+        {
+            // return the data-driven scene b.c. it will be the one used for this key
+            return PsyanimApp.Instance.currentScene.scene.get(PsyanimDataDrivenScene.KEY);
+        }
+    }
+
     loadScene(sceneKey) {
 
         PsyanimDebug.log("load scene called with key: " + sceneKey);
