@@ -24,12 +24,6 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
     /** Predator Params */
 
     /**
-     *  Target that the predator will chase when in sight.
-     *  @type {PsyanimEntity}
-     */
-    target;
-
-    /**
      *  Maximum number of degrees which this agent will offset its chase direction.
      *  @type {Number}
      */
@@ -187,7 +181,6 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         let predatorAgent = entity.addComponent(PsyanimPredatorAgent);
         predatorAgent.vehicle = vehicle;
         predatorAgent.predatorBehavior = predator;
-        predatorAgent.target = this.target;
 
         return entity;
     }

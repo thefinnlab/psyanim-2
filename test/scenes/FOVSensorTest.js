@@ -47,7 +47,7 @@ export default {
                     params: {
                         fovSensor: {
                             entityName: 'player',
-                            componentIndex: 1
+                            componentType: PsyanimFOVSensor
                         }
                     }
                 }
@@ -71,7 +71,7 @@ export default {
                     params: {
                         fovSensor: {
                             entityName: 'player',
-                            componentIndex: 1
+                            componentType: PsyanimFOVSensor
                         }
                     }
                 }

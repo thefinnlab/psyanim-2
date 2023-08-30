@@ -6,8 +6,6 @@ import PsyanimAdvancedArriveAgent from "../components/steering/agents/PsyanimAdv
 
 export default class PsyanimAdvancedArriveAgentPrefab extends PsyanimEntityPrefab {
 
-    target;
-
     chargeDuration;
     innerDecelerationRadius;
     outerDecelerationRadius;
@@ -40,7 +38,6 @@ export default class PsyanimAdvancedArriveAgentPrefab extends PsyanimEntityPrefa
 
         this.advancedArriveAgent.vehicle = vehicle1;
         this.advancedArriveAgent.advancedArriveBehavior = advancedArrive;
-        this.advancedArriveAgent.target = this.target;
 
         return entity;
     }

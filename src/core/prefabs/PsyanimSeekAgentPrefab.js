@@ -6,8 +6,6 @@ import PsyanimSeekAgent from "../components/steering/agents/PsyanimSeekAgent";
 
 export default class PsyanimSeekAgentPrefab extends PsyanimEntityPrefab {
 
-    target;
-
     maxSpeed;
     maxAcceleration;
 
@@ -33,7 +31,6 @@ export default class PsyanimSeekAgentPrefab extends PsyanimEntityPrefab {
 
         seekAgent.seekBehavior = seek;
         seekAgent.vehicle = vehicle;
-        seekAgent.target = this.target;
 
         return entity;
     }

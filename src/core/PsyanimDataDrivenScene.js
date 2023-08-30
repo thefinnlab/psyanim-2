@@ -224,7 +224,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                 PsyanimDebug.error("Entity index '" + i + "', prefab param index = '" + j + 
                                     "': prefab parameters shouldn't reference entities!");
 
-                                if (Object.hasOwn(paramValue, 'componentIndex'))
+                                if (Object.hasOwn(paramValue, 'componentType'))
                                 {
                                     PsyanimDebug.error("Entity index '" + i + "', param key '" + paramKey + 
                                         "': prefab parameters shouldn't reference other components!");
@@ -285,23 +285,24 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                                 "', param key '" + paramKey + "': entity name doesn't exist in scene definition!");
                                         }
         
-                                        if (Object.hasOwn(paramValue, 'componentIndex'))
+                                        if (Object.hasOwn(paramValue, 'componentType'))
                                         {
-                                            let componentIndex = paramValue.componentIndex;
+                                            let componentType = paramValue.componentType;
                                             let entityDefinition = entityDefinitions.find(e => e.name == paramValue.entityName);
         
                                             if (!Object.hasOwn(entityDefinition, 'components'))
                                             {
-                                                PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
+                                                PsyanimDebug.warn("Entity index '" + i + "', component index '" + j + 
                                                 "', param key '" + paramKey + "': entity doesn't have any configured components!");
                                             }
         
-                                            let componentCount = entityDefinition.components.length;
-        
-                                            if (componentIndex >= componentCount)
+                                            let componentDefinition = entityDefinition.components
+                                                .find(c => c.type == paramValue.componentType);
+
+                                            if (!componentDefinition)
                                             {
-                                                PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
-                                                "', param key '" + paramKey + "': component index is greater than number of components on entity!");
+                                                PsyanimDebug.error("Entity index '" + i + "', component type '" + typeof(paramValue.componentType) + 
+                                                    "', param key '" + paramKey + "': component index is greater than number of components on entity!");
                                             }
                                         }
                                     }
@@ -361,6 +362,11 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                 let componentReference = entityReference.getComponent(componentDefinition.type);
 
+                if (Object.hasOwn(componentDefinition, 'enabled'))
+                {
+                    componentReference.enabled = componentDefinition.enabled;
+                }
+
                 let componentParams = componentDefinition.params;
 
                 if (componentParams)
@@ -373,18 +379,18 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                         let paramValue = componentParams[paramName];
 
-                        if (this._isObject(paramValue))
+                        if (this._isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
                         {
                             // param value an entity or component reference
                             let targetEntityName = paramValue.entityName;
                             
                             let targetEntity = this.getEntityByName(targetEntityName);
 
-                            if (Object.hasOwn(paramValue, 'componentIndex'))
+                            if (Object.hasOwn(paramValue, 'componentType'))
                             {
                                 // target is a component reference
-                                let componentIndex = paramValue.componentIndex;
-                                let targetComponent = targetEntity.getComponentByIndex(componentIndex);
+                                let componentType = paramValue.componentType;
+                                let targetComponent = targetEntity.getComponent(componentType);
 
                                 componentReference[paramName] = targetComponent;
                             }
@@ -485,7 +491,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                 {
                     prefab[paramName] = this._grid;
                 }
-                else if (this._isObject(paramValue))
+                else if (this._isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
                 {
                     PsyanimDebug.error('Prefab parameters should not reference other entities or components!');
                 }

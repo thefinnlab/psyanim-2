@@ -7,8 +7,6 @@ import PsyanimEvadeAgent from '../components/steering/agents/PsyanimEvadeAgent';
 
 export default class PsyanimEvadeAgentPrefab extends PsyanimEntityPrefab {
 
-    target;
-
     maxSpeed;
     maxAcceleration;
 
@@ -34,7 +32,6 @@ export default class PsyanimEvadeAgentPrefab extends PsyanimEntityPrefab {
         evadeBehavior.fleeBehavior = fleeBehavior;
 
         let evadeAgent = entity.addComponent(PsyanimEvadeAgent);
-        evadeAgent.target = this.target;
         evadeAgent.vehicle = evadeAgentVehicle;
         evadeAgent.evadeBehavior = evadeBehavior;
 

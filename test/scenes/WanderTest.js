@@ -8,50 +8,34 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 import PsyanimWanderAgentPrefab from '../../src/core/prefabs/PsyanimWanderAgentPrefab';
 
-export default class WanderTest extends PsyanimDataDrivenScene {
+export default {
 
-    static KEY = 'WanderTest';
-
-    constructor() {
-
-        super(WanderTest.KEY);
-    }
-
-    init() {
-
-        super.init();
-
-        // wander test
-        this.registry.set('psyanim_currentSceneDefinition', {
-
-            key: 'Wander Test',
-            entities: [
-                {
-                    name: 'sceneControls',
-                    components: [
-                        { type: PsyanimSceneTitle },
-                        { type: PsyanimPhysicsSettingsController },
-                        { type: PsyanimSceneChangeController }
-                    ]
-                },
-                {
-                    name: 'agent',
-                    instances: 20,
-                    initialPosition: 'random',
-                    shapeParams: {
-                        textureKey: 'wanderTestTexture',
-                        shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-                        base: 16, altitude: 32, 
-                        color: 0xffc0cb            
-                    },
-                    prefab: {
-                        type: PsyanimWanderAgentPrefab,
-                        params: {
-                            debug: false
-                        }
-                    }
-                }
+    key: 'Wander Test',
+    entities: [
+        {
+            name: 'sceneControls',
+            components: [
+                { type: PsyanimSceneTitle },
+                { type: PsyanimPhysicsSettingsController },
+                { type: PsyanimSceneChangeController }
             ]
-        });
-    }
-}
+        },
+        {
+            name: 'agent',
+            instances: 20,
+            initialPosition: 'random',
+            shapeParams: {
+                textureKey: 'wanderTestTexture',
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+                base: 16, altitude: 32, 
+                color: 0xffc0cb            
+            },
+            prefab: {
+                type: PsyanimWanderAgentPrefab,
+                params: {
+                    debug: false
+                }
+            }
+        }
+    ]
+};

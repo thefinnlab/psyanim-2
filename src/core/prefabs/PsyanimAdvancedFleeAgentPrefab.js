@@ -7,8 +7,6 @@ import PsyanimLineRenderer from "../components/rendering/PsyanimLineRenderer";
 
 export default class PsyanimAdvancedFleeAgentPrefab extends PsyanimEntityPrefab {
 
-    target;
-
     maxSpeed;
     panicDistance;
 
@@ -37,7 +35,5 @@ export default class PsyanimAdvancedFleeAgentPrefab extends PsyanimEntityPrefab 
         let fleeAgent = entity.addComponent(PsyanimAdvancedFleeAgent);
         fleeAgent.vehicle = vehicle;
         fleeAgent.advancedFleeBehavior = flee;
-
-        fleeAgent.target = this.target;
     }
 }

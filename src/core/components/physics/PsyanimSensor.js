@@ -6,6 +6,8 @@ import PsyanimEntity from '../../PsyanimEntity';
 
 export default class PsyanimSensor extends PsyanimComponent {
 
+    bodyShapeParams;
+
     constructor(entity) {
 
         super(entity);
@@ -20,7 +22,14 @@ export default class PsyanimSensor extends PsyanimComponent {
         });
     }
 
+    afterCreate() {
+
+        this.setBody(this.bodyShapeParams);
+    }
+
     setBody(shapeParams) {
+
+        this.bodyShapeParams = shapeParams;
 
         if (this._sensorBody != null)
         {

@@ -45,17 +45,14 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
     setTarget(target) {
 
-        if (this._target != null)
-        {
-            this.entity.setOnCollideWith(this._target.body, null);   
-        }
-
         this._target = target;
 
-        this.entity.setOnCollideWith(this._target.body, () => this._handleCollision());
+        this.entity.setOnCollideWith(this._target.body, (matterCollisionData) => {
+            this.handleCollision(matterCollisionData) 
+        });
     }
 
-    _handleCollision() {
+    handleCollision(matterCollisionData) {
 
         if (this.debug)
         {
@@ -64,7 +61,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
         this._breakTimer = 0;
 
-        this._setState(PsyanimAdvancedPlayfightBehavior.STATE.FLEEING);
+        this._setState(PsyanimAdvancedPlayfightBehavior.STATE.FLEEING);    
     }
 
     get maxSpeed() {
@@ -175,19 +172,12 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
         else if (this._state == PsyanimAdvancedPlayfightBehavior.STATE.FLEEING)
         {
             this._breakTimer += dt;
-
-            let distanceToTarget = this.entity.position
-                .subtract(this._target.position)
-                .length();
-
-            if (distanceToTarget > this.fleeBehavior.panicDistance)
-            {
-                this._setState(PsyanimAdvancedPlayfightBehavior.STATE.WANDERING);
-            }
         }
     }
 
     getSteering() {
+
+        let distanceToTarget = 0;
 
         switch (this._state) {
 
@@ -197,7 +187,7 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 
             case PsyanimAdvancedPlayfightBehavior.STATE.WANDERING:
 
-                let distanceToTarget = this.entity.position
+                distanceToTarget = this.entity.position
                     .subtract(this._target.position)
                     .length();
 
@@ -212,6 +202,15 @@ export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
                 }
 
             case PsyanimAdvancedPlayfightBehavior.STATE.FLEEING:
+
+                distanceToTarget = this.entity.position
+                    .subtract(this._target.position)
+                    .length();
+
+                if (distanceToTarget > this.fleeBehavior.panicDistance)
+                {
+                    this._setState(PsyanimAdvancedPlayfightBehavior.STATE.WANDERING);
+                }
 
                 return this.fleeBehavior.getSteering(this._target);
         }

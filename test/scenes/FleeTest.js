@@ -11,57 +11,85 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 import PsyanimFleeAgentPrefab from '../../src/core/prefabs/PsyanimFleeAgentPrefab';
+import PsyanimFleeAgent from '../../src/core/components/steering/agents/PsyanimFleeAgent';
+
 import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 
-export default class FleeTest extends PsyanimScene {
-
-    static KEY = 'Flee Test';
-
-    constructor() {
-
-        super(FleeTest.KEY);
-    }
-
-    create() {
-
-        super.create();
-
-        // setup scene controls
-        this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
-
-        // setup mouse follow target
-        let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 4,
-            color: 0x00ff00
-        });
-
-        mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
-
-        // add agents to this scene
-        let agentPrefab = new PsyanimFleeAgentPrefab({
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, 
-            color: 0xffc0cb            
-        });
-
-        agentPrefab.target = mouseTarget;
-
-        let agent1 = this.instantiatePrefab(agentPrefab, 'agent1', 600, 450);
-
-        agentPrefab.maxSpeed = 5;
-
-        agentPrefab.shapeParams = {
-            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
-            width: 60, height: 30,
-            color: 0xffff00            
-        };
-        
-        let agent2 = this.instantiatePrefab(agentPrefab, 'agent2', 200, 150);
-
-        agent2.getComponent(PsyanimVehicle).nSamplesForLookSmoothing = 10;
-    }
-}
+export default {
+    key: 'Flee Test',
+    entities: [
+        {
+            name: 'sceneControls',
+            components: [
+                { type: PsyanimSceneTitle },
+                { type: PsyanimPhysicsSettingsController },
+                { type: PsyanimSceneChangeController }
+            ]
+        },
+        {
+            name: 'mouseFollowTarget',
+            initialPosition: { x: 400, y: 300 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 4,
+                color: 0x00ff00
+            },
+            components: [
+                { type: PsyanimMouseFollowTarget }
+            ]
+        },
+        {
+            name: 'agent1',
+            initialPosition: { x: 600, y: 450 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+                base: 16, altitude: 32, 
+                color: 0xffc0cb            
+            },
+            prefab: {
+                type: PsyanimFleeAgentPrefab
+            },
+            components: [
+                {
+                    type: PsyanimFleeAgent,
+                    params: {
+                        target: {
+                            entityName: 'mouseFollowTarget'
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            name: 'agent2',
+            initialPosition: { x: 200, y: 150 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+                width: 60, height: 30,
+                color: 0xffff00            
+            },
+            prefab: {
+                type: PsyanimFleeAgentPrefab,
+                params: {
+                    maxSpeed: 5
+                }
+            },
+            components: [
+                {
+                    type: PsyanimFleeAgent,
+                    params: {
+                        target: {
+                            entityName: 'mouseFollowTarget'
+                        }
+                    }    
+                },
+                {
+                    type: PsyanimVehicle,
+                    params: {
+                        nSamplesForLookSmoothing: 10
+                    }
+                }
+            ]
+        }
+    ]
+};

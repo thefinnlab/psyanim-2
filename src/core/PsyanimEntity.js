@@ -170,6 +170,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             this.body.isSleeping = matterOptions.isSleeping;
         }
 
+        if (Object.hasOwn(shapeParams, 'depth'))
+        {
+            this.depth = shapeParams.depth;
+        }
+
         let mass = 100;
 
         this.body.mass = mass;
@@ -261,6 +266,14 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     addComponent(componentType) {
+
+        if (this.getComponent(componentType) != null)
+        {
+            PsyanimDebug.error("Attempting to add the same component type, '" + componentType.constructor.name +
+                "' more than once to entity '" + this.name + "'!");
+
+            return null;
+        }
 
         let newComponent = new componentType(this);
 

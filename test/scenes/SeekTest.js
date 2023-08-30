@@ -4,90 +4,125 @@ import PsyanimScene from '../../src/core/PsyanimScene';
 
 import PsyanimConstants from '../../src/core/PsyanimConstants';
 import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
-import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
-
-import PsyanimSeekBehavior from '../../src/core/components/steering/PsyanimSeekBehavior';
-import PsyanimSeekAgent from '../../src/core/components/steering/agents/PsyanimSeekAgent';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+
 import PsyanimSeekAgentPrefab from '../../src/core/prefabs/PsyanimSeekAgentPrefab';
+import PsyanimSeekAgent from '../../src/core/components/steering/agents/PsyanimSeekAgent';
 
-export default class SeekTest extends PsyanimScene {
+export default {
 
-    static KEY = 'Seek Test';
-
-    constructor() {
-
-        super(SeekTest.KEY);
-    }
-
-    create() {
-
-        super.create();
-
-        // setup scene controls
-        this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
-
-        // setup mouse follow target
-        let mouseTarget = this.addEntity('mouseFollowTarget', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 4,
-            color: 0x00ff00
-        });
-
-        mouseTarget.addComponent(PsyanimMouseFollowTarget, { radius: 4 });
-
-        // create player
-        let player = this.addEntity('player', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
-            base: 16, altitude: 32, 
-            width: 40, height: 20, 
-            radius: 12, 
-            color: 0x0000ff
-        });
-
-        player.addComponent(PsyanimPlayerController);
-
-        // add agents to the scene
-        let agentPrefab = new PsyanimSeekAgentPrefab({
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-            base: 16, altitude: 32, 
-            color: 0xffc0cb            
-        });
-
-        agentPrefab.target = player;
-
-        let agent1 = this.instantiatePrefab(agentPrefab, 'agent1', 600, 450);
-
-        agentPrefab.shapeParams = {
-            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
-            width: 60, height: 30,
-            color: 0xffff00            
-        };
-
-        agentPrefab.target = mouseTarget;
-        agentPrefab.maxSpeed = 6;
-        agentPrefab.maxAcceleration = 0.4;
-
-        let agent2 = this.instantiatePrefab(agentPrefab, 'agent2', 200, 150);
-
-        agentPrefab.shapeParams = {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-            radius: 12,
-            color: 0x87ceeb          
-        };
-
-        agentPrefab.target = agent2;
-        agentPrefab.maxSpeed = 4;
-        agentPrefab.maxAcceleration = 0.2;
-
-        let agent3 = this.instantiatePrefab(agentPrefab, 'agent3', 200, 450);
-    }
-}
+    key: 'Seek Test',
+    entities: [
+        {
+            name: 'sceneControls',
+            components: [
+                { type: PsyanimSceneTitle },
+                { type: PsyanimPhysicsSettingsController },
+                { type: PsyanimSceneChangeController }
+            ]
+        },
+        {
+            name: 'mouseFollowTarget',
+            initialPosition: { x: 400, y: 300 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 4,
+                color: 0x00ff00
+            },
+            components: [
+                { type: PsyanimMouseFollowTarget }
+            ]
+        },
+        {
+            name: 'player',
+            initialPosition: { x: 400, y: 300 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+                base: 16, altitude: 32, 
+                color: 0x0000ff
+            },
+            components: [
+                { type: PsyanimPlayerController }
+            ]
+        },
+        {
+            name: 'agent1',
+            initialPosition: { x: 600, y: 450 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
+                base: 16, altitude: 32, 
+                color: 0xffc0cb
+            },
+            prefab: {
+                type: PsyanimSeekAgentPrefab,
+            },
+            components: [
+                {
+                    type: PsyanimSeekAgent,
+                    params: {
+                        target: {
+                            entityName: 'player'
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            name: 'agent2',
+            initialPosition: { x: 200, y: 150 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE, 
+                width: 60, height: 30,
+                color: 0xffff00            
+            },
+            prefab: {
+                type: PsyanimSeekAgentPrefab,
+                params: {
+                    maxSpeed: 6,
+                    maxAcceleration: 0.4,
+                }
+            },
+            components: [
+                {
+                    type: PsyanimSeekAgent,
+                    params: {
+                        target: {
+                            entityName: 'mouseFollowTarget'
+                        },
+                    }
+                }
+            ]
+        },
+        {
+            name: 'agent3',
+            initialPosition: { x: 200, y: 450 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+                radius: 12,
+                color: 0x87ceeb          
+            },
+            prefab: {
+                type: PsyanimSeekAgentPrefab,
+                params: {
+                    maxSpeed: 4,
+                    maxAcceleration: 0.2,
+                }
+            },
+            components: [
+                {
+                    type: PsyanimSeekAgent,
+                    params: {
+                        target: {
+                            entityName: 'agent2'
+                        },
+                    }
+                }
+            ]
+        }
+    ]
+};

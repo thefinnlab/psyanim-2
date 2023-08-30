@@ -6,8 +6,6 @@ import PsyanimFleeAgent from '../components/steering/agents/PsyanimFleeAgent';
 
 export default class PsyanimFleeAgentPrefab extends PsyanimEntityPrefab {
 
-    target;
-
     maxSpeed;
     maxAcceleration;
 
@@ -34,7 +32,6 @@ export default class PsyanimFleeAgentPrefab extends PsyanimEntityPrefab {
 
         fleeAgent.fleeBehavior = flee;
         fleeAgent.vehicle = vehicle;
-        fleeAgent.target = this.target;
 
         return entity;
     }

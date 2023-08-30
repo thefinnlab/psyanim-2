@@ -4,6 +4,8 @@ import PsyanimComponent from '../../../PsyanimComponent';
 
 export default class PsyanimAdvancedPlayfightAgent extends PsyanimComponent {
 
+    target;
+
     advancedPlayfightBehavior;
     vehicle;
 
@@ -12,11 +14,16 @@ export default class PsyanimAdvancedPlayfightAgent extends PsyanimComponent {
         super(entity);
     }
 
-    setTarget(target) {
+    afterCreate() {
 
-        this._target = target;
-
-        this.playfightBehavior.setTarget(target);
+        if (this.target)
+        {
+            this.advancedPlayfightBehavior.setTarget(this.target);
+        }
+        else
+        {
+            console.error("playfight agent '" + this.entity.name + "' has no target assigned!");
+        }
     }
 
     update(t, dt) {
@@ -24,12 +31,12 @@ export default class PsyanimAdvancedPlayfightAgent extends PsyanimComponent {
         super.update(t, dt);
 
         // update steering params
-        this.vehicle.maxSpeed = this.playfightBehavior.maxSpeed;
+        this.vehicle.maxSpeed = this.advancedPlayfightBehavior.maxSpeed;
 
         // compute steering
-        this.playfightBehavior.updateBreakTimer(dt);
+        this.advancedPlayfightBehavior.updateBreakTimer(dt);
 
-        let steering = this.playfightBehavior.getSteering();
+        let steering = this.advancedPlayfightBehavior.getSteering();
 
         this.vehicle.steer(steering);
     }

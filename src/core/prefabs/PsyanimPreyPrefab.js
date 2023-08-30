@@ -25,12 +25,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     /** Prey params */
 
     /**
-     *  Target that the prey will flee from when in sight.
-     *  @type {PsyanimEntity}
-     */
-    target;
-
-    /**
      *  Maximum number of degrees which this agent will offset it's flee direction.
      *  @type {Number}
      */
@@ -181,7 +175,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         let preyAgent = entity.addComponent(PsyanimPreyAgent);
         preyAgent.vehicle = vehicle;
         preyAgent.preyBehavior = prey;
-        preyAgent.target = this.target;
 
         return entity;
     }

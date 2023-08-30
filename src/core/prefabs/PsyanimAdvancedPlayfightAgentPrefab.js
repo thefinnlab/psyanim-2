@@ -174,7 +174,7 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
         playfight.wanderBehavior = wander;
         
         let playfightAgent = entity.addComponent(PsyanimAdvancedPlayfightAgent);
-        playfightAgent.playfightBehavior = playfight;
+        playfightAgent.advancedPlayfightBehavior = playfight;
         playfightAgent.vehicle = vehicle;
 
         return entity;
