@@ -19,26 +19,47 @@ import PathTest from './scenes/PathTest';
 import ClickToMoveTest from './scenes/ClickToMoveTest';
 import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest';
 
+import PsyanimUtils from '../src/core/utils/PsyanimUtils';
+
 /**
  *  Register scenes
  */
 
-PsyanimApp.Instance.config.registerScene(FOVSensorTest);
-PsyanimApp.Instance.config.registerScene(ArriveTest);
-PsyanimApp.Instance.config.registerScene(ClickToMoveTest);
-PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTest);
-PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
+// make a clone of the scene definitions here to test our cloning funcs
+let ClickToMoveTestCopy = PsyanimUtils.cloneSceneDefinition(ClickToMoveTest);
+let FOVSensorTestCopy = PsyanimUtils.cloneSceneDefinition(FOVSensorTest);
+let ArriveTestCopy = PsyanimUtils.cloneSceneDefinition(ArriveTest);
+let PsyanimPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(PsyanimPlayfightTest);
+let AdvancedArriveTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedArriveTest);
+let PreyTestCopy = PsyanimUtils.cloneSceneDefinition(PreyTest);
+let PredatorTestCopy = PsyanimUtils.cloneSceneDefinition(PredatorTest);
+let SeekTestCopy = PsyanimUtils.cloneSceneDefinition(SeekTest);
+let FleeTestCopy = PsyanimUtils.cloneSceneDefinition(FleeTest);
+let WanderTestCopy = PsyanimUtils.cloneSceneDefinition(WanderTest);
+let SensorTestCopy = PsyanimUtils.cloneSceneDefinition(SensorTest);
+let EvadeTestCopy = PsyanimUtils.cloneSceneDefinition(EvadeTest);
+let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
+let AdvancedPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedPlayfightTest);
+
+// register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(ClickToMoveTestCopy);
+PsyanimApp.Instance.config.registerScene(FOVSensorTestCopy);
+PsyanimApp.Instance.config.registerScene(ArriveTestCopy);
+PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTestCopy);
+PsyanimApp.Instance.config.registerScene(AdvancedArriveTestCopy);
+PsyanimApp.Instance.config.registerScene(PreyTestCopy);
+PsyanimApp.Instance.config.registerScene(PredatorTestCopy);
+PsyanimApp.Instance.config.registerScene(SeekTestCopy);
+PsyanimApp.Instance.config.registerScene(FleeTestCopy);
+PsyanimApp.Instance.config.registerScene(WanderTestCopy);
+PsyanimApp.Instance.config.registerScene(SensorTestCopy);
+PsyanimApp.Instance.config.registerScene(EvadeTestCopy);
+PsyanimApp.Instance.config.registerScene(AdvancedFleeTestCopy);
+PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTestCopy);
+
+// just use the original scene defs here
 PsyanimApp.Instance.config.registerScene(PathfindingTest);
 PsyanimApp.Instance.config.registerScene(PathTest);
-PsyanimApp.Instance.config.registerScene(PreyTest);
-PsyanimApp.Instance.config.registerScene(PredatorTest);
-PsyanimApp.Instance.config.registerScene(SeekTest);
-PsyanimApp.Instance.config.registerScene(FleeTest);
-PsyanimApp.Instance.config.registerScene(WanderTest);
-PsyanimApp.Instance.config.registerScene(SensorTest);
-PsyanimApp.Instance.config.registerScene(EvadeTest);
-PsyanimApp.Instance.config.registerScene(AdvancedFleeTest);
-PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTest);
 PsyanimApp.Instance.config.registerScene(ChargeTest);
 PsyanimApp.Instance.config.registerScene(PsyanimDebugLoggerTest);
 

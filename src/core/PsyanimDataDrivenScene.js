@@ -1,14 +1,12 @@
-import Phaser from 'phaser';
-
 import PsyanimScene from './PsyanimScene';
 import PsyanimConstants from './PsyanimConstants';
 import PsyanimDebug from './utils/PsyanimDebug';
 
 import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid';
-import PsyanimAdvancedFleeBehavior from './components/steering/PsyanimAdvancedFleeBehavior';
 import PsyanimComponent from './PsyanimComponent';
 import PsyanimEntityPrefab from './PsyanimEntityPrefab';
-import PsyanimEntity from './PsyanimEntity';
+
+import PsyanimUtils from './utils/PsyanimUtils';
 
 /**
  *  Algorithm (order is important!):
@@ -96,7 +94,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                 {
                     let obstacleDefinition = obstacleDefinitions[i];
 
-                    if (!obstacleDefinition.position || !this._isObject(obstacleDefinition.position) ||
+                    if (!obstacleDefinition.position || !PsyanimUtils.isObject(obstacleDefinition.position) ||
                         !Object.hasOwn(obstacleDefinition.position, 'x') ||
                         !Object.hasOwn(obstacleDefinition.position, 'y'))
                     {
@@ -106,7 +104,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                     if (Object.hasOwn(obstacleDefinition, 'shapeParams'))
                     {
-                        if (!this._isObject(obstacleDefinition.shapeParams))
+                        if (!PsyanimUtils.isObject(obstacleDefinition.shapeParams))
                         {
                             PsyanimDebug.error("Navgrid obstacle at index '" + i + "' 'shapeParams' field must be an object!");
                         }
@@ -160,7 +158,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                 if (Object.hasOwn(entityDefinition, 'initialPosition'))
                 {
-                    if (!this._isObject(entityDefinition.initialPosition) && entityDefinition.initialPosition !== 'random')
+                    if (!PsyanimUtils.isObject(entityDefinition.initialPosition) && entityDefinition.initialPosition !== 'random')
                     {
                         PsyanimDebug.error("Entity index '" + i + "' has an invalid 'initialPosition'!");
                     }
@@ -181,7 +179,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                 if (Object.hasOwn(entityDefinition, 'shapeParams'))
                 {
-                    if (!this._isObject(entityDefinition.shapeParams))
+                    if (!PsyanimUtils.isObject(entityDefinition.shapeParams))
                     {
                         PsyanimDebug.error("Entity index '" + i + "' has invalid 'shapeParams' parameter - shapeParams must be an object!");   
                     }
@@ -190,7 +188,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                 // validate entity prefabs
                 if (Object.hasOwn(entityDefinition, 'prefab'))
                 {
-                    if (!this._isObject(entityDefinition.prefab))
+                    if (!PsyanimUtils.isObject(entityDefinition.prefab))
                     {
                         PsyanimDebug.error("Entity index '" + i + "' has invalid 'prefab' parameter - must be an object!");
                     }
@@ -207,7 +205,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                     if (Object.hasOwn(entityDefinition.prefab, 'params'))
                     {
-                        if (!this._isObject(entityDefinition.prefab.params))
+                        if (!PsyanimUtils.isObject(entityDefinition.prefab.params))
                         {
                             PsyanimDebug.error("Entity index '" + i + "' has an invalid prefab 'params' field.");
                         }
@@ -219,7 +217,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                             let paramKey = paramKeys[j];
                             let paramValue = entityDefinition.prefab.params[paramKey];
     
-                            if (this._isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
+                            if (PsyanimUtils.isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
                             {
                                 PsyanimDebug.error("Entity index '" + i + "', prefab param index = '" + j + 
                                     "': prefab parameters shouldn't reference entities!");
@@ -248,7 +246,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                     {
                         let componentDefinition = componentDefinitions[j];
 
-                        if (!this._isObject(componentDefinition) || !Object.hasOwn(componentDefinition, 'type'))
+                        if (!PsyanimUtils.isObject(componentDefinition) || !Object.hasOwn(componentDefinition, 'type'))
                         {
                             PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
                                 "': Component definition must be an object with a 'type' field!");
@@ -262,7 +260,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                         if (Object.hasOwn(componentDefinition, 'params'))
                         {
-                            if (!this._isObject(componentDefinition.params))
+                            if (!PsyanimUtils.isObject(componentDefinition.params))
                             {
                                 PsyanimDebug.error("Entity index '" + i + "', component index '" + j + 
                                 "': Component 'params' must be an object!");
@@ -275,7 +273,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                 let paramKey = paramKeys[k];
                                 let paramValue = componentDefinition.params[paramKey];
     
-                                if (this._isObject(paramValue))
+                                if (PsyanimUtils.isObject(paramValue))
                                 {
                                     if (Object.hasOwn(paramValue, 'entityName'))
                                     {
@@ -341,11 +339,6 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         };
     }
 
-    _isObject(o) {
-
-        return (typeof(o) === 'object') && !Array.isArray(o) && (o !== null);
-    }
-
     _configureEntityComponents(entityDefinition, nameOverride = null) {
 
         let name = (nameOverride) ? nameOverride : entityDefinition.name;
@@ -379,7 +372,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                         let paramValue = componentParams[paramName];
 
-                        if (this._isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
+                        if (PsyanimUtils.isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
                         {
                             // param value an entity or component reference
                             let targetEntityName = paramValue.entityName;
@@ -491,7 +484,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                 {
                     prefab[paramName] = this._grid;
                 }
-                else if (this._isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
+                else if (PsyanimUtils.isObject(paramValue) && Object.hasOwn(paramValue, 'entityName'))
                 {
                     PsyanimDebug.error('Prefab parameters should not reference other entities or components!');
                 }
