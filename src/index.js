@@ -89,6 +89,8 @@ import PsyanimSeekAgentPrefab from './core/prefabs/PsyanimSeekAgentPrefab';
 import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab';
 
 // utils
+import PsyanimUtils from './core/utils/PsyanimUtils';
+
 import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.mjs';
 import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.mjs';
 import PsyanimMessaging from './core/utils/PsyanimMessaging.mjs';
@@ -196,6 +198,8 @@ export {
     PsyanimWanderAgentPrefab,
 
     // utils
+    PsyanimUtils,
+
     PsyanimAnimationClip,
     PsyanimFloat32ArrayMessage,
     PsyanimMessaging,
