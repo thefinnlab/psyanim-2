@@ -60,8 +60,6 @@ class _PsyanimJsPsychPlugin {
         // load scene and add parameter-set to game registry
         PsyanimApp.Instance.loadScene(trial.sceneKey);
 
-        PsyanimApp.Instance.game.registry.set('psyanim_currentParameterSet', trial.sceneParameters);
-
         if (trial.agentNamesToRecord && trial.agentNamesToRecord.length > 0)
         {
             let trialScene = PsyanimApp.Instance.getSceneByKey(trial.sceneKey);
@@ -273,11 +271,6 @@ PsyanimJsPsychPlugin.info = {
         sceneKey: {
             type: ParameterType.HTML_STRING,
             default: undefined
-        },
-
-        sceneParameters: {
-            type: ParameterType.OBJECT,
-            default: {}
         },
 
         endTrialKeys: {
