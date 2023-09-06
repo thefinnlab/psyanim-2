@@ -150,8 +150,8 @@ class _PsyanimJsPsychPlugin {
             let trialMetadata = {
 
                 sessionID: PsyanimApp.Instance.sessionID,
-                userID: this._currentTrial.userID,
-                experimentName: this._currentTrial.experimentName,
+                userID: this._userID,
+                experimentName: this._experimentName,
                 trialNumber: this._currentTrialIndex,
                 sceneKey: this._currentTrial.sceneKey,
                 agentMetadata: agentMetadata,
@@ -250,6 +250,16 @@ export default class PsyanimJsPsychPlugin {
     static setDocumentWriter(writer) {
 
         _PsyanimJsPsychPlugin.Instance._documentWriter = writer;
+    }
+
+    static setExperimentName(experimentName) {
+
+        _PsyanimJsPsychPlugin.Instance._experimentName = experimentName;
+    }
+
+    static setUserID(userID) {
+
+        _PsyanimJsPsychPlugin.Instance._userID = userID;
     }
 
     constructor(jsPsych) {
