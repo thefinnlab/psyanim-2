@@ -7,11 +7,15 @@ import PsyanimApp from '../core/PsyanimApp';
 
 export default class PsyanimJsPsychPlayerContactListener extends PsyanimComponent {
 
+    targetEntityNames;
+
     sensor;
 
     constructor(entity) {
 
         super(entity);
+
+        this.targetEntityNames = [];
     }
 
     afterCreate() {
@@ -21,12 +25,16 @@ export default class PsyanimJsPsychPlayerContactListener extends PsyanimComponen
         if (this.sensor)
         {
             this.sensor.events.on('triggerEnter', (entity) => {
-                PsyanimApp.Instance.events.emit('killzoneEntered');
+
+                if (this.targetEntityNames.includes(entity.name))
+                {
+                    PsyanimApp.Instance.events.emit('playerContact', entity);                    
+                }
             });
         }
         else
         {
-            PsyanimDebug.error("no sensor configured in PsyanimJsPsychListener");
+            PsyanimDebug.error("no sensor configured in PsyanimJsPsychContactListener");
         }
     }
 

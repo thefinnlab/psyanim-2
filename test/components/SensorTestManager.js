@@ -25,11 +25,11 @@ export default class SensorTestManager extends PsyanimComponent {
             console.log(entity.name + ' has EXITED the building...');
         });
 
-        PsyanimApp.Instance.events.on('killzoneEntered', this._handleKillzoneEntered.bind(this));
+        PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact.bind(this));
     }
 
-    _handleKillzoneEntered() {
+    _handlePlayerContact(entity) {
         
-        PsyanimDebug.log('killzone entered! player has gone to a better place o/');
+        PsyanimDebug.log("player contact occured with entity named: '" + entity.name + "'");
     }
 }

@@ -43,7 +43,11 @@ export default {
                         sensor: {
                             entityName: 'player',
                             componentType: PsyanimSensor
-                        }
+                        },
+                        targetEntityNames: [
+                            "wall",
+                            "killzone1"
+                        ]
                     }
                 }
             ]

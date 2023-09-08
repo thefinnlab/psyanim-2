@@ -70,7 +70,13 @@ class _PsyanimJsPsychPlugin {
         // setup any timeouts that are configured
         if (trial.duration > 0)
         {
-            this._jsPsych.pluginAPI.setTimeout(() => this.endTrial(), trial.duration);
+            this._jsPsych.pluginAPI.setTimeout(this.endTrial.bind(this), trial.duration);
+        }
+
+        // setup contact events
+        if (trial.endTrialOnContact)
+        {
+            PsyanimApp.Instance.events.on('playerContact', this.endTrial, this);
         }
 
         // setup keyboard inputs
@@ -79,7 +85,7 @@ class _PsyanimJsPsychPlugin {
             // let Psyanim process keys related to interactivity, but have jsPsych
             // process keystrokes related to GUI & progressing the experiment trials
             this._jsPsych.pluginAPI.getKeyboardResponse({
-                callback_function: () => this.endTrial(),
+                callback_function: this.endTrial.bind(this),
                 valid_responses: trial.endTrialKeys, // can also be any keycode, e.g. ' ' for space, 'i', 'u', etc...f
                 persist: false
             });
@@ -160,6 +166,12 @@ class _PsyanimJsPsychPlugin {
             this._documentWriter.addExperimentTrialMetadata(trialMetadata);
 
             console.log(trialMetadata);
+        }
+
+        // remove any open event subs
+        if (trial.endTrialOnContact)
+        {
+            PsyanimApp.Instance.events.off('playerContact', this.endTrial, this);
         }
 
         // stop the current scene
@@ -291,6 +303,11 @@ PsyanimJsPsychPlugin.info = {
         duration: {
             type: ParameterType.FLOAT,
             default: -1.0
+        },
+
+        endTrialOnContact: {
+            type: ParameterType.BOOL,
+            default: false
         },
 
         agentNamesToRecord: {
