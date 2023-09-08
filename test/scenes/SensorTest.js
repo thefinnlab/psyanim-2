@@ -12,6 +12,8 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 import SensorTestManager from '../components/SensorTestManager';
 
+import PsyanimJsPsychPlayerContactListener from '../../src/integrations/PsyanimJsPsychPlayerContactListener';
+
 export default {
     key: 'Sensor Test',
     entities: [
@@ -28,6 +30,15 @@ export default {
             components: [
                 {
                     type: SensorTestManager,
+                    params: {
+                        sensor: {
+                            entityName: 'player',
+                            componentType: PsyanimSensor
+                        }
+                    }
+                },
+                {
+                    type: PsyanimJsPsychPlayerContactListener,
                     params: {
                         sensor: {
                             entityName: 'player',
@@ -82,56 +93,3 @@ export default {
         },
     ]
 };
-
-class SensorTest extends PsyanimScene {
-
-    static KEY = 'SensorTest';
-
-    constructor() {
-
-        super(SensorTest.KEY);
-    }
-
-    create() {
-
-        super.create();
-
-        // setup scene controls
-        this.addEntity('sceneControls')
-            .addComponent(PsyanimSceneTitle).entity
-            .addComponent(PsyanimPhysicsSettingsController).entity
-            .addComponent(PsyanimSceneChangeController);
-
-        let wall = this.addEntity('wall', 650, 200, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
-            width: 100, height: 150,
-            color: 0xff00ff
-        });
-
-        wall.depth = 1;
-        wall.body.isStatic = true;
-
-        let killzone1 = this.addEntity('killzone1', 600, 200, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
-            width: 100, height: 300,
-            color: 0xff0000
-        });
-
-        killzone1.body.isSensor = true;
-
-        // create player
-        this.player = this.addEntity('player', 400, 300, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
-            base: 16, altitude: 32, color: 0x0000ff
-        });
-
-        this.player.addComponent(PsyanimPlayerController);
-        
-        let sensor = this.player.addComponent(PsyanimSensor);
-
-        sensor.setBody({
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 75,
-        });
-    }
-}

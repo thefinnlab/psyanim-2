@@ -35,6 +35,12 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      */
     subtletyLag;
 
+    /**
+     *  Max. distance, in 'px', to target beyond which this predator will no longer chase it
+     *  @type {Number}
+     */
+    boredomDistance;
+
     /** Field-of-view Params */
 
     /**
@@ -42,12 +48,6 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      *  @type {Number}
      */
     fovAngle;
-
-    /**
-     *  Field-of-view cone height, in pixels.  This determines how far out the target can see.
-     *  @type {Number}
-     */
-    fovRange;
 
     /**
      *  Field-of-view resolution, in degrees.  
@@ -121,13 +121,13 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
 
         super(shapeParams);
 
-        // prey params
+        // predator params
         this.subtlety = 30;
         this.subtletyLag = 500;
+        this.boredomDistance = 200;
 
         // fov params
         this.fovAngle = 120;
-        this.fovRange = 200;
         this.fovResolution = 5;
 
         // chase params
@@ -168,7 +168,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
 
         let fovSensor = entity.addComponent(PsyanimFOVSensor);
         fovSensor.fovAngle = this.fovAngle;
-        fovSensor.fovRange = this.fovRange;
+        fovSensor.fovRange = this.boredomDistance;
         fovSensor.resolution = this.fovResolution;
 
         let predator = entity.addComponent(PsyanimBasicPredatorBehavior);
@@ -177,6 +177,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         predator.fovSensor = fovSensor;
         predator.subtlety = this.subtlety;
         predator.subtletyLag = this.subtletyLag;
+        predator.boredomDistance = this.boredomDistance;
 
         let predatorAgent = entity.addComponent(PsyanimPredatorAgent);
         predatorAgent.vehicle = vehicle;

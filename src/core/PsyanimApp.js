@@ -35,6 +35,8 @@ export default class PsyanimApp {
             
             document.body.appendChild(this._domElement);
         }
+
+        this.events = new Phaser.Events.EventEmitter();
     }
 
     setCanvasVisible(visible) {

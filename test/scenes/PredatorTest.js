@@ -10,6 +10,7 @@ import PsyanimPlayerController from "../../src/core/components/controllers/Psyan
 
 import PsyanimPredatorPrefab from '../../src/core/prefabs/PsyanimPredatorPrefab';
 import PsyanimPredatorAgent from '../../src/core/components/steering/agents/PsyanimPredatorAgent';
+import PsyanimBasicPredatorBehavior from '../../src/core/components/steering/PsyanimBasicPredatorBehavior';
 
 export default {
     key: 'Predator Test',
@@ -48,6 +49,12 @@ export default {
             },
             prefab: { type: PsyanimPredatorPrefab },
             components: [
+                {
+                    type: PsyanimBasicPredatorBehavior,
+                    params: {
+                        debug: true,
+                    }
+                },
                 {
                     type: PsyanimPredatorAgent,
                     params: {

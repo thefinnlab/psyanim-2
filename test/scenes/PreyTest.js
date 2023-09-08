@@ -10,6 +10,7 @@ import PsyanimPlayerController from "../../src/core/components/controllers/Psyan
 
 import PsyanimPreyPrefab from '../../src/core/prefabs/PsyanimPreyPrefab';
 import PsyanimPreyAgent from '../../src/core/components/steering/agents/PsyanimPreyAgent';
+import PsyanimBasicPreyBehavior from '../../src/core/components/steering/PsyanimBasicPreyBehavior';
 
 export default {
     key: 'Prey Test',
@@ -48,6 +49,12 @@ export default {
             },
             prefab: { type: PsyanimPreyPrefab },
             components: [
+                {
+                    type: PsyanimBasicPreyBehavior,
+                    params: {
+                        debug: true
+                    }
+                },
                 {
                     type: PsyanimPreyAgent,
                     params: {

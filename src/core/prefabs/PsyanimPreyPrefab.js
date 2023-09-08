@@ -36,6 +36,12 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      */
     subtletyLag;
 
+    /**
+     *  Min. distance, in 'px', to target in which this predator will flee to maintain.
+     *  @type {Number}
+     */
+    safetyDistance;
+
     /** Field-of-view Params */
 
     /**
@@ -43,12 +49,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      *  @type {Number}
      */
     fovAngle;
-
-    /**
-     *  Field-of-view cone height, in pixels.  This determines how far out the target can see.
-     *  @type {Number}
-     */
-    fovRange;
 
     /**
      *  Field-of-view resolution, in degrees.  
@@ -120,10 +120,10 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         // prey params
         this.subtlety = 30;
         this.subtletyLag = 500;
+        this.safetyDistance = 200;
 
         // fov params
         this.fovAngle = 120;
-        this.fovRange = 200;
         this.fovResolution = 5;
 
         // flee params
@@ -162,7 +162,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
 
         let fovSensor = entity.addComponent(PsyanimFOVSensor);
         fovSensor.fovAngle = this.fovAngle;
-        fovSensor.fovRange = this.fovRange;
+        fovSensor.fovRange = this.safetyDistance;
         fovSensor.resolution = this.fovResolution;
 
         let prey = entity.addComponent(PsyanimBasicPreyBehavior);
@@ -171,6 +171,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         prey.fovSensor = fovSensor;
         prey.subtlety = this.subtlety;
         prey.subtletyLag = this.subtletyLag;
+        prey.safetyDistance = this.safetyDistance;
 
         let preyAgent = entity.addComponent(PsyanimPreyAgent);
         preyAgent.vehicle = vehicle;

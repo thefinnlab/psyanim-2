@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from "../../PsyanimComponent";
 
+import PsyanimDebug from '../../utils/PsyanimDebug';
+
 export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
     /**
@@ -13,11 +15,15 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
     subtlety; // 'degrees'
     subtletyLag; // 'ms'
 
+    boredomDistance; // max. distance in 'px' to target beyond which this predator will no longer chase
+
     fovSensor;
 
     arriveBehavior;
     wanderBehavior;
     
+    debug;
+
     constructor(entity) {
 
         super(entity);
@@ -31,6 +37,8 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
+
+        this.debug = false;
     }
 
     get maxSpeed() {
@@ -70,10 +78,20 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
         // update state
         if (targetInSight)
         {
+            if (this.debug)
+            {
+                PsyanimDebug.log("Predator '" + this.entity.name + "' state = PURSUING.");
+            }
+
             this._state = PsyanimBasicPredatorBehavior.STATE.PURSUING;
         }
         else
         {
+            if (this.debug)
+            {
+                PsyanimDebug.log("Predator '" + this.entity.name + "' state = WANDERING.");
+            }
+
             this._state = PsyanimBasicPredatorBehavior.STATE.WANDERING;
         }
 
@@ -101,6 +119,8 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
     update(t, dt) {
      
         super.update(t, dt);
+
+        this.fovSensor.fovRange = this.boredomDistance;
 
         this._subtletyUpdateTimer += dt;
 

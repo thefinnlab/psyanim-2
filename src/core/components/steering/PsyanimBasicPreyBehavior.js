@@ -1,14 +1,20 @@
 import PsyanimComponent from "../../PsyanimComponent";
 
+import PsyanimDebug from "../../utils/PsyanimDebug";
+
 export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
     subtletly; // 'degrees'
     subtletlyLag; // ms
 
+    safetyDistance; // min. distance in 'px' to target which this predator will flee to maintain
+
     fovSensor;
 
     fleeBehavior;
     wanderBehavior;
+
+    debug;
 
     constructor(entity) {
 
@@ -23,6 +29,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
+
+        this.debug = false;
     }
 
     get maxSpeed() {
@@ -62,10 +70,20 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         // update state
         if (targetInSight)
         {
+            if (this.debug)
+            {
+                PsyanimDebug.log("Prey '" + this.entity.name + "' state = FLEEING.");
+            }
+
             this._state = PsyanimBasicPreyBehavior.STATE.FLEEING;
         }
         else
         {
+            if (this.debug)
+            {
+                PsyanimDebug.log("Prey '" + this.entity.name + "' state = WANDERING.");
+            }
+
             this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
         }
 
@@ -93,6 +111,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
     update(t, dt) {
 
         super.update(t, dt);
+
+        this.fovSensor.fovRange = this.safetyDistance;
 
         this._subtletyUpdateTimer += dt;
 
