@@ -16,10 +16,10 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         this._sensorBody = null;
 
-        this.setBody({
+        this.bodyShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 10
-        });
+        };
     }
 
     afterCreate() {

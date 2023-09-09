@@ -13,6 +13,13 @@ export default class SensorTestManager extends PsyanimComponent {
         super(entity);
     }
 
+    destroy() {
+
+        PsyanimApp.Instance.events.off('playerContact', this._handlePlayerContact, this);
+
+        super.destroy();
+    }
+
     afterCreate() {
 
         super.afterCreate();
@@ -25,7 +32,7 @@ export default class SensorTestManager extends PsyanimComponent {
             console.log(entity.name + ' has EXITED the building...');
         });
 
-        PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact.bind(this));
+        PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
     }
 
     _handlePlayerContact(entity) {
