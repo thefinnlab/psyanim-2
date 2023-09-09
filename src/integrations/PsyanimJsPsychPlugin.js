@@ -169,7 +169,7 @@ class _PsyanimJsPsychPlugin {
         }
 
         // remove any open event subs
-        if (trial.endTrialOnContact)
+        if (this._currentTrial.endTrialOnContact)
         {
             PsyanimApp.Instance.events.off('playerContact', this.endTrial, this);
         }
