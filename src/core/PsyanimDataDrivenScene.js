@@ -465,7 +465,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
 
         let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
-            entityDefinition.shapeParams : PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
+            entityDefinition.shapeParams : { isEmpty: true};
 
         let prefab = new entityDefinition.prefab.type(shapeParams);
 
@@ -564,7 +564,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
 
         let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
-            entityDefinition.shapeParams : PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
+            entityDefinition.shapeParams : { isEmpty: true };
 
         let matterOptions = Object.hasOwn(entityDefinition, 'matterOptions') ?
             entityDefinition.matterOptions : {};
