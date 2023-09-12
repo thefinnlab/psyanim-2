@@ -30,7 +30,7 @@ export default class PsyanimAdvancedFleeAgentPrefab extends PsyanimEntityPrefab 
         let flee = entity.addComponent(PsyanimAdvancedFleeBehavior);
         flee.maxSpeed = this.maxSpeed;
         flee.panicDistance = this.panicDistance;
-        flee.setAdvancedFleeSearchDirection(this.searchClockwiseDirection);
+        flee.searchClockwise = this.searchClockwiseDirection;
 
         let fleeAgent = entity.addComponent(PsyanimAdvancedFleeAgent);
         fleeAgent.vehicle = vehicle;

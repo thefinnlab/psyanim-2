@@ -8,6 +8,8 @@ import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor";
 import PsyanimBasicPredatorBehavior from "../components/steering/PsyanimBasicPredatorBehavior";
 import PsyanimPredatorAgent from "../components/steering/agents/PsyanimPredatorAgent";
 
+import PsyanimFOVRenderer from "../components/rendering/PsyanimFOVRenderer";
+
 /**
  *  Prefab for creating a `Predator Agent`.
  * 
@@ -41,6 +43,12 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      */
     boredomDistance;
 
+    /**
+     *  If true, agent state transitions will be written out to Psyanim Debug Logs
+     *  @type {boolean}
+     */
+    showDebugLogs;
+
     /** Field-of-view Params */
 
     /**
@@ -59,6 +67,12 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      *  @type {Number}
      */
     fovResolution;
+
+    /**
+     *  Toggles debug graphics for field-of-view.
+     *  @type {boolean}
+     */
+    showDebugGraphics;
 
     /** Chase Params */
 
@@ -124,14 +138,16 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         // predator params
         this.subtlety = 30;
         this.subtletyLag = 500;
-        this.boredomDistance = 200;
+        this.boredomDistance = 300;
+        this.showDebugLogs = false;
 
         // fov params
         this.fovAngle = 120;
         this.fovResolution = 5;
+        this.showDebugGraphics = false;
 
         // chase params
-        this.maxChaseSpeed = 6;
+        this.maxChaseSpeed = 5;
         this.maxChaseAcceleration = 0.2;
         this.chaseInnerDecelerationRadius = 16;
         this.chaseOuterDecelerationRadius = 40;
@@ -139,8 +155,8 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         // wander params
         this.wanderRadius = 50;
         this.wanderOffset = 250;
-        this.maxWanderAngleChangePerFrame = 20;
-        this.maxWanderSpeed = 4;
+        this.maxWanderAngleChangePerFrame = 10;
+        this.maxWanderSpeed = 4.5;
         this.maxWanderAcceleration = 0.2;
     }
 
@@ -171,6 +187,12 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         fovSensor.fovRange = this.boredomDistance;
         fovSensor.resolution = this.fovResolution;
 
+        if (this.showDebugGraphics)
+        {
+            let fovRenderer = entity.addComponent(PsyanimFOVRenderer);
+            fovRenderer.fovSensor = fovSensor;
+        }
+
         let predator = entity.addComponent(PsyanimBasicPredatorBehavior);
         predator.arriveBehavior = arrive;
         predator.wanderBehavior = wander;
@@ -178,6 +200,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         predator.subtlety = this.subtlety;
         predator.subtletyLag = this.subtletyLag;
         predator.boredomDistance = this.boredomDistance;
+        predator.debug = this.showDebugLogs;
 
         let predatorAgent = entity.addComponent(PsyanimPredatorAgent);
         predatorAgent.vehicle = vehicle;

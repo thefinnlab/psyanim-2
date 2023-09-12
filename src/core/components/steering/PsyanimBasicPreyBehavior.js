@@ -23,6 +23,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         this.subtletly = 30; // 'degrees'
         this.subtletlyLag = 500; // ms    
 
+        this.safetyDistance = 100;
+
         this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
 
         this._fleeTarget = this.scene.addEntity(this.name + '_fleeTarget');
@@ -67,24 +69,34 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
             }
         }
 
-        // update state
-        if (targetInSight)
-        {
-            if (this.debug)
-            {
-                PsyanimDebug.log("Prey '" + this.entity.name + "' state = FLEEING.");
-            }
+        let distanceToTarget = this.entity.position
+            .subtract(target.position)
+            .length();
 
-            this._state = PsyanimBasicPreyBehavior.STATE.FLEEING;
+        // update state
+        if (targetInSight || distanceToTarget < this.safetyDistance)
+        {
+            if (this._state != PsyanimBasicPreyBehavior.STATE.FLEEING)
+            {
+                if (this.debug)
+                {
+                    PsyanimDebug.log("Prey '" + this.entity.name + "' state = FLEEING.");
+                }
+    
+                this._state = PsyanimBasicPreyBehavior.STATE.FLEEING;
+            }
         }
         else
         {
-            if (this.debug)
+            if (this._state != PsyanimBasicPreyBehavior.STATE.WANDERING)
             {
-                PsyanimDebug.log("Prey '" + this.entity.name + "' state = WANDERING.");
+                if (this.debug)
+                {
+                    PsyanimDebug.log("Prey '" + this.entity.name + "' state = WANDERING.");
+                }
+    
+                this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;    
             }
-
-            this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
         }
 
         // compute steering
@@ -111,8 +123,6 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
     update(t, dt) {
 
         super.update(t, dt);
-
-        this.fovSensor.fovRange = this.safetyDistance;
 
         this._subtletyUpdateTimer += dt;
 

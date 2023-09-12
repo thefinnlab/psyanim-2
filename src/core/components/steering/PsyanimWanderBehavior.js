@@ -22,7 +22,7 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
         this.radius = 50;
         this.offset = 150;
     
-        this.minScreenBoundaryDistance = 100;
+        this.minScreenBoundaryDistance = 50;
     
         this.maxAngleChangePerFrame = 20;    
 

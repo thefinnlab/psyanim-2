@@ -22,15 +22,21 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
     arriveBehavior;
     wanderBehavior;
     
+    minimumWanderTime;
+
     debug;
 
     constructor(entity) {
 
         super(entity);
 
+        this.debug = false;
+
         this.subtlety = 30; // 'degrees'
         this.subtletyLag = 500; // 'ms'
     
+        this.minimumWanderTime = 1000;
+
         this._state = PsyanimBasicPredatorBehavior.STATE.WANDERING;
 
         this._arriveTarget = this.scene.addEntity(this.name + '_arriveTarget');
@@ -38,7 +44,7 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
 
-        this.debug = false;
+        this._wanderTimer = 0;
     }
 
     get maxSpeed() {
@@ -76,23 +82,30 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
         }
 
         // update state
-        if (targetInSight)
+        if (targetInSight && this._wanderTimer > this.minimumWanderTime)
         {
-            if (this.debug)
+            if (this._state != PsyanimBasicPredatorBehavior.STATE.PURSUING)
             {
-                PsyanimDebug.log("Predator '" + this.entity.name + "' state = PURSUING.");
+                if (this.debug)
+                {
+                    PsyanimDebug.log("Predator '" + this.entity.name + "' state = PURSUING.");
+                }
+    
+                this._state = PsyanimBasicPredatorBehavior.STATE.PURSUING;    
             }
-
-            this._state = PsyanimBasicPredatorBehavior.STATE.PURSUING;
         }
         else
         {
-            if (this.debug)
+            if (this._state != PsyanimBasicPredatorBehavior.STATE.WANDERING)
             {
-                PsyanimDebug.log("Predator '" + this.entity.name + "' state = WANDERING.");
-            }
+                if (this.debug)
+                {
+                    PsyanimDebug.log("Predator '" + this.entity.name + "' state = WANDERING.");
+                }
 
-            this._state = PsyanimBasicPredatorBehavior.STATE.WANDERING;
+                this._state = PsyanimBasicPredatorBehavior.STATE.WANDERING;
+                this._wanderTimer = 0;
+            }
         }
 
         // compute steering
@@ -121,6 +134,8 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
         super.update(t, dt);
 
         this.fovSensor.fovRange = this.boredomDistance;
+
+        this._wanderTimer += dt;
 
         this._subtletyUpdateTimer += dt;
 

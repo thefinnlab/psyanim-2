@@ -29,6 +29,8 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
 
     panicDistance;
 
+    searchClockwise;
+
     constructor(entity) {
 
         super(entity);
@@ -38,7 +40,7 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
     
         this.panicDistance = 250;
 
-        this.setAdvancedFleeSearchDirection(true);
+        this.searchClockwise = true;
 
         this._advancedFleeDirection = Phaser.Math.Vector2.ZERO.clone();
 
@@ -48,6 +50,11 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
             this.entity.scene.screenBoundary.leftBoundary.body, 
             this.entity.scene.screenBoundary.rightBoundary.body
         ];
+    }
+
+    afterCreate() {
+
+        this.setAdvancedFleeSearchDirection(this.searchClockwise);
     }
 
     setAdvancedFleeSearchDirection(clockwise) {
