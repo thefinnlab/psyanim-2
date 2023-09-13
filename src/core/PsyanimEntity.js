@@ -41,8 +41,8 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
         const defaultShapeParams = PsyanimConstants.DEFAULT_ENTITY_SHAPE_PARAMS;
 
-        let shapeType = (shapeParams.shapeType) ? shapeParams.shapeType : defaultShapeParams.shapeType;
-        let color = (shapeParams.color) ? shapeParams.color : defaultShapeParams.color;
+        let shapeType = Object.hasOwn(shapeParams, 'shapeType') ? shapeParams.shapeType : defaultShapeParams.shapeType;
+        let color = Object.hasOwn(shapeParams, 'color') ? shapeParams.color : defaultShapeParams.color;
 
         let geomParams = null;
         let matterConfig = { type: 'circle', radius: 1 };
