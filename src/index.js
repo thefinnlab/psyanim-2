@@ -15,7 +15,6 @@ import PsyanimPlayerController from './core/components/controllers/PsyanimPlayer
 import PsyanimSceneController from './core/components/controllers/PsyanimSceneController';
 
 // experiments and networking
-import PsyanimExperimentPlayer from './core/components/experiments/PsyanimExperimentPlayer';
 import PsyanimClientNetworkManager from './core/components/networking/PsyanimClientNetworkManager';
 
 // pathfinding
@@ -125,7 +124,6 @@ export {
     PsyanimSceneController,
 
     // experiments and networking
-    PsyanimExperimentPlayer,
     PsyanimClientNetworkManager,
 
     // pathfinding
