@@ -22,11 +22,14 @@ import PredatorPrey from './scenes/PredatorPrey';
 
 import PsyanimUtils from '../src/core/utils/PsyanimUtils';
 
+import MimicInteractiveTest from './scenes/MimicInteractiveTest';
+
 /**
  *  Register scenes
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
+let mimicInteractiveCopy = PsyanimUtils.cloneSceneDefinition(MimicInteractiveTest);
 let predatorPreyCopy = PsyanimUtils.cloneSceneDefinition(PredatorPrey);
 let ClickToMoveTestCopy = PsyanimUtils.cloneSceneDefinition(ClickToMoveTest);
 let FOVSensorTestCopy = PsyanimUtils.cloneSceneDefinition(FOVSensorTest);
@@ -44,6 +47,7 @@ let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let AdvancedPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedPlayfightTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(mimicInteractiveCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyCopy);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTestCopy);
 PsyanimApp.Instance.config.registerScene(FOVSensorTestCopy);
