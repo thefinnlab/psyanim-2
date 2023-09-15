@@ -27,6 +27,7 @@ export default {
                 base: 12, altitude: 24, 
                 color: 0xff0000            
             },
+            initialAngle: 225,
             prefab: {
                 type: PsyanimClickToMovePlayerPrefab,
                 params: {

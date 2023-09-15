@@ -27,6 +27,7 @@ export default {
                 base: 16, altitude: 32, 
                 color: 0x0000ff
             },
+            initialAngle: 135,
             components: [
                 { type: PsyanimPlayerController }
             ]

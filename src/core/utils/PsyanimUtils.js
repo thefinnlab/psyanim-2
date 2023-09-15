@@ -58,6 +58,11 @@ export default class PsyanimUtils {
                     newEntity.initialPosition = structuredClone(entityDefinition.initialPosition);
                 }
 
+                if (Object.hasOwn(entityDefinition, 'initialAngle'))
+                {
+                    newEntity.initialAngle = structuredClone(entityDefinition.initialAngle);
+                }
+
                 if (Object.hasOwn(entityDefinition, 'shapeParams'))
                 {
                     newEntity.shapeParams = structuredClone(entityDefinition.shapeParams);

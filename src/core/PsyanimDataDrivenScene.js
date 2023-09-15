@@ -177,6 +177,14 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                     }
                 }
 
+                if (Object.hasOwn(entityDefinition, 'initialAngle'))
+                {
+                    if (typeof(entityDefinition.initialAngle) != 'number' && entityDefinition.initialAngle !== 'random')
+                    {
+                        PsyanimDebug.error("Entity index '" + i + "' has an invalid 'initialAngle'!");
+                    }
+                }
+
                 if (Object.hasOwn(entityDefinition, 'shapeParams'))
                 {
                     if (!PsyanimUtils.isObject(entityDefinition.shapeParams))
@@ -447,6 +455,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
         // compute initial position
         let initialPosition = null;
+        let angle = 0;
 
         if (Object.hasOwn(entityDefinition, 'initialPosition'))
         {
@@ -462,6 +471,18 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         else
         {
             initialPosition = { x: 0, y: 0 };
+        }
+
+        if (Object.hasOwn(entityDefinition, 'initialAngle'))
+        {
+            if (entityDefinition.initialAngle === 'random')
+            {
+                angle = Math.random() * 360.0;
+            }
+            else
+            {
+                angle = entityDefinition.initialAngle;
+            }
         }
 
         let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
@@ -498,6 +519,8 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         /** instantiate the prefab after it's been properly configured */
         let newEntity = this.instantiatePrefab(prefab, name,
             initialPosition.x, initialPosition.y);
+
+        newEntity.angle = angle;
     }
 
     _instantiatePrefabEntities() {
@@ -546,6 +569,7 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         let name = (nameOverride) ? nameOverride : entityDefinition.name;
 
         let initialPosition = null;
+        let angle = 0;
 
         if (Object.hasOwn(entityDefinition, 'initialPosition'))
         {
@@ -563,6 +587,18 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             initialPosition = { x: 0, y: 0 };
         }
 
+        if (Object.hasOwn(entityDefinition, 'initialAngle'))
+        {
+            if (entityDefinition.initialAngle === 'random')
+            {
+                angle = Math.random() * 360.0;
+            }
+            else
+            {
+                angle = entityDefinition.initialAngle;
+            }
+        }
+
         let shapeParams = Object.hasOwn(entityDefinition, 'shapeParams') ? 
             entityDefinition.shapeParams : { isEmpty: true };
 
@@ -571,6 +607,8 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
         let newEntity = this.addEntity(name, initialPosition.x, initialPosition.y, 
             shapeParams, matterOptions);
+
+        newEntity.angle = angle;
 
         /** Then add all the components */
         let componentDefinitions = entityDefinition.components;
