@@ -4,7 +4,7 @@ import PsyanimDebug from "../../utils/PsyanimDebug";
 
 export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
-    subtletly; // 'degrees'
+    subtlety; // 'degrees'
     subtletlyLag; // ms
 
     safetyDistance; // min. distance in 'px' to target which this predator will flee to maintain
