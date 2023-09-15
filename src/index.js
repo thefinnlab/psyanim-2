@@ -20,6 +20,9 @@ import PsyanimClientNetworkManager from './core/components/networking/PsyanimCli
 // pathfinding
 import PsyanimPathfindingAgent from './core/components/pathfinding/PsyanimPathfindingAgent';
 
+// animation
+import PsyanimMimic from './core/components/animation/PsyanimMimic';
+
 // physics 
 import PsyanimFOVSensor from './core/components/physics/PsyanimFOVSensor';
 import PsyanimSensor from './core/components/physics/PsyanimSensor';
@@ -128,6 +131,9 @@ export {
 
     // pathfinding
     PsyanimPathfindingAgent,
+
+    // animation
+    PsyanimMimic,
 
     // physics
     PsyanimFOVSensor,
