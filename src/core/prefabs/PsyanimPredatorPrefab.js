@@ -52,7 +52,10 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
     /** Field-of-view Params */
 
     /**
-     *  TODO: document
+     *  Determines how whether or not this agent will have a limited field of view.
+     * 
+     *  If false, the agent's field of view will be 360 degrees and have unlimited range.
+     *  @type {boolean}
      */
     useFov;
 
@@ -137,7 +140,10 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
     maxWanderAcceleration;
 
     /**
-     *  TODO: document
+     *  The minimum amount of time the agent must wander before it can transition to pursuing the target.
+     * 
+     *  This is helpful for interactive scenes where we don't want the agent constantly pursuing a target.
+     *  @type {Number}
      */
     minimumWanderTime;
 

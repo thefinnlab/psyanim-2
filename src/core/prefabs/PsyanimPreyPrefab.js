@@ -54,7 +54,10 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     /** Field-of-view Params */
 
     /**
-     *  TODO: document
+     *  Determines how whether or not this agent will have a limited field of view.
+     * 
+     *  If false, the agent's field of view will be 360 degrees and have unlimited range.
+     *  @type {boolean}
      */
     useFov;
 
@@ -111,7 +114,12 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     maxFleeAcceleration;
 
     /**
-     *  TODO: document
+     *  If 'useAdvancedFlee' is set to 'true', this parameter controls how far the agent should 
+     *  try to stay away from the world screen boundaries.
+     * 
+     *  In most cases, this should be larger than the size of the agent, but not so large that 
+     *  the agent never comes close to the walls.
+     *  @type {Number}
      */
     advancedFleeWallSeparationDistance;
 

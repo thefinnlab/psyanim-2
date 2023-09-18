@@ -4,11 +4,29 @@ import PsyanimDebug from '../../utils/PsyanimDebug';
 
 export default class PsyanimMimic extends PsyanimComponent {
 
+    /**
+     *  Target entity to mimic.
+     *  @type {PsyanimEntity}
+     */
     target;
 
+    /**
+     *  Amount by which to offset the *local* x-coordinate of this mimic's displacements from the target's.
+     *  @type {Number}
+     */
     xOffset;
+
+    /**
+     *  Amount by which to offset the *local* y-coordinate of this mimic's displacements from the target's.
+     *  @type {Number}
+     */
     yOffset;
 
+    /**
+     *  Angle, in degrees, by which to rotate all of the target's displacements before applying them
+     *  to this entity.
+     *  @type {Number}
+     */
     angleOffset;
 
     constructor(entity) {
