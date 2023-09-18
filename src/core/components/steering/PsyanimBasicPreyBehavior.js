@@ -59,14 +59,21 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         // determine if target is in sight
         let targetInSight = false;
 
-        let entitiesInSight = this.fovSensor.getEntitiesInSight([target]);
-
-        if (entitiesInSight.length != 0)
+        if (this.fovSensor)
         {
-            if (entitiesInSight.includes(target))
+            let entitiesInSight = this.fovSensor.getEntitiesInSight([target]);
+
+            if (entitiesInSight.length != 0)
             {
-                targetInSight = true;
-            }
+                if (entitiesInSight.includes(target))
+                {
+                    targetInSight = true;
+                }
+            }    
+        }
+        else // treat it as 360 degree FOV
+        {
+            targetInSight = true;
         }
 
         let distanceToTarget = this.entity.position
@@ -74,7 +81,7 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
             .length();
 
         // update state
-        if (targetInSight || distanceToTarget < this.safetyDistance)
+        if (targetInSight && distanceToTarget < this.safetyDistance)
         {
             if (this._state != PsyanimBasicPreyBehavior.STATE.FLEEING)
             {

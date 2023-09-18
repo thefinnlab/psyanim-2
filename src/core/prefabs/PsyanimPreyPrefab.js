@@ -54,6 +54,11 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     /** Field-of-view Params */
 
     /**
+     *  TODO: document
+     */
+    useFov;
+
+    /**
      *  Field-of-view cone angle, in degrees.
      *  @type {Number}
      */
@@ -104,6 +109,11 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      *  @type {Number}
      */
     maxFleeAcceleration;
+
+    /**
+     *  TODO: document
+     */
+    advancedFleeWallSeparationDistance;
 
     /**
      *  Distance from target at which the agent will begin fleeing.
@@ -161,6 +171,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         this.showDebugLogs = false;
 
         // fov params
+        this.useFov = false;
         this.fovAngle = 120;
         this.fovRange = 150;
         this.fovResolution = 5;
@@ -172,6 +183,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         this.maxFleeAcceleration = 0.2;
         this.panicDistance = 250;
         this.searchClockwiseDirection = true;
+        this.advancedFleeWallSeparationDistance = 30;
 
         // wander params
         this.maxWanderSpeed = 3.5;
@@ -192,7 +204,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         if (this.useAdvancedFlee)
         {
             flee = entity.addComponent(PsyanimAdvancedFleeBehavior);
-            flee.searchClockwise = this.searchClockwiseDirection;
+            flee.wallSeparationDistance = this.advancedFleeWallSeparationDistance;
         }
         else
         {
@@ -213,12 +225,17 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         wander.offset = this.wanderOffset;
         wander.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
 
-        let fovSensor = entity.addComponent(PsyanimFOVSensor);
-        fovSensor.fovAngle = this.fovAngle;
-        fovSensor.fovRange = this.fovRange;
-        fovSensor.resolution = this.fovResolution;
+        let fovSensor = null;
 
-        if (this.showDebugGraphics)
+        if (this.useFov)
+        {
+            fovSensor = entity.addComponent(PsyanimFOVSensor);
+            fovSensor.fovAngle = this.fovAngle;
+            fovSensor.fovRange = this.fovRange;
+            fovSensor.resolution = this.fovResolution;    
+        }
+
+        if (this.useFov && this.showDebugGraphics)
         {
             let fovRenderer = entity.addComponent(PsyanimFOVRenderer);
             fovRenderer.fovSensor = fovSensor;

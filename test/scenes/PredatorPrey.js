@@ -24,7 +24,7 @@ export default {
         },
         {
             name: 'predator',
-            initialPosition: { x: 100, y: 100 },
+            initialPosition: { x: 200, y: 300 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
                 radius: 12, color: 0xff0000
@@ -32,10 +32,11 @@ export default {
             prefab: { 
                 type: PsyanimPredatorPrefab,
                 params: {
-                    maxChaseSpeed: 5,
-                    maxWanderSpeed: 4.5,
-                    boredomDistance: 250,
-                    showDebugGraphics: true,
+                    maxChaseSpeed: 1.5,
+                    maxChaseAcceleration: 0.1,
+                    maxWanderSpeed: 1.5,
+                    maxWanderAcceleration: 0.1,
+                    boredomDistance: 500,
                     showDebugLogs: true,
                     subtlety: 30
                 }
@@ -53,7 +54,7 @@ export default {
         },
         {
             name: 'prey',
-            initialPosition: { x: 700, y: 500 },
+            initialPosition: { x: 700, y: 300 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
                 radius: 12, color: 0x0000ff
@@ -61,9 +62,10 @@ export default {
             prefab: { 
                 type: PsyanimPreyPrefab,
                 params: {
-                    maxFleeSpeed: 10,
-                    maxWanderSpeed: 5.0,
-                    showDebugGraphics: true,
+                    maxFleeSpeed: 1.8,
+                    maxFleeAcceleration: 0.15,
+                    maxWanderSpeed: 1.5,
+                    maxWanderAcceleration: 0.1,
                     showDebugLogs: true,
                     safetyDistance: 250,
                 }
@@ -75,8 +77,8 @@ export default {
                         target: {
                             entityName: 'predator'
                         }
-                    }    
-                }
+                    }
+                },
             ]
         }
     ],

@@ -29,7 +29,7 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
 
     panicDistance;
 
-    searchClockwise;
+    wallSeparationDistance;
 
     constructor(entity) {
 
@@ -40,73 +40,56 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
     
         this.panicDistance = 250;
 
-        this.searchClockwise = true;
+        this.wallSeparationDistance = 30;
 
-        this._advancedFleeDirection = Phaser.Math.Vector2.ZERO.clone();
+        this._wallCoords = {
+            upperY: 0,
+            lowerY: this.scene.game.canvas.height,
+            leftX: 0,
+            rightX: this.scene.game.canvas.width
+        };
 
-        this._advancedFleeRaycastBodies = [
-            this.entity.scene.screenBoundary.topBoundary.body, 
-            this.entity.scene.screenBoundary.bottomBoundary.body, 
-            this.entity.scene.screenBoundary.leftBoundary.body, 
-            this.entity.scene.screenBoundary.rightBoundary.body
-        ];
-    }
-
-    afterCreate() {
-
-        this.setAdvancedFleeSearchDirection(this.searchClockwise);
-    }
-
-    setAdvancedFleeSearchDirection(clockwise) {
-
-        const counterClockwiseAngles = [
-            0, Math.PI / 4, Math.PI / 2, Math.PI * 3 / 4,
-            -Math.PI * 3 / 4, -Math.PI / 2, -Math.PI / 4
-        ];
-
-        const clockwiseAngles = [
-            0, -Math.PI / 4, -Math.PI / 2, -Math.PI * 3 / 4,
-            Math.PI * 3 / 4, Math.PI / 2, Math.PI / 4
-        ];
-
-        this.anglesToCheck = (clockwise) ? clockwiseAngles : counterClockwiseAngles;
+        this._timer = 0;
+        this._angleOffset = 0;
+        this._direction = 1;
     }
 
     getSteering(target) {
 
+        let entityPosition = this.entity.position;
         let targetPosition = target.position;
         let distanceToTarget = this.entity.position.subtract(targetPosition).length();
 
-        if (distanceToTarget > this.panicDistance)
+        let distancesToWalls = {
+            upperWall: entityPosition.y - this._wallCoords.upperY,
+            lowerWall: this._wallCoords.lowerY - entityPosition.y,
+            leftWall: entityPosition.x - this._wallCoords.leftX,
+            rightWall: this._wallCoords.rightX - entityPosition.x
+        };
+
+        let desiredVelocityDirection = Phaser.Math.Vector2.ZERO.clone();
+
+        if (distanceToTarget < this.panicDistance)
         {
-            return new Phaser.Math.Vector2(0, 0);
+            desiredVelocityDirection = this.entity.position.clone()
+                .subtract(targetPosition)
+                .normalize();
         }
 
-        let desiredVelocityDirection = this.entity.position.clone()
-            .subtract(targetPosition)
-            .normalize();
+        let isInsideWallBoundary = distancesToWalls.upperWall < this.wallSeparationDistance
+            || distancesToWalls.lowerWall < this.wallSeparationDistance
+            || distancesToWalls.leftWall < this.wallSeparationDistance
+            || distancesToWalls.rightWall < this.wallSeparationDistance;
 
-        let desiredVelocityAngle = desiredVelocityDirection.angle();
-
-        const distance = 100;
-
-        for (let i = 0; i < this.anglesToCheck.length; ++i)
+        if (isInsideWallBoundary && desiredVelocityDirection.length() > 1e-3)
         {
-            let newAngle = desiredVelocityAngle + this.anglesToCheck[i];
-
-            let newVelocityDirection = desiredVelocityDirection
-                .clone()
-                .setAngle(newAngle);
-
-            if (!this._isPathBlocked(newVelocityDirection))
-            {
-                desiredVelocityDirection = newVelocityDirection;
-                break;
-            }
+            desiredVelocityDirection.rotate(this._direction * this._angleOffset);
         }
 
-        this._advancedFleeDirection = desiredVelocityDirection.clone()
-            .setLength(distance);
+        if (desiredVelocityDirection.length() < 1e-3)
+        {
+            return Phaser.Math.Vector2.ZERO.clone();
+        }
 
         let desiredVelocity = desiredVelocityDirection.clone()
             .setLength(this.maxSpeed);
@@ -126,26 +109,20 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
         return acceleration;
     }
 
-    _isPathBlocked(directionVector, distance = 100) {
+    update(t, dt) {
 
-        let start = { x: this.entity.x, y: this.entity.y };
+        super.update(t, dt);
 
-        let endPositionRelative = directionVector.clone()
-            .setLength(distance);
+        this._timer += dt;
 
-        let endVector = this.entity.position.add(endPositionRelative);
-
-        let end = { x: endVector.x, y: endVector.y };
-
-        let collisions = this.entity.scene.matter.query.ray(
-            this._advancedFleeRaycastBodies, start, end
-        );
-
-        if (collisions && collisions.length != 0)
+        if (this._timer > 1000)
         {
-            return true;
-        }
+            let minAngle = 15;
+            let maxAngle = 90;
 
-        return false;
+            this._angleOffset = (Math.random() * (maxAngle - minAngle) + minAngle) * Math.PI / 180;
+            this._direction = Math.random() > 0.5 ? -1 : 1;
+            this._timer = 0;
+        }
     }
 }

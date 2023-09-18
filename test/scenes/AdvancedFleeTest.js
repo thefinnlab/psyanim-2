@@ -69,7 +69,7 @@ export default {
                 type: PsyanimAdvancedFleeAgentPrefab,
                 params: {
                     maxSpeed: 5,
-                    searchClockwiseDirection: false
+                    advancedFleeWallSeparationDistance: 70
                 }
             },
             components: [

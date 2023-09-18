@@ -52,6 +52,11 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
     /** Field-of-view Params */
 
     /**
+     *  TODO: document
+     */
+    useFov;
+
+    /**
      *  Field-of-view cone angle, in degrees.
      *  @type {Number}
      */
@@ -142,6 +147,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         this.showDebugLogs = false;
 
         // fov params
+        this.useFov = false;
         this.fovAngle = 120;
         this.fovResolution = 5;
         this.showDebugGraphics = false;
@@ -182,12 +188,17 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         wander.offset = this.wanderOffset;
         wander.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
 
-        let fovSensor = entity.addComponent(PsyanimFOVSensor);
-        fovSensor.fovAngle = this.fovAngle;
-        fovSensor.fovRange = this.boredomDistance;
-        fovSensor.resolution = this.fovResolution;
+        let fovSensor = null;
 
-        if (this.showDebugGraphics)
+        if (this.useFov)
+        {
+            fovSensor = entity.addComponent(PsyanimFOVSensor);
+            fovSensor.fovAngle = this.fovAngle;
+            fovSensor.fovRange = this.boredomDistance;
+            fovSensor.resolution = this.fovResolution;    
+        }
+
+        if (this.useFov && this.showDebugGraphics)
         {
             let fovRenderer = entity.addComponent(PsyanimFOVRenderer);
             fovRenderer.fovSensor = fovSensor;
