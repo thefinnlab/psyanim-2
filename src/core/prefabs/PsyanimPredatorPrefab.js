@@ -212,6 +212,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         predator.subtletyLag = this.subtletyLag;
         predator.boredomDistance = this.boredomDistance;
         predator.debug = this.showDebugLogs;
+        predator.minimumWanderTime = 0;
 
         let predatorAgent = entity.addComponent(PsyanimPredatorAgent);
         predatorAgent.vehicle = vehicle;
