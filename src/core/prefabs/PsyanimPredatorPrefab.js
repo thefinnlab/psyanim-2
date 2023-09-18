@@ -136,6 +136,11 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      */
     maxWanderAcceleration;
 
+    /**
+     *  TODO: document
+     */
+    minimumWanderTime;
+
     constructor(shapeParams) {
 
         super(shapeParams);
@@ -164,6 +169,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         this.maxWanderAngleChangePerFrame = 10;
         this.maxWanderSpeed = 4.5;
         this.maxWanderAcceleration = 0.2;
+        this.minimumWanderTime = 0;
     }
 
     create(entity) {
@@ -212,7 +218,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         predator.subtletyLag = this.subtletyLag;
         predator.boredomDistance = this.boredomDistance;
         predator.debug = this.showDebugLogs;
-        predator.minimumWanderTime = 0;
+        predator.minimumWanderTime = this.minimumWanderTime;
 
         let predatorAgent = entity.addComponent(PsyanimPredatorAgent);
         predatorAgent.vehicle = vehicle;
