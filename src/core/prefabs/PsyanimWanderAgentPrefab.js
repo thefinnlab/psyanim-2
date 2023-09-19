@@ -18,9 +18,9 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
     
     debug;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.radius = 50;
         this.offset = 150;

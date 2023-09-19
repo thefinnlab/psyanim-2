@@ -34,9 +34,9 @@ export default class PsyanimArriveAgentPrefab extends PsyanimEntityPrefab {
      */
     outerDecelerationRadius;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.maxSpeed = 8;
         this.innerDecelerationRadius = 25;

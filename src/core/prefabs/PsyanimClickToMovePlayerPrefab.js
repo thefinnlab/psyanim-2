@@ -19,9 +19,9 @@ export default class PsyanimClickToMovePlayerPrefab extends PsyanimEntityPrefab 
 
     debug;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.maxSpeed = 8;
         this.innerDecelerationRadius = 10;

@@ -116,9 +116,9 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
      */
     outerDecelerationRadius;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.breakDuration = 2000;
         this.collisionFrequency = 2500;

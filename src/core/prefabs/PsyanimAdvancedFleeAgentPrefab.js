@@ -12,9 +12,9 @@ export default class PsyanimAdvancedFleeAgentPrefab extends PsyanimEntityPrefab 
 
     searchClockwiseDirection;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.maxSpeed = 6;
         this.panicDistance = 100;

@@ -10,9 +10,9 @@ export default class PsyanimEvadeAgentPrefab extends PsyanimEntityPrefab {
     maxSpeed;
     maxAcceleration;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.maxSpeed = 6;
         this.maxAcceleration = 0.2;

@@ -115,9 +115,9 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
      */
     debug;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         this.breakDuration = 2000;
 

@@ -168,9 +168,9 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      */
     maxWanderAngleChangePerFrame;
 
-    constructor(shapeParams) {
+    constructor(shapeParams, matterOptions = {}) {
 
-        super(shapeParams);
+        super(shapeParams, matterOptions);
 
         // prey params
         this.subtlety = 30;
