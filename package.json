@@ -12,7 +12,7 @@
     "test": "jasmine --config=src/test/unit/jasmine.json",
     "dev-build": "webpack --config ./webpack.dev.config.js",
     "dev-watch": "webpack --config ./webpack.dev.config.js --watch",
-    "dev-server": "npx nodemon ./test/devserver/main.mjs",
+    "dev-serve": "npx http-server ./dist -p 3000",
     "clean": "rimraf -v ./dist"
   },
   "keywords": [],
@@ -35,6 +35,7 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
+    "http-server": "^14.1.1",
     "copy-webpack-plugin": "^11.0.0",
     "esdoc": "^1.1.0",
     "esdoc-standard-plugin": "^1.0.0",
