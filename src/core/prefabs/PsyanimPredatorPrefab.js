@@ -147,7 +147,7 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      */
     minimumWanderTime;
 
-    constructor(shapeParams, matterOptions = {}) {
+    constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         super(shapeParams, matterOptions);
 

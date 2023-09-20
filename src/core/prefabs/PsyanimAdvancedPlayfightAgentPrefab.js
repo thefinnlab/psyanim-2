@@ -116,7 +116,7 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
      */
     outerDecelerationRadius;
 
-    constructor(shapeParams, matterOptions = {}) {
+    constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         super(shapeParams, matterOptions);
 

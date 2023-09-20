@@ -12,7 +12,7 @@ export default class PsyanimAdvancedFleeAgentPrefab extends PsyanimEntityPrefab 
 
     searchClockwiseDirection;
 
-    constructor(shapeParams, matterOptions = {}) {
+    constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         super(shapeParams, matterOptions);
 

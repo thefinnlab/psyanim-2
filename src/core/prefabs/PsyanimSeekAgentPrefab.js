@@ -9,7 +9,7 @@ export default class PsyanimSeekAgentPrefab extends PsyanimEntityPrefab {
     maxSpeed;
     maxAcceleration;
 
-    constructor(shapeParams, matterOptions = {}) {
+    constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         super(shapeParams, matterOptions);
 
