@@ -155,19 +155,19 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.body.label = this.name;
 
         // setup visibility and isSensor / isSleeping depending on whether this object is empty
+        this.body.isSleeping = matterOptions.isSleeping;
+
         if (isEmpty)
         {
             this.visible = false;
 
             this.body.isSensor = true;
-            this.body.isSleeping = true;
         }
         else
         {
             this.visible = Object.hasOwn(shapeParams, 'visible') ? shapeParams.visible : defaultShapeParams.visible;
 
             this.body.isSensor = matterOptions.isSensor;
-            this.body.isSleeping = matterOptions.isSleeping;
         }
 
         if (Object.hasOwn(shapeParams, 'depth'))
