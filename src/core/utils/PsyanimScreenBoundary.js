@@ -86,6 +86,14 @@ export default class PsyanimScreenBoundary {
         this.rightBoundary.body.isSensor = this._wrap;
     }
 
+    get boundaries() {
+
+        return [
+            this.topBoundary, this.bottomBoundary,
+            this.leftBoundary, this.rightBoundary
+        ];
+    }
+
     _handleCollisionEnd(pair) {
 
         let body = null;
