@@ -4,7 +4,7 @@ import PsyanimComponent from '../../PsyanimComponent';
 
 export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
 
-    seekBehavior;
+    arriveBehavior;
     obstacleAvoidanceBehavior;
 
     constructor(entity) {
@@ -12,6 +12,8 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
         super(entity);
 
         // TODO: let's have this class do the arrive, but with obstacle avoidance
+
+        this._state = PsyanimAdvancedArriveBehavior.STATE.IDLE;
     }
 
     afterCreate() {
@@ -19,10 +21,27 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
         super.afterCreate();
     }
 
-    update(t, dt) {
+    getSteering(target) {
 
-        super.update(t, dt);
+        switch(this._state) {
 
+            case PsyanimAdvancedArriveBehavior.STATE.IDLE:
 
+                return new Phaser.Math.Vector2(0, 0);
+
+            case PsyanimAdvancedArriveBehavior.STATE.AVOIDING:
+
+                return this.obstacleAvoidanceBehavior.getSteering();
+                
+            case PsyanimAdvancedArriveBehavior.STATE.ARRIVING:
+
+                return this.arriveBehavior.getSteering(target);
+        }
     }
 }
+
+PsyanimAdvancedArriveBehavior.STATE = {
+    IDLE: 0x0001,
+    ARRIVING: 0x0002,
+    AVOIDING: 0x0003
+};
