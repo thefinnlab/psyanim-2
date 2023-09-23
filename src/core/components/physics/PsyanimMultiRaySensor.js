@@ -1,6 +1,8 @@
 import Phaser from 'phaser';
 import PsyanimComponent from "../../PsyanimComponent";
 
+import matterRaycast2 from '../../../thirdparty/matter_raycast';
+
 class PsyanimEntityRay {
 
     id;
@@ -18,17 +20,16 @@ class PsyanimEntityRay {
 
         this._startPoint = new Phaser.Math.Vector2.ZERO.clone();
         this._endPoint = new Phaser.Math.Vector2.ZERO.clone();
-
-        this._isTriggered = false;
     }
 
-    get isTriggered() {
-        return this._isTriggered;
+    get collisions() {
+
+        return this._collisions;
     }
 
-    set isTriggered(value) {
+    set collisions(value) {
 
-        this._isTriggered = value;
+        this._collisions = value;
     }
 
     get startPoint() {
@@ -79,11 +80,6 @@ export default class PsyanimMultiRaySensor extends PsyanimComponent {
         return this._rayMap;
     }
 
-    get isTriggered() {
-
-        return this._entitiesInSight.length > 0;
-    }
-
     get entitiesInSight() {
 
         return this._entitiesInSight;
@@ -125,23 +121,15 @@ export default class PsyanimMultiRaySensor extends PsyanimComponent {
 
         this._rayMap.forEach(ray => {
 
-            let collisions = this.scene.matter.query.ray(
-                this._bodyList, ray.startPoint, ray.endPoint);
+            ray.collisions = matterRaycast2(this.scene, this._bodyList, ray.startPoint, ray.endPoint);
 
-            ray.isTriggered = collisions && collisions.length != 0;
+            ray.collisions.forEach(collision => {
 
-            if (ray.isTriggered)
-            {
-                for (let i = 0; i < collisions.length; ++i)
+                if (!this._entitiesInSight.includes(collision.body.gameObject))
                 {
-                    let collision = collisions[i];
-    
-                    if (!this._entitiesInSight.includes(collision.body.gameObject))
-                    {
-                        this._entitiesInSight.push(collision.body.gameObject);
-                    }
+                    this._entitiesInSight.push(collision.body.gameObject);
                 }
-            }
+            });
         });
     }
 

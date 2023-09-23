@@ -38,7 +38,7 @@ import PsyanimWanderDebug from './core/components/rendering/PsyanimWanderDebug';
 // AI steering behaviors & agents
 import PsyanimVehicle from './core/components/steering/PsyanimVehicle';
 
-import PsyanimAdvancedArriveBehavior from './core/components/steering/PsyanimAdvancedArriveBehavior';
+import PsyanimPreciselyTimedArriveBehavior from './core/components/steering/PsyanimPreciselyTimedArriveBehavior';
 import PsyanimAdvancedFleeBehavior from './core/components/steering/PsyanimAdvancedFleeBehavior';
 import PsyanimAdvancedPlayfightBehavior from './core/components/steering/PsyanimAdvancedPlayfightBehavior';
 import PsyanimArriveBehavior from './core/components/steering/PsyanimArriveBehavior';
@@ -52,7 +52,7 @@ import PsyanimPlayfightBehavior from './core/components/steering/PsyanimPlayfigh
 import PsyanimSeekBehavior from './core/components/steering/PsyanimSeekBehavior';
 import PsyanimWanderBehavior from './core/components/steering/PsyanimWanderBehavior';
 
-import PsyanimAdvancedArriveAgent from './core/components/steering/agents/PsyanimAdvancedArriveAgent';
+import PsyanimPreciselyTimedArriveAgent from './core/components/steering/agents/PsyanimPreciselyTimedArriveAgent';
 import PsyanimAdvancedFleeAgent from './core/components/steering/agents/PsyanimAdvancedFleeAgent';
 import PsyanimAdvancedPlayfightAgent from './core/components/steering/agents/PsyanimAdvancedPlayfightAgent';
 import PsyanimArriveAgent from './core/components/steering/agents/PsyanimArriveAgent';
@@ -79,7 +79,7 @@ import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder';
 // prefabs
 import PsyanimArriveAgentPrefab from './core/prefabs/PsyanimArriveAgentPrefab';
 import PsyanimPlayfightAgentPrefab from './core/prefabs/PsyanimPlayfightAgentPrefab';
-import PsyanimAdvancedArriveAgentPrefab from './core/prefabs/PsyanimAdvancedArriveAgentPrefab';
+import PsyanimPreciselyTimedArriveAgentPrefab from './core/prefabs/PsyanimPreciselyTimedArriveAgentPrefab';
 import PsyanimAdvancedPlayfightAgentPrefab from './core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
 import PsyanimClickToMovePlayerPrefab from './core/prefabs/PsyanimClickToMovePlayerPrefab';
 import PsyanimPreyPrefab from './core/prefabs/PsyanimPreyPrefab';
@@ -150,7 +150,7 @@ export {
     // AI steering behaviors
     PsyanimVehicle,
 
-    PsyanimAdvancedArriveBehavior,
+    PsyanimPreciselyTimedArriveBehavior,
     PsyanimAdvancedFleeBehavior,
     PsyanimAdvancedPlayfightBehavior,
     PsyanimArriveBehavior,
@@ -164,7 +164,7 @@ export {
     PsyanimSeekBehavior,
     PsyanimWanderBehavior,
 
-    PsyanimAdvancedArriveAgent,
+    PsyanimPreciselyTimedArriveAgent,
     PsyanimAdvancedFleeAgent,
     PsyanimAdvancedPlayfightAgent,
     PsyanimArriveAgent,
@@ -192,7 +192,7 @@ export {
     PsyanimArriveAgentPrefab,
     PsyanimAdvancedPlayfightAgentPrefab,
     PsyanimClickToMovePlayerPrefab,
-    PsyanimAdvancedArriveAgentPrefab,
+    PsyanimPreciselyTimedArriveAgentPrefab,
     PsyanimAdvancedFleeAgentPrefab,
     PsyanimPreyPrefab,
     PsyanimPredatorPrefab,

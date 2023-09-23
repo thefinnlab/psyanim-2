@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import PsyanimComponent from "../../src/core/PsyanimComponent";
-import PsyanimAdvancedArriveAgent from '../../src/core/components/steering/agents/PsyanimAdvancedArriveAgent';
+import PsyanimPreciselyTimedArriveAgent from '../../src/core/components/steering/agents/PsyanimPreciselyTimedArriveAgent';
 
 export default class AdvancedArriveTestManager extends PsyanimComponent {
 

@@ -8,15 +8,15 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
-import PsyanimAdvancedArriveAgent from '../../src/core/components/steering/agents/PsyanimAdvancedArriveAgent';
+import PsyanimPreciselyTimedArriveAgent from '../../src/core/components/steering/agents/PsyanimPreciselyTimedArriveAgent';
 
 import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
-import PsyanimAdvancedArriveAgentPrefab from '../../src/core/prefabs/PsyanimAdvancedArriveAgentPrefab';
+import PsyanimPreciselyTimedArriveAgentPrefab from '../../src/core/prefabs/PsyanimPreciselyTimedArriveAgentPrefab';
 
 import AdvancedArriveTestManager from '../components/AdvancedArriveTestManager';
 
 export default {
-    key: 'Advanced Arrive Test',
+    key: 'Precisely Timed Arrive Test',
     entities: [
         {
             name: 'sceneControls',
@@ -37,7 +37,7 @@ export default {
                         },
                         advancedArriveAgent: {
                             entityName: 'agent1',
-                            componentType: PsyanimAdvancedArriveAgent
+                            componentType: PsyanimPreciselyTimedArriveAgent
                         },
                         mouseFollowTarget: {
                             entityName: 'mouseFollowTarget',
@@ -69,10 +69,10 @@ export default {
                 shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
                 base: 12, altitude: 20, color: 0x00ff00
             },
-            prefab: { type: PsyanimAdvancedArriveAgentPrefab },
+            prefab: { type: PsyanimPreciselyTimedArriveAgentPrefab },
             components: [
                 {
-                    type: PsyanimAdvancedArriveAgent,
+                    type: PsyanimPreciselyTimedArriveAgent,
                     enabled: false,
                     params: {
                         target: { 

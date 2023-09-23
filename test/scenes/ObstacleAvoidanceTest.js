@@ -10,8 +10,10 @@ import PsyanimPlayerController from "../../src/core/components/controllers/Psyan
 import PsyanimMultiRaySensor from '../../src/core/components/physics/PsyanimMultiRaySensor';
 import PsyanimMultiRaySensorRenderer from '../../src/core/components/rendering/PsyanimMultiRaySensorRenderer';
 
+import PsyanimObstacleAvoidanceBehavior from '../../src/core/components/steering/PsyanimObstacleAvoidanceBehavior';
+
 export default {
-    key: 'Collision Avoidance Test',
+    key: 'Obstacle Avoidance Test',
     wrapScreenBoundary: false,
     entities: [
         {
@@ -21,6 +23,16 @@ export default {
                 { type: PsyanimPhysicsSettingsController },
                 { type: PsyanimSceneChangeController }
             ]
+        },
+        {
+            name: 'obstacle1',
+            initialPosition: { x: 200, y: 200 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 100,
+                color: 0xffff00
+            },
+            matterOptions: { isStatic: true }
         },
         {
             name: 'player',
@@ -57,6 +69,7 @@ export default {
                                 relativeAngle: -25
                             }
                         ],
+                        bodyNames: ['obstacle1']
                     }
                 },
                 {
@@ -66,6 +79,16 @@ export default {
                             entityName: 'player',
                             componentType: PsyanimMultiRaySensor
                         }
+                    }
+                },
+                {
+                    type: PsyanimObstacleAvoidanceBehavior,
+                    params: {
+                        multiRaySensor: {
+                            entityName: 'player',
+                            componentType: PsyanimMultiRaySensor
+                        },
+                        avoidDistance: 25
                     }
                 }
             ]

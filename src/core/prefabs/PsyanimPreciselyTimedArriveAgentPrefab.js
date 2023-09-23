@@ -1,10 +1,10 @@
 import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
 
 import PsyanimVehicle from "../components/steering/PsyanimVehicle";
-import PsyanimAdvancedArriveBehavior from "../components/steering/PsyanimAdvancedArriveBehavior";
-import PsyanimAdvancedArriveAgent from "../components/steering/agents/PsyanimAdvancedArriveAgent";
+import PsyanimPreciselyTimedArriveBehavior from "../components/steering/PsyanimPreciselyTimedArriveBehavior";
+import PsyanimPreciselyTimedArriveAgent from "../components/steering/agents/PsyanimPreciselyTimedArriveAgent";
 
-export default class PsyanimAdvancedArriveAgentPrefab extends PsyanimEntityPrefab {
+export default class PsyanimPreciselyTimedArriveAgentPrefab extends PsyanimEntityPrefab {
 
     chargeDuration;
     innerDecelerationRadius;
@@ -27,14 +27,14 @@ export default class PsyanimAdvancedArriveAgentPrefab extends PsyanimEntityPrefa
 
         let vehicle1 = entity.addComponent(PsyanimVehicle);
 
-        let advancedArrive = entity.addComponent(PsyanimAdvancedArriveBehavior);
+        let advancedArrive = entity.addComponent(PsyanimPreciselyTimedArriveBehavior);
 
         advancedArrive.chargeDuration = this.chargeDuration;
         advancedArrive.innerDecelerationRadius = this.innerDecelerationRadius;
         advancedArrive.outerDecelerationRadius = this.outerDecelerationRadius;
         advancedArrive.maxAcceleration = this.maxAcceleration;
 
-        this.advancedArriveAgent = entity.addComponent(PsyanimAdvancedArriveAgent);
+        this.advancedArriveAgent = entity.addComponent(PsyanimPreciselyTimedArriveAgent);
 
         this.advancedArriveAgent.vehicle = vehicle1;
         this.advancedArriveAgent.advancedArriveBehavior = advancedArrive;

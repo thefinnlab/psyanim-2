@@ -10,7 +10,7 @@ import AdvancedFleeTest from './scenes/AdvancedFleeTest';
 import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
 import ChargeTest from './scenes/ChargeTest';
 import AdvancedPlayfightTest from './scenes/AdvancedPlayfightTest';
-import AdvancedArriveTest from './scenes/AdvancedArriveTest';
+import PreciselyTimedArriveTest from './scenes/PreciselyTimedArriveTest';
 import FOVSensorTest from './scenes/FOVSensorTest';
 import PredatorTest from './scenes/PredatorTest';
 import PreyTest from './scenes/PreyTest';
@@ -24,21 +24,21 @@ import PsyanimUtils from '../src/core/utils/PsyanimUtils';
 
 import MimicInteractiveTest from './scenes/MimicInteractiveTest';
 
-import CollisionAvoidanceTest from './scenes/CollisionAvoidanceTest';
+import ObstacleAvoidanceTest from './scenes/ObstacleAvoidanceTest';
 
 /**
  *  Register scenes
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
-let collisionAvoidanceCopy = PsyanimUtils.cloneSceneDefinition(CollisionAvoidanceTest);
+let obstacleAvoidanceCopy = PsyanimUtils.cloneSceneDefinition(ObstacleAvoidanceTest);
 let mimicInteractiveCopy = PsyanimUtils.cloneSceneDefinition(MimicInteractiveTest);
 let predatorPreyCopy = PsyanimUtils.cloneSceneDefinition(PredatorPrey);
 let ClickToMoveTestCopy = PsyanimUtils.cloneSceneDefinition(ClickToMoveTest);
 let FOVSensorTestCopy = PsyanimUtils.cloneSceneDefinition(FOVSensorTest);
 let ArriveTestCopy = PsyanimUtils.cloneSceneDefinition(ArriveTest);
 let PsyanimPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(PsyanimPlayfightTest);
-let AdvancedArriveTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedArriveTest);
+let PreciselyTimedArriveTestCopy = PsyanimUtils.cloneSceneDefinition(PreciselyTimedArriveTest);
 let PreyTestCopy = PsyanimUtils.cloneSceneDefinition(PreyTest);
 let PredatorTestCopy = PsyanimUtils.cloneSceneDefinition(PredatorTest);
 let SeekTestCopy = PsyanimUtils.cloneSceneDefinition(SeekTest);
@@ -50,14 +50,14 @@ let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let AdvancedPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedPlayfightTest);
 
 // register the scene def clones to make sure the clones are g2g too
-PsyanimApp.Instance.config.registerScene(collisionAvoidanceCopy);
+PsyanimApp.Instance.config.registerScene(obstacleAvoidanceCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyCopy);
 PsyanimApp.Instance.config.registerScene(mimicInteractiveCopy);
 PsyanimApp.Instance.config.registerScene(ClickToMoveTestCopy);
 PsyanimApp.Instance.config.registerScene(FOVSensorTestCopy);
 PsyanimApp.Instance.config.registerScene(ArriveTestCopy);
 PsyanimApp.Instance.config.registerScene(PsyanimPlayfightTestCopy);
-PsyanimApp.Instance.config.registerScene(AdvancedArriveTestCopy);
+PsyanimApp.Instance.config.registerScene(PreciselyTimedArriveTestCopy);
 PsyanimApp.Instance.config.registerScene(PreyTestCopy);
 PsyanimApp.Instance.config.registerScene(PredatorTestCopy);
 PsyanimApp.Instance.config.registerScene(SeekTestCopy);

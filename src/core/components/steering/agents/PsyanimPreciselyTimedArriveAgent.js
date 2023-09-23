@@ -2,7 +2,7 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../../PsyanimComponent';
 
-export default class PsyanimAdvancedArriveAgent extends PsyanimComponent {
+export default class PsyanimPreciselyTimedArriveAgent extends PsyanimComponent {
 
     target;
     advancedArriveBehavior;

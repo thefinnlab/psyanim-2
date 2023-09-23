@@ -1,7 +1,7 @@
 import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
 
 import PsyanimVehicle from "..//components/steering/PsyanimVehicle";
-import PsyanimAdvancedArriveBehavior from "../components/steering/PsyanimAdvancedArriveBehavior";
+import PsyanimPreciselyTimedArriveBehavior from "../components/steering/PsyanimPreciselyTimedArriveBehavior";
 import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior";
 import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
 import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior";
@@ -16,7 +16,7 @@ import PsyanimAdvancedPlayfightAgent from "../components/steering/agents/Psyanim
  * 
  *  An `Advanced Playfight Agent` has the following components:
  * 
- *  `PsyanimVehicle`, `PsyanimAdvancedArriveBehavior`, `PsyanimAdvancedFleeBehavior`, `PsyanimSeekBehavior`, 
+ *  `PsyanimVehicle`, `PsyanimPreciselyTimedArriveBehavior`, `PsyanimAdvancedFleeBehavior`, `PsyanimSeekBehavior`, 
  *  `PsyanimWanderBehavior`, `PsyanimAdvancedPlayfightBehavior`, `PsyanimAdvancedPlayfightAgent`
  */
 export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPrefab {
@@ -146,7 +146,7 @@ export default class PsyanimAdvancedPlayfightAgentPrefab extends PsyanimEntityPr
 
         let vehicle = entity.addComponent(PsyanimVehicle);
 
-        let advancedArrive = entity.addComponent(PsyanimAdvancedArriveBehavior);
+        let advancedArrive = entity.addComponent(PsyanimPreciselyTimedArriveBehavior);
         advancedArrive.maxAcceleration = this.maxChargeAcceleration;
         advancedArrive.innerDecelerationRadius = this.innerDecelerationRadius;
         advancedArrive.outerDecelerationRadius = this.outerDecelerationRadius;
