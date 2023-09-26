@@ -35,6 +35,13 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         this.debug = false;
     }
 
+    afterCreate() {
+
+        // use an initial angle and subtlety that's randomized
+        this.entity.setAngle(360 * (2 * Math.random() - 1));
+        this._recomputeSubtletyAngle();
+    }
+
     get maxSpeed() {
 
         switch(this._state) {
@@ -127,6 +134,11 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         }
     }
 
+    _recomputeSubtletyAngle() {
+
+        this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+    }
+
     update(t, dt) {
 
         super.update(t, dt);
@@ -139,8 +151,7 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
             if (this._state == PsyanimBasicPreyBehavior.STATE.PURSUING)
             {
-                // recompute subtlety angle
-                this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+                this._recomputeSubtletyAngle();
             }
         }        
     }

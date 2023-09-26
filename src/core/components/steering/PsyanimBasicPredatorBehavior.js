@@ -41,10 +41,16 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
         this._arriveTarget = this.scene.addEntity(this.name + '_arriveTarget');
 
-        this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
 
         this._wanderTimer = 0;
+    }
+
+    afterCreate() {
+
+        // use an initial angle and subtlety that's randomized
+        this.entity.setAngle(360 * (2 * Math.random() - 1));
+        this._recomputeSubtletyAngle();
     }
 
     get maxSpeed() {
@@ -136,6 +142,11 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
         }
     }
 
+    _recomputeSubtletyAngle() {
+
+        this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+    }
+
     update(t, dt) {
      
         super.update(t, dt);
@@ -155,8 +166,7 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
             if (this._state == PsyanimBasicPredatorBehavior.STATE.PURSUING)
             {
-                // recompute subtlety angle
-                this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+                this._recomputeSubtletyAngle();
             }
         }
     }
