@@ -26,6 +26,8 @@ import MimicInteractiveTest from './scenes/MimicInteractiveTest';
 
 import ObstacleAvoidanceTest from './scenes/ObstacleAvoidanceTest';
 
+import AdvancedArriveTest from './scenes/AdvancedArriveTest';
+
 /**
  *  Register scenes
  */
@@ -50,6 +52,7 @@ let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let AdvancedPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedPlayfightTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(obstacleAvoidanceCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyCopy);
 PsyanimApp.Instance.config.registerScene(mimicInteractiveCopy);

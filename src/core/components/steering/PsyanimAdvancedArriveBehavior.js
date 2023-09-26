@@ -10,10 +10,6 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
     constructor(entity) {
 
         super(entity);
-
-        // TODO: let's have this class do the arrive, but with obstacle avoidance
-
-        this._state = PsyanimAdvancedArriveBehavior.STATE.IDLE;
     }
 
     afterCreate() {
@@ -23,25 +19,18 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
 
     getSteering(target) {
 
-        switch(this._state) {
+        let steering = this.obstacleAvoidanceBehavior.getSteering();
 
-            case PsyanimAdvancedArriveBehavior.STATE.IDLE:
-
-                return new Phaser.Math.Vector2(0, 0);
-
-            case PsyanimAdvancedArriveBehavior.STATE.AVOIDING:
-
-                return this.obstacleAvoidanceBehavior.getSteering();
-                
-            case PsyanimAdvancedArriveBehavior.STATE.ARRIVING:
-
-                return this.arriveBehavior.getSteering(target);
+        if (steering.length() > 1e-3)
+        {
+            return steering;
         }
+
+        return this.arriveBehavior.getSteering(target);
     }
 }
 
 PsyanimAdvancedArriveBehavior.STATE = {
     IDLE: 0x0001,
     ARRIVING: 0x0002,
-    AVOIDING: 0x0003
 };

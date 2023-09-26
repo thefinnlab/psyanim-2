@@ -32,11 +32,18 @@ export default class PsyanimObstacleAvoidanceBehavior extends PsyanimComponent {
             {
                 let collision = ray.collisions[0];
 
-                this._seekTarget.position = new Phaser.Math.Vector2(
+                let targetPosition = new Phaser.Math.Vector2(
                     collision.point.x, collision.point.y)
                     .add(new Phaser.Math.Vector2(
                         collision.normal.x, collision.normal.y
                     ).scale(this.avoidDistance));
+
+                // let entityAngle = this.entity.rotation;
+                // let collisionNormalAngle = collision.normal.angle();
+
+                // let deltaDegrees = (entityAngle - collisionNormalAngle) * 180 / Math.PI;
+
+                this._seekTarget.position = targetPosition;
 
                 return this.seekBehavior.getSteering(this._seekTarget);
             }

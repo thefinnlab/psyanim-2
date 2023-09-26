@@ -14,6 +14,10 @@ export default class PsyanimConfig {
             width: 800,
             height: 600,
             backgroundColor: 0xffffff,
+            fps: {
+                target: 60,
+                forceSetTimeOut: true
+            },
             scene: [],
             physics: {
                 default: 'matter',

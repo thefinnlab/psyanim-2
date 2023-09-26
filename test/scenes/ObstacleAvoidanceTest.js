@@ -1,4 +1,3 @@
-import Phaser from 'phaser';
 import PsyanimConstants from "../../src/core/PsyanimConstants";
 
 import PsyanimSceneTitle from "../../src/core/components/ui/PsyanimSceneTitle";
