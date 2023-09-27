@@ -18,7 +18,8 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
 
 export default {
 
-    key: 'Arrive Test',
+    key: 'Advanced Arrive Test',
+    wrapScreenBoundary: false,
     entities: [
         {
             name: 'sceneControls',
@@ -58,17 +59,17 @@ export default {
                         rayInfoList: [
                             {
                                 id: 0,
-                                distance: 150,
+                                distance: 125,
                                 relativeAngle: 0
                             },
                             {
                                 id: 1,
-                                distance: 50,
+                                distance: 75,
                                 relativeAngle: 25
                             },
                             {
                                 id: 2,
-                                distance: 50,
+                                distance: 75,
                                 relativeAngle: -25
                             }
                         ],
@@ -102,7 +103,7 @@ export default {
                             entityName: 'agent1',
                             componentType: PsyanimSeekBehavior
                         },
-                        avoidDistance: 25
+                        avoidDistance: 75 * Math.sin(25 * Math.PI / 180)
                     }
                 },
                 {

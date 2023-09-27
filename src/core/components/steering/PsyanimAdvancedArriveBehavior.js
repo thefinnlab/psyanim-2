@@ -29,8 +29,3 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
         return this.arriveBehavior.getSteering(target);
     }
 }
-
-PsyanimAdvancedArriveBehavior.STATE = {
-    IDLE: 0x0001,
-    ARRIVING: 0x0002,
-};
