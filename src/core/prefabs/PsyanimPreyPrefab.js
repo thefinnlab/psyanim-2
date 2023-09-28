@@ -8,8 +8,8 @@ import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
 import PsyanimObstacleAvoidanceBehavior from "../components/steering/PsyanimObstacleAvoidanceBehavior";
 
 import PsyanimFleeBehavior from "../components/steering/PsyanimFleeBehavior";
+import PsyanimEvadeBehavior from '../components/steering/PsyanimEvadeBehavior';
 import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior";
-import PsyanimAdvancedFleeAgent from "../components/steering/agents/PsyanimAdvancedFleeAgent";
 
 import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior";
 import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor";
@@ -197,6 +197,8 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         let whiskerLength = 75;
 
         let vehicle = entity.addComponent(PsyanimVehicle);
+        vehicle.maxSpeed = 3;
+        vehicle.turnSpeed = 0.05;
 
         let multiRaySensor = entity.addComponent(PsyanimMultiRaySensor);
         multiRaySensor.rayInfoList = [
@@ -230,15 +232,19 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         obstacleAvoidanceBehavior.seekBehavior = seek;
         obstacleAvoidanceBehavior.maxSeekSpeed = this.maxFleeSpeed;
         obstacleAvoidanceBehavior.maxSeekAcceleration = this.maxFleeAcceleration;
-        obstacleAvoidanceBehavior.avoidDistance = 2.5 * (whiskerLength * Math.sin(whiskerAngle * Math.PI / 180));
+        obstacleAvoidanceBehavior.avoidDistance = 2 * (whiskerLength * Math.sin(whiskerAngle * Math.PI / 180));
 
         let flee = entity.addComponent(PsyanimFleeBehavior);
         flee.maxSpeed = this.maxFleeSpeed;
         flee.maxAcceleration = this.maxFleeAcceleration;
         flee.panicDistance = this.panicDistance;
 
+        let evade = entity.addComponent(PsyanimEvadeBehavior);
+        evade.fleeBehavior = flee;
+        evade.maxPredictionTime = 3.0;
+
         let advancedFlee = entity.addComponent(PsyanimAdvancedFleeBehavior);
-        advancedFlee.fleeBehavior = flee;
+        advancedFlee.fleeBehavior = evade;
         advancedFlee.obstacleAvoidanceBehavior = obstacleAvoidanceBehavior;
 
         let wander = entity.addComponent(PsyanimWanderBehavior);

@@ -80,15 +80,15 @@ export default {
                         ],
                     }
                 },
-                {
-                    type: PsyanimMultiRaySensorRenderer,
-                    params: {
-                        raySensor: {
-                            entityName: 'agent1',
-                            componentType: PsyanimMultiRaySensor    
-                        }
-                    }
-                },
+                // {
+                //     type: PsyanimMultiRaySensorRenderer,
+                //     params: {
+                //         raySensor: {
+                //             entityName: 'agent1',
+                //             componentType: PsyanimMultiRaySensor    
+                //         }
+                //     }
+                // },
                 {
                     type: PsyanimSeekBehavior,
                     params: {
@@ -107,12 +107,16 @@ export default {
                             entityName: 'agent1',
                             componentType: PsyanimSeekBehavior
                         },
-                        avoidDistance: 1.5 * (75 * Math.sin(25 * Math.PI / 180))
+                        avoidDistance: 1.5 * (75 * Math.sin(25 * Math.PI / 180)),
+                        maxSeekSpeed: 3,
+                        maxAcceleration: 0.2
                     }
                 },
                 {
                     type: PsyanimFleeBehavior,
                     params: {
+                        maxSpeed: 3,
+                        maxAcceleration: 0.2
                     }
                 },
                 {

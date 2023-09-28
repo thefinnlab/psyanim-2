@@ -62,12 +62,12 @@ export default {
             prefab: { 
                 type: PsyanimPreyPrefab,
                 params: {
-                    maxFleeSpeed: 1.8,
-                    maxFleeAcceleration: 0.15,
+                    maxFleeSpeed: 2,
+                    maxFleeAcceleration: 0.1,
                     maxWanderSpeed: 1.5,
                     maxWanderAcceleration: 0.1,
                     showDebugLogs: true,
-                    showDebugGraphics: true,
+                    // showDebugGraphics: true,
                     safetyDistance: 250,
                 }
             },
