@@ -67,6 +67,7 @@ export default {
                     maxWanderSpeed: 1.5,
                     maxWanderAcceleration: 0.1,
                     showDebugLogs: true,
+                    showDebugGraphics: true,
                     safetyDistance: 250,
                 }
             },

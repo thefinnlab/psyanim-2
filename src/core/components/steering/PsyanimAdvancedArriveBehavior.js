@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent';
 
+import PsyanimDebug from '../../utils/PsyanimDebug';
+
 export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
 
     arriveBehavior;
@@ -10,6 +12,9 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
     constructor(entity) {
 
         super(entity);
+
+        PsyanimDebug.warn('PsyanimAdvancedArriveBehavior is in a prototype state and really should be used ' + 
+            'with a pathfinder to get cleaner / more believable obstacle avoidance behavior.')
     }
 
     afterCreate() {

@@ -14,10 +14,15 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
     maxAngleChangePerFrame;
 
     seekBehavior;
+    maxSeekSpeed;
+    maxSeekAcceleration;
 
     constructor(entity) {
 
         super(entity);
+
+        this.maxSeekSpeed = 5;
+        this.maxSeekAcceleration = 0.2;
 
         this.radius = 50;
         this.offset = 150;
@@ -80,6 +85,10 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
     }
 
     getSteering() {
+
+        // update params
+        this.seekBehavior.maxSpeed = this.maxSeekSpeed;
+        this.seekBehavior.maxAcceleration = this.maxSeekAcceleration;
 
         // compute angle change
         this._angle += (Math.random() * 2 - 1) * this.maxAngleChangePerFrame;

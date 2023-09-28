@@ -1,5 +1,6 @@
 import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
+
+import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
 
 import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
 
@@ -30,23 +31,28 @@ export default {
             ]
         },
         {
-            name: 'mouseFollowTarget',
+            name: 'player',
             initialPosition: { x: 700, y: 500 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-                radius: 4,
-                color: 0x00ff00
+                radius: 12,
+                color: 0x0000ff
             },
             components: [
-                { type: PsyanimMouseFollowTarget }
+                {
+                    type: PsyanimPlayerController,
+                    params: {
+                        speed: 10
+                    }
+                }
             ]
         },
         {
             name: 'agent1',
             initialPosition: { x: 100, y: 100 },
             shapeParams: {
-                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-                base: 16, altitude: 32, 
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 12,
                 color: 0xffc0cb            
             },
             components: [
@@ -88,7 +94,7 @@ export default {
                 {
                     type: PsyanimSeekBehavior,
                     params: {
-                        maxSpeed: 5,
+                        maxSpeed: 3,
                         maxAcceleration: 0.2
                     }
                 },
@@ -103,13 +109,13 @@ export default {
                             entityName: 'agent1',
                             componentType: PsyanimSeekBehavior
                         },
-                        avoidDistance: 75 * Math.sin(25 * Math.PI / 180)
+                        avoidDistance: 1.5 * (75 * Math.sin(25 * Math.PI / 180))
                     }
                 },
                 {
                     type: PsyanimArriveBehavior,
                     params: {
-                        maxSpeed: 5,
+                        maxSpeed: 3,
                         innerDecelerationRadius: 25,
                         outerDecelerationRadius: 140
                     }
@@ -131,7 +137,7 @@ export default {
                     type: PsyanimAdvancedArriveAgent,
                     params: {
                         target: {
-                            entityName: 'mouseFollowTarget'
+                            entityName: 'player'
                         },
                         advancedArriveBehavior: {
                             entityName: 'agent1',

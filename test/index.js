@@ -52,6 +52,7 @@ let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let AdvancedPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedPlayfightTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(AdvancedFleeTestCopy);
 PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(obstacleAvoidanceCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyCopy);
@@ -68,7 +69,6 @@ PsyanimApp.Instance.config.registerScene(FleeTestCopy);
 PsyanimApp.Instance.config.registerScene(WanderTestCopy);
 PsyanimApp.Instance.config.registerScene(SensorTestCopy);
 PsyanimApp.Instance.config.registerScene(EvadeTestCopy);
-PsyanimApp.Instance.config.registerScene(AdvancedFleeTestCopy);
 PsyanimApp.Instance.config.registerScene(AdvancedPlayfightTestCopy);
 
 // just use the original scene defs here

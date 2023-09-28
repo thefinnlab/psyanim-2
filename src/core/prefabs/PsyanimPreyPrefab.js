@@ -1,9 +1,16 @@
 import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
 
 import PsyanimVehicle from "../components/steering/PsyanimVehicle";
+
+import PsyanimMultiRaySensor from "../components/physics/PsyanimMultiRaySensor";
+import PsyanimMultiRaySensorRenderer from "../components/rendering/PsyanimMultiRaySensorRenderer";
+import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
+import PsyanimObstacleAvoidanceBehavior from "../components/steering/PsyanimObstacleAvoidanceBehavior";
+
 import PsyanimFleeBehavior from "../components/steering/PsyanimFleeBehavior";
 import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior";
-import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
+import PsyanimAdvancedFleeAgent from "../components/steering/agents/PsyanimAdvancedFleeAgent";
+
 import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior";
 import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor";
 import PsyanimBasicPreyBehavior from "../components/steering/PsyanimBasicPreyBehavior";
@@ -93,15 +100,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     /** Flee params */
 
     /**
-     *  Flag controls whether to use advanced flee or normal flee.
-     * 
-     *  Advanced flee generally looks better in case where screen wrapping is disabled
-     *  (agent will avoid running into walls). 
-     *  @type {boolean}
-     */
-    useAdvancedFlee;
-
-    /**
      *  Maximum speed this agent can flee from the target.
      *  @type {Number}
      */
@@ -112,16 +110,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      *  @type {Number}
      */
     maxFleeAcceleration;
-
-    /**
-     *  If 'useAdvancedFlee' is set to 'true', this parameter controls how far the agent should 
-     *  try to stay away from the world screen boundaries.
-     * 
-     *  In most cases, this should be larger than the size of the agent, but not so large that 
-     *  the agent never comes close to the walls.
-     *  @type {Number}
-     */
-    advancedFleeWallSeparationDistance;
 
     /**
      *  Distance from target at which the agent will begin fleeing.
@@ -186,12 +174,10 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         this.showDebugGraphics = false;
 
         // flee params
-        this.useAdvancedFlee = true;
         this.maxFleeSpeed = 7;
         this.maxFleeAcceleration = 0.2;
         this.panicDistance = 250;
         this.searchClockwiseDirection = true;
-        this.advancedFleeWallSeparationDistance = 30;
 
         // wander params
         this.maxWanderSpeed = 3.5;
@@ -205,30 +191,60 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
 
         super.create(entity);
 
+        // TODO: parameterize these!
+        let mainRayLength = 100;
+        let whiskerAngle = 25;
+        let whiskerLength = 75;
+
         let vehicle = entity.addComponent(PsyanimVehicle);
 
-        let flee = null;
+        let multiRaySensor = entity.addComponent(PsyanimMultiRaySensor);
+        multiRaySensor.rayInfoList = [
+            {
+                id: 0,
+                distance: mainRayLength,
+                relativeAngle: 0
+            },
+            {
+                id: 1,
+                distance: whiskerLength,
+                relativeAngle: whiskerAngle
+            },
+            {
+                id: 2,
+                distance: whiskerLength,
+                relativeAngle: -whiskerAngle
+            }
+        ];
 
-        if (this.useAdvancedFlee)
+        if (this.showDebugGraphics)
         {
-            flee = entity.addComponent(PsyanimAdvancedFleeBehavior);
-            flee.wallSeparationDistance = this.advancedFleeWallSeparationDistance;
-        }
-        else
-        {
-            flee = entity.addComponent(PsyanimFleeBehavior);
+            let multiRaySensorRenderer = entity.addComponent(PsyanimMultiRaySensorRenderer);
+            multiRaySensorRenderer.raySensor = multiRaySensor;    
         }
 
+        let seek = entity.addComponent(PsyanimSeekBehavior);
+
+        let obstacleAvoidanceBehavior = entity.addComponent(PsyanimObstacleAvoidanceBehavior);
+        obstacleAvoidanceBehavior.multiRaySensor = multiRaySensor;
+        obstacleAvoidanceBehavior.seekBehavior = seek;
+        obstacleAvoidanceBehavior.maxSeekSpeed = this.maxFleeSpeed;
+        obstacleAvoidanceBehavior.maxSeekAcceleration = this.maxFleeAcceleration;
+        obstacleAvoidanceBehavior.avoidDistance = 2.5 * (whiskerLength * Math.sin(whiskerAngle * Math.PI / 180));
+
+        let flee = entity.addComponent(PsyanimFleeBehavior);
         flee.maxSpeed = this.maxFleeSpeed;
         flee.maxAcceleration = this.maxFleeAcceleration;
         flee.panicDistance = this.panicDistance;
 
-        let seek = entity.addComponent(PsyanimSeekBehavior);
-        seek.maxSpeed = this.maxWanderSpeed;
-        seek.maxAcceleration = this.maxWanderAcceleration;
+        let advancedFlee = entity.addComponent(PsyanimAdvancedFleeBehavior);
+        advancedFlee.fleeBehavior = flee;
+        advancedFlee.obstacleAvoidanceBehavior = obstacleAvoidanceBehavior;
 
         let wander = entity.addComponent(PsyanimWanderBehavior);
         wander.seekBehavior = seek;
+        wander.maxSeekSpeed = this.maxWanderSpeed;
+        wander.maxSeekAcceleration = this.maxWanderAcceleration;
         wander.radius = this.wanderRadius;
         wander.offset = this.wanderOffset;
         wander.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
@@ -250,7 +266,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         }
 
         let prey = entity.addComponent(PsyanimBasicPreyBehavior);
-        prey.fleeBehavior = flee;
+        prey.fleeBehavior = advancedFlee;
         prey.wanderBehavior = wander;
         prey.fovSensor = fovSensor;
         prey.subtlety = this.subtlety;
