@@ -14,6 +14,7 @@ import PsyanimBasicPreyBehavior from '../../src/core/components/steering/Psyanim
 
 export default {
     key: 'Prey Test',
+    wrapScreenBoundary: false,
     entities: [
         {
             name: 'sceneControls',

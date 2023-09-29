@@ -14,6 +14,7 @@ import PsyanimBasicPredatorBehavior from '../../src/core/components/steering/Psy
 
 export default {
     key: 'Predator Test',
+    wrapScreenBoundary: false,
     entities: [
         {
             name: 'sceneControls',

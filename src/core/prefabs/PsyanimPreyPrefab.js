@@ -124,6 +124,38 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      */
     searchClockwiseDirection;
 
+    /** Obstacle Avoidance Params */
+
+    /**
+     *  Max. speed the prey agent will seek away from screen boundaries
+     *  @type {Number}
+     */
+    maxSeekSpeed;
+
+    /**
+     *  Max. acceleration the prey agent will reach when seeking away from screen boundaries
+     *  @type {Number}
+     */
+    maxSeekAcceleration;
+
+    /**
+     *  Length of the main ray used for collision detection
+     *  @type {Number}
+     */
+    mainRayLength;
+
+    /**
+     *  Length of the 'whisker' rays used for collision detection
+     *  @type {Number}
+     */
+    whiskerLength;
+
+    /**
+     *  Angle of the 'whisker' rays with respect to the prey agent's forward direction
+     *  @type {Number}
+     */
+    whiskerAngle;
+
     /** Wander params */
 
     /**
@@ -179,6 +211,13 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         this.panicDistance = 250;
         this.searchClockwiseDirection = true;
 
+        // obstacle avoidance params
+        this.maxSeekSpeed = 5;
+        this.maxSeekAcceleration = 0.2;
+        this.mainRayLength = 100;
+        this.whiskerLength = 75;
+        this.whiskerAngle = 25;
+
         // wander params
         this.maxWanderSpeed = 3.5;
         this.maxWanderAcceleration = 0.2;
@@ -204,18 +243,18 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         multiRaySensor.rayInfoList = [
             {
                 id: 0,
-                distance: mainRayLength,
+                distance: this.mainRayLength,
                 relativeAngle: 0
             },
             {
                 id: 1,
-                distance: whiskerLength,
-                relativeAngle: whiskerAngle
+                distance: this.whiskerLength,
+                relativeAngle: this.whiskerAngle
             },
             {
                 id: 2,
-                distance: whiskerLength,
-                relativeAngle: -whiskerAngle
+                distance: this.whiskerLength,
+                relativeAngle: -this.whiskerAngle
             }
         ];
 
@@ -230,8 +269,8 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         let obstacleAvoidanceBehavior = entity.addComponent(PsyanimObstacleAvoidanceBehavior);
         obstacleAvoidanceBehavior.multiRaySensor = multiRaySensor;
         obstacleAvoidanceBehavior.seekBehavior = seek;
-        obstacleAvoidanceBehavior.maxSeekSpeed = this.maxFleeSpeed;
-        obstacleAvoidanceBehavior.maxSeekAcceleration = this.maxFleeAcceleration;
+        obstacleAvoidanceBehavior.maxSeekSpeed = this.maxSeekSpeed;
+        obstacleAvoidanceBehavior.maxSeekAcceleration = this.maxSeekAcceleration;
         obstacleAvoidanceBehavior.avoidDistance = 2 * (whiskerLength * Math.sin(whiskerAngle * Math.PI / 180));
 
         let flee = entity.addComponent(PsyanimFleeBehavior);
