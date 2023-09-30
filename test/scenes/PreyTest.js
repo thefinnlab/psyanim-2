@@ -36,7 +36,7 @@ export default {
                 {
                     type: PsyanimPlayerController,
                     params: {
-                        speed: 10
+                        speed: 2
                     }
                 }
             ]

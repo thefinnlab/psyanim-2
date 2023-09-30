@@ -58,41 +58,8 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      */
     showDebugLogs;
 
-    /** Field-of-view Params */
-
     /**
-     *  Determines how whether or not this agent will have a limited field of view.
-     * 
-     *  If false, the agent's field of view will be 360 degrees and have unlimited range.
-     *  @type {boolean}
-     */
-    useFov;
-
-    /**
-     *  Field-of-view cone angle, in degrees.
-     *  @type {Number}
-     */
-    fovAngle;
-
-    /**
-     *  Field-of-view cone height, in pixels.  Determines how far out the agent can see.
-     *  @type {Number}
-     */
-    fovRange;
-
-    /**
-     *  Field-of-view resolution, in degrees.  
-     * 
-     *  This determines how many degrees of the field-of-view an entity must occupy to be detected.
-     * 
-     *  The lower the number, the higher the resolution, and the more CPU overhead this component has.
-     * 
-     *  @type {Number}
-     */
-    fovResolution;
-
-    /**
-     *  Toggles debug graphics for field-of-view.
+     *  Toggles debug graphics for obstacle avoidance multi-ray sensor and field-of-view.
      *  @type {boolean}
      */
     showDebugGraphics;
@@ -117,13 +84,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      */
     panicDistance;
 
-    /**
-     *  Direction to search for an escape route if fleeing from an agent, 
-     *  but a wall is found in the way.
-     *  @type {boolean}
-     */
-    searchClockwiseDirection;
-
     /** Obstacle Avoidance Params */
 
     /**
@@ -139,13 +99,13 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     maxSeekAcceleration;
 
     /**
-     *  Length of the main ray used for collision detection
+     *  Length of the main ray used for collision detection with obstacles.
      *  @type {Number}
      */
     mainRayLength;
 
     /**
-     *  Length of the 'whisker' rays used for collision detection
+     *  Length of the 'whisker' rays used for collision detection with obstacles.
      *  @type {Number}
      */
     whiskerLength;
@@ -188,6 +148,39 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
      */
     maxWanderAngleChangePerFrame;
 
+    /** Field-of-view Params */
+
+    /**
+     *  Determines how whether or not this agent will have a limited field of view.
+     * 
+     *  If false, the agent's field of view will be 360 degrees and have unlimited range.
+     *  @type {boolean}
+     */
+    useFov;
+
+    /**
+     *  Field-of-view cone angle, in degrees.
+     *  @type {Number}
+     */
+    fovAngle;
+
+    /**
+     *  Field-of-view cone height, in pixels.  Determines how far out the agent can see.
+     *  @type {Number}
+     */
+    fovRange;
+
+    /**
+     *  Field-of-view resolution, in degrees.  
+     * 
+     *  This determines how many degrees of the field-of-view an entity must occupy to be detected.
+     * 
+     *  The lower the number, the higher the resolution, and the more CPU overhead this component has.
+     * 
+     *  @type {Number}
+     */
+    fovResolution;
+
     constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         super(shapeParams, matterOptions);
@@ -195,32 +188,31 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         // prey params
         this.subtlety = 30;
         this.subtletyLag = 500;
-        this.safetyDistance = 225;
+        this.safetyDistance = 250;
         this.showDebugLogs = false;
+        this.showDebugGraphics = false;
 
         // fov params
         this.useFov = false;
         this.fovAngle = 120;
         this.fovRange = 150;
         this.fovResolution = 5;
-        this.showDebugGraphics = false;
 
         // flee params
-        this.maxFleeSpeed = 7;
-        this.maxFleeAcceleration = 0.2;
+        this.maxFleeSpeed = 2;
+        this.maxFleeAcceleration = 0.1;
         this.panicDistance = 250;
-        this.searchClockwiseDirection = true;
 
         // obstacle avoidance params
-        this.maxSeekSpeed = 5;
-        this.maxSeekAcceleration = 0.2;
+        this.maxSeekSpeed = 2;
+        this.maxSeekAcceleration = 0.1;
         this.mainRayLength = 100;
         this.whiskerLength = 75;
         this.whiskerAngle = 25;
 
         // wander params
-        this.maxWanderSpeed = 3.5;
-        this.maxWanderAcceleration = 0.2;
+        this.maxWanderSpeed = 1.5;
+        this.maxWanderAcceleration = 0.1;
         this.wanderRadius = 50;
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 10;
@@ -229,11 +221,6 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
     create(entity) {
 
         super.create(entity);
-
-        // TODO: parameterize these!
-        let mainRayLength = 100;
-        let whiskerAngle = 25;
-        let whiskerLength = 75;
 
         let vehicle = entity.addComponent(PsyanimVehicle);
         vehicle.maxSpeed = 3;
@@ -271,7 +258,7 @@ export default class PsyanimPreyPrefab extends PsyanimEntityPrefab {
         obstacleAvoidanceBehavior.seekBehavior = seek;
         obstacleAvoidanceBehavior.maxSeekSpeed = this.maxSeekSpeed;
         obstacleAvoidanceBehavior.maxSeekAcceleration = this.maxSeekAcceleration;
-        obstacleAvoidanceBehavior.avoidDistance = 2 * (whiskerLength * Math.sin(whiskerAngle * Math.PI / 180));
+        obstacleAvoidanceBehavior.avoidDistance = 2 * (this.whiskerLength * Math.sin(this.whiskerAngle * Math.PI / 180));
 
         let flee = entity.addComponent(PsyanimFleeBehavior);
         flee.maxSpeed = this.maxFleeSpeed;

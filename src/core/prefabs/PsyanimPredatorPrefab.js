@@ -49,6 +49,20 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      */
     showDebugLogs;
 
+    /**
+     *  Toggles debug graphics for field-of-view.
+     *  @type {boolean}
+     */
+    showDebugGraphics;
+
+    /**
+     *  The minimum amount of time the agent must wander before it can transition to pursuing the target.
+     * 
+     *  This is helpful for interactive scenes where we don't want the agent constantly pursuing a target.
+     *  @type {Number}
+     */
+    minimumWanderTime;
+
     /** Field-of-view Params */
 
     /**
@@ -75,12 +89,6 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      *  @type {Number}
      */
     fovResolution;
-
-    /**
-     *  Toggles debug graphics for field-of-view.
-     *  @type {boolean}
-     */
-    showDebugGraphics;
 
     /** Chase Params */
 
@@ -139,14 +147,6 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
      */
     maxWanderAcceleration;
 
-    /**
-     *  The minimum amount of time the agent must wander before it can transition to pursuing the target.
-     * 
-     *  This is helpful for interactive scenes where we don't want the agent constantly pursuing a target.
-     *  @type {Number}
-     */
-    minimumWanderTime;
-
     constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         super(shapeParams, matterOptions);
@@ -154,18 +154,18 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         // predator params
         this.subtlety = 30;
         this.subtletyLag = 500;
-        this.boredomDistance = 300;
+        this.boredomDistance = 500;
         this.showDebugLogs = false;
+        this.showDebugGraphics = false;
 
         // fov params
         this.useFov = false;
         this.fovAngle = 120;
         this.fovResolution = 5;
-        this.showDebugGraphics = false;
 
         // chase params
-        this.maxChaseSpeed = 5;
-        this.maxChaseAcceleration = 0.2;
+        this.maxChaseSpeed = 1.5;
+        this.maxChaseAcceleration = 0.1;
         this.chaseInnerDecelerationRadius = 16;
         this.chaseOuterDecelerationRadius = 40;
 
@@ -173,8 +173,8 @@ export default class PsyanimPredatorPrefab extends PsyanimEntityPrefab {
         this.wanderRadius = 50;
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 10;
-        this.maxWanderSpeed = 4.5;
-        this.maxWanderAcceleration = 0.2;
+        this.maxWanderSpeed = 1.5;
+        this.maxWanderAcceleration = 0.1;
         this.minimumWanderTime = 0;
     }
 

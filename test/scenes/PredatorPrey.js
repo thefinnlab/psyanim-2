@@ -32,13 +32,7 @@ export default {
             prefab: { 
                 type: PsyanimPredatorPrefab,
                 params: {
-                    maxChaseSpeed: 1.5,
-                    maxChaseAcceleration: 0.1,
-                    maxWanderSpeed: 1.5,
-                    maxWanderAcceleration: 0.1,
-                    boredomDistance: 500,
                     showDebugLogs: true,
-                    subtlety: 30
                 }
             },
             components: [
@@ -62,15 +56,7 @@ export default {
             prefab: { 
                 type: PsyanimPreyPrefab,
                 params: {
-                    maxFleeSpeed: 2,
-                    maxFleeAcceleration: 0.1,
-                    maxSeekSpeed: 2,
-                    maxSeekAcceleration: 0.1,
-                    maxWanderSpeed: 1.5,
-                    maxWanderAcceleration: 0.1,
                     showDebugLogs: true,
-                    // showDebugGraphics: true,
-                    safetyDistance: 250,
                 }
             },
             components: [
