@@ -18,8 +18,10 @@ export default class PsyanimAdvancedFleeBehavior extends PsyanimComponent {
 
         super(entity);
 
-        PsyanimDebug.warn('PsyanimAdvancedFleeBehavior is in a prototype state and really should be used'
-            + 'with a pathfinder to get cleaner / more believable obstacle avoidance behavior.');
+        /**
+         *  PsyanimAdvancedFleeBehavior is in a prototype state and really should be used
+         *  with a pathfinder to get cleaner / more believable obstacle avoidance behavior.
+         */
 
         this.sampleExpirationTime = 300;
         this.nSamplesForSmoothing = 10;

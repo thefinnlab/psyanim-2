@@ -19,8 +19,10 @@ export default class PsyanimObstacleAvoidanceBehavior extends PsyanimComponent {
 
         super(entity);
 
-        PsyanimDebug.warn('PsyanimObstacleAvoidanceBehavior should only be used on its own for avoiding ' 
-            + 'screen boundaries.  Use a pathfinder along with this for more complex geometry.');
+        /**
+         *  PsyanimObstacleAvoidanceBehavior should only be used on its own for avoiding 
+         *  screen boundaries.  Use a pathfinder along with this for more complex geometry.
+         */
 
         this.maxSeekSpeed = 5;
         this.maxSeekAcceleration = 0.2;

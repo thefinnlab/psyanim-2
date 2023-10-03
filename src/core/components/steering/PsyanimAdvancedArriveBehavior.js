@@ -13,8 +13,10 @@ export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
 
         super(entity);
 
-        PsyanimDebug.warn('PsyanimAdvancedArriveBehavior is in a prototype state and really should be used ' + 
-            'with a pathfinder to get cleaner / more believable obstacle avoidance behavior.')
+        /**
+         *  PsyanimAdvancedArriveBehavior is in a prototype state and really should be used
+         *  with a pathfinder to get cleaner / more believable obstacle avoidance behavior.
+         */
     }
 
     afterCreate() {
