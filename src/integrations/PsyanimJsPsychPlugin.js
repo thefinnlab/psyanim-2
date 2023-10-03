@@ -55,6 +55,15 @@ class _PsyanimJsPsychPlugin {
 
         display_element.appendChild(PsyanimApp.Instance.domElement);
 
+        if (this._currentTrial.subtext)
+        {
+            this._subtextElement = document.createElement('p');
+            this._subtextElement.innerHTML = this._currentTrial.subtext;
+            this._subtextElement.style.textAlign = 'center';
+
+            this._displayElement.appendChild(this._subtextElement);
+        }
+
         PsyanimApp.Instance.setCanvasVisible(true);
 
         // load scene and add parameter-set to game registry
@@ -185,6 +194,13 @@ class _PsyanimJsPsychPlugin {
         PsyanimApp.Instance.setCanvasVisible(false);
 
         this._displayElement.removeChild(PsyanimApp.Instance.domElement);
+
+        if (this._subtextElement)
+        {
+            this._displayElement.removeChild(this._subtextElement);
+            this._subtextElement = null;
+        }
+
         this._displayElement = null;
 
         this._currentTrial = null;
@@ -323,6 +339,11 @@ PsyanimJsPsychPlugin.info = {
         recordStateLogs: {
             type: ParameterType.BOOL,
             default: true
+        },
+
+        subtext: {
+            type: ParameterType.STRING,
+            default: ''
         }
     }
 };
