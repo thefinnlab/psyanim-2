@@ -41,9 +41,14 @@ class _PsyanimJsPsychPlugin {
 
     beginNextTrial(display_element, trial) {
 
-        // TODO: add some error checking on the parameter set!
+        if (trial.clearConsoleOnNewTrial)
+        {
+            console.clear();
+        }
 
         console.log("starting next trial!");
+
+        console.log(trial.trialParameters);
 
         this._jsPsych.pluginAPI.clearAllTimeouts();
         this._jsPsych.pluginAPI.cancelAllKeyboardResponses();
@@ -344,6 +349,16 @@ PsyanimJsPsychPlugin.info = {
         subtext: {
             type: ParameterType.STRING,
             default: ''
+        },
+
+        clearConsoleOnNewTrial: {
+            type: ParameterType.BOOL,
+            default: true
+        },
+
+        trialParameters: {
+            type: ParameterType.OBJECT,
+            default: []
         }
     }
 };

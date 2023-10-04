@@ -77,11 +77,18 @@ export default class PsyanimFirebaseClient {
         firebase.initializeApp(firebaseConfig);
 
         this._db = firebase.firestore();
+    }
+
+    useEmulator() {
 
         if (location.hostname === '127.0.0.1' || location.hostname === 'localhost')
         {
             console.warn("Using local firebase emulator!");
             this._db.useEmulator('127.0.0.1', 8080);
+        }
+        else
+        {
+            console.error("Can't start emulator if not running locally!");
         }
     }
 
