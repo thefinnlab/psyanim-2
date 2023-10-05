@@ -117,18 +117,52 @@ class _PsyanimJsPsychPlugin {
             // gather agent metadata
             let agentMetadata = [];
 
-            if (this._currentTrial.agentNamesToRecord)
+            let trialParameters = this._currentTrial.trialParameters;
+
+            let trialParameterAgentNames = [...new Set(trialParameters.map(p => p.entityName))];
+
+            let agentNamesToRecord = [...new Set(trialParameterAgentNames
+                .concat(this._currentTrial.agentNamesToRecord))];
+
+            if (agentNamesToRecord)
             {
-                let agentsToRecord = this._getAgentsByName(this._currentTrial.agentNamesToRecord);
+                let agentsToRecord = this._getAgentsByName(agentNamesToRecord);
 
                 agentsToRecord.forEach(agent => {
 
                     let metadata = {
                         name: agent.name,
-                        shapeParams: agent.shapeParams
+                        initialPosition: agent.initialPosition,
+                        shapeParams: agent.shapeParams,
+                        matterOptions: agent.matterOptions
                     };
 
-                    if (this._currentTrial.recordAnimationClips)
+                    if (trialParameterAgentNames.includes(agent.name))
+                    {
+                        // save off the trial parameters found for this agent
+                        metadata.trialParameters = trialParameters
+                            .filter(p => p.entityName === agent.name)
+                            .map(p => {
+
+                                // we don't save off the Entity name
+                                let parameter = {
+                                    parameterType: p.parameterType,
+                                    parameterName: p.parameterName,
+                                    parameterValue: p.parameterValue
+                                };
+
+                                // we don't save off the componentTypeName unless it's a component parameter
+                                if (p.componentTypeName)
+                                {
+                                    parameter.componentTypeName = p.componentTypeName;
+                                }
+
+                                return parameter;
+                            });
+                    }
+
+                    if (this._currentTrial.agentNamesToRecord.includes(agent.name) && 
+                        this._currentTrial.recordAnimationClips)
                     {
                         // save baked animation data
                         let animationBaker = agent.getComponent(PsyanimAnimationBaker);
@@ -140,7 +174,8 @@ class _PsyanimJsPsychPlugin {
                     }
 
                     // save agent state logs
-                    if (this._currentTrial.recordStateLogs)
+                    if (this._currentTrial.agentNamesToRecord.includes(agent.name) && 
+                        this._currentTrial.recordStateLogs)
                     {
                         let recorders = agent.getComponentsByType(PsyanimComponentStateRecorder);
 

@@ -135,6 +135,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         // save off this entity's properties
         this._shapeParams = shapeParams;
         this._matterOptions = matterOptions;
+        this._initialPosition = { x: x, y: y };
 
         this._color = color;
         this._geomParams = geomParams;
@@ -249,6 +250,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     get color() {
         return this._color;
+    }
+
+    get initialPosition() {
+
+        return this._initialPosition;
     }
 
     enableFriction(friction = 0.1, frictionAir = 0.01, frictionStatic = 0.5) {
