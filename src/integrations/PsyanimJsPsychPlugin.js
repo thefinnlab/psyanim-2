@@ -48,8 +48,6 @@ class _PsyanimJsPsychPlugin {
 
         console.log("starting next trial!");
 
-        console.log(trial.trialParameters);
-
         this._jsPsych.pluginAPI.clearAllTimeouts();
         this._jsPsych.pluginAPI.cancelAllKeyboardResponses();
 
