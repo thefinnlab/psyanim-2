@@ -48,6 +48,9 @@ export default class PsyanimComponent {
     afterCreate() {
     }
 
+    beforeShutdown() {
+    }
+
     update(t, dt) {
     }
 }

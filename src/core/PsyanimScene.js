@@ -106,12 +106,21 @@ export default class PsyanimScene extends Phaser.Scene {
 
         this.registry.set('psyanim_currentScene', this);
 
-        // setup hook into the Phaser.Scene 'create' event only *once*
+        this.deleteTexturesOnShutdown = true;
+
+        // setup hook into the Phaser.Scene 'create' and 'shutdown' events only *once*
         if (!this._boundAfterCreate)
         {
             this._boundAfterCreate = this.afterCreate.bind(this);
 
             this.events.on('create', this._boundAfterCreate);    
+        }
+
+        if (!this._boundBeforeShutdown)
+        {
+            this._boundBeforeShutdown = this.beforeShutdown.bind(this);
+
+            this.events.on('shutdown', this._boundBeforeShutdown);
         }
     }
 
@@ -128,6 +137,21 @@ export default class PsyanimScene extends Phaser.Scene {
     afterCreate() {
  
         this._entities.forEach(e => e.afterCreate());
+    }
+
+    beforeShutdown() {
+
+        if (this.deleteTexturesOnShutdown)
+        {
+            let textureKeys = this.textures.getTextureKeys();
+
+            textureKeys.forEach(key => {
+
+                this.textures.remove(key);
+            });
+        }
+
+        this._entities.forEach(e => e.beforeShutdown());
     }
 
     update(t, dt) {

@@ -377,7 +377,15 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this._components.forEach(c => {
 
             c.afterCreate();
-        })
+        });
+    }
+
+    beforeShutdown() {
+
+        this._components.forEach(c => {
+
+            c.beforeShutdown();
+        });
     }
 
     update(t, dt) {
@@ -388,6 +396,6 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
             {
                 c.update(t, dt);
             }
-        })
+        });
     }
 }
