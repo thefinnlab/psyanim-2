@@ -240,7 +240,16 @@ class _PsyanimJsPsychPlugin {
                 'wrapScreenBoundary', PsyanimApp.Instance.currentScene.screenBoundary.wrap
             ));
 
-            trialMetadata.sceneParameters = trialSceneParameters;
+            trialMetadata.sceneParameters = [];
+
+            trialSceneParameters.forEach(p => {
+
+                trialMetadata.sceneParameters.push({
+                    parameterType: p.parameterType,
+                    parameterName: p.parameterName,
+                    parameterValue: p.parameterValue
+                });
+            })
 
             this._documentWriter.addExperimentTrialMetadata(trialMetadata);
 
