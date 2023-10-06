@@ -230,9 +230,12 @@ class _PsyanimJsPsychPlugin {
                 }
             ));
 
+            let color = PsyanimApp.Instance.currentScene.game.config.backgroundColor;
+            let colorHex = Phaser.Display.Color.RGBToString(color.r, color.g, color.b, color.a);
+
             trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
                 PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
-                'backgroundColor', PsyanimApp.Instance.currentScene.game.config.backgroundColor.rgba
+                'backgroundColor', colorHex
             ));
 
             trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
@@ -249,7 +252,7 @@ class _PsyanimJsPsychPlugin {
                     parameterName: p.parameterName,
                     parameterValue: p.parameterValue
                 });
-            })
+            });
 
             this._documentWriter.addExperimentTrialMetadata(trialMetadata);
 
