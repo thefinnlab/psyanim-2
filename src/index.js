@@ -106,6 +106,7 @@ import PsyanimDebug from './core/utils/PsyanimDebug';
 // integrations
 import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin';
 import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial';
+import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter';
 import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener';
 import PsyanimFirebaseClient from './integrations/PsyanimFirebaseClient';
 
@@ -219,6 +220,7 @@ export {
     // integrations
     PsyanimJsPsychPlugin,
     PsyanimJsPsychTrial,
+    PsyanimJsPsychTrialParameter,
     PsyanimJsPsychPlayerContactListener,
     PsyanimFirebaseClient
 };

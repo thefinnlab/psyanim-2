@@ -1,56 +1,8 @@
-import 
-{ 
-    PsyanimApp,
-    PsyanimJsPsychPlugin,
-    PsyanimUtils,
-    PsyanimDebug
-
-} from "psyanim2";
-
-class PsyanimJsPsychTrialParameter {
-
-    static Type = {
-        PREFAB_PARAMETER: 'prefab',
-        COMPONENT_PARAMETER: 'component'
-    };
-
-    parameterType;
-    entityName;
-    parameterName;
-    parameterValue;
-    componentTypeName;
-
-    constructor(parameterType, entityName, parameterName, parameterValue, componentType = null) {
-
-        this.parameterType = parameterType;
-        this.entityName = entityName;
-        this.parameterName = parameterName;
-        this.parameterValue = parameterValue;
-        
-        if (this.parameterType == PsyanimJsPsychTrialParameter.Type.COMPONENT_PARAMETER)
-        {
-            if (!componentType)
-            {
-                PsyanimDebug.error('component parameter has no component type defined!');
-                return;
-            }
-
-            this.componentTypeName = componentType.name;
-        }
-        else
-        {
-            this.componentTypeName = '';
-        }
-    }
-
-    is(trialParameter) {
-
-        return this.parameterType == trialParameter.parameterType &&
-            this.entityName == trialParameter.entityName &&
-            this.parameterName == trialParameter.parameterName &&
-            this.componentTypeName == trialParameter.componentTypeName;
-    }
-}
+import PsyanimApp from '../core/PsyanimApp';
+import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin';
+import PsyanimUtils from '../core/utils/PsyanimDebug';
+import PsyanimDebug from '../core/utils/PsyanimDebug';
+import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter';
 
 export default class PsyanimJsPsychTrial {
 
@@ -272,6 +224,13 @@ export default class PsyanimJsPsychTrial {
         }
     }
 
+    getSceneParameter(parameterName) {
+
+        // TODO: validate parameter name
+
+        return this._sceneDefinition[parameterName];
+    }
+
     getEntityParameter(entityName, parameterName) {
 
         let entityDefinition = this._getEntityDefinition(entityName);
@@ -336,6 +295,21 @@ export default class PsyanimJsPsychTrial {
         return componentDefinition['params'];
     }
 
+    saveSceneParameter(parameterName) {
+
+        let parameterValue = this.getSceneParameter(parameterName);
+
+        let trialParameter = new PsyanimJsPsychTrialParameter(
+            PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+            parameterName, parameterValue
+        );
+
+        if (!this._trialParametersToSave.find(p => p.is(trialParameter)))
+        {
+            this._trialParametersToSave.push(trialParameter);
+        }
+    }
+
     savePrefabParameter(entityName, parameterName) {
 
         let prefabParameters = this.getPrefabParameters(entityName);
@@ -344,7 +318,7 @@ export default class PsyanimJsPsychTrial {
 
         let trialParameter = new PsyanimJsPsychTrialParameter(
             PsyanimJsPsychTrialParameter.Type.PREFAB_PARAMETER,
-            entityName, parameterName, parameterValue
+            parameterName, parameterValue, entityName
         );
 
         if (!this._trialParametersToSave.find(p => p.is(trialParameter)))
@@ -361,7 +335,7 @@ export default class PsyanimJsPsychTrial {
 
         let trialParameter = new PsyanimJsPsychTrialParameter(
             PsyanimJsPsychTrialParameter.Type.COMPONENT_PARAMETER,
-            entityName, parameterName, parameterValue, componentType
+            parameterName, parameterValue, entityName, componentType
         );
 
         if (!this._trialParametersToSave.find(p => p.is(trialParameter)))

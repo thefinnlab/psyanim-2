@@ -6,6 +6,8 @@ import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBake
 
 import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder';
 
+import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter';
+
 /**
  *  _PsyanimJsPsychPlugin is a private singleton instance that maintains state across all trials
  *  and handles all communication with PsyanimApp.
@@ -117,7 +119,13 @@ class _PsyanimJsPsychPlugin {
 
             let trialParameters = this._currentTrial.trialParameters;
 
-            let trialParameterAgentNames = [...new Set(trialParameters.map(p => p.entityName))];
+            // get all agent names who have 'prefab' or 'component' trial parameters
+            let trialParameterAgentNames = [...new Set(trialParameters
+                .filter(p => { 
+                    return p.parameterType === PsyanimJsPsychTrialParameter.Type.PREFAB_PARAMETER || 
+                            p.parameterType === PsyanimJsPsychTrialParameter.Type.COMPONENT_PARAMETER 
+                })
+                .map(p => p.entityName))];
 
             let agentNamesToRecord = [...new Set(trialParameterAgentNames
                 .concat(this._currentTrial.agentNamesToRecord))];
@@ -209,6 +217,30 @@ class _PsyanimJsPsychPlugin {
                 sceneKey: this._currentTrial.sceneKey,
                 agentMetadata: agentMetadata,
             };
+
+            // add scene parameters to trial metadata
+            let trialSceneParameters = this._currentTrial.trialParameters
+                .find(p => p.parameterType === PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER);
+
+            trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                'canvasSize', {
+                    width: PsyanimApp.Instance.currentScene.game.config.width,
+                    height: PsyanimApp.Instance.currentScene.game.config.height
+                }
+            ));
+
+            trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                'backgroundColor', PsyanimApp.Instance.currentScene.game.config.backgroundColor.rgba
+            ));
+
+            trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                'wrapScreenBoundary', PsyanimApp.Instance.currentScene.screenBoundary.wrap
+            ));
+
+            trialMetadata.sceneParameters = trialSceneParameters;
 
             this._documentWriter.addExperimentTrialMetadata(trialMetadata);
 
