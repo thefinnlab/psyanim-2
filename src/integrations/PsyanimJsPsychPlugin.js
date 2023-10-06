@@ -220,7 +220,7 @@ class _PsyanimJsPsychPlugin {
 
             // add scene parameters to trial metadata
             let trialSceneParameters = this._currentTrial.trialParameters
-                .find(p => p.parameterType === PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER);
+                .filter(p => p.parameterType === PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER);
 
             trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
                 PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
