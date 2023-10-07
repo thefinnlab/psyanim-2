@@ -1,6 +1,6 @@
 import Phaser, { Curves } from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimExperimentTimer extends PsyanimComponent {
 
