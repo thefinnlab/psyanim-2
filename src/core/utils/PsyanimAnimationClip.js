@@ -1,4 +1,4 @@
-import PsyanimMessaging from "./PsyanimMessaging.mjs";
+import PsyanimMessaging from "./PsyanimMessaging.js";
 
 export default class PsyanimAnimationClip {
 

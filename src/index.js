@@ -93,11 +93,11 @@ import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab.js
 // utils
 import PsyanimUtils from './core/utils/PsyanimUtils.js';
 
-import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.mjs';
-import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.mjs';
-import PsyanimMessaging from './core/utils/PsyanimMessaging.mjs';
+import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.js';
+import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.js';
+import PsyanimMessaging from './core/utils/PsyanimMessaging.js';
 import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid.js';
-import PsyanimPath from './core/utils/PsyanimPath.mjs';
+import PsyanimPath from './core/utils/PsyanimPath.js';
 
 import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils.js';
 

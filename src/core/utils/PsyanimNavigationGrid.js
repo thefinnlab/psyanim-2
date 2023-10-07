@@ -1,4 +1,4 @@
- import PsyanimPath from "./PsyanimPath.mjs";
+ import PsyanimPath from "./PsyanimPath.js";
  
  export default class PsyanimNavigationGrid {
     

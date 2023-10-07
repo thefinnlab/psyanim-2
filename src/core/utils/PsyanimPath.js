@@ -1,4 +1,3 @@
-
 class PsyanimPathSegment {
 
     constructor(p1, p2, distanceToSegment = 0) {
