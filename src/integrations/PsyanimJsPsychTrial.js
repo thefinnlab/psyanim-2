@@ -1,8 +1,8 @@
-import PsyanimApp from '../core/PsyanimApp';
-import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin';
-import PsyanimUtils from '../core/utils/PsyanimUtils';
-import PsyanimDebug from '../core/utils/PsyanimDebug';
-import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter';
+import PsyanimApp from '../core/PsyanimApp.js';
+import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin.js';
+import PsyanimUtils from '../core/utils/PsyanimUtils.js';
+import PsyanimDebug from '../core/utils/PsyanimDebug.js';
+import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter.js';
 
 export default class PsyanimJsPsychTrial {
 

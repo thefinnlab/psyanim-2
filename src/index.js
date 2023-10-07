@@ -1,114 +1,114 @@
 // core
-import PsyanimApp from './core/PsyanimApp';
-import PsyanimConstants from './core/PsyanimConstants';
-import PsyanimScene from './core/PsyanimScene';
-import PsyanimComponent from './core/PsyanimComponent';
-import PsyanimEntity from './core/PsyanimEntity';
-import PsyanimEntityPrefab from './core/PsyanimEntityPrefab';
+import PsyanimApp from './core/PsyanimApp.js';
+import PsyanimConstants from './core/PsyanimConstants.js';
+import PsyanimScene from './core/PsyanimScene.js';
+import PsyanimComponent from './core/PsyanimComponent.js';
+import PsyanimEntity from './core/PsyanimEntity.js';
+import PsyanimEntityPrefab from './core/PsyanimEntityPrefab.js';
 
 // controller components
-import PsyanimClickToMove from './core/components/controllers/PsyanimClickToMove';
-import PsyanimClickToMoveBasic from './core/components/controllers/PsyanimClickToMoveBasic';
-import PsyanimMouseFollowTarget from './core/components/controllers/PsyanimMouseFollowTarget';
-import PsyanimPhysicsSettingsController from './core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimPlayerController from './core/components/controllers/PsyanimPlayerController';
-import PsyanimSceneController from './core/components/controllers/PsyanimSceneController';
+import PsyanimClickToMove from './core/components/controllers/PsyanimClickToMove.js';
+import PsyanimClickToMoveBasic from './core/components/controllers/PsyanimClickToMoveBasic.js';
+import PsyanimMouseFollowTarget from './core/components/controllers/PsyanimMouseFollowTarget.js';
+import PsyanimPhysicsSettingsController from './core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimPlayerController from './core/components/controllers/PsyanimPlayerController.js';
+import PsyanimSceneController from './core/components/controllers/PsyanimSceneController.js';
 
 // experiments and networking
-import PsyanimClientNetworkManager from './core/components/networking/PsyanimClientNetworkManager';
+import PsyanimClientNetworkManager from './core/components/networking/PsyanimClientNetworkManager.js';
 
 // pathfinding
-import PsyanimPathfindingAgent from './core/components/pathfinding/PsyanimPathfindingAgent';
+import PsyanimPathfindingAgent from './core/components/pathfinding/PsyanimPathfindingAgent.js';
 
 // animation
-import PsyanimMimic from './core/components/animation/PsyanimMimic';
+import PsyanimMimic from './core/components/animation/PsyanimMimic.js';
 
 // physics 
-import PsyanimFOVSensor from './core/components/physics/PsyanimFOVSensor';
-import PsyanimSensor from './core/components/physics/PsyanimSensor';
+import PsyanimFOVSensor from './core/components/physics/PsyanimFOVSensor.js';
+import PsyanimSensor from './core/components/physics/PsyanimSensor.js';
 
 // rendering
-import PsyanimCircleRenderer from './core/components/rendering/PsyanimCircleRenderer';
-import PsyanimCollisionAvoidanceDebug from './core/components/rendering/PsyanimCollisionAvoidanceDebug';
-import PsyanimFOVRenderer from './core/components/rendering/PsyanimFOVRenderer';
-import PsyanimLineRenderer from './core/components/rendering/PsyanimLineRenderer';
-import PsyanimPathfindingRenderer from './core/components/rendering/PsyanimPathfindingRenderer';
-import PsyanimWanderDebug from './core/components/rendering/PsyanimWanderDebug';
+import PsyanimCircleRenderer from './core/components/rendering/PsyanimCircleRenderer.js';
+import PsyanimCollisionAvoidanceDebug from './core/components/rendering/PsyanimCollisionAvoidanceDebug.js';
+import PsyanimFOVRenderer from './core/components/rendering/PsyanimFOVRenderer.js';
+import PsyanimLineRenderer from './core/components/rendering/PsyanimLineRenderer.js';
+import PsyanimPathfindingRenderer from './core/components/rendering/PsyanimPathfindingRenderer.js';
+import PsyanimWanderDebug from './core/components/rendering/PsyanimWanderDebug.js';
 
 // AI steering behaviors & agents
-import PsyanimVehicle from './core/components/steering/PsyanimVehicle';
+import PsyanimVehicle from './core/components/steering/PsyanimVehicle.js';
 
-import PsyanimPreciselyTimedArriveBehavior from './core/components/steering/PsyanimPreciselyTimedArriveBehavior';
-import PsyanimAdvancedFleeBehavior from './core/components/steering/PsyanimAdvancedFleeBehavior';
-import PsyanimAdvancedPlayfightBehavior from './core/components/steering/PsyanimAdvancedPlayfightBehavior';
-import PsyanimArriveBehavior from './core/components/steering/PsyanimArriveBehavior';
-import PsyanimBasicPredatorBehavior from './core/components/steering/PsyanimBasicPredatorBehavior';
-import PsyanimBasicPreyBehavior from './core/components/steering/PsyanimBasicPreyBehavior';
-import PsyanimChargeBehavior from './core/components/steering/PsyanimChargeBehavior';
-import PsyanimCollisionAvoidanceBehavior from './core/components/steering/PsyanimCollisionAvoidanceBehavior';
-import PsyanimEvadeBehavior from './core/components/steering/PsyanimEvadeBehavior';
-import PsyanimFleeBehavior from './core/components/steering/PsyanimFleeBehavior';
-import PsyanimPlayfightBehavior from './core/components/steering/PsyanimPlayfightBehavior';
-import PsyanimSeekBehavior from './core/components/steering/PsyanimSeekBehavior';
-import PsyanimWanderBehavior from './core/components/steering/PsyanimWanderBehavior';
+import PsyanimPreciselyTimedArriveBehavior from './core/components/steering/PsyanimPreciselyTimedArriveBehavior.js';
+import PsyanimAdvancedFleeBehavior from './core/components/steering/PsyanimAdvancedFleeBehavior.js';
+import PsyanimAdvancedPlayfightBehavior from './core/components/steering/PsyanimAdvancedPlayfightBehavior.js';
+import PsyanimArriveBehavior from './core/components/steering/PsyanimArriveBehavior.js';
+import PsyanimBasicPredatorBehavior from './core/components/steering/PsyanimBasicPredatorBehavior.js';
+import PsyanimBasicPreyBehavior from './core/components/steering/PsyanimBasicPreyBehavior.js';
+import PsyanimChargeBehavior from './core/components/steering/PsyanimChargeBehavior.js';
+import PsyanimCollisionAvoidanceBehavior from './core/components/steering/PsyanimCollisionAvoidanceBehavior.js';
+import PsyanimEvadeBehavior from './core/components/steering/PsyanimEvadeBehavior.js';
+import PsyanimFleeBehavior from './core/components/steering/PsyanimFleeBehavior.js';
+import PsyanimPlayfightBehavior from './core/components/steering/PsyanimPlayfightBehavior.js';
+import PsyanimSeekBehavior from './core/components/steering/PsyanimSeekBehavior.js';
+import PsyanimWanderBehavior from './core/components/steering/PsyanimWanderBehavior.js';
 
-import PsyanimPreciselyTimedArriveAgent from './core/components/steering/agents/PsyanimPreciselyTimedArriveAgent';
-import PsyanimAdvancedFleeAgent from './core/components/steering/agents/PsyanimAdvancedFleeAgent';
-import PsyanimAdvancedPlayfightAgent from './core/components/steering/agents/PsyanimAdvancedPlayfightAgent';
-import PsyanimArriveAgent from './core/components/steering/agents/PsyanimArriveAgent';
-import PsyanimChargeAgent from './core/components/steering/agents/PsyanimChargeAgent';
-import PsyanimEvadeAgent from './core/components/steering/agents/PsyanimEvadeAgent';
-import PsyanimFleeAgent from './core/components/steering/agents/PsyanimFleeAgent';
-import PsyanimPlayfightAgent from './core/components/steering/agents/PsyanimPlayfightAgent';
-import PsyanimPredatorAgent from './core/components/steering/agents/PsyanimPredatorAgent';
-import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent';
-import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent';
-import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent';
+import PsyanimPreciselyTimedArriveAgent from './core/components/steering/agents/PsyanimPreciselyTimedArriveAgent.js';
+import PsyanimAdvancedFleeAgent from './core/components/steering/agents/PsyanimAdvancedFleeAgent.js';
+import PsyanimAdvancedPlayfightAgent from './core/components/steering/agents/PsyanimAdvancedPlayfightAgent.js';
+import PsyanimArriveAgent from './core/components/steering/agents/PsyanimArriveAgent.js';
+import PsyanimChargeAgent from './core/components/steering/agents/PsyanimChargeAgent.js';
+import PsyanimEvadeAgent from './core/components/steering/agents/PsyanimEvadeAgent.js';
+import PsyanimFleeAgent from './core/components/steering/agents/PsyanimFleeAgent.js';
+import PsyanimPlayfightAgent from './core/components/steering/agents/PsyanimPlayfightAgent.js';
+import PsyanimPredatorAgent from './core/components/steering/agents/PsyanimPredatorAgent.js';
+import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent.js';
+import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent.js';
+import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent.js';
 
 // ui
-import PsyanimExperimentControls from './core/components/ui/PsyanimExperimentControls';
-import PsyanimSceneTitle from './core/components/ui/PsyanimSceneTitle';
+import PsyanimExperimentControls from './core/components/ui/PsyanimExperimentControls.js';
+import PsyanimSceneTitle from './core/components/ui/PsyanimSceneTitle.js';
 
 // utility components
-import PsyanimAnimationBaker from './core/components/utils/PsyanimAnimationBaker';
-import PsyanimAnimationPlayer from './core/components/utils/PsyanimAnimationPlayer';
-import PsyanimComponentStateRecorder from './core/components/utils/PsyanimComponentStateRecorder';
-import PsyanimExperimentTimer from './core/components/utils/PsyanimExperimentTimer';
-import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder';
+import PsyanimAnimationBaker from './core/components/utils/PsyanimAnimationBaker.js';
+import PsyanimAnimationPlayer from './core/components/utils/PsyanimAnimationPlayer.js';
+import PsyanimComponentStateRecorder from './core/components/utils/PsyanimComponentStateRecorder.js';
+import PsyanimExperimentTimer from './core/components/utils/PsyanimExperimentTimer.js';
+import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder.js';
 
 // prefabs
-import PsyanimArriveAgentPrefab from './core/prefabs/PsyanimArriveAgentPrefab';
-import PsyanimPlayfightAgentPrefab from './core/prefabs/PsyanimPlayfightAgentPrefab';
-import PsyanimPreciselyTimedArriveAgentPrefab from './core/prefabs/PsyanimPreciselyTimedArriveAgentPrefab';
-import PsyanimAdvancedPlayfightAgentPrefab from './core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
-import PsyanimClickToMovePlayerPrefab from './core/prefabs/PsyanimClickToMovePlayerPrefab';
-import PsyanimPreyPrefab from './core/prefabs/PsyanimPreyPrefab';
-import PsyanimPredatorPrefab from './core/prefabs/PsyanimPredatorPrefab';
-import PsyanimAdvancedFleeAgentPrefab from './core/prefabs/PsyanimAdvancedFleeAgentPrefab';
-import PsyanimEvadeAgentPrefab from './core/prefabs/PsyanimEvadeAgentPrefab';
-import PsyanimFleeAgentPrefab from './core/prefabs/PsyanimFleeAgentPrefab';
-import PsyanimSeekAgentPrefab from './core/prefabs/PsyanimSeekAgentPrefab';
-import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab';
+import PsyanimArriveAgentPrefab from './core/prefabs/PsyanimArriveAgentPrefab.js';
+import PsyanimPlayfightAgentPrefab from './core/prefabs/PsyanimPlayfightAgentPrefab.js';
+import PsyanimPreciselyTimedArriveAgentPrefab from './core/prefabs/PsyanimPreciselyTimedArriveAgentPrefab.js';
+import PsyanimAdvancedPlayfightAgentPrefab from './core/prefabs/PsyanimAdvancedPlayfightAgentPrefab.js';
+import PsyanimClickToMovePlayerPrefab from './core/prefabs/PsyanimClickToMovePlayerPrefab.js';
+import PsyanimPreyPrefab from './core/prefabs/PsyanimPreyPrefab.js';
+import PsyanimPredatorPrefab from './core/prefabs/PsyanimPredatorPrefab.js';
+import PsyanimAdvancedFleeAgentPrefab from './core/prefabs/PsyanimAdvancedFleeAgentPrefab.js';
+import PsyanimEvadeAgentPrefab from './core/prefabs/PsyanimEvadeAgentPrefab.js';
+import PsyanimFleeAgentPrefab from './core/prefabs/PsyanimFleeAgentPrefab.js';
+import PsyanimSeekAgentPrefab from './core/prefabs/PsyanimSeekAgentPrefab.js';
+import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab.js';
 
 // utils
-import PsyanimUtils from './core/utils/PsyanimUtils';
+import PsyanimUtils from './core/utils/PsyanimUtils.js';
 
 import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.mjs';
 import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.mjs';
 import PsyanimMessaging from './core/utils/PsyanimMessaging.mjs';
-import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid';
+import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid.js';
 import PsyanimPath from './core/utils/PsyanimPath.mjs';
 
-import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils';
+import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils.js';
 
-import PsyanimDebug from './core/utils/PsyanimDebug';
+import PsyanimDebug from './core/utils/PsyanimDebug.js';
 
 // integrations
-import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin';
-import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial';
-import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter';
-import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener';
-import PsyanimFirebaseClient from './integrations/PsyanimFirebaseClient';
+import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin.js';
+import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial.js';
+import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter.js';
+import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener.js';
+import PsyanimFirebaseClient from './integrations/PsyanimFirebaseClient.js';
 
 export {
 

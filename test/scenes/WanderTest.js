@@ -1,12 +1,10 @@
-import PsyanimDataDrivenScene from '../../src/core/PsyanimDataDrivenScene';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
-import PsyanimWanderAgentPrefab from '../../src/core/prefabs/PsyanimWanderAgentPrefab';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
+import PsyanimWanderAgentPrefab from '../../src/core/prefabs/PsyanimWanderAgentPrefab.js';
 
 export default {
 

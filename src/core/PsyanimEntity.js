@@ -1,9 +1,9 @@
 import Phaser from 'phaser';
 
-import PsyanimConstants from './PsyanimConstants';
-import PsyanimGeomUtils from './utils/PsyanimGeomUtils';
+import PsyanimConstants from './PsyanimConstants.js';
+import PsyanimGeomUtils from './utils/PsyanimGeomUtils.js';
 
-import PsyanimApp from './PsyanimApp';
+import PsyanimApp from './PsyanimApp.js';
 
 /**
  *  Some helpful tips:

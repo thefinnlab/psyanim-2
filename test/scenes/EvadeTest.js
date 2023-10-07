@@ -1,13 +1,13 @@
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
+import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimEvadeAgentPrefab from '../../src/core/prefabs/PsyanimEvadeAgentPrefab';
-import PsyanimEvadeAgent from '../../src/core/components/steering/agents/PsyanimEvadeAgent';
+import PsyanimEvadeAgentPrefab from '../../src/core/prefabs/PsyanimEvadeAgentPrefab.js';
+import PsyanimEvadeAgent from '../../src/core/components/steering/agents/PsyanimEvadeAgent.js';
 
 export default {
     key: 'Evade Test',

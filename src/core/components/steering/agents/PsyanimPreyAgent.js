@@ -1,4 +1,4 @@
-import PsyanimComponent from "../../../PsyanimComponent";
+import PsyanimComponent from "../../../PsyanimComponent.js";
 
 export default class PsyanimPredatorAgent extends PsyanimComponent {
 

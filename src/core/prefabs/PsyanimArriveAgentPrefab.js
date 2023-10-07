@@ -1,9 +1,9 @@
-import PsyanimEntityPrefab from '../PsyanimEntityPrefab';
+import PsyanimEntityPrefab from '../PsyanimEntityPrefab.js';
 
-import PsyanimVehicle from '../components/steering/PsyanimVehicle';
+import PsyanimVehicle from '../components/steering/PsyanimVehicle.js';
 
-import PsyanimArriveBehavior from '../components/steering/PsyanimArriveBehavior';
-import PsyanimArriveAgent from '../components/steering/agents/PsyanimArriveAgent';
+import PsyanimArriveBehavior from '../components/steering/PsyanimArriveBehavior.js';
+import PsyanimArriveAgent from '../components/steering/agents/PsyanimArriveAgent.js';
 
 /**
  *  Prefab for creating `Arrive Agents`.

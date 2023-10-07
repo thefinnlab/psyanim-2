@@ -1,12 +1,12 @@
-import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
+import PsyanimEntityPrefab from "../PsyanimEntityPrefab.js";
 
-import PsyanimVehicle from "..//components/steering/PsyanimVehicle";
-import PsyanimPreciselyTimedArriveBehavior from "../components/steering/PsyanimPreciselyTimedArriveBehavior";
-import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior";
-import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
-import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior";
-import PsyanimAdvancedPlayfightBehavior from "../components/steering/PsyanimAdvancedPlayfightBehavior";
-import PsyanimAdvancedPlayfightAgent from "../components/steering/agents/PsyanimAdvancedPlayfightAgent";
+import PsyanimVehicle from "..//components/steering/PsyanimVehicle.js";
+import PsyanimPreciselyTimedArriveBehavior from "../components/steering/PsyanimPreciselyTimedArriveBehavior.js";
+import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior.js";
+import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior.js";
+import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior.js";
+import PsyanimAdvancedPlayfightBehavior from "../components/steering/PsyanimAdvancedPlayfightBehavior.js";
+import PsyanimAdvancedPlayfightAgent from "../components/steering/agents/PsyanimAdvancedPlayfightAgent.js";
 
 /**
  *  Prefab for creating `Advanced Playfight Agents`.

@@ -1,6 +1,4 @@
-import Phaser from 'phaser';
-
-import PsyanimConstants from '../PsyanimConstants';
+import PsyanimConstants from '../PsyanimConstants.js';
 
 export default class PsyanimScreenBoundary {
 

@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from './PsyanimScene';
-import PsyanimDebug from './utils/PsyanimDebug';
-import PsyanimDataDrivenScene from './PsyanimDataDrivenScene';
+import PsyanimScene from './PsyanimScene.js';
+import PsyanimDebug from './utils/PsyanimDebug.js';
+import PsyanimDataDrivenScene from './PsyanimDataDrivenScene.js';
 
 export default class PsyanimConfig {
 

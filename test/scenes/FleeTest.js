@@ -1,19 +1,15 @@
-import Phaser from 'phaser';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
+import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget.js';
 
-import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
+import PsyanimFleeAgentPrefab from '../../src/core/prefabs/PsyanimFleeAgentPrefab.js';
+import PsyanimFleeAgent from '../../src/core/components/steering/agents/PsyanimFleeAgent.js';
 
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
-
-import PsyanimFleeAgentPrefab from '../../src/core/prefabs/PsyanimFleeAgentPrefab';
-import PsyanimFleeAgent from '../../src/core/components/steering/agents/PsyanimFleeAgent';
-
-import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
+import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle.js';
 
 export default {
     key: 'Flee Test',

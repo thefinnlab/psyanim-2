@@ -1,12 +1,12 @@
 import { ParameterType } from 'jspsych';
 
-import PsyanimApp from '../../src/core/PsyanimApp';
+import PsyanimApp from '../../src/core/PsyanimApp.js';
 
-import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBaker';
+import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBaker.js';
 
-import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder';
+import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder.js';
 
-import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter';
+import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter.js';
 
 /**
  *  _PsyanimJsPsychPlugin is a private singleton instance that maintains state across all trials

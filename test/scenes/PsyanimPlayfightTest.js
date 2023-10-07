@@ -1,12 +1,12 @@
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimPlayfightAgentPrefab';
-import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent';
+import PsyanimPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimPlayfightAgentPrefab.js';
+import PsyanimPlayfightAgent from '../../src/core/components/steering/agents/PsyanimPlayfightAgent.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
 export default {
 

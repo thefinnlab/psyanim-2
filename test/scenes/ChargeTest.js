@@ -1,16 +1,14 @@
-import Phaser from 'phaser';
+import PsyanimScene from '../../src/core/PsyanimScene.js';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
+import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle.js';
 
-import PsyanimScene from '../../src/core/PsyanimScene';
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
-
-import PsyanimChargeBehavior from '../../src/core/components/steering/PsyanimChargeBehavior';
-import PsyanimChargeAgent from '../../src/core/components/steering/agents/PsyanimChargeAgent';
+import PsyanimChargeBehavior from '../../src/core/components/steering/PsyanimChargeBehavior.js';
+import PsyanimChargeAgent from '../../src/core/components/steering/agents/PsyanimChargeAgent.js';
 
 export default class ChargeTest extends PsyanimScene {
 

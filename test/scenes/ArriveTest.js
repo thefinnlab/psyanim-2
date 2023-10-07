@@ -1,12 +1,12 @@
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
+import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget.js';
 
-import PsyanimArriveAgentPrefab from '../../src/core/prefabs/PsyanimArriveAgentPrefab';
-import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent';
+import PsyanimArriveAgentPrefab from '../../src/core/prefabs/PsyanimArriveAgentPrefab.js';
+import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
 export default {
 

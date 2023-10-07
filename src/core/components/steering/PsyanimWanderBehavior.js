@@ -1,8 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimVehicle from './PsyanimVehicle';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimWanderBehavior extends PsyanimComponent {
 

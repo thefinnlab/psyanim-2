@@ -1,14 +1,14 @@
-import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
+import PsyanimEntityPrefab from "../PsyanimEntityPrefab.js";
 
-import PsyanimVehicle from "../components/steering/PsyanimVehicle";
-import PsyanimArriveBehavior from "../components/steering/PsyanimArriveBehavior";
-import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
-import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior";
-import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor";
-import PsyanimBasicPredatorBehavior from "../components/steering/PsyanimBasicPredatorBehavior";
-import PsyanimPredatorAgent from "../components/steering/agents/PsyanimPredatorAgent";
+import PsyanimVehicle from "../components/steering/PsyanimVehicle.js";
+import PsyanimArriveBehavior from "../components/steering/PsyanimArriveBehavior.js";
+import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior.js";
+import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior.js";
+import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor.js";
+import PsyanimBasicPredatorBehavior from "../components/steering/PsyanimBasicPredatorBehavior.js";
+import PsyanimPredatorAgent from "../components/steering/agents/PsyanimPredatorAgent.js";
 
-import PsyanimFOVRenderer from "../components/rendering/PsyanimFOVRenderer";
+import PsyanimFOVRenderer from "../components/rendering/PsyanimFOVRenderer.js";
 
 /**
  *  Prefab for creating a `Predator Agent`.

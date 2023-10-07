@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
-import PsyanimComponent from "../../PsyanimComponent";
+import PsyanimComponent from "../../PsyanimComponent.js";
 
-import matterRaycast2 from '../../../thirdparty/matter_raycast';
+import matterRaycast2 from '../../../thirdparty/matter_raycast.js';
 
 class PsyanimEntityRay {
 

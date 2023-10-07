@@ -1,18 +1,14 @@
-import Phaser from 'phaser';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
+import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController.js';
+import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor.js';
 
-import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
-import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
+import SensorTestManager from '../components/SensorTestManager.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
-import SensorTestManager from '../components/SensorTestManager';
-
-import PsyanimJsPsychPlayerContactListener from '../../src/integrations/PsyanimJsPsychPlayerContactListener';
+import PsyanimJsPsychPlayerContactListener from '../../src/integrations/PsyanimJsPsychPlayerContactListener.js';
 
 export default {
     key: 'Sensor Test',

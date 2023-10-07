@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
-import PsyanimConstants from '../../PsyanimConstants';
-import PsyanimEntity from '../../PsyanimEntity';
+import PsyanimComponent from '../../PsyanimComponent.js';
+import PsyanimConstants from '../../PsyanimConstants.js';
+import PsyanimEntity from '../../PsyanimEntity.js';
 
 export default class PsyanimSensor extends PsyanimComponent {
 

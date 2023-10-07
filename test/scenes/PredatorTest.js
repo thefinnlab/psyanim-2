@@ -1,16 +1,14 @@
-import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimConstants from "../../src/core/PsyanimConstants.js";
 
-import PsyanimConstants from "../../src/core/PsyanimConstants";
+import PsyanimSceneTitle from "../../src/core/components/ui/PsyanimSceneTitle.js";
+import PsyanimPhysicsSettingsController from "../../src/core/components/controllers/PsyanimPhysicsSettingsController.js";
+import PsyanimSceneChangeController from "../../src/core/components/controllers/PsyanimSceneController.js";
 
-import PsyanimSceneTitle from "../../src/core/components/ui/PsyanimSceneTitle";
-import PsyanimPhysicsSettingsController from "../../src/core/components/controllers/PsyanimPhysicsSettingsController";
-import PsyanimSceneChangeController from "../../src/core/components/controllers/PsyanimSceneController";
+import PsyanimPlayerController from "../../src/core/components/controllers/PsyanimPlayerController.js";
 
-import PsyanimPlayerController from "../../src/core/components/controllers/PsyanimPlayerController";
-
-import PsyanimPredatorPrefab from '../../src/core/prefabs/PsyanimPredatorPrefab';
-import PsyanimPredatorAgent from '../../src/core/components/steering/agents/PsyanimPredatorAgent';
-import PsyanimBasicPredatorBehavior from '../../src/core/components/steering/PsyanimBasicPredatorBehavior';
+import PsyanimPredatorPrefab from '../../src/core/prefabs/PsyanimPredatorPrefab.js';
+import PsyanimPredatorAgent from '../../src/core/components/steering/agents/PsyanimPredatorAgent.js';
+import PsyanimBasicPredatorBehavior from '../../src/core/components/steering/PsyanimBasicPredatorBehavior.js';
 
 export default {
     key: 'Predator Test',

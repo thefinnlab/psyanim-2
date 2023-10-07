@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
-import PsyanimConstants from '../../PsyanimConstants';
-import PsyanimSensor from '../physics/PsyanimSensor';
+import PsyanimComponent from '../../PsyanimComponent.js';
+import PsyanimConstants from '../../PsyanimConstants.js';
+import PsyanimSensor from '../physics/PsyanimSensor.js';
 
 export default class PsyanimCollisionAvoidanceBehavior extends PsyanimComponent {
 

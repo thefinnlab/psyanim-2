@@ -1,9 +1,8 @@
-import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
+import PsyanimEntityPrefab from "../PsyanimEntityPrefab.js";
 
-import PsyanimVehicle from "../components/steering/PsyanimVehicle";
-import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior";
-import PsyanimAdvancedFleeAgent from "../components/steering/agents/PsyanimAdvancedFleeAgent";
-import PsyanimLineRenderer from "../components/rendering/PsyanimLineRenderer";
+import PsyanimVehicle from "../components/steering/PsyanimVehicle.js";
+import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior.js";
+import PsyanimAdvancedFleeAgent from "../components/steering/agents/PsyanimAdvancedFleeAgent.js";
 
 export default class PsyanimAdvancedFleeAgentPrefab extends PsyanimEntityPrefab {
 

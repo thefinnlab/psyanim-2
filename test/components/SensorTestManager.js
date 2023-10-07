@@ -1,8 +1,8 @@
-import PsyanimComponent from "../../src/core/PsyanimComponent";
+import PsyanimComponent from "../../src/core/PsyanimComponent.js";
 
-import PsyanimApp from "../../src/core/PsyanimApp";
+import PsyanimApp from "../../src/core/PsyanimApp.js";
 
-import PsyanimDebug from "../../src/core/utils/PsyanimDebug";
+import PsyanimDebug from "../../src/core/utils/PsyanimDebug.js";
 
 export default class SensorTestManager extends PsyanimComponent {
 

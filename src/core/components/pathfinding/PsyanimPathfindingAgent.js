@@ -1,4 +1,4 @@
-import PsyanimComponent from '../../PsyanimComponent';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 import Pathfinding from 'pathfinding';
 

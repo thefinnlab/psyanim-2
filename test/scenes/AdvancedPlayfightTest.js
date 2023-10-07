@@ -1,12 +1,12 @@
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimAdvancedPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimAdvancedPlayfightAgentPrefab';
-import PsyanimAdvancedPlayfightAgent from '../../src/core/components/steering/agents/PsyanimAdvancedPlayfightAgent';
-import PsyanimAdvancedPlayfightBehavior from '../../src/core/components/steering/PsyanimAdvancedPlayfightBehavior';
+import PsyanimAdvancedPlayfightAgentPrefab from '../../src/core/prefabs/PsyanimAdvancedPlayfightAgentPrefab.js';
+import PsyanimAdvancedPlayfightAgent from '../../src/core/components/steering/agents/PsyanimAdvancedPlayfightAgent.js';
+import PsyanimAdvancedPlayfightBehavior from '../../src/core/components/steering/PsyanimAdvancedPlayfightBehavior.js';
 
 export default {
     key: 'Advanced Playfight Test',

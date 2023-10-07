@@ -1,15 +1,15 @@
-import PsyanimConstants from "../../src/core/PsyanimConstants";
+import PsyanimConstants from "../../src/core/PsyanimConstants.js";
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimPlayerController from "../../src/core/components/controllers/PsyanimPlayerController";
+import PsyanimPlayerController from "../../src/core/components/controllers/PsyanimPlayerController.js";
 
-import PsyanimFOVSensor from "../../src/core/components/physics/PsyanimFOVSensor";
-import PsyanimFOVRenderer from "../../src/core/components/rendering/PsyanimFOVRenderer";
+import PsyanimFOVSensor from "../../src/core/components/physics/PsyanimFOVSensor.js";
+import PsyanimFOVRenderer from "../../src/core/components/rendering/PsyanimFOVRenderer.js";
 
-import FOVSensorTestColorModifier from "../components/FOVSensorTestColorModifier";
+import FOVSensorTestColorModifier from "../components/FOVSensorTestColorModifier.js";
 
 export default {
 

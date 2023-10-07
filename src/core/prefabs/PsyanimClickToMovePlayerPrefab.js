@@ -1,13 +1,13 @@
-import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
+import PsyanimEntityPrefab from "../PsyanimEntityPrefab.js";
 
-import PsyanimPathfindingAgent from "../components/pathfinding/PsyanimPathfindingAgent";
-import PsyanimPathfindingRenderer from "../components/rendering/PsyanimPathfindingRenderer";
-import PsyanimVehicle from "../components/steering/PsyanimVehicle";
+import PsyanimPathfindingAgent from "../components/pathfinding/PsyanimPathfindingAgent.js";
+import PsyanimPathfindingRenderer from "../components/rendering/PsyanimPathfindingRenderer.js";
+import PsyanimVehicle from "../components/steering/PsyanimVehicle.js";
 
-import PsyanimArriveBehavior from "../components/steering/PsyanimArriveBehavior";
-import PsyanimArriveAgent from "../components/steering/agents/PsyanimArriveAgent";
-import PsyanimClickToMove from "../components/controllers/PsyanimClickToMove";
-import PsyanimPlayerController from "../components/controllers/PsyanimPlayerController";
+import PsyanimArriveBehavior from "../components/steering/PsyanimArriveBehavior.js";
+import PsyanimArriveAgent from "../components/steering/agents/PsyanimArriveAgent.js";
+import PsyanimClickToMove from "../components/controllers/PsyanimClickToMove.js";
+import PsyanimPlayerController from "../components/controllers/PsyanimPlayerController.js";
 
 export default class PsyanimClickToMovePlayerPrefab extends PsyanimEntityPrefab {
 

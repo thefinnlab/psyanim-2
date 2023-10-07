@@ -1,8 +1,6 @@
-import Phaser from 'phaser';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimApp from '../../PsyanimApp';
+import PsyanimApp from '../../PsyanimApp.js';
 
 export default class PsyanimSceneTitle extends PsyanimComponent {
 

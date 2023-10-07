@@ -1,21 +1,21 @@
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
+import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController.js';
 
-import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle';
+import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle.js';
 
-import PsyanimMultiRaySensor from '../../src/core/components/physics/PsyanimMultiRaySensor';
-import PsyanimMultiRaySensorRenderer from '../../src/core/components/rendering/PsyanimMultiRaySensorRenderer';
-import PsyanimSeekBehavior from '../../src/core/components/steering/PsyanimSeekBehavior';
-import PsyanimObstacleAvoidanceBehavior from '../../src/core/components/steering/PsyanimObstacleAvoidanceBehavior';
+import PsyanimMultiRaySensor from '../../src/core/components/physics/PsyanimMultiRaySensor.js';
+import PsyanimMultiRaySensorRenderer from '../../src/core/components/rendering/PsyanimMultiRaySensorRenderer.js';
+import PsyanimSeekBehavior from '../../src/core/components/steering/PsyanimSeekBehavior.js';
+import PsyanimObstacleAvoidanceBehavior from '../../src/core/components/steering/PsyanimObstacleAvoidanceBehavior.js';
 
-import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArriveBehavior';
-import PsyanimAdvancedArriveBehavior from '../../src/core/components/steering/PsyanimAdvancedArriveBehavior';
-import PsyanimAdvancedArriveAgent from '../../src/core/components/steering/agents/PsyanimAdvancedArriveAgent';
+import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArriveBehavior.js';
+import PsyanimAdvancedArriveBehavior from '../../src/core/components/steering/PsyanimAdvancedArriveBehavior.js';
+import PsyanimAdvancedArriveAgent from '../../src/core/components/steering/agents/PsyanimAdvancedArriveAgent.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
 export default {
 

@@ -1,32 +1,32 @@
-import PsyanimApp from '../src/core/PsyanimApp';
+import PsyanimApp from '../src/core/PsyanimApp.js';
 
-import ArriveTest from './scenes/ArriveTest';
-import SeekTest from './scenes/SeekTest';
-import FleeTest from './scenes/FleeTest';
-import WanderTest from './scenes/WanderTest';
-import SensorTest from './scenes/SensorTest';
-import EvadeTest from './scenes/EvadeTest';
-import AdvancedFleeTest from './scenes/AdvancedFleeTest';
-import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest';
-import ChargeTest from './scenes/ChargeTest';
-import AdvancedPlayfightTest from './scenes/AdvancedPlayfightTest';
-import PreciselyTimedArriveTest from './scenes/PreciselyTimedArriveTest';
-import FOVSensorTest from './scenes/FOVSensorTest';
-import PredatorTest from './scenes/PredatorTest';
-import PreyTest from './scenes/PreyTest';
-import PathfindingTest from './scenes/PathfindingTest';
-import PathTest from './scenes/PathTest';
-import ClickToMoveTest from './scenes/ClickToMoveTest';
-import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest';
-import PredatorPrey from './scenes/PredatorPrey';
+import ArriveTest from './scenes/ArriveTest.js';
+import SeekTest from './scenes/SeekTest.js';
+import FleeTest from './scenes/FleeTest.js';
+import WanderTest from './scenes/WanderTest.js';
+import SensorTest from './scenes/SensorTest.js';
+import EvadeTest from './scenes/EvadeTest.js';
+import AdvancedFleeTest from './scenes/AdvancedFleeTest.js';
+import PsyanimPlayfightTest from './scenes/PsyanimPlayfightTest.js';
+import ChargeTest from './scenes/ChargeTest.js';
+import AdvancedPlayfightTest from './scenes/AdvancedPlayfightTest.js';
+import PreciselyTimedArriveTest from './scenes/PreciselyTimedArriveTest.js';
+import FOVSensorTest from './scenes/FOVSensorTest.js';
+import PredatorTest from './scenes/PredatorTest.js';
+import PreyTest from './scenes/PreyTest.js';
+import PathfindingTest from './scenes/PathfindingTest.js';
+import PathTest from './scenes/PathTest.js';
+import ClickToMoveTest from './scenes/ClickToMoveTest.js';
+import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest.js';
+import PredatorPrey from './scenes/PredatorPrey.js';
 
-import PsyanimUtils from '../src/core/utils/PsyanimUtils';
+import PsyanimUtils from '../src/core/utils/PsyanimUtils.js';
 
-import MimicInteractiveTest from './scenes/MimicInteractiveTest';
+import MimicInteractiveTest from './scenes/MimicInteractiveTest.js';
 
-import ObstacleAvoidanceTest from './scenes/ObstacleAvoidanceTest';
+import ObstacleAvoidanceTest from './scenes/ObstacleAvoidanceTest.js';
 
-import AdvancedArriveTest from './scenes/AdvancedArriveTest';
+import AdvancedArriveTest from './scenes/AdvancedArriveTest.js';
 
 /**
  *  Register scenes

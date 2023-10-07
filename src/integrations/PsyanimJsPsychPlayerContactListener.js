@@ -1,9 +1,7 @@
-import Phaser from 'phaser';
+import PsyanimComponent from '../core/PsyanimComponent.js';
 
-import PsyanimComponent from '../core/PsyanimComponent';
-
-import PsyanimDebug from '../core/utils/PsyanimDebug';
-import PsyanimApp from '../core/PsyanimApp';
+import PsyanimDebug from '../core/utils/PsyanimDebug.js';
+import PsyanimApp from '../core/PsyanimApp.js';
 
 export default class PsyanimJsPsychPlayerContactListener extends PsyanimComponent {
 

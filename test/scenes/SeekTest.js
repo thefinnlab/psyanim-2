@@ -1,18 +1,14 @@
-import Phaser from 'phaser';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
+import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget.js';
+import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController.js';
 
-import PsyanimScene from '../../src/core/PsyanimScene';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
-import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
-
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
-
-import PsyanimSeekAgentPrefab from '../../src/core/prefabs/PsyanimSeekAgentPrefab';
-import PsyanimSeekAgent from '../../src/core/components/steering/agents/PsyanimSeekAgent';
+import PsyanimSeekAgentPrefab from '../../src/core/prefabs/PsyanimSeekAgentPrefab.js';
+import PsyanimSeekAgent from '../../src/core/components/steering/agents/PsyanimSeekAgent.js';
 
 export default {
 

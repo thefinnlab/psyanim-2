@@ -1,8 +1,6 @@
-import Phaser from 'phaser';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimDebug from '../../utils/PsyanimDebug';
+import PsyanimDebug from '../../utils/PsyanimDebug.js';
 
 export default class PsyanimAdvancedPlayfightBehavior extends PsyanimComponent {
 

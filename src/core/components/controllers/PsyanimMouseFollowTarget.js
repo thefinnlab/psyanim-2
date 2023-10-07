@@ -1,8 +1,6 @@
-import Phaser from 'phaser';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimConstants from "../../PsyanimConstants";
+import PsyanimConstants from "../../PsyanimConstants.js";
 
 export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 

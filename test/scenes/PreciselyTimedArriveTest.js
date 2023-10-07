@@ -1,19 +1,16 @@
-import Phaser from 'phaser';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimScene from '../../src/core/PsyanimScene';
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimPreciselyTimedArriveAgent from '../../src/core/components/steering/agents/PsyanimPreciselyTimedArriveAgent.js';
 
-import PsyanimPreciselyTimedArriveAgent from '../../src/core/components/steering/agents/PsyanimPreciselyTimedArriveAgent';
+import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget.js';
+import PsyanimPreciselyTimedArriveAgentPrefab from '../../src/core/prefabs/PsyanimPreciselyTimedArriveAgentPrefab.js';
 
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
-import PsyanimPreciselyTimedArriveAgentPrefab from '../../src/core/prefabs/PsyanimPreciselyTimedArriveAgentPrefab';
-
-import AdvancedArriveTestManager from '../components/AdvancedArriveTestManager';
+import AdvancedArriveTestManager from '../components/AdvancedArriveTestManager.js';
 
 export default {
     key: 'Precisely Timed Arrive Test',

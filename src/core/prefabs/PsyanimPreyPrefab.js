@@ -1,22 +1,22 @@
-import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
+import PsyanimEntityPrefab from "../PsyanimEntityPrefab.js";
 
-import PsyanimVehicle from "../components/steering/PsyanimVehicle";
+import PsyanimVehicle from "../components/steering/PsyanimVehicle.js";
 
-import PsyanimMultiRaySensor from "../components/physics/PsyanimMultiRaySensor";
-import PsyanimMultiRaySensorRenderer from "../components/rendering/PsyanimMultiRaySensorRenderer";
-import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior";
-import PsyanimObstacleAvoidanceBehavior from "../components/steering/PsyanimObstacleAvoidanceBehavior";
+import PsyanimMultiRaySensor from "../components/physics/PsyanimMultiRaySensor.js";
+import PsyanimMultiRaySensorRenderer from "../components/rendering/PsyanimMultiRaySensorRenderer.js";
+import PsyanimSeekBehavior from "../components/steering/PsyanimSeekBehavior.js";
+import PsyanimObstacleAvoidanceBehavior from "../components/steering/PsyanimObstacleAvoidanceBehavior.js";
 
-import PsyanimFleeBehavior from "../components/steering/PsyanimFleeBehavior";
-import PsyanimEvadeBehavior from '../components/steering/PsyanimEvadeBehavior';
-import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior";
+import PsyanimFleeBehavior from "../components/steering/PsyanimFleeBehavior.js";
+import PsyanimEvadeBehavior from '../components/steering/PsyanimEvadeBehavior.js';
+import PsyanimAdvancedFleeBehavior from "../components/steering/PsyanimAdvancedFleeBehavior.js";
 
-import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior";
-import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor";
-import PsyanimBasicPreyBehavior from "../components/steering/PsyanimBasicPreyBehavior";
-import PsyanimPreyAgent from '../components/steering/agents/PsyanimPreyAgent';
+import PsyanimWanderBehavior from "../components/steering/PsyanimWanderBehavior.js";
+import PsyanimFOVSensor from "../components/physics/PsyanimFOVSensor.js";
+import PsyanimBasicPreyBehavior from "../components/steering/PsyanimBasicPreyBehavior.js";
+import PsyanimPreyAgent from '../components/steering/agents/PsyanimPreyAgent.js';
 
-import PsyanimFOVRenderer from "../components/rendering/PsyanimFOVRenderer";
+import PsyanimFOVRenderer from "../components/rendering/PsyanimFOVRenderer.js";
 
 /**
  *  Prefab for creating a `Prey Agent`.

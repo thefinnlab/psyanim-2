@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimWanderDebug extends PsyanimComponent {
 

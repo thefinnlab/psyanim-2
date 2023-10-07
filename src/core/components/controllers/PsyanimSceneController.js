@@ -1,9 +1,7 @@
 import Phaser from 'phaser';
 
-import PsyanimApp from '../../PsyanimApp';
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimDataDrivenScene from '../../PsyanimDataDrivenScene';
+import PsyanimApp from '../../PsyanimApp.js';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimSceneChangeController extends PsyanimComponent {
 

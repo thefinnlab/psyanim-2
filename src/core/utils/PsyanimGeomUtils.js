@@ -1,4 +1,4 @@
-import PsyanimConstants from "../PsyanimConstants";
+import PsyanimConstants from "../PsyanimConstants.js";
 
 export default class PsyanimGeomUtils {
 

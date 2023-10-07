@@ -1,8 +1,4 @@
-import Phaser from 'phaser';
-
-import PsyanimComponent from '../../PsyanimComponent';
-
-import PsyanimDebug from '../../utils/PsyanimDebug';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimAdvancedArriveBehavior extends PsyanimComponent {
 

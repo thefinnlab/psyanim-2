@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../core/PsyanimComponent';
+import PsyanimComponent from '../../core/PsyanimComponent.js';
 
 class MySingleton {
 

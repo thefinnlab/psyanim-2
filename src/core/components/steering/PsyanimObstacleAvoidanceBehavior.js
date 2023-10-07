@@ -1,9 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../PsyanimComponent';
-import PsyanimConstants from '../../PsyanimConstants';
-
-import PsyanimDebug from '../../utils/PsyanimDebug';
+import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimObstacleAvoidanceBehavior extends PsyanimComponent {
 

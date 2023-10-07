@@ -1,8 +1,8 @@
-import PsyanimEntityPrefab from "../PsyanimEntityPrefab";
+import PsyanimEntityPrefab from "../PsyanimEntityPrefab.js";
 
-import PsyanimVehicle from "../components/steering/PsyanimVehicle";
-import PsyanimPreciselyTimedArriveBehavior from "../components/steering/PsyanimPreciselyTimedArriveBehavior";
-import PsyanimPreciselyTimedArriveAgent from "../components/steering/agents/PsyanimPreciselyTimedArriveAgent";
+import PsyanimVehicle from "../components/steering/PsyanimVehicle.js";
+import PsyanimPreciselyTimedArriveBehavior from "../components/steering/PsyanimPreciselyTimedArriveBehavior.js";
+import PsyanimPreciselyTimedArriveAgent from "../components/steering/agents/PsyanimPreciselyTimedArriveAgent.js";
 
 export default class PsyanimPreciselyTimedArriveAgentPrefab extends PsyanimEntityPrefab {
 

@@ -1,4 +1,4 @@
-import PsyanimComponent from "../../src/core/PsyanimComponent";
+import PsyanimComponent from "../../src/core/PsyanimComponent.js";
 
 export default class FOVSensorTestColorModifier extends PsyanimComponent {
 

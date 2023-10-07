@@ -1,21 +1,21 @@
 import Phaser from 'phaser';
 
-import PsyanimScene from '../../src/core/PsyanimScene';
-import PsyanimConstants from '../../src/core/PsyanimConstants';
+import PsyanimScene from '../../src/core/PsyanimScene.js';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
-import PsyanimPathfindingAgent from '../../src/core/components/pathfinding/PsyanimPathfindingAgent';
-import PsyanimPathfindingRenderer from '../../src/core/components/rendering/PsyanimPathfindingRenderer';
+import PsyanimPathfindingAgent from '../../src/core/components/pathfinding/PsyanimPathfindingAgent.js';
+import PsyanimPathfindingRenderer from '../../src/core/components/rendering/PsyanimPathfindingRenderer.js';
 
-import TestGridWithObstacles from '../utils/TestGridWithObstacles';
+import TestGridWithObstacles from '../utils/TestGridWithObstacles.js';
 
-import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController';
-import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController';
+import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
+import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
-import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle';
+import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget';
+import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget.js';
 
-import PsyanimLineRenderer from '../../src/core/components/rendering/PsyanimLineRenderer';
+import PsyanimLineRenderer from '../../src/core/components/rendering/PsyanimLineRenderer.js';
 
 export default class PathfindingTest extends PsyanimScene {
 

@@ -1,5 +1,5 @@
-import PsyanimConstants from '../../src/core/PsyanimConstants';
-import PsyanimNavigationGrid from '../../src/core/utils/PsyanimNavigationGrid';
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
+import PsyanimNavigationGrid from '../../src/core/utils/PsyanimNavigationGrid.js';
 
 export default class TestGridWithObstacles {
 

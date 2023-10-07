@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from "../../PsyanimComponent";
-import PsyanimClickToMove from './PsyanimClickToMove';
+import PsyanimComponent from "../../PsyanimComponent.js";
+import PsyanimClickToMove from './PsyanimClickToMove.js';
 
 export default class PsyanimPlayerController extends PsyanimComponent {
 
