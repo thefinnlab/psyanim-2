@@ -1,4 +1,4 @@
-import Phaser, { Curves } from 'phaser';
+import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent.js';
 
