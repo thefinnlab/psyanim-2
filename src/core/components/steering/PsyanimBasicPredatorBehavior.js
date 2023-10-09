@@ -1,6 +1,8 @@
 import PsyanimComponent from "../../PsyanimComponent.js";
 
-import PsyanimDebug from '../../utils/PsyanimDebug.js';
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
 
 export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 

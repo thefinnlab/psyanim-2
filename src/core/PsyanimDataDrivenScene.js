@@ -1,11 +1,14 @@
 import PsyanimScene from './PsyanimScene.js';
-import PsyanimDebug from './utils/PsyanimDebug.js';
 
 import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid.js';
 import PsyanimComponent from './PsyanimComponent.js';
 import PsyanimEntityPrefab from './PsyanimEntityPrefab.js';
 
 import PsyanimUtils from './utils/PsyanimUtils.js';
+
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
 
 /**
  *  Algorithm (order is important!):

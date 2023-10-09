@@ -1,7 +1,10 @@
 import PsyanimComponent from '../core/PsyanimComponent.js';
 
-import PsyanimDebug from '../core/utils/PsyanimDebug.js';
 import PsyanimApp from '../core/PsyanimApp.js';
+
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
 
 export default class PsyanimJsPsychPlayerContactListener extends PsyanimComponent {
 

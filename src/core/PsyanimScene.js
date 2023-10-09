@@ -3,7 +3,9 @@ import Phaser from 'phaser';
 import PsyanimScreenBoundary from './utils/PsyanimScreenBoundary.js';
 import PsyanimEntity from './PsyanimEntity.js';
 
-import PsyanimDebug from './utils/PsyanimDebug.js';
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
 
 export default class PsyanimScene extends Phaser.Scene {
 

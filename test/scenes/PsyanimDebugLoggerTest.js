@@ -1,10 +1,13 @@
-import PsyanimDebug from "../../src/core/utils/PsyanimDebug.js";
 import PsyanimScene from "../../src/core/PsyanimScene.js";
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
+
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
 
 // import firebaseConfig from '../data/firebase.config.json';
 // import PsyanimFirebaseClient from "../../src/integrations/PsyanimFirebaseClient";

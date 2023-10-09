@@ -1,8 +1,11 @@
 import Phaser from 'phaser';
 
 import PsyanimConfig from './PsyanimConfig.js';
-import PsyanimDebug from './utils/PsyanimDebug.js';
 import PsyanimDataDrivenScene from './PsyanimDataDrivenScene.js';
+
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
 
 import { v4 as uudiv4 } from 'uuid';
 
