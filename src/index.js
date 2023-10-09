@@ -93,22 +93,18 @@ import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab.js
 // utils
 import PsyanimUtils from './core/utils/PsyanimUtils.js';
 
-import PsyanimAnimationClip from './core/utils/PsyanimAnimationClip.js';
-import PsyanimFloat32ArrayMessage from './core/utils/PsyanimFloat32ArrayMessage.js';
-import PsyanimMessaging from './core/utils/PsyanimMessaging.js';
 import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid.js';
 import PsyanimPath from './core/utils/PsyanimPath.js';
 
 import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils.js';
-
-import PsyanimDebug from './core/utils/PsyanimDebug.js';
 
 // integrations
 import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin.js';
 import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial.js';
 import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter.js';
 import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener.js';
-import PsyanimFirebaseClient from './integrations/PsyanimFirebaseClient.js';
+
+import PsyanimFirebaseBrowserClient from './integrations/PsyanimFirebaseBrowserClient.js';
 
 export {
 
@@ -207,20 +203,16 @@ export {
     // utils
     PsyanimUtils,
 
-    PsyanimAnimationClip,
-    PsyanimFloat32ArrayMessage,
-    PsyanimMessaging,
     PsyanimNavigationGrid,
     PsyanimPath,
 
     PsyanimGeomUtils,
-
-    PsyanimDebug,
 
     // integrations
     PsyanimJsPsychPlugin,
     PsyanimJsPsychTrial,
     PsyanimJsPsychTrialParameter,
     PsyanimJsPsychPlayerContactListener,
-    PsyanimFirebaseClient
+
+    PsyanimFirebaseBrowserClient,
 };
