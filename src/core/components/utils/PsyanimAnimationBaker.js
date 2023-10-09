@@ -1,6 +1,8 @@
 import PsyanimComponent from '../../PsyanimComponent.js';
 
-import PsyanimAnimationClip from '../../../core/utils/PsyanimAnimationClip.js';
+import {
+    PsyanimAnimationClip
+} from 'psyanim-utils';
 
 export default class PsyanimAnimationBaker extends PsyanimComponent {
 
