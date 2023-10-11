@@ -38,6 +38,22 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
         }
     }
 
+    doGet(path, callback) {
+
+        let xhttp = new XMLHttpRequest();
+
+        xhttp.onreadystatechange = () => {
+
+            if (xhttp.readyState == 4 && xhttp.status == 200)
+            {
+                callback(xhttp.responseText);
+            }
+        };
+
+        xhttp.open("GET", path, true);
+        xhttp.send();
+    }
+
     doPost(path, data) {
 
         let xhttp = new XMLHttpRequest();

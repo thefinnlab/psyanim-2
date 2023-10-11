@@ -17,13 +17,6 @@ export default class PsyanimSceneChangeController extends PsyanimComponent {
         this.events = new Phaser.Events.EventEmitter();
     }
 
-    _loadScene(phaserScene) {
-
-        this.events.emit('beforeLoadScene');
-
-        this.entity.scene.scene.start(phaserScene);
-    }
-
     update(t, dt) {
 
         super.update(t, dt);
