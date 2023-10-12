@@ -11,6 +11,8 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
 
         this.host = "localhost";
         this.port = 3000;
+
+        this.events = new Phaser.Events.EventEmitter();
     }
 
     connect(host = null, port = null) {
@@ -27,6 +29,10 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
 
         this._ws = new WebSocket("ws://" + this.host + ":" + this.port);
         this._ws.binaryType = "blob";
+
+        this._ws.addEventListener('open', (event) => {
+            this.events.emit('open');
+        });
     }
 
     disconnect() {
@@ -60,6 +66,11 @@ export default class PsyanimClientNetworkManager extends PsyanimComponent {
         xhttp.open('POST', path);
         xhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhttp.send(data);
+    }
+
+    send(data) {
+
+        this._ws.send(data);
     }
 
     sendBlob(data) {
