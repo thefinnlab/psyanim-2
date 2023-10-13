@@ -40,6 +40,7 @@ export default class PsyanimJsPsychTrial {
         this._recordAnimationClips = true;
         this._recordStateLogs = true;
         this._subtext = '';
+        this._jsPsychData = {};
 
         // trial parameters that the user can decide to save
         this._trialParametersToSave = [];
@@ -57,7 +58,8 @@ export default class PsyanimJsPsychTrial {
             recordAnimationClips: this.recordAnimationClips,
             recordStateLogs: this.recordStateLogs,
             subtext: this._subtext,
-            trialParameters: this._trialParametersToSave
+            trialParameters: this._trialParametersToSave,
+            data: this._jsPsychData
         };
     }
 
@@ -89,6 +91,16 @@ export default class PsyanimJsPsychTrial {
     get agentNamesToRecord() {
 
         return this._agentNamesToRecord;
+    }
+
+    get jsPsychData() {
+
+        return this._jsPsychData;
+    }
+
+    set jsPsychData(value) {
+
+        this._jsPsychData = value;
     }
 
     addAgentNamesToRecord(namesArray) {

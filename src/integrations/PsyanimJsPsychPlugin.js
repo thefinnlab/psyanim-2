@@ -291,6 +291,26 @@ class _PsyanimJsPsychPlugin {
         this._jsPsych.finishTrial();
     }
 
+    _handleExperimentFinished() {
+
+        let jsPsychData = this._jsPsych.data.get().json();
+
+        let data = {
+
+            sessionID: PsyanimApp.Instance.sessionID,
+            userID: this._userID,
+            experimentName: this._experimentName,
+            data: jsPsychData
+        };
+
+        if (this._documentWriter)
+        {
+            this._documentWriter.addExperimentJsPsychData(data);
+        }
+
+        console.log('Saved JsPsych Experiment Data: ' + data);
+    }
+
     _setupAnimationBaking(scene) {
 
         let agentsToRecord = this._getAgentsByName(this._currentTrial.agentNamesToRecord);
@@ -356,6 +376,11 @@ class _PsyanimJsPsychPlugin {
 }
 
 export default class PsyanimJsPsychPlugin {
+
+    static handleExperimentFinished() {
+
+        _PsyanimJsPsychPlugin.Instance._handleExperimentFinished();
+    }
 
     static setDocumentWriter(writer) {
 
