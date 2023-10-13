@@ -47,8 +47,6 @@ export default {
                 { 
                     type: PsyanimMimic,
                     params: {
-                        xOffset: -400,
-                        yOffset: 100,
                         angleOffset: 180,
                         target: {
                             entityName: 'player',
