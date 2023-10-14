@@ -174,9 +174,8 @@ class _PsyanimJsPsychPlugin {
                         let animationBaker = agent.getComponent(PsyanimAnimationBaker);
                         animationBaker.stop();
             
-                        let animData = animationBaker.clip.toArray();
-
-                        metadata.animationClipId = this._documentWriter.addAnimationClip(animData);
+                        metadata.animationClipId = this._documentWriter
+                            .addAnimationClip(animationBaker.clip.getData());
                     }
 
                     // save agent state logs
@@ -200,7 +199,7 @@ class _PsyanimJsPsychPlugin {
                                     componentTypeName: recorder.componentType.name,
                                 });
                             });
-                        }    
+                        }
                     }
 
                     agentMetadata.push(metadata);
