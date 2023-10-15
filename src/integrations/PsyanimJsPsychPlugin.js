@@ -29,6 +29,7 @@ class _PsyanimJsPsychPlugin {
         console.log("Psyanim jsPsych plugin initialized!");
 
         this._currentTrialIndex = 0;
+        this._clearConsoleOnNewTrial = true;
     }
 
     get jsPsych() {
@@ -41,9 +42,14 @@ class _PsyanimJsPsychPlugin {
         this._jsPsych = value;
     }
 
+    set clearConsoleOnNewTrial(value) {
+
+        this._clearConsoleOnNewTrial = value;
+    }
+
     beginNextTrial(display_element, trial) {
 
-        if (trial.clearConsoleOnNewTrial)
+        if (this._clearConsoleOnNewTrial)
         {
             console.clear();
         }
@@ -317,7 +323,15 @@ class _PsyanimJsPsychPlugin {
         if (agentsToRecord.length > 0)
         {
             agentsToRecord.forEach(agent => {
-                agent.addComponent(PsyanimAnimationBaker).start();
+
+                let baker = agent.addComponent(PsyanimAnimationBaker);
+
+                let animationParameters = this._currentTrial.animationParameters
+                    .filter(p => p.entityName === agent.name);
+
+                baker.addAnimationParameters(animationParameters);
+
+                baker.start();
             });
         }
 
@@ -396,6 +410,11 @@ export default class PsyanimJsPsychPlugin {
         _PsyanimJsPsychPlugin.Instance._userID = userID;
     }
 
+    static setClearConsoleOnNewTrial(clear) {
+
+        _PsyanimJsPsychPlugin.Instance.clearConsoleOnNewTrial = clear;
+    }
+
     constructor(jsPsych) {
 
         _PsyanimJsPsychPlugin.Instance.jsPsych = jsPsych;
@@ -452,12 +471,12 @@ PsyanimJsPsychPlugin.info = {
             default: ''
         },
 
-        clearConsoleOnNewTrial: {
-            type: ParameterType.BOOL,
-            default: true
+        trialParameters: {
+            type: ParameterType.OBJECT,
+            default: []
         },
 
-        trialParameters: {
+        animationParameters: {
             type: ParameterType.OBJECT,
             default: []
         }

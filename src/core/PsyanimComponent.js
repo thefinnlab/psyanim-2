@@ -8,6 +8,8 @@ export default class PsyanimComponent {
         this.scene = entity.scene;
 
         this._enabled = true;
+
+        this._afterCreateCalled = false;
     }
 
     destroy() {
@@ -44,11 +46,18 @@ export default class PsyanimComponent {
     }
 
     afterCreate() {
+
+        this._afterCreateCalled = true;
     }
 
     beforeShutdown() {
     }
 
     update(t, dt) {
+
+        if (!this._afterCreateCalled)
+        {
+            this.afterCreate();
+        }
     }
 }

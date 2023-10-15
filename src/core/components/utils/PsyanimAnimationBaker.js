@@ -12,11 +12,37 @@ export default class PsyanimAnimationBaker extends PsyanimComponent {
 
         this._clip = new PsyanimAnimationClip();
         this._state = PsyanimAnimationBaker.STATE.IDLE;
+
+        this._animationParameters = [];
+    }
+
+    afterCreate() {
+
+        super.afterCreate();
+
+        // gather component references for each parameter
+        this._animationParameters.forEach(parameter => {
+
+            let componentReference = this.entity.getComponent(parameter.componentInfo.type);
+
+            // just store the component reference in the parameter object itself
+            parameter.componentReference = componentReference;
+        })
     }
 
     get isRunning() {
 
         return this._state == PsyanimAnimationBaker.STATE.BAKING;
+    }
+
+    addAnimationParameter(parameter) {
+
+        this._animationParameters.push(parameter);
+    }
+
+    addAnimationParameters(parameters) {
+
+        this._animationParameters.push(...parameters);
     }
 
     start() {
@@ -46,7 +72,18 @@ export default class PsyanimAnimationBaker extends PsyanimComponent {
 
             case PsyanimAnimationBaker.STATE.BAKING:
 
-                this._clip.addSample(t, this.entity.position, this.entity.rotation);
+                let optionalAttributes = {};
+
+                // update animation parameter values
+                this._animationParameters.forEach(parameter => {
+
+                    let componentReference = parameter.componentReference;
+
+                    optionalAttributes[parameter.name] = componentReference[parameter.key];
+                });
+
+                // save sample to animation clip
+                this._clip.addSample(t, this.entity.position, this.entity.rotation, optionalAttributes);
 
                 break;
         }

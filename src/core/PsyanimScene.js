@@ -15,6 +15,8 @@ export default class PsyanimScene extends Phaser.Scene {
 
         // canvas is always stored under div with id 'phaser-app'
         this._canvasParent = document.getElementById('phaser-app');
+
+        this._afterCreateCalled = false;
     }
 
     addEntity(name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
@@ -28,6 +30,11 @@ export default class PsyanimScene extends Phaser.Scene {
         let entity = new PsyanimEntity(this, name, x, y, shapeParams, matterOptions);
 
         this._entities.push(entity);
+
+        if (this._afterCreateCalled)
+        {
+            entity.afterCreate();
+        }
 
         return entity;
     }
@@ -139,6 +146,8 @@ export default class PsyanimScene extends Phaser.Scene {
     afterCreate() {
  
         this._entities.forEach(e => e.afterCreate());
+
+        this._afterCreateCalled = true;
     }
 
     beforeShutdown() {

@@ -45,6 +45,9 @@ export default class PsyanimJsPsychTrial {
         // trial parameters that the user can decide to save
         this._trialParametersToSave = [];
         this._saveParametersOnModification = true;
+
+        // animation parameters that the user can decide to save
+        this._animationParameters = [];
     }
 
     get jsPsychTrialDefinition() {
@@ -59,6 +62,7 @@ export default class PsyanimJsPsychTrial {
             recordStateLogs: this.recordStateLogs,
             subtext: this._subtext,
             trialParameters: this._trialParametersToSave,
+            animationParameters: this._animationParameters,
             data: this._jsPsychData
         };
     }
@@ -340,6 +344,19 @@ export default class PsyanimJsPsychTrial {
         {
             this._trialParametersToSave.push(trialParameter);
         }
+    }
+
+    recordAnimationParameter(entityName, componentType, key, name) {
+
+        this._animationParameters.push({
+            entityName: entityName,
+
+            // had to wrap this value in an object or jsPsych would try to mess with it
+            componentInfo: { type: componentType }, 
+
+            key: key,
+            name: name
+        });
     }
 
     saveComponentParameter(entityName, componentType, parameterName) {
