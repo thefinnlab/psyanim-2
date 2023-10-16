@@ -1,9 +1,9 @@
 import PsyanimApp from '../core/PsyanimApp.js';
 import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin.js';
-import PsyanimUtils from '../core/utils/PsyanimUtils.js';
 import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter.js';
 
 import {
+    PsyanimUtils,
     PsyanimDebug
 } from 'psyanim-utils';
 

@@ -91,8 +91,6 @@ import PsyanimSeekAgentPrefab from './core/prefabs/PsyanimSeekAgentPrefab.js';
 import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab.js';
 
 // utils
-import PsyanimUtils from './core/utils/PsyanimUtils.js';
-
 import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid.js';
 import PsyanimPath from './core/utils/PsyanimPath.js';
 
@@ -201,8 +199,6 @@ export {
     PsyanimWanderAgentPrefab,
 
     // utils
-    PsyanimUtils,
-
     PsyanimNavigationGrid,
     PsyanimPath,
 

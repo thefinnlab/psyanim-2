@@ -1,3 +1,7 @@
+import {
+    PsyanimUtils
+} from 'psyanim-utils';
+
 import PsyanimApp from '../src/core/PsyanimApp.js';
 
 import ArriveTest from './scenes/ArriveTest.js';
@@ -19,8 +23,6 @@ import PathTest from './scenes/PathTest.js';
 import ClickToMoveTest from './scenes/ClickToMoveTest.js';
 import PsyanimDebugLoggerTest from './scenes/PsyanimDebugLoggerTest.js';
 import PredatorPrey from './scenes/PredatorPrey.js';
-
-import PsyanimUtils from '../src/core/utils/PsyanimUtils.js';
 
 import MimicInteractiveTest from './scenes/MimicInteractiveTest.js';
 

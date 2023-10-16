@@ -4,10 +4,9 @@ import PsyanimNavigationGrid from './utils/PsyanimNavigationGrid.js';
 import PsyanimComponent from './PsyanimComponent.js';
 import PsyanimEntityPrefab from './PsyanimEntityPrefab.js';
 
-import PsyanimUtils from './utils/PsyanimUtils.js';
-
 import {
-    PsyanimDebug
+    PsyanimDebug,
+    PsyanimUtils
 } from 'psyanim-utils';
 
 /**
