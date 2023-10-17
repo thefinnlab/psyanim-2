@@ -39,6 +39,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
     afterCreate() {
 
+        super.afterCreate();
+
         // use an initial angle and subtlety that's randomized
         this.entity.setAngle(360 * (2 * Math.random() - 1));
         this._recomputeSubtletyAngle();
