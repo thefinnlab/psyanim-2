@@ -311,9 +311,9 @@ class _PsyanimJsPsychPlugin {
         if (this._documentWriter)
         {
             this._documentWriter.addExperimentJsPsychData(data);
-        }
 
-        console.log('Saved JsPsych Experiment Data: ' + data);
+            console.log('Saved JsPsych Experiment Data: ' + data);
+        }
     }
 
     _setupAnimationBaking(scene) {
