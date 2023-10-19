@@ -101,6 +101,7 @@ import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin.js';
 import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial.js';
 import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter.js';
 import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener.js';
+import PsyanimJsPsychExperimentPlayer from './integrations/PsyanimJsPsychExperimentPlayer.js';
 
 import PsyanimFirebaseBrowserClient from './integrations/PsyanimFirebaseBrowserClient.js';
 
@@ -209,6 +210,7 @@ export {
     PsyanimJsPsychTrial,
     PsyanimJsPsychTrialParameter,
     PsyanimJsPsychPlayerContactListener,
+    PsyanimJsPsychExperimentPlayer,
 
     PsyanimFirebaseBrowserClient,
 };

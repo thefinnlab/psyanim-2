@@ -1,0 +1,66 @@
+import Phaser from 'phaser';
+
+import PsyanimComponent from '../core/PsyanimComponent';
+
+import PsyanimAnimationPlayer from '../core/components/utils/PsyanimAnimationPlayer';
+
+export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
+
+    constructor(entity) {
+
+        super(entity);
+
+        this.events = new Phaser.Events.EventEmitter();
+    }
+
+    afterCreate() {
+
+        super.afterCreate();
+    }
+
+    loadExperiment(experimentMetadata, animationClipData) {
+
+        this._playbackComplete = false;
+
+        let agentMetadata = experimentMetadata.agentMetadata;
+
+        for (let i = 0; i < agentMetadata.length; ++i)
+        {
+            let metadata = agentMetadata[i];
+
+            let animationClipID = metadata.animationClipId;
+            let shapeParams = metadata.shapeParams;
+
+            let agent = this.scene
+                .addEntity(metadata.name, 0, 0, shapeParams);
+
+            let agentAnimData = animationClipData.find(ac => ac.id == animationClipID);
+
+            if (!agentAnimData)
+            {
+                console.error("ERROR: could not find animClip ID: " + animationClipID + " for agent named: " + agent.name);
+            }
+
+            let animPlayer = agent.addComponent(PsyanimAnimationPlayer);
+
+            animPlayer.events.on('playbackComplete', this._handlePlaybackComplete.bind(this));
+
+            animPlayer.play(agentAnimData.clip);
+        }
+    }
+
+    _handlePlaybackComplete() {
+
+        if (!this._playbackComplete)
+        {
+            this._playbackComplete = true;
+
+            this.events.emit('playbackComplete');
+        }
+    }
+
+    update(t, dt) {
+
+        super.update(t, dt);
+    }
+}
