@@ -1,8 +1,8 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../core/PsyanimComponent';
+import PsyanimComponent from '../core/PsyanimComponent.js';
 
-import PsyanimAnimationPlayer from '../core/components/utils/PsyanimAnimationPlayer';
+import PsyanimAnimationPlayer from '../core/components/utils/PsyanimAnimationPlayer.js';
 
 export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
 
