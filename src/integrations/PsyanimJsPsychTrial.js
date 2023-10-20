@@ -44,7 +44,6 @@ export default class PsyanimJsPsychTrial {
 
         // trial parameters that the user can decide to save
         this._trialParametersToSave = [];
-        this._saveParametersOnModification = true;
 
         // animation parameters that the user can decide to save
         this._animationParameters = [];
@@ -219,25 +218,25 @@ export default class PsyanimJsPsychTrial {
         matterOptions[parameterName] = value;
     }
 
-    setPrefabParameter(entityName, parameterName, value) {
+    setPrefabParameter(entityName, parameterName, value, saveParameter = true) {
 
         let prefabParams = this.getPrefabParameters(entityName);
 
         prefabParams[parameterName] = value;
 
-        if (this._saveParametersOnModification)
+        if (saveParameter)
         {
             this.savePrefabParameter(entityName, parameterName);
         }
     }
 
-    setComponentParameter(entityName, componentType, parameterName, value) {
+    setComponentParameter(entityName, componentType, parameterName, value, saveParameter = true) {
 
         let componentParameters = this.getComponentParameters(entityName, componentType);
 
         componentParameters[parameterName] = value;
 
-        if (this._saveParametersOnModification)
+        if (saveParameter)
         {
             this.saveComponentParameter(entityName, componentType, parameterName);
         }
