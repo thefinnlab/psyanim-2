@@ -7,7 +7,8 @@ export default class PsyanimAnimationPlayer extends PsyanimComponent {
         super(entity);
 
         this._clip = null;
-        
+        this._currentIndex = 0;
+
         this.events = new Phaser.Events.EventEmitter();
     }
 
@@ -18,6 +19,20 @@ export default class PsyanimAnimationPlayer extends PsyanimComponent {
         this._nSamples = animationClip.getSampleCount();
 
         this.entity.setPhysicsEnabled(false);
+    }
+
+    stop() {
+
+        this._clip = null;
+        this._currentIndex = 0;
+        this._nSamples = 0;
+    }
+
+    destroy() {
+
+        this.stop();
+
+        super.destroy();
     }
 
     update(t, dt) {

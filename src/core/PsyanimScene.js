@@ -100,15 +100,6 @@ export default class PsyanimScene extends Phaser.Scene {
             .map(e => e.getComponent(componentType));
     }
 
-    _destroyAllEntities() {
-
-        this._entities.forEach( (e) => {
-            e.destroy();
-        });
-
-        this._entities = [];
-    }
-
     init() {
 
         this._entities = [];
@@ -150,16 +141,31 @@ export default class PsyanimScene extends Phaser.Scene {
         this._afterCreateCalled = true;
     }
 
+    deleteAllTextures() {
+
+        let textureKeys = this.textures.getTextureKeys();
+
+        textureKeys.forEach(key => {
+
+            // TODO: verify if the textures are still being referenced by entities in the scene
+            let isTextureReferenced = false;
+
+            if (!isTextureReferenced)
+            {
+                this.textures.remove(key);
+            }
+            else
+            {
+                PsyanimDebug.warn('Failed to delete texture: ', key, '... it is still referenced.');
+            }
+        });
+    }
+
     beforeShutdown() {
 
         if (this.deleteTexturesOnShutdown)
         {
-            let textureKeys = this.textures.getTextureKeys();
-
-            textureKeys.forEach(key => {
-
-                this.textures.remove(key);
-            });
+            this.deleteAllTextures();
         }
 
         this._entities.forEach(e => e.beforeShutdown());

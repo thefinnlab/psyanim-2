@@ -93,11 +93,13 @@ class _PsyanimJsPsychPlugin {
             this._jsPsych.pluginAPI.setTimeout(this.endTrial.bind(this), trial.duration);
         }
 
-        // setup contact events
+        // setup events
         if (trial.endTrialOnContact)
         {
             PsyanimApp.Instance.events.on('playerContact', this.endTrial, this);
         }
+
+        PsyanimApp.Instance.events.on('psyanim-jspsych-endTrial', this.endTrial, this);
 
         // setup keyboard inputs
         if (trial.endTrialKeys.length > 0) {
@@ -270,6 +272,8 @@ class _PsyanimJsPsychPlugin {
             PsyanimApp.Instance.events.off('playerContact', this.endTrial, this);
         }
 
+        PsyanimApp.Instance.events.off('psyanim-jspsych-endTrial', this.endTrial, this);
+
         // stop the current scene
         PsyanimApp.Instance.currentScene.scene
             .stop(this._currentTrial.sceneKey);
@@ -312,7 +316,7 @@ class _PsyanimJsPsychPlugin {
         {
             this._documentWriter.addExperimentJsPsychData(data);
 
-            console.log('Saved JsPsych Experiment Data: ' + data);
+            console.log('Saved JsPsych Experiment Data: ', data);
         }
     }
 

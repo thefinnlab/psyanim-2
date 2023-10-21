@@ -11,6 +11,8 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
         super(entity);
 
         this.events = new Phaser.Events.EventEmitter();
+
+        this._entities = [];
     }
 
     afterCreate() {
@@ -18,7 +20,20 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
         super.afterCreate();
     }
 
+    clear() {
+
+        let entityNames = this._entities.map(e => e.name);
+
+        entityNames.forEach(name => {
+            this.scene.destroyEntityByName(name);
+        });
+
+        this._entities = [];
+    }
+
     loadExperiment(experimentMetadata, animationClipData) {
+
+        this.clear();
 
         this._playbackComplete = false;
 
@@ -46,6 +61,8 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
             animPlayer.events.on('playbackComplete', this._handlePlaybackComplete.bind(this));
 
             animPlayer.play(agentAnimData.clip);
+
+            this._entities.push(agent);
         }
     }
 
@@ -54,6 +71,8 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
         if (!this._playbackComplete)
         {
             this._playbackComplete = true;
+
+            this.clear();
 
             this.events.emit('playbackComplete');
         }
