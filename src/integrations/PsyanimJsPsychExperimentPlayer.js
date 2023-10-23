@@ -31,9 +31,29 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
         this._entities = [];
     }
 
+    hasAnimationClips(experimentMetadata) {
+
+        let agentMetadata = experimentMetadata.agentMetadata;
+
+        for (let i = 0; i < agentMetadata.length; ++i)
+        {
+            if (agentMetadata[i].animationClipID)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     loadExperiment(experimentMetadata, animationClipData) {
 
         this.clear();
+
+        if (!this.hasAnimationClips(experimentMetadata))
+        {
+            console.warn('Current trial has no animation clips!');
+        }
 
         this._playbackComplete = false;
 
@@ -44,6 +64,12 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
             let metadata = agentMetadata[i];
 
             let animationClipID = metadata.animationClipId;
+
+            if (!animationClipID)
+            {
+                continue;
+            }
+
             let shapeParams = metadata.shapeParams;
 
             let agent = this.scene
