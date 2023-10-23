@@ -102,6 +102,10 @@ import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial.js';
 import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter.js';
 import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener.js';
 import PsyanimJsPsychExperimentPlayer from './integrations/PsyanimJsPsychExperimentPlayer.js';
+import PsyanimJsPsychExperimentPlaybackManager from './integrations/PsyanimJsPsychExperimentPlaybackManager.js';
+import PsyanimJsPsychTrialLoader from './integrations/PsyanimJsPsychTrialLoader.js';
+import PsyanimJsPsychTrialSelector from './integrations/PsyanimJsPsychTrialSelector.js';
+import PsyanimJsPsychExperimentPlayerSceneTemplate from './integrations/scene_templates/PsyanimJsPsychExperimentPlayerSceneTemplate.js';
 
 import PsyanimFirebaseBrowserClient from './integrations/PsyanimFirebaseBrowserClient.js';
 
@@ -211,6 +215,10 @@ export {
     PsyanimJsPsychTrialParameter,
     PsyanimJsPsychPlayerContactListener,
     PsyanimJsPsychExperimentPlayer,
+    PsyanimJsPsychExperimentPlaybackManager,
+    PsyanimJsPsychTrialLoader,
+    PsyanimJsPsychTrialSelector,
+    PsyanimJsPsychExperimentPlayerSceneTemplate,
 
     PsyanimFirebaseBrowserClient,
 };
