@@ -14,30 +14,36 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
         super(entity);
 
         this.trialIDs = [];
+    }
+
+    _getTrialData() {
+
+        if (this.trialIDs.length == 0)
+        {
+            PsyanimDebug.error('No trial IDs configured for selector!');
+        }
 
         this._usedTrialIDs = this.scene.registry.get('psyanimTrialSelector_usedTrialIDs');
 
         if (!this._usedTrialIDs)
         {
             this._usedTrialIDs = [];
-            this.scene.registry.get('psyanimTrialSelector_usedTrialIDs', this._usedTrialIDs);
+            this.scene.registry.set('psyanimTrialSelector_usedTrialIDs', this._usedTrialIDs);
         }
 
-        this._trialMetadata = this.scene.registry.get('psyanim_trialMetadata');
+        this._trialMetadata = this.scene.registry.get('psyanim_trialMetadata')
+            .filter(t => this.trialIDs.includes(t.id));
+
         this._animationData = this.scene.registry.get('psyanim_animationData');
     }
 
-    afterCreate() {
-
-        super.afterCreate();
-
-        if (this.trialIDs.length == 0)
-        {
-            PsyanimDebug.error('No trial IDs configured for selector!');
-        }
-    }
-
     getTrialData() {
+
+        if (!this._trialMetadata)
+        {
+            // lazy load it b.c. experiment manager calls it from afterCreate()
+            this._getTrialData();
+        }
 
         let availableTrialMetadata = this._trialMetadata.filter(t => {
             return !this._usedTrialIDs.includes(t.id)
