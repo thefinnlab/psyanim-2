@@ -2,11 +2,16 @@ import PsyanimEntityPrefab from '../PsyanimEntityPrefab.js';
 
 import PsyanimVehicle from '../components/steering/PsyanimVehicle.js';
 import PsyanimArriveBehavior from '../components/steering/PsyanimArriveBehavior.js';
-import PsyanimAdvancedFleeBehavior from '../components/steering/PsyanimAdvancedFleeBehavior.js';
 import PsyanimSeekBehavior from '../components/steering/PsyanimSeekBehavior.js';
 import PsyanimWanderBehavior from '../components/steering/PsyanimWanderBehavior.js';
 import PsyanimPlayfightBehavior from '../components/steering/PsyanimPlayfightBehavior.js';
 import PsyanimPlayfightAgent from '../components/steering/agents/PsyanimPlayfightAgent.js';
+
+import PsyanimMultiRaySensor from '../components/physics/PsyanimMultiRaySensor.js';
+import PsyanimObstacleAvoidanceBehavior from '../components/steering/PsyanimObstacleAvoidanceBehavior.js';
+import PsyanimFleeBehavior from '../components/steering/PsyanimFleeBehavior.js';
+import PsyanimEvadeBehavior from '../components/steering/PsyanimEvadeBehavior.js';
+import PsyanimAdvancedFleeBehavior from '../components/steering/PsyanimAdvancedFleeBehavior.js';
 
 /**
  *  Prefab for creating `Playfight Agents`.
@@ -133,6 +138,14 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 20;
 
+        // obstacle avoidance params
+        this.maxSeekSpeed = 2;
+        this.maxSeekAcceleration = 0.1;
+        this.mainRayLength = 100;
+        this.whiskerLength = 75;
+        this.whiskerAngle = 25;
+
+        // flee params
         this.maxFleeSpeed = 4;
         this.maxFleeAcceleration = 0.2;
         this.panicDistance = 100;
@@ -152,24 +165,58 @@ export default class PsyanimPlayfightAgentPrefab extends PsyanimEntityPrefab {
         arrive.innerDecelerationRadius = this.innerDecelerationRadius;
         arrive.outerDecelerationRadius = this.outerDecelerationRadius;
 
-        let flee = entity.addComponent(PsyanimAdvancedFleeBehavior);
+        let multiRaySensor = entity.addComponent(PsyanimMultiRaySensor);
+        multiRaySensor.rayInfoList = [
+            {
+                id: 0,
+                distance: this.mainRayLength,
+                relativeAngle: 0
+            },
+            {
+                id: 1,
+                distance: this.whiskerLength,
+                relativeAngle: this.whiskerAngle
+            },
+            {
+                id: 2,
+                distance: this.whiskerLength,
+                relativeAngle: -this.whiskerAngle
+            }
+        ];
+
+        let seek = entity.addComponent(PsyanimSeekBehavior);
+
+        let obstacleAvoidanceBehavior = entity.addComponent(PsyanimObstacleAvoidanceBehavior);
+        obstacleAvoidanceBehavior.multiRaySensor = multiRaySensor;
+        obstacleAvoidanceBehavior.seekBehavior = seek;
+        obstacleAvoidanceBehavior.maxSeekSpeed = this.maxSeekSpeed;
+        obstacleAvoidanceBehavior.maxSeekAcceleration = this.maxSeekAcceleration;
+        obstacleAvoidanceBehavior.avoidDistance = 2 * (this.whiskerLength * Math.sin(this.whiskerAngle * Math.PI / 180));
+
+        let flee = entity.addComponent(PsyanimFleeBehavior);
         flee.maxSpeed = this.maxFleeSpeed;
         flee.maxAcceleration = this.maxFleeAcceleration;
         flee.panicDistance = this.panicDistance;
 
-        let seek = entity.addComponent(PsyanimSeekBehavior);
-        seek.maxSpeed = this.maxWanderSpeed;
-        seek.maxAcceleration = this.maxWanderAcceleration;
+        let evade = entity.addComponent(PsyanimEvadeBehavior);
+        evade.fleeBehavior = flee;
+        evade.maxPredictionTime = 3.0;
+
+        let advancedFlee = entity.addComponent(PsyanimAdvancedFleeBehavior);
+        advancedFlee.fleeBehavior = evade;
+        advancedFlee.obstacleAvoidanceBehavior = obstacleAvoidanceBehavior;
 
         let wander = entity.addComponent(PsyanimWanderBehavior);
         wander.seekBehavior = seek;
+        wander.maxSeekSpeed = this.maxWanderSpeed;
+        wander.maxSeekAcceleration = this.maxWanderAcceleration;
         wander.radius = this.wanderRadius;
         wander.offset = this.wanderOffset;
         wander.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
 
         let playfight = entity.addComponent(PsyanimPlayfightBehavior);
         playfight.breakDuration = this.breakDuration;
-        playfight.fleeBehavior = flee;
+        playfight.fleeBehavior = advancedFlee;
         playfight.arriveBehavior = arrive;
         playfight.wanderBehavior = wander;
         playfight.debug = this.debug;
