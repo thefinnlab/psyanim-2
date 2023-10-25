@@ -3,6 +3,8 @@ import Phaser from 'phaser';
 import PsyanimConfig from './PsyanimConfig.js';
 import PsyanimDataDrivenScene from './PsyanimDataDrivenScene.js';
 
+import EmptyScene from './scene_templates/EmptyScene.js';
+
 import {
     PsyanimDebug
 } from 'psyanim-utils';
@@ -187,6 +189,13 @@ export default class PsyanimApp {
     }
 
     run() {
+
+        if (this.sceneKeys.length == 0)
+        {
+            console.warn('No scenes configured - adding empty scene to config!');
+
+            this.config.registerScene(EmptyScene);
+        }
 
         this._game = new Phaser.Game(this._config.phaserConfig);
 
