@@ -13,9 +13,11 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
     offset;
     maxAngleChangePerFrame;
 
-    maxSpeed;
+    maxWanderSpeed;
     maxAcceleration;
     
+    minScreenBoundaryDistance;
+
     debug;
 
     constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
@@ -26,8 +28,10 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
         this.offset = 150;
         this.maxAngleChangePerFrame = 20;
 
-        this.maxSpeed = 3;
-        this.maxAcceleration = 0.2;
+        this.maxWanderSpeed = 3;
+        this.maxWanderAcceleration = 0.2;
+
+        this.minScreenBoundaryDistance = 50;
 
         this.debug = false;
     }
@@ -39,14 +43,16 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
         let vehicle = entity.addComponent(PsyanimVehicle);
         let seek = entity.addComponent(PsyanimSeekBehavior);
 
-        seek.maxSpeed = this.maxSpeed;
-        seek.maxAcceleration = this.maxAcceleration;
-
         let wander = entity.addComponent(PsyanimWanderBehavior);
+
+        wander.maxSeekSpeed = this.maxWanderSpeed;
+        wander.maxSeekAcceleration = this.maxWanderAcceleration;
 
         wander.radius = this.radius;
         wander.offset = this.offset;
         wander.maxAngleChangePerFrame = this.maxAngleChangePerFrame;
+
+        wander.minScreenBoundaryDistance = this.minScreenBoundaryDistance;
 
         wander.seekBehavior = seek;
 
