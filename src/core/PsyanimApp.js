@@ -199,6 +199,13 @@ export default class PsyanimApp {
 
         this._game = new Phaser.Game(this._config.phaserConfig);
 
+        let canvas = this._game.canvas;
+
+        if (!canvas.classList.contains('phaser-canvas'))
+        {
+            canvas.classList.add('phaser-canvas');
+        }
+
         this._currentSceneKey = this.sceneKeys[0];
 
         let sceneDefinitionKeys = this.config.sceneDefinitions.map(s => s.key);

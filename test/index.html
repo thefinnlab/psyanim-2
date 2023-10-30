@@ -4,21 +4,47 @@
         <link rel="shortcut icon" href="#">
         <style>
             .canvas-container {
-                display: flex;
+                display: grid;
                 align-items: center;
                 justify-content: center;
+
+                height: 800;
+
+                grid-template-columns: 1fr 850px 1fr;
+                grid-template-rows: 1fr 650px 1fr;
+            } 
+
+            .phaser-scene-title {
+
+                grid-column: 2 / 3;
+                grid-row: 1 / 2;
+            }
+
+            .test-controls {
+
+                grid-column: 2 / 3;
+                grid-row: 3 / 4;
+            }
+
+            .phaser-canvas {
+
+                grid-column: 2 / 3;
+                grid-row: 2 / 3;
             }
         </style>
     </head>
     <body>
 
-        <h1 id="sceneName">Psyanim 2.0</h1>
+        <div id="phaser-app" class="canvas-container">
 
-        <div id="phaser-app" class="canvas-container"></div>
-        
-        <h3>Use keys 'j' and 'k' to change scenes.</h3>
-        <h3>For scenes with a player controller, use WASD for movement.</h3>
-        <h3>Some scenes have a mouse follow target, so moving mouse will affect agents</h3>
-        <h3>Press 't' key to toggle physics time scale (can slow down / speed up simulation for debugging).</h3>
+            <h1 id="sceneName" class="phaser-scene-title">Psyanim 2.0</h1>
+
+            <div class="test-controls">
+                <h3>Use keys 'j' and 'k' to change scenes.</h3>
+                <h3>For scenes with a player controller, use WASD for movement.</h3>
+                <h3>Some scenes have a mouse follow target, so moving mouse will affect agents</h3>
+                <h3>Press 't' key to toggle physics time scale (can slow down / speed up simulation for debugging).</h3>        
+            </div>
+        </div>
     </body>
 </html>
