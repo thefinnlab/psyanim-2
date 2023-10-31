@@ -37,7 +37,7 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
 
         for (let i = 0; i < agentMetadata.length; ++i)
         {
-            if (agentMetadata[i].animationClipID)
+            if (Object.hasOwn(agentMetadata[i], 'animationClipId'))
             {
                 return true;
             }

@@ -1,4 +1,5 @@
 import PsyanimComponent from '../core/PsyanimComponent.js';
+import PsyanimApp from '../core/PsyanimApp.js';
 
 export default class PsyanimJsPsychExperimentPlaybackManager extends PsyanimComponent {
 
@@ -16,10 +17,18 @@ export default class PsyanimJsPsychExperimentPlaybackManager extends PsyanimComp
 
         let nextTrialData = this.trialSelector.getTrialData();
 
+        this.experimentPlayer.events.on('playbackComplete', 
+            this._handlePlaybackComplete.bind(this));
+
         this.experimentPlayer.loadExperiment(
             nextTrialData.trialMetadata,
             nextTrialData.animationData
         );
+    }
+
+    _handlePlaybackComplete() {
+
+        PsyanimApp.Instance.events.emit('playbackComplete');
     }
 
     update(t, dt) {

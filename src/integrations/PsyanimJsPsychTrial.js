@@ -36,6 +36,7 @@ export default class PsyanimJsPsychTrial {
         this._endTrialKeys = ['enter'];
         this._duration = -1.0;
         this._endTrialOnContact = false;
+        this._endTrialOnPlaybackComplete = false;
         this._agentNamesToRecord = [];
         this._recordAnimationClips = true;
         this._recordStateLogs = true;
@@ -56,6 +57,7 @@ export default class PsyanimJsPsychTrial {
             sceneKey: this.sceneKey,
             duration: this.duration,
             endTrialOnContact: this.endTrialOnContact,
+            endTrialOnPlaybackComplete: this.endTrialOnPlaybackComplete,
             agentNamesToRecord: this.agentNamesToRecord,
             recordAnimationClips: this.recordAnimationClips,
             recordStateLogs: this.recordStateLogs,
@@ -89,6 +91,16 @@ export default class PsyanimJsPsychTrial {
     set endTrialOnContact(value) {
 
         this._endTrialOnContact = value;
+    }
+
+    get endTrialOnPlaybackComplete() {
+
+        return this._endTrialOnPlaybackComplete;
+    }
+
+    set endTrialOnPlaybackComplete(value) {
+
+        this._endTrialOnPlaybackComplete = value;
     }
 
     get agentNamesToRecord() {

@@ -99,6 +99,11 @@ class _PsyanimJsPsychPlugin {
             PsyanimApp.Instance.events.on('playerContact', this.endTrial, this);
         }
 
+        if (trial.endTrialOnPlaybackComplete)
+        {
+            PsyanimApp.Instance.events.on('playbackComplete', this.endTrial, this);
+        }
+
         PsyanimApp.Instance.events.on('psyanim-jspsych-endTrial', this.endTrial, this);
 
         // setup keyboard inputs
@@ -270,6 +275,11 @@ class _PsyanimJsPsychPlugin {
         if (this._currentTrial.endTrialOnContact)
         {
             PsyanimApp.Instance.events.off('playerContact', this.endTrial, this);
+        }
+
+        if (this._currentTrial.endTrialOnPlaybackComplete)
+        {
+            PsyanimApp.Instance.events.off('playbackComplete', this.endTrial, this);
         }
 
         PsyanimApp.Instance.events.off('psyanim-jspsych-endTrial', this.endTrial, this);
@@ -451,6 +461,12 @@ PsyanimJsPsychPlugin.info = {
         },
 
         endTrialOnContact: {
+            type: ParameterType.BOOL,
+            default: false
+        },
+
+        endTrialOnPlaybackComplete: {
+
             type: ParameterType.BOOL,
             default: false
         },
