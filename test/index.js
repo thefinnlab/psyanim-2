@@ -30,8 +30,30 @@ import ObstacleAvoidanceTest from './scenes/ObstacleAvoidanceTest.js';
 
 import AdvancedArriveTest from './scenes/AdvancedArriveTest.js';
 
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
+import PsyanimTestInstructions from './PsyanimTestInstructions.jsx';
+
 /**
- *  Register scenes
+ *  Setup react app:
+ */
+
+let reactAppDiv = document.getElementById('react-app');
+
+if (reactAppDiv)
+{
+    const root = createRoot(reactAppDiv);
+
+    root.render(<PsyanimTestInstructions />);
+}
+else
+{
+    console.error('react app div is null!');
+}
+
+/**
+ *  Setup Psyanim App - first register scenes:
  */
 
 // make a clone of the scene definitions here to test our cloning funcs

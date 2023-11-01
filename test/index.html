@@ -11,7 +11,7 @@
                 height: 800;
 
                 grid-template-columns: 1fr 850px 1fr;
-                grid-template-rows: 1fr 650px 1fr;
+                grid-template-rows: 1fr 650px 3fr;
             } 
 
             .phaser-scene-title {
@@ -39,12 +39,9 @@
 
             <h1 id="sceneName" class="phaser-scene-title">Psyanim 2.0</h1>
 
-            <div class="test-controls">
-                <h3>Use keys 'j' and 'k' to change scenes.</h3>
-                <h3>For scenes with a player controller, use WASD for movement.</h3>
-                <h3>Some scenes have a mouse follow target, so moving mouse will affect agents</h3>
-                <h3>Press 't' key to toggle physics time scale (can slow down / speed up simulation for debugging).</h3>        
-            </div>
+            <div id="react-app" class="test-controls"></div>
+
         </div>
+
     </body>
 </html>
