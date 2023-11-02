@@ -31,16 +31,6 @@ export default class PsyanimApp {
 
         this._sessionID = uudiv4();
 
-        this._domElement = document.getElementById('phaser-app');
-
-        if (this._domElement == null)
-        {
-            this._domElement = document.createElement('div');
-            this._domElement.setAttribute('id', 'phaser-app');
-            
-            document.body.appendChild(this._domElement);
-        }
-
         this.events = new Phaser.Events.EventEmitter();
     }
 
@@ -197,15 +187,27 @@ export default class PsyanimApp {
             this.config.registerScene(EmptyScene);
         }
 
+        // create phaser game
         this._game = new Phaser.Game(this._config.phaserConfig);
 
-        let canvas = this._game.canvas;
+        // setup canvas dom parent
+        this._domElement = document.getElementById('phaser-app');
 
-        if (!canvas.classList.contains('phaser-canvas'))
+        if (this._domElement == null)
         {
-            canvas.classList.add('phaser-canvas');
+            this._domElement = document.createElement('div');
+            this._domElement.setAttribute('id', 'phaser-app');
+            
+            document.body.appendChild(this._domElement);
         }
 
+        // setup canvas CSS class
+        if (!this._domElement.classList.contains('phaser-canvas'))
+        {
+            this._domElement.classList.add('phaser-canvas');
+        }
+
+        // setup current scene info
         this._currentSceneKey = this.sceneKeys[0];
 
         let sceneDefinitionKeys = this.config.sceneDefinitions.map(s => s.key);

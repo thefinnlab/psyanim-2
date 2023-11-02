@@ -33,24 +33,14 @@ import AdvancedArriveTest from './scenes/AdvancedArriveTest.js';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
-import PsyanimTestInstructions from './PsyanimTestInstructions.jsx';
+import PsyanimTestApp from './PsyanimTestApp.jsx';
 
 /**
  *  Setup react app:
  */
 
-let reactAppDiv = document.getElementById('react-app');
-
-if (reactAppDiv)
-{
-    const root = createRoot(reactAppDiv);
-
-    root.render(<PsyanimTestInstructions />);
-}
-else
-{
-    console.error('react app div is null!');
-}
+createRoot(document.getElementById('psyanim-app'))
+    .render(<PsyanimTestApp/>);
 
 /**
  *  Setup Psyanim App - first register scenes:
@@ -106,5 +96,3 @@ PsyanimApp.Instance.config.registerScene(PsyanimDebugLoggerTest);
  */
 
 PsyanimApp.Instance.config.setDebugEnabled(true);
-
-PsyanimApp.Instance.run();
