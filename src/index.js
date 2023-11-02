@@ -110,6 +110,8 @@ import PsyanimJsPsychExperimentLoadingSceneTemplate from './integrations/scene_t
 
 import PsyanimFirebaseBrowserClient from './integrations/PsyanimFirebaseBrowserClient.js';
 
+import PsyanimCanvas from './integrations/react/PsyanimCanvas.jsx';
+
 export {
 
     // core
@@ -223,4 +225,6 @@ export {
     PsyanimJsPsychExperimentLoadingSceneTemplate,
 
     PsyanimFirebaseBrowserClient,
+
+    PsyanimCanvas
 };

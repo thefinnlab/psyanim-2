@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
+import PsyanimCanvas from '../src/integrations/react/PsyanimCanvas.jsx';
 import PsyanimTestInstructions from './PsyanimTestInstructions.jsx';
-import PsyanimCanvas from './PsyanimCanvas.jsx';
 
 import PsyanimApp from '../src/core/PsyanimApp.js';
 
