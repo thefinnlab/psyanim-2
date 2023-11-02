@@ -35,6 +35,12 @@ import { createRoot } from 'react-dom/client';
 
 import PsyanimTestApp from './PsyanimTestApp.jsx';
 
+// roboto font for mui
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
 /**
  *  Setup react app:
  */

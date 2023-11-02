@@ -1,17 +1,19 @@
 import React from 'react';
 
+import { Typography, Button } from '@mui/material';
+
 export default function PsyanimTestInstructions() {
 
     return (
         <>
 
-            <h1 id="sceneName" className="phaser-scene-title">Psyanim 2.0 Tests</h1>
+            <Typography variant="h4" id="sceneName" className="phaser-scene-title">Psyanim 2.0 Tests</Typography>
 
             <div id="testControls" className="test-controls">
-                <h3>Use keys 'j' and 'k' to change scenes.</h3>
-                <h3>For scenes with a player controller, use WASD for movement.</h3>
-                <h3>Some scenes have a mouse follow target, so moving mouse will affect agents</h3>
-                <h3>Press 't' key to toggle physics time scale (can slow down / speed up simulation for debugging).</h3>        
+                <Typography variant="body1">Use keys 'j' and 'k' to change scenes.</Typography>
+                <Typography variant="body1">For scenes with a player controller, use WASD for movement.</Typography>
+                <Typography variant="body1">Some scenes have a mouse follow target, so moving mouse will affect agents</Typography>
+                <Typography variant="body1">Press 't' key to toggle physics time scale (can slow down / speed up simulation for debugging).</Typography>        
             </div>
         </>
     );
