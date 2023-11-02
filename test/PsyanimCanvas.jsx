@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import PsyanimApp from "../../core/PsyanimApp.js";
+import PsyanimApp from "../src/core/PsyanimApp.js";
 
 export default function PsyanimCanvas() {
 
