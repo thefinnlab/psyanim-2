@@ -30,6 +30,7 @@ class _PsyanimJsPsychPlugin {
 
         this._currentTrialIndex = 0;
         this._clearConsoleOnNewTrial = true;
+        this._saveJsPsychExperimentData = true;
     }
 
     get jsPsych() {
@@ -220,55 +221,56 @@ class _PsyanimJsPsychPlugin {
             }
 
             // gather trial metadata
-            let trialMetadata = {
+            if (this._currentTrial.saveTrialMetadata)
+            {
+                let trialMetadata = {
 
-                sessionID: PsyanimApp.Instance.sessionID,
-                userID: this._userID,
-                experimentName: this._experimentName,
-                trialNumber: this._currentTrialIndex,
-                sceneKey: this._currentTrial.sceneKey,
-                agentMetadata: agentMetadata,
-            };
-
-            // add scene parameters to trial metadata
-            let trialSceneParameters = this._currentTrial.trialParameters
-                .filter(p => p.parameterType === PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER);
-
-            trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
-                PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
-                'canvasSize', {
-                    width: PsyanimApp.Instance.currentScene.game.config.width,
-                    height: PsyanimApp.Instance.currentScene.game.config.height
-                }
-            ));
-
-            let color = PsyanimApp.Instance.currentScene.game.config.backgroundColor;
-            let colorHex = Phaser.Display.Color.RGBToString(color.r, color.g, color.b, color.a);
-
-            trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
-                PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
-                'backgroundColor', colorHex
-            ));
-
-            trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
-                PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
-                'wrapScreenBoundary', PsyanimApp.Instance.currentScene.screenBoundary.wrap
-            ));
-
-            trialMetadata.sceneParameters = [];
-
-            trialSceneParameters.forEach(p => {
-
-                trialMetadata.sceneParameters.push({
-                    parameterType: p.parameterType,
-                    parameterName: p.parameterName,
-                    parameterValue: p.parameterValue
+                    sessionID: PsyanimApp.Instance.sessionID,
+                    userID: this._userID,
+                    experimentName: this._experimentName,
+                    trialNumber: this._currentTrialIndex,
+                    sceneKey: this._currentTrial.sceneKey,
+                    agentMetadata: agentMetadata,
+                };
+    
+                // add scene parameters to trial metadata
+                let trialSceneParameters = this._currentTrial.trialParameters
+                    .filter(p => p.parameterType === PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER);
+    
+                trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                    PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                    'canvasSize', {
+                        width: PsyanimApp.Instance.currentScene.game.config.width,
+                        height: PsyanimApp.Instance.currentScene.game.config.height
+                    }
+                ));
+    
+                let color = PsyanimApp.Instance.currentScene.game.config.backgroundColor;
+                let colorHex = Phaser.Display.Color.RGBToString(color.r, color.g, color.b, color.a);
+    
+                trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                    PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                    'backgroundColor', colorHex
+                ));
+    
+                trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                    PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                    'wrapScreenBoundary', PsyanimApp.Instance.currentScene.screenBoundary.wrap
+                ));
+    
+                trialMetadata.sceneParameters = [];
+    
+                trialSceneParameters.forEach(p => {
+    
+                    trialMetadata.sceneParameters.push({
+                        parameterType: p.parameterType,
+                        parameterName: p.parameterName,
+                        parameterValue: p.parameterValue
+                    });
                 });
-            });
-
-            this._documentWriter.addExperimentTrialMetadata(trialMetadata);
-
-            console.log(trialMetadata);
+    
+                this._documentWriter.addExperimentTrialMetadata(trialMetadata);
+            }
         }
 
         // remove any open event subs
@@ -312,21 +314,24 @@ class _PsyanimJsPsychPlugin {
 
     _handleExperimentFinished() {
 
-        let jsPsychData = this._jsPsych.data.get().json();
-
-        let data = {
-
-            sessionID: PsyanimApp.Instance.sessionID,
-            userID: this._userID,
-            experimentName: this._experimentName,
-            data: jsPsychData
-        };
-
-        if (this._documentWriter)
+        if (this._documentWriter && this._saveJsPsychExperimentData)
         {
-            this._documentWriter.addExperimentJsPsychData(data);
+            let jsPsychData = this._jsPsych.data.get().json();
 
-            console.log('Saved JsPsych Experiment Data: ', data);
+            let data = {
+    
+                sessionID: PsyanimApp.Instance.sessionID,
+                userID: this._userID,
+                experimentName: this._experimentName,
+                data: jsPsychData
+            };
+    
+            if (this._documentWriter)
+            {
+                this._documentWriter.addExperimentJsPsychData(data);
+    
+                console.log('Saved JsPsych Experiment Data: ', data);
+            }    
         }
     }
 
@@ -429,6 +434,11 @@ export default class PsyanimJsPsychPlugin {
         _PsyanimJsPsychPlugin.Instance.clearConsoleOnNewTrial = clear;
     }
 
+    static setSaveJsPsychExperimentData(save) {
+
+        _PsyanimJsPsychPlugin.Instance._saveJsPsychExperimentData = save;
+    }
+
     constructor(jsPsych) {
 
         _PsyanimJsPsychPlugin.Instance.jsPsych = jsPsych;
@@ -469,6 +479,11 @@ PsyanimJsPsychPlugin.info = {
 
             type: ParameterType.BOOL,
             default: false
+        },
+
+        saveTrialMetadata: {
+            type: ParameterType.BOOL,
+            default: true
         },
 
         agentNamesToRecord: {

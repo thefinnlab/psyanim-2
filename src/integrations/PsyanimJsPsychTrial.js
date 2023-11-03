@@ -38,6 +38,7 @@ export default class PsyanimJsPsychTrial {
         this._endTrialOnContact = false;
         this._endTrialOnPlaybackComplete = false;
         this._agentNamesToRecord = [];
+        this._saveTrialMetadata = true;
         this._recordAnimationClips = true;
         this._recordStateLogs = true;
         this._subtext = '';
@@ -59,6 +60,7 @@ export default class PsyanimJsPsychTrial {
             endTrialOnContact: this.endTrialOnContact,
             endTrialOnPlaybackComplete: this.endTrialOnPlaybackComplete,
             agentNamesToRecord: this.agentNamesToRecord,
+            saveTrialMetadata: this._saveTrialMetadata,
             recordAnimationClips: this.recordAnimationClips,
             recordStateLogs: this.recordStateLogs,
             subtext: this._subtext,
@@ -127,6 +129,16 @@ export default class PsyanimJsPsychTrial {
         }
 
         this._agentNamesToRecord = this._agentNamesToRecord.concat(namesArray);
+    }
+
+    get saveTrialMetadata() {
+
+        return this._saveTrialMetadata;
+    }
+
+    set saveTrialMetadata(value) {
+
+        this._saveTrialMetadata = value;
     }
 
     get recordAnimationClips() {
