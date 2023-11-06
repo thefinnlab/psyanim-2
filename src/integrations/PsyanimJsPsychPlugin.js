@@ -57,6 +57,10 @@ class _PsyanimJsPsychPlugin {
 
         console.log("starting next trial!");
 
+        this._currentTrialJsPsychData = {};
+
+        PsyanimApp.Instance.game.registry.set('psyanimJsPsychPlugin_trialData', this._currentTrialJsPsychData);
+
         this._jsPsych.pluginAPI.clearAllTimeouts();
         this._jsPsych.pluginAPI.cancelAllKeyboardResponses();
 
@@ -309,7 +313,7 @@ class _PsyanimJsPsychPlugin {
         this._currentTrial = null;
 
         // this must be called to end the trial and proceed to the next one!
-        this._jsPsych.finishTrial();
+        this._jsPsych.finishTrial(this._currentTrialJsPsychData);
     }
 
     _handleExperimentFinished() {

@@ -14,6 +14,8 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
         super(entity);
 
         this.trialIDs = [];
+
+        this._currentTrialJsPsychData = this.scene.registry.get('psyanimJsPsychPlugin_trialData');
     }
 
     _getTrialData() {
@@ -52,6 +54,8 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
         let trialMetadataIndex = PsyanimUtils.getRandomInt(0, availableTrialMetadata.length - 1);
 
         let trialID = availableTrialMetadata[trialMetadataIndex].id;
+
+        this._currentTrialJsPsychData['trialID'] = trialID;
 
         PsyanimDebug.log('playing back trial ID: ' + trialID);
 
