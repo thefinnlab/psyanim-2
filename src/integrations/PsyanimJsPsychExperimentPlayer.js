@@ -65,11 +65,21 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
 
         for (let i = 0; i < agentMetadata.length; ++i)
         {
+            // this is the original metadata
             let metadata = agentMetadata[i];
 
             if (trialPlaybackInfo.excludeAgents.includes(metadata.name))
             {
                 continue;
+            }
+
+            // this is the agent metadata from the trial collection file
+            let trialPlaybackInfoAgentMetaData = trialPlaybackInfo.agentMetadata
+                .find(t => t.name === metadata.name);
+
+            if (!trialPlaybackInfoAgentMetaData) 
+            {
+                console.error('No agent metadata in the trial playback info for agent: ', metadata.name);
             }
 
             let animationClipID = metadata.animationClipId;
@@ -79,7 +89,8 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
                 continue;
             }
 
-            let shapeParams = metadata.shapeParams;
+            // override shape params with parameters from the trial collection file
+            let shapeParams = trialPlaybackInfoAgentMetaData.shapeParams;
 
             let agent = this.scene
                 .addEntity(metadata.name, 0, 0, shapeParams);
