@@ -46,22 +46,31 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
         return false;
     }
 
-    loadExperiment(experimentMetadata, animationClipData) {
+    loadExperiment(trialPlaybackData) {
+
+        let trialPlaybackInfo = trialPlaybackData.trialPlaybackInfo;
+        let trialMetadata = trialPlaybackData.trialMetadata;
+        let animationClipData = trialPlaybackData.animationClipData;
 
         this.clear();
 
-        if (!this.hasAnimationClips(experimentMetadata))
+        if (!this.hasAnimationClips(trialMetadata))
         {
             console.warn('Current trial has no animation clips!');
         }
 
         this._playbackComplete = false;
 
-        let agentMetadata = experimentMetadata.agentMetadata;
+        let agentMetadata = trialMetadata.agentMetadata;
 
         for (let i = 0; i < agentMetadata.length; ++i)
         {
             let metadata = agentMetadata[i];
+
+            if (trialPlaybackInfo.excludeAgents.includes(metadata.name))
+            {
+                continue;
+            }
 
             let animationClipID = metadata.animationClipId;
 
@@ -89,6 +98,11 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
             animPlayer.play(agentAnimData.clip);
 
             this._entities.push(agent);
+        }
+
+        if (this._entities.length == 0)
+        {
+            console.error('Trial has no entities configured for playback: ', trialPlaybackInfo.trialID);
         }
     }
 

@@ -20,10 +20,7 @@ export default class PsyanimJsPsychExperimentPlaybackManager extends PsyanimComp
         this.experimentPlayer.events.on('playbackComplete', 
             this._handlePlaybackComplete.bind(this));
 
-        this.experimentPlayer.loadExperiment(
-            nextTrialData.trialMetadata,
-            nextTrialData.animationData
-        );
+        this.experimentPlayer.loadExperiment(nextTrialData);
     }
 
     _handlePlaybackComplete() {

@@ -7,20 +7,20 @@ import {
 
 export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
 
-    trialIDs;
+    trialInfo;
 
     constructor(entity) {
 
         super(entity);
-
-        this.trialIDs = [];
 
         this._currentTrialJsPsychData = this.scene.registry.get('psyanimJsPsychPlugin_trialData');
     }
 
     _getTrialData() {
 
-        if (this.trialIDs.length == 0)
+        let trialIDs = this.trialInfo.map(info => info.trialID);
+
+        if (trialIDs.length == 0)
         {
             PsyanimDebug.error('No trial IDs configured for selector!');
         }
@@ -34,7 +34,7 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
         }
 
         this._trialMetadata = this.scene.registry.get('psyanim_trialMetadata')
-            .filter(t => this.trialIDs.includes(t.id));
+            .filter(t => trialIDs.includes(t.id));
 
         this._animationData = this.scene.registry.get('psyanim_animationData');
     }
@@ -63,9 +63,12 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
 
         let trialMetadata = this._trialMetadata.find(doc => doc.id === trialID).data;
 
+        let trialPlaybackInfo = this.trialInfo.find(info => info.trialID === trialID);
+
         return {
+            trialPlaybackInfo: trialPlaybackInfo,
             trialMetadata: trialMetadata,
-            animationData: this._animationData
+            animationClipData: this._animationData
         };
     }
 

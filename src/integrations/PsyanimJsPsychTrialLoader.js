@@ -3,7 +3,7 @@ import PsyanimComponent from '../core/PsyanimComponent.js';
 
 export default class PsyanimJsPsychTrialLoader extends PsyanimComponent {
 
-    trialIDs;
+    trialInfo;
     documentReader;
 
     constructor(entity) {
@@ -20,7 +20,9 @@ export default class PsyanimJsPsychTrialLoader extends PsyanimComponent {
 
     _getTrialMetadata() {
 
-        this.documentReader.getTrialMetadataByIdAsync(this.trialIDs)
+        let trialIDs = this.trialInfo.map(info => info.trialID);
+
+        this.documentReader.getTrialMetadataByIdAsync(trialIDs)
             .then((docs) => {
 
                 this._trialMetadata = docs;
