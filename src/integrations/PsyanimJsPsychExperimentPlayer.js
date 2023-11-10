@@ -118,7 +118,7 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
 
         if (this._entities.length == 0)
         {
-            console.error('Trial has no entities configured for playback: ', trialPlaybackInfo.trialID);
+            console.warn('Trial has no entities configured for playback: ', trialMetadata);
         }
     }
 
