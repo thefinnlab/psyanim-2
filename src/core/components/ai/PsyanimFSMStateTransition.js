@@ -1,23 +1,27 @@
-import Phaser from 'phaser';
+export default class PsyanimFSMStateTransition {
 
-import PsyanimComponent from '../../PsyanimComponent';
+    constructor(fsm, targetStateType, variableKey, condition) {
 
-export default class PsyanimFSMStateTransition extends PsyanimComponent {
-
-    constructor(entity) {
-
-        super(entity);
+        this._targetStateType = targetStateType;
+        this._fsm = fsm;
+        this._variableKey = variableKey;
+        this._condition = condition;
     }
 
-    get targetState() {
+    get targetStateType() {
 
-        console.error("TODO: implement");
-        return null;
+        return this._targetStateType;
+    }
+
+    get variableKey() {
+
+        return this._variableKey;
     }
 
     get isTriggered() {
 
-        console.error("TODO: implement");
-        return null;
+        let variableValue = this._fsm.getStateVariable(this._variableKey);
+
+        return this._condition(variableValue);
     }
 }
