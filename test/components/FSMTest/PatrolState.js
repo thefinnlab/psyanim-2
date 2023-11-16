@@ -4,6 +4,8 @@ import PsyanimFSMState from "../../../src/core/components/ai/PsyanimFSMState.js"
 
 import IdleState from "./IdleState.js";
 
+import PsyanimArriveAgent from "../../../src/core/components/steering/agents/PsyanimArriveAgent.js";
+
 export default class PatrolState extends PsyanimFSMState {
 
     constructor(fsm) {
@@ -20,6 +22,10 @@ export default class PatrolState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        this._arriveAgent = this.entity.getComponent(PsyanimArriveAgent);
+
+        this._arriveAgent.enabled = true;
     }
 
     exit() {

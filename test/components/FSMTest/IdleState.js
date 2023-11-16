@@ -2,6 +2,8 @@ import PsyanimFSMState from "../../../src/core/components/ai/PsyanimFSMState.js"
 
 import PatrolState from "./PatrolState.js";
 
+import PsyanimArriveAgent from "../../../src/core/components/steering/agents/PsyanimArriveAgent.js";
+
 export default class IdleState extends PsyanimFSMState {
 
     constructor(fsm) {
@@ -18,6 +20,14 @@ export default class IdleState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        console.warn('TODO: we need a method for initialization that happens once, but after constructor' + 
+        ' so we can make sure all components have been attached (order-independent)!')
+
+        this._arriveAgent = this.entity.getComponent(PsyanimArriveAgent);
+
+        this._arriveAgent.enabled = false;
+        this.entity.setVelocity(0, 0);
     }
 
     exit() {

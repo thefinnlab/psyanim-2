@@ -67,19 +67,19 @@ export default class PsyanimFSMState {
 
         this._stage = PsyanimFSMState.STAGE.RUNNING;
 
-        console.log('ENTERING state: ', this.constructor.name);
+        PsyanimDebug.log('ENTERING state: ', this.constructor.name);
     }
 
     exit() {
 
         this._stage = PsyanimFSMState.STAGE.EXITED;
 
-        console.log('EXITING state: ', this.constructor.name);
+        PsyanimDebug.log('EXITING state: ', this.constructor.name);
     }
 
     run() {
 
-        console.log('state RUNNING: ', this.constructor.name);
+        PsyanimDebug.log('state RUNNING: ', this.constructor.name);
     }
 }
 
