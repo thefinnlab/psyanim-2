@@ -99,6 +99,7 @@ import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils.js';
 // integrations
 import PsyanimJsPsychPlugin from './integrations/PsyanimJsPsychPlugin.js';
 import PsyanimJsPsychTrial from './integrations/PsyanimJsPsychTrial.js';
+import PsyanimJsPsychDataWriterExtension from './integrations/PsyanimJsPsychDataWriterExtension.js';
 import PsyanimJsPsychTrialParameter from './integrations/PsyanimJsPsychTrialParameter.js';
 import PsyanimJsPsychPlayerContactListener from './integrations/PsyanimJsPsychPlayerContactListener.js';
 import PsyanimJsPsychExperimentPlayer from './integrations/PsyanimJsPsychExperimentPlayer.js';
@@ -213,6 +214,7 @@ export {
     // integrations
     PsyanimJsPsychPlugin,
     PsyanimJsPsychTrial,
+    PsyanimJsPsychDataWriterExtension,
     PsyanimJsPsychTrialParameter,
     PsyanimJsPsychPlayerContactListener,
     PsyanimJsPsychExperimentPlayer,

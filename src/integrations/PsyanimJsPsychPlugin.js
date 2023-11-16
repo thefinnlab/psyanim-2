@@ -30,7 +30,6 @@ class _PsyanimJsPsychPlugin {
 
         this._currentTrialIndex = 0;
         this._clearConsoleOnNewTrial = true;
-        this._saveJsPsychExperimentData = true;
     }
 
     get jsPsych() {
@@ -316,29 +315,6 @@ class _PsyanimJsPsychPlugin {
         this._jsPsych.finishTrial(this._currentTrialJsPsychData);
     }
 
-    _handleExperimentFinished() {
-
-        if (this._documentWriter && this._saveJsPsychExperimentData)
-        {
-            let jsPsychData = this._jsPsych.data.get().json();
-
-            let data = {
-    
-                sessionID: PsyanimApp.Instance.sessionID,
-                userID: this._userID,
-                experimentName: this._experimentName,
-                data: jsPsychData
-            };
-    
-            if (this._documentWriter)
-            {
-                this._documentWriter.addExperimentJsPsychData(data);
-    
-                console.log('Saved JsPsych Experiment Data: ', data);
-            }    
-        }
-    }
-
     _setupAnimationBaking(scene) {
 
         let agentsToRecord = this._getAgentsByName(this._currentTrial.agentNamesToRecord);
@@ -413,11 +389,6 @@ class _PsyanimJsPsychPlugin {
 
 export default class PsyanimJsPsychPlugin {
 
-    static handleExperimentFinished() {
-
-        _PsyanimJsPsychPlugin.Instance._handleExperimentFinished();
-    }
-
     static setDocumentWriter(writer) {
 
         _PsyanimJsPsychPlugin.Instance._documentWriter = writer;
@@ -436,11 +407,6 @@ export default class PsyanimJsPsychPlugin {
     static setClearConsoleOnNewTrial(clear) {
 
         _PsyanimJsPsychPlugin.Instance.clearConsoleOnNewTrial = clear;
-    }
-
-    static setSaveJsPsychExperimentData(save) {
-
-        _PsyanimJsPsychPlugin.Instance._saveJsPsychExperimentData = save;
     }
 
     constructor(jsPsych) {
