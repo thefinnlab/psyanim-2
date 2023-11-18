@@ -13,9 +13,6 @@ export default class PsyanimScene extends Phaser.Scene {
 
         super(key);
 
-        // canvas is always stored under div with id 'phaser-app'
-        this._canvasParent = document.getElementById('phaser-app');
-
         this._afterCreateCalled = false;
     }
 

@@ -28,6 +28,8 @@ class _PsyanimJsPsychPlugin {
 
         console.log("Psyanim jsPsych plugin initialized!");
 
+        this._domElement = document.getElementById('psyanim-app');
+
         this._currentTrialIndex = 0;
         this._clearConsoleOnNewTrial = true;
     }
@@ -68,15 +70,19 @@ class _PsyanimJsPsychPlugin {
         // add phaser game canvas to display element
         this._displayElement = display_element;
 
-        display_element.appendChild(PsyanimApp.Instance.domElement);
+        if (!document.getElementById(this._domElement.id))
+        {
+            display_element.appendChild(this._domElement);
+        }
 
         if (this._currentTrial.subtext)
         {
             this._subtextElement = document.createElement('p');
             this._subtextElement.innerHTML = this._currentTrial.subtext;
-            this._subtextElement.style.textAlign = 'center';
 
-            this._displayElement.appendChild(this._subtextElement);
+            this._subtextElement.classList.add('canvas-subtext');
+
+            this._domElement.appendChild(this._subtextElement);
         }
 
         PsyanimApp.Instance.setCanvasVisible(true);
@@ -299,11 +305,9 @@ class _PsyanimJsPsychPlugin {
         // remove phaser game canvas from display element
         PsyanimApp.Instance.setCanvasVisible(false);
 
-        this._displayElement.removeChild(PsyanimApp.Instance.domElement);
-
         if (this._subtextElement)
         {
-            this._displayElement.removeChild(this._subtextElement);
+            this._domElement.removeChild(this._subtextElement);
             this._subtextElement = null;
         }
 
