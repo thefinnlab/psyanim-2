@@ -22,7 +22,7 @@ export default class PsyanimJsPsychTrial {
 
         PsyanimApp.Instance.config.registerScene(this._sceneDefinition);
 
-        this._validEntityParameters = ['initialPosition', 'shapeParams', 'matterOptions'];
+        this._validEntityParameters = ['initialPosition', 'shapeParams', 'matterOptions', 'instances'];
 
         this._validShapeParameters = [
             'shapeType', 'radius', 'base', 'altitude', 'width', 'height', 'depth', 'color'
