@@ -129,6 +129,64 @@ class _PsyanimJsPsychPlugin {
         }
     }
 
+    _replaceInstancedEntityNames(agentNamesToRecord) {
+
+        let sceneDefinition = PsyanimApp.Instance.config.getSceneDefinition(this._currentTrial.sceneKey);
+
+        let instancedEntityBaseNames = [];
+        let instancedEntityNames = [];
+
+        for (let i = 0; i < agentNamesToRecord.length; ++i) 
+        {
+            let agentName = agentNamesToRecord[i];
+
+            let entityDefinition = sceneDefinition.entities.find(e => e.name == agentName);
+
+            if (!entityDefinition)
+            {
+                console.error('Failed to find an entity definition for agent name: ', agentName);
+            }
+
+            if (Object.hasOwn(entityDefinition, 'instances') && entityDefinition.instances > 1)
+            {
+                let nInstances = entityDefinition.instances;
+
+                for (let j = 0; j < nInstances; ++j)
+                {
+                    let instanceName = agentName + '_' + (j + 1);
+
+                    if (agentNamesToRecord.includes(instanceName))
+                    {
+                        console.error('Instance name already exists: ', instanceName);
+                    }
+                    else
+                    {
+                        if (!instancedEntityBaseNames.includes(agentName))
+                        {
+                            instancedEntityBaseNames.push(agentName);
+                        }
+                        
+                        instancedEntityNames.push(instanceName);
+                    }
+                }
+            }
+        }
+
+        // remove the original base names used
+        agentNamesToRecord = agentNamesToRecord.filter(name => !instancedEntityBaseNames.includes(name));
+
+        // add instanced entity names to agentNamesToRecord
+        agentNamesToRecord.push(...instancedEntityNames);
+
+        if (instancedEntityBaseNames.length > 0)
+        {
+            console.log('Replaced base entity names: ', instancedEntityBaseNames);
+            console.log('Agent names to record: ', instancedEntityNames);
+        }
+
+        return agentNamesToRecord;
+    }
+
     endTrial() {
 
         this._jsPsych.pluginAPI.clearAllTimeouts();
@@ -152,6 +210,8 @@ class _PsyanimJsPsychPlugin {
 
             let agentNamesToRecord = [...new Set(trialParameterAgentNames
                 .concat(this._currentTrial.agentNamesToRecord))];
+
+            agentNamesToRecord = this._replaceInstancedEntityNames(agentNamesToRecord);
 
             if (agentNamesToRecord)
             {
@@ -382,9 +442,9 @@ class _PsyanimJsPsychPlugin {
                 }
                 else
                 {
-                    console.error("ERROR in scene '", PsyanimApp.Instance.currentScene.name, 
-                        "': invalid agent name to record: " + name, 
-                        " valid names = ", PsyanimApp.Instance.currentScene.getAllEntityNames());
+                    console.error("ERROR in scene '", PsyanimApp.Instance.currentSceneKey, 
+                        "': invalid agent name: " + name, 
+                        ", valid names = ", PsyanimApp.Instance.currentScene.getAllEntityNames());
                 }
             }
         });
