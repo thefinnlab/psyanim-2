@@ -382,7 +382,9 @@ class _PsyanimJsPsychPlugin {
                 }
                 else
                 {
-                    console.error("ERROR: invalid agent name to record: " + name);
+                    console.error("ERROR in scene '", PsyanimApp.Instance.currentScene.name, 
+                        "': invalid agent name to record: " + name, 
+                        " valid names = ", PsyanimApp.Instance.currentScene.getAllEntityNames());
                 }
             }
         });
