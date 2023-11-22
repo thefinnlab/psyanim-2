@@ -140,6 +140,22 @@ class _PsyanimJsPsychPlugin {
         {
             let agentName = agentNamesToRecord[i];
 
+            // handle wildcard case by taking name root as agent name for instanced agents
+            let hasWildcard = agentName.split('*').length > 1;
+
+            if (hasWildcard)
+            {
+                let nameRoot = agentName.split('*')[0];
+
+                // make sure we ignore duplicates and filter out non-wildcard names that are same as nameRoot
+                if (instancedEntityBaseNames.includes(nameRoot))
+                {
+                    continue;
+                }
+
+                agentName = nameRoot;
+            }
+
             let entityDefinition = sceneDefinition.entities.find(e => e.name == agentName);
 
             if (!entityDefinition)
@@ -164,6 +180,7 @@ class _PsyanimJsPsychPlugin {
                         if (!instancedEntityBaseNames.includes(agentName))
                         {
                             instancedEntityBaseNames.push(agentName);
+                            instancedEntityBaseNames.push(agentName + '*'); // handle wildcards too
                         }
                         
                         instancedEntityNames.push(instanceName);
@@ -172,17 +189,47 @@ class _PsyanimJsPsychPlugin {
             }
         }
 
-        // remove the original base names used
+        // remove the original base names used, as well as any wildcard versions
         agentNamesToRecord = agentNamesToRecord.filter(name => !instancedEntityBaseNames.includes(name));
 
         // add instanced entity names to agentNamesToRecord
         agentNamesToRecord.push(...instancedEntityNames);
 
-        if (instancedEntityBaseNames.length > 0)
+        return agentNamesToRecord;
+    }
+
+    _expandWildcardAgentNames(agentNamesToRecord) {
+
+        let sceneDefinition = PsyanimApp.Instance.config.getSceneDefinition(this._currentTrial.sceneKey);
+
+        let wildcardNames = [];
+        let expandedNames = [];
+
+        for (let i = 0; i < agentNamesToRecord.length; ++i)
         {
-            console.log('Replaced base entity names: ', instancedEntityBaseNames);
-            console.log('Agent names to record: ', instancedEntityNames);
+            let agentName = agentNamesToRecord[i];
+
+            // handle wildcard case by taking name root as agent name for instanced agents
+            let hasWildcard = agentName.split('*').length > 1;
+
+            if (hasWildcard)
+            {
+                let nameRoot = agentName.split('*')[0];
+
+                let entityNames = sceneDefinition.entities
+                    .filter(e => e.name.startsWith(nameRoot))
+                    .map(e => e.name);
+
+                expandedNames.push(...entityNames);
+                wildcardNames.push(agentName);
+            }
         }
+
+        // remove the wildcards
+        agentNamesToRecord = agentNamesToRecord.filter(name => !wildcardNames.includes(name));
+
+        // add expanded names
+        agentNamesToRecord.push(...expandedNames);
 
         return agentNamesToRecord;
     }
@@ -211,7 +258,11 @@ class _PsyanimJsPsychPlugin {
             let agentNamesToRecord = [...new Set(trialParameterAgentNames
                 .concat(this._currentTrial.agentNamesToRecord))];
 
+            // replace any agent names that are instanced
             agentNamesToRecord = this._replaceInstancedEntityNames(agentNamesToRecord);
+
+            // replace any remaining wildcard, non-instanced agent names
+            agentNamesToRecord = this._expandWildcardAgentNames(agentNamesToRecord);
 
             if (agentNamesToRecord)
             {
@@ -250,7 +301,7 @@ class _PsyanimJsPsychPlugin {
                             });
                     }
 
-                    if (this._currentTrial.agentNamesToRecord.includes(agent.name) && 
+                    if (agentNamesToRecord.includes(agent.name) && 
                         this._currentTrial.recordAnimationClips)
                     {
                         // save baked animation data
@@ -262,7 +313,7 @@ class _PsyanimJsPsychPlugin {
                     }
 
                     // save agent state logs
-                    if (this._currentTrial.agentNamesToRecord.includes(agent.name) && 
+                    if (agentNamesToRecord.includes(agent.name) && 
                         this._currentTrial.recordStateLogs)
                     {
                         let recorders = agent.getComponentsByType(PsyanimComponentStateRecorder);
