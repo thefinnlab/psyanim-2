@@ -407,8 +407,7 @@ class _PsyanimJsPsychPlugin {
         PsyanimApp.Instance.events.off('psyanim-jspsych-endTrial', this.endTrial, this);
 
         // stop the current scene
-        PsyanimApp.Instance.currentScene.scene
-            .stop(this._currentTrial.sceneKey);
+        PsyanimApp.Instance.stopCurrentScene();
 
         // progress to the next trial
         this._currentTrialIndex++;

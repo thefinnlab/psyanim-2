@@ -135,6 +135,13 @@ export default class PsyanimApp {
         this._currentSceneKey = sceneKey;
     }
 
+    stopCurrentScene() {
+
+        let currentScene = this.currentScene;
+
+        currentScene.scene.stop(currentScene.KEY);
+    }
+
     _loadExperimentVariations(experimentDefinition) {
 
         let experimentVariations = [];
