@@ -1,11 +1,5 @@
 export default class PsyanimJsPsychTrialParameter {
 
-    static Type = {
-        SCENE_PARAMETER: 'scene',
-        PREFAB_PARAMETER: 'prefab',
-        COMPONENT_PARAMETER: 'component'
-    };
-
     parameterType;
     entityName;
     parameterName;
@@ -39,3 +33,9 @@ export default class PsyanimJsPsychTrialParameter {
             this.componentTypeName == trialParameter.componentTypeName;
     }
 }
+
+PsyanimJsPsychTrialParameter.Type = {
+    SCENE_PARAMETER: 'scene',
+    PREFAB_PARAMETER: 'prefab',
+    COMPONENT_PARAMETER: 'component'
+};

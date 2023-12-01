@@ -6,6 +6,22 @@ import PsyanimGeomUtils from './utils/PsyanimGeomUtils.js';
 import PsyanimApp from './PsyanimApp.js';
 
 /**
+ *  Any object that exists in a scene, regardless of its visual representation, is called a `PsyanimEntity`.
+ *
+ *  More technically, it's an abstraction for anything that exists in a `Psyanim Scene` with a particular location, rotation, and (optionally) a visual representation which can have physics applied to it.
+ *
+ *  Entities may or may not have a visual representation in the scene.
+ *
+ *  Moreover, entities alone do not have any logic or behaviors. While entities have no user-defined state, they do have a position, orientation and velocity in the world, and can have forces / accelerations applied to them.
+ *
+ *  Any object in your simulation that needs a position or orientation, a visual representation in the scene, or needs to have physics applied to it, should be added to the scene as an entity.
+ * 
+ *  A `PsyanimEntity` acts a container for `PsyanimComponents`.
+ * 
+ *  All user-defined state and behaviors are encapsulated in PsyanimComponents, which are reusable scripts that can be attached to a PsyanimEntity and offer hooks into the real-time update loop of each scene.
+ *
+ *  -----------------------------------------------------------------------------------------------------------------
+ * 
  *  Some helpful tips:
  *      - use 'this.visible' to toggle sprite visibility
  *      - use 'this.body.isSleeping' to toggle whether or not this object receives physics updates

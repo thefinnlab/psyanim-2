@@ -11,8 +11,17 @@ import {
 
 import { v4 as uudiv4 } from 'uuid';
 
+/**
+ *  PsyanimApp is a Singleton class that encapsulates the entire real-time application for Psyanim2.
+ * 
+ *  PsyanimApp contains the Phaser.Game instance and manages the parent DOM element for the Phaser HTML5 canvas.
+ */
 export default class PsyanimApp {
 
+    /**
+     *  Application-wide Singleton Instance of PsyanimApp
+     *  @type {PsyanimApp}
+     */
     static get Instance() {
 
         if (PsyanimApp._instance == null)
@@ -23,7 +32,18 @@ export default class PsyanimApp {
         return PsyanimApp._instance;
     }
 
+    /**
+     *  Application-wide event emitter for PsyanimApp.
+     *  @type {Phaser.Events.EventEmitter}
+     */
+    events;
+
     constructor() {
+
+        if (PsyanimApp._instance != null)
+        {
+            PsyanimDebug.error('Attempting to instantiate another instance of PsyanimApp, but PsyanimApp is a singleton!');
+        }
 
         this._config = new PsyanimConfig();
 
@@ -34,6 +54,11 @@ export default class PsyanimApp {
         this.events = new Phaser.Events.EventEmitter();
     }
 
+    /**
+     * Toggles canvas visibility by appending/removing HTML element to/from it's parent element in the document.body.
+     * 
+     * @param {boolean} visible 
+     */
     setCanvasVisible(visible) {
 
         if (visible)
@@ -51,40 +76,74 @@ export default class PsyanimApp {
         }
     }
 
+    /**
+     *  The session ID for this app instance.  Guaranteed to be unique across all PsyanimApp instances.
+     *  @type {string} 
+     */
     get sessionID() {
         return this._sessionID;
     }
 
+    /**
+     *  The current PsyanimScene that is running.
+     *  @type {PsyanimScene}
+     */
     get currentScene() {
 
         return this._game.registry.get('psyanim_currentScene');
     }
 
+    /**
+     *  The scene key of the current scene that is running.
+     *  @type {string}
+     */
     get currentSceneKey() {
 
         return this._currentSceneKey;
     }
 
+    /**
+     *  All configured scene keys.
+     *  @type {string[]}
+     */
     get sceneKeys() {
 
         return this._config.sceneKeys;
     }
 
+    /**
+     *  The parent element of the Phaser canvas.
+     *  @type {object}
+     */
     get domElement() {
 
         return this._domElement;
     }
 
+    /**
+     *  The PsyanimConfig used for this PsyanimApp.Instance.
+     *  @type {PsyanimConfig}
+     */
     get config() {
 
         return this._config;
     }
 
+    /**
+     *  The Phaser.Game instance for this PsyanimApp.Instance.  This is `undefined` until you PsyanimApp.Instance.run() is called.
+     *  @type {Phaser.Game}
+     */
     get game() {
 
         return this._game;
     }
 
+    /**
+     * Returns the PsyanimScene associated with `sceneKey`
+     * 
+     * @param {string} sceneKey 
+     * @returns {PsyanimScene}
+     */
     getSceneByKey(sceneKey) {
 
         if (!this.sceneKeys.includes(sceneKey))
@@ -107,6 +166,13 @@ export default class PsyanimApp {
         }
     }
 
+    /**
+     * Load a particular scene by key.
+     * 
+     * NOTE: Scene must have been registered with PsyanimApp.Instance.config
+     * 
+     * @param {string} sceneKey - key identifying a particular scene to be loaded.
+     */
     loadScene(sceneKey) {
 
         PsyanimDebug.log("load scene called with key: " + sceneKey);
@@ -135,6 +201,9 @@ export default class PsyanimApp {
         this._currentSceneKey = sceneKey;
     }
 
+    /**
+     *  Stops the current scene from running.
+     */
     stopCurrentScene() {
 
         let currentScene = this.currentScene;
@@ -175,16 +244,27 @@ export default class PsyanimApp {
         return experimentVariations;
     }
 
+    /**
+     *  Current player ID for this session.
+     *  @type {string}
+     */
     get currentPlayerID() {
 
         return this._game.registry.get('psyanim_currentPlayerID');
     }
 
+    /**
+     * Sets the current player ID for this session.
+     * @type {string}
+     */
     set currentPlayerID(value) {
 
         this._game.registry.set('psyanim_currentPlayerID', value);
     }
 
+    /**
+     *  Starts PsyanimApp, creating a new Phaser.Game() and runs the first scene in `this.sceneKeys`.
+     */
     run() {
 
         if (this.sceneKeys.length == 0)

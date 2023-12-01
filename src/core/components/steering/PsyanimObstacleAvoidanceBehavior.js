@@ -7,8 +7,8 @@ export default class PsyanimObstacleAvoidanceBehavior extends PsyanimComponent {
     multiRaySensor;
 
     seekBehavior;
-    maxSeekSpeed = 5;
-    maxSeekAcceleration = 0.2;
+    maxSeekSpeed;
+    maxSeekAcceleration;
 
     avoidDistance;
 

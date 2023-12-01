@@ -7,6 +7,9 @@ import {
     PsyanimDebug
 } from 'psyanim-utils';
 
+/**
+ *  Application-wide configuration class for PsyanimApp
+ */
 export default class PsyanimConfig {
 
     constructor() {
@@ -37,6 +40,11 @@ export default class PsyanimConfig {
         this._dataDrivenScenes = [];
     }
 
+    /**
+     * Registers a scene so it is available to load at runtime (after `PsyanimApp.Instance.run()` is called).
+     * 
+     * @param {*} scene - either a `PsyanimScene type` or a `Psyanim Scene Definition`
+     */
     registerScene(scene) {
 
         if (scene.prototype instanceof PsyanimScene)
@@ -74,21 +82,40 @@ export default class PsyanimConfig {
         }
     }
 
+    /**
+     *  The keys currently registered with this config object.
+     *  @type {string[]}
+     */
     get sceneKeys() {
 
         return this._sceneKeys.slice();
     }
 
+    /**
+     *  A list of the `Psyanim scene definition`s currently registered with this config object.
+     *  @type {string[]}
+     */
     get sceneDefinitions() {
 
         return this._dataDrivenScenes.slice();
     }
 
+    /**
+     * Returns the scene definition associated with `key`.
+     * 
+     * @param {string} key - key that uniquely identifies a particular scene definition
+     * @returns {Psyanim Scene Definition}
+     */
     getSceneDefinition(key) {
 
         return this._dataDrivenScenes.find(s => s.key === key);
     }
 
+    /**
+     * Enables / disables application-wide debug features, including Phaser's matter-js debug visualizations.
+     * 
+     * @param {boolean} enabled
+     */
     setDebugEnabled(enabled) {
 
         if (enabled)
@@ -166,6 +193,10 @@ export default class PsyanimConfig {
         }
     }
 
+    /**
+     *  The underlying Phaser config object managed by this PsyanimConfig object.
+     *  @type {Object}
+     */
     get phaserConfig() {
 
         return this._phaserConfig;

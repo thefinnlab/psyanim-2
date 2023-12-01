@@ -7,7 +7,24 @@ import {
     PsyanimDebug
 } from 'psyanim-utils';
 
+/**
+ *  In Psyanim 2.0, everything that is seen in the world lives in a `PsyanimScene`, which is an abstraction for the 2D world we are simulating.
+ *
+ *  A `PsyanimScene` IS a `Phaser.Scene`, and inherits all of its properties and methods.
+ * 
+ *  The `PsyanimScene` acts as a container for PsyanimEntity objects.
+ */
 export default class PsyanimScene extends Phaser.Scene {
+
+    /**
+     *  If set to `true`, all textures in texture manager will be deleted when this scene shuts down.
+     */
+    deleteTexturesOnShutdown;
+
+    /**
+     *  A reference to the `PsyanimScreenBoundary` used by this scene.
+     */
+    screenBoundary;
 
     constructor(key) {
 
@@ -16,6 +33,16 @@ export default class PsyanimScene extends Phaser.Scene {
         this._afterCreateCalled = false;
     }
 
+    /**
+     * This method adds a new `PsyanimEntity` to the scene.
+     * 
+     * @param {string} name - entity name, must be unique per scene!
+     * @param {Number} [x] -  x-coordinate of entity's initial position in the world
+     * @param {Number} [y] -  y-coordinate of entity's initial position in the world
+     * @param {Object} [shapeParams] -  object defines entity shape & color
+     * @param {Object} [matterOptions] -  object defines physics properties of entity for matter-js
+     * @returns {PsyanimEntity} - reference to newly created entity
+     */
     addEntity(name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         if (this._entities.some(e => e.name == name))
@@ -36,6 +63,15 @@ export default class PsyanimScene extends Phaser.Scene {
         return entity;
     }
 
+    /**
+     * This method adds a new 'PsyanimEntity' to the scene, using the `PsyanimEntityPrefab` to construct it.
+     * 
+     * @param {PsyanimEntityPrefab} prefab - instance of prefab that entity will be constructed from
+     * @param {string} instanceName - must be unique per scene!
+     * @param {Number} [x] - x-coordinate of entity's initial position in scene
+     * @param {Number} [y] - y-coordinate of entity's initial position in scene
+     * @returns {PsyanimEntity} - reference to newly created entity
+     */
     instantiatePrefab(prefab, instanceName, x = 0, y = 0) {
 
         let entity = this.addEntity(
@@ -48,16 +84,29 @@ export default class PsyanimScene extends Phaser.Scene {
         return entity;
     }
 
+    /**
+     * Get a list of all entity names in this scene.
+     * @returns {string[]}
+     */
     getAllEntityNames() {
 
         return this._entities.map(e => e.name);
     }
 
+    /**
+     * Get a reference to an entity in this scene by name.
+     * @param {string} name 
+     * @returns {PsyanimEntity}
+     */
     getEntityByName(name) {
 
         return this._entities.find(e => e.name == name);
     }
 
+    /**
+     * Removes entity from this scene by name and destroys it.
+     * @param {string} name 
+     */
     destroyEntityByName(name) {
 
         let entity = this._entities.find(e => e.name == name);
@@ -74,9 +123,9 @@ export default class PsyanimScene extends Phaser.Scene {
     }
 
     /**
-     * 
-     * @param {*} componentType 
-     * @returns the first component found of type 'componentType'
+     * Searches all entities in this scene for `componentType` and returns a reference to the first component found.
+     * @param {Type} componentType 
+     * @returns {PsyanimComponent} the first component found of type 'componentType'
      */
     getComponentByType(componentType) {
 
@@ -90,6 +139,11 @@ export default class PsyanimScene extends Phaser.Scene {
         return null;
     }
 
+    /**
+     * Searches all entities in this scene for `componentType` and returns a list of all components found.
+     * @param {Type} componentType 
+     * @returns {PsyanimComponent[]}
+     */
     getComponentsByType(componentType) {
 
         return this._entities
@@ -97,6 +151,9 @@ export default class PsyanimScene extends Phaser.Scene {
             .map(e => e.getComponent(componentType));
     }
 
+    /**
+     *  The base `init()` method for all classes inheriting from `PsyanimScene`.
+     */
     init() {
 
         this._entities = [];
@@ -121,16 +178,29 @@ export default class PsyanimScene extends Phaser.Scene {
         }
     }
 
+    /**
+     *  The base `preload()` method for all classes inheriting from `PsyanimScene`.
+     */
     preload() {
 
     }
 
+    /**
+     *  The base `create()` method for all classes inheriting from 'PsyanimScene'.
+     * 
+     *  `create()` is called once everytime a scene is loaded.
+     */
     create() {
 
         // setup wrapping with screen boundary
         this.screenBoundary = new PsyanimScreenBoundary(this);
     }
 
+    /**
+     *  The base `afterCreate()` method for all classes inheriting from `PsyanimScene.`
+     * 
+     *  `afterCreate()` is called once after every call to `create()`.
+     */
     afterCreate() {
  
         this._entities.forEach(e => e.afterCreate());
@@ -138,6 +208,11 @@ export default class PsyanimScene extends Phaser.Scene {
         this._afterCreateCalled = true;
     }
 
+    /**
+     *  Calling this method will delete all textures in a scene.
+     * 
+     *  WARNING: make sure you have deleted any entities that might reference these textures before deleting them!
+     */
     deleteAllTextures() {
 
         let textureKeys = this.textures.getTextureKeys();
@@ -158,6 +233,11 @@ export default class PsyanimScene extends Phaser.Scene {
         });
     }
 
+    /**
+     *  The base `beforeShutdown()` method for all classes inheriting from `PsyanimScene.`
+     * 
+     *  `beforeShutdown()` is called once before this scene is shutdown (usually before loading another scene).
+     */
     beforeShutdown() {
 
         if (this.deleteTexturesOnShutdown)
@@ -168,6 +248,14 @@ export default class PsyanimScene extends Phaser.Scene {
         this._entities.forEach(e => e.beforeShutdown());
     }
 
+    /**
+     * This is the main real-time update() loop for the entire `PsyanimScene`.
+     * 
+     * All entities & their components are updated in this loop.
+     * 
+     * @param {Number} t - The current simulation time in seconds
+     * @param {Number} dt - The delta time in ms since the last frame. This is a smoothed and capped value based on the FPS rate.
+     */
     update(t, dt) {
 
         this._entities.forEach(e => e.update(t, dt));
