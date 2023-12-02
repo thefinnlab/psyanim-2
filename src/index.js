@@ -51,6 +51,7 @@ import PsyanimFleeBehavior from './core/components/steering/PsyanimFleeBehavior.
 import PsyanimPlayfightBehavior from './core/components/steering/PsyanimPlayfightBehavior.js';
 import PsyanimSeekBehavior from './core/components/steering/PsyanimSeekBehavior.js';
 import PsyanimWanderBehavior from './core/components/steering/PsyanimWanderBehavior.js';
+import PsyanimPathFollowingBehavior from './core/components/steering/PsyanimPathFollowingBehavior.js';
 
 import PsyanimPreciselyTimedArriveAgent from './core/components/steering/agents/PsyanimPreciselyTimedArriveAgent.js';
 import PsyanimAdvancedFleeAgent from './core/components/steering/agents/PsyanimAdvancedFleeAgent.js';
@@ -166,6 +167,7 @@ export {
     PsyanimPlayfightBehavior,
     PsyanimSeekBehavior,
     PsyanimWanderBehavior,
+    PsyanimPathFollowingBehavior,
 
     PsyanimPreciselyTimedArriveAgent,
     PsyanimAdvancedFleeAgent,
