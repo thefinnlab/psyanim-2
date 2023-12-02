@@ -55,6 +55,7 @@ createRoot(document.getElementById('psyanim-app'))
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
+let fsmTestCopy = PsyanimUtils.cloneSceneDefinition(FSMTest);
 let obstacleAvoidanceCopy = PsyanimUtils.cloneSceneDefinition(ObstacleAvoidanceTest);
 let mimicInteractiveCopy = PsyanimUtils.cloneSceneDefinition(MimicInteractiveTest);
 let predatorPreyCopy = PsyanimUtils.cloneSceneDefinition(PredatorPrey);
@@ -74,7 +75,7 @@ let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let AdvancedPlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedPlayfightTest);
 
 // register the scene def clones to make sure the clones are g2g too
-PsyanimApp.Instance.config.registerScene(FSMTest);
+PsyanimApp.Instance.config.registerScene(fsmTestCopy);
 PsyanimApp.Instance.config.registerScene(AdvancedFleeTestCopy);
 PsyanimApp.Instance.config.registerScene(AdvancedArriveTest);
 PsyanimApp.Instance.config.registerScene(obstacleAvoidanceCopy);

@@ -38,9 +38,25 @@ export default class PsyanimPathFollowingBehavior extends PsyanimComponent {
         this._direction = 1;
     }
 
+    _convertMatterVerticesToPhaserVector2(vertices) {
+
+        let phaserVerts = [];
+
+        for (let i = 0; i < vertices.length; ++i)
+        {
+            phaserVerts.push(new Phaser.Math.Vector2(
+               vertices[i].x, vertices[i].y 
+            ));
+        }
+
+        return phaserVerts;
+    }
+
     afterCreate() {
 
         super.afterCreate();
+
+        this.currentPathVertices = this._convertMatterVerticesToPhaserVector2(this.currentPathVertices);
 
         this._currentPath = new PsyanimPath(this.currentPathVertices);
 
