@@ -26,14 +26,9 @@ export default class PsyanimPathFollowingBehavior extends PsyanimComponent {
         this.loop = false;
         this.reverse = true;
 
-        this._pathFollowingTarget = this.scene.addEntity(this.entity.name + '_pathFollowingTarget', 0, 0, {
-            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 4,
-            color: 0xFFA500
-        },
-        {
-            collisionFilter: PsyanimConstants.DEFAULT_VISUAL_ONLY_COLLISION_FILTER
-        });
+        this._pathFollowingTarget = this.scene.addEntity(this.entity.name + '_pathFollowingTarget', 0, 0, 
+        { isEmpty: true },
+        { collisionFilter: PsyanimConstants.DEFAULT_VISUAL_ONLY_COLLISION_FILTER });
 
         this._direction = 1;
     }
