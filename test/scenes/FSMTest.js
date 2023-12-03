@@ -10,7 +10,7 @@ import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle.js
 import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArriveBehavior.js';
 import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent.js';
 
-import PsyanimPathFollowingBehavior from '../../src/core/components/steering/PsyanimPathFollowingBehavior.js';
+import PsyanimPathFollowingAgent from '../../src/core/components/steering/agents/PsyanimPathFollowingAgent.js';
 
 export default {
 
@@ -54,7 +54,7 @@ export default {
                     }
                 },
                 {
-                    type: PsyanimPathFollowingBehavior,
+                    type: PsyanimPathFollowingAgent,
                     params: {
                         currentPathVertices: [
                             new Phaser.Math.Vector2(100, 100),

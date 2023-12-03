@@ -1,11 +1,11 @@
 import Phaser from 'phaser';
 
-import PsyanimConstants from '../../PsyanimConstants.js';
-import PsyanimComponent from '../../PsyanimComponent.js';
+import PsyanimConstants from '../../../PsyanimConstants.js';
+import PsyanimComponent from '../../../PsyanimComponent.js';
 
-import PsyanimPath from '../../utils/PsyanimPath.js';
+import PsyanimPath from '../../../utils/PsyanimPath.js';
 
-export default class PsyanimPathFollowingBehavior extends PsyanimComponent {
+export default class PsyanimPathFollowingAgent extends PsyanimComponent {
 
     arriveAgent;
 
@@ -27,10 +27,24 @@ export default class PsyanimPathFollowingBehavior extends PsyanimComponent {
         this.reverse = true;
 
         this._pathFollowingTarget = this.scene.addEntity(this.entity.name + '_pathFollowingTarget', 0, 0, 
-        { isEmpty: true },
-        { collisionFilter: PsyanimConstants.DEFAULT_VISUAL_ONLY_COLLISION_FILTER });
+            { isEmpty: true },
+            { collisionFilter: PsyanimConstants.DEFAULT_VISUAL_ONLY_COLLISION_FILTER });
 
         this._direction = 1;
+    }
+
+    onEnable() {
+
+        super.onEnable();
+
+        this.arriveAgent.enabled = true;
+    }
+
+    onDisable() {
+
+        super.onDisable();
+
+        this.arriveAgent.enabled = false;
     }
 
     _convertMatterVerticesToPhaserVector2(vertices) {
@@ -56,6 +70,8 @@ export default class PsyanimPathFollowingBehavior extends PsyanimComponent {
         this._currentPath = new PsyanimPath(this.currentPathVertices);
 
         this.targetParameterOffset = this.targetPositionOffset / this._currentPath.getTotalLength();
+
+        this.arriveAgent.target = this._pathFollowingTarget;
     }
 
     _computePathFollowingTargetPosition() {
@@ -96,7 +112,5 @@ export default class PsyanimPathFollowingBehavior extends PsyanimComponent {
         super.update(t, dt);
 
         this._computePathFollowingTargetPosition();
-
-        this.arriveAgent.target = this._pathFollowingTarget;
     }
 }
