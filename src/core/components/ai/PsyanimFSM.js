@@ -1,8 +1,4 @@
-import Phaser from 'phaser';
-
 import PsyanimComponent from '../../PsyanimComponent.js';
-
-import PsyanimFSMState from './PsyanimFSMState.js';
 
 export default class PsyanimFSM extends PsyanimComponent {
 
@@ -14,6 +10,8 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         this._stateVariables = {};
         this._states = [];
+
+        this._initialized = false;
     }
 
     stringifyStateVariables() {
@@ -57,8 +55,6 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         console.log('initialState: ', this.initialState);
 
-        this._currentState.enter();
-
         super.afterCreate();
     }
 
@@ -81,9 +77,16 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         super.update(t, dt);
 
-        let currentTransition = null;
+        // we don't enter the 'initialState' until the first update() runs
+        if (!this._initialized)
+        {
+            this._currentState.enter();
+            this._initialized = true;
+        }
 
         // see if we have any transition conditions met
+        let currentTransition = null;
+
         for (let i = 0; i < this._currentState.transitions.length; ++i)
         {
             let t = this._currentState.transitions[i];
