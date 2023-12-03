@@ -66,6 +66,11 @@ import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent
 import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent.js';
 import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent.js';
 
+// FSM components
+import PsyanimFSM from './core/components/ai/PsyanimFSM.js';
+import PsyanimFSMState from './core/components/ai/PsyanimFSMState.js';
+import PsyanimFSMStateTransition from './core/components/ai/PsyanimFSMStateTransition.js';
+
 // ui
 import PsyanimExperimentControls from './core/components/ui/PsyanimExperimentControls.js';
 import PsyanimSceneTitle from './core/components/ui/PsyanimSceneTitle.js';
@@ -181,6 +186,11 @@ export {
     PsyanimPreyAgent,
     PsyanimSeekAgent,
     PsyanimWanderAgent,
+
+    // fsm components
+    PsyanimFSM,
+    PsyanimFSMState,
+    PsyanimFSMStateTransition,
 
     // ui
     PsyanimExperimentControls,
