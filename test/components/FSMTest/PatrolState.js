@@ -33,7 +33,7 @@ export default class PatrolState extends PsyanimFSMState {
         super.exit();
     }
 
-    run() {
+    run(t, dt) {
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.ONE))
         {

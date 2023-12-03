@@ -35,7 +35,7 @@ export default class IdleState extends PsyanimFSMState {
         super.exit();
     }
 
-    run() {
+    run(t, dt) {
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.ONE))
         {

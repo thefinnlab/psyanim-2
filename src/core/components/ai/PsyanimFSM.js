@@ -110,6 +110,6 @@ export default class PsyanimFSM extends PsyanimComponent {
         }
 
         // let the current state run
-        this._currentState.run();
+        this._currentState.run(t, dt);
     }
 }

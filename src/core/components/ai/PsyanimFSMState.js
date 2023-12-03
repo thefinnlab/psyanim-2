@@ -77,7 +77,7 @@ export default class PsyanimFSMState {
         PsyanimDebug.log('EXITING state: ', this.constructor.name);
     }
 
-    run() {
+    run(t, dt) {
 
         PsyanimDebug.log('state RUNNING: ', this.constructor.name);
     }
