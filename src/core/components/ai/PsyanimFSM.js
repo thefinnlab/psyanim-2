@@ -4,9 +4,14 @@ export default class PsyanimFSM extends PsyanimComponent {
 
     initialState;
 
+    debug;
+
     constructor(entity) {
 
         super(entity);
+
+        // TODO: this should probably be 'false' by default, but you need to update the tutorial if so
+        this.debug = true;
 
         this._stateVariables = {};
         this._states = [];

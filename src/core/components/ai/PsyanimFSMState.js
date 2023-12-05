@@ -24,6 +24,11 @@ export default class PsyanimFSMState {
         return this._entity;
     }
 
+    get stage() {
+        
+        return this._stage;
+    }
+
     get transitions() {
 
         return this._transitions;
@@ -51,7 +56,7 @@ export default class PsyanimFSMState {
 
         if (this.hasTransition(targetStateType, variableKey))
         {
-            console.error('transition already exists: targetState = ', typeof(targetStateType), ', key = ', variableKey);
+            PsyanimDebug.error('transition already exists: targetState = ', typeof(targetStateType), ', key = ', variableKey);
             return;
         }
 
@@ -67,19 +72,28 @@ export default class PsyanimFSMState {
 
         this._stage = PsyanimFSMState.STAGE.RUNNING;
 
-        PsyanimDebug.log('ENTERING state: ', this.constructor.name);
+        if (this.fsm.debug)
+        {
+            PsyanimDebug.log(this._entity.name, 'ENTERING state: ', this.constructor.name);
+        }
     }
 
     exit() {
 
         this._stage = PsyanimFSMState.STAGE.EXITED;
 
-        PsyanimDebug.log('EXITING state: ', this.constructor.name);
+        if (this.fsm.debug)
+        {
+            PsyanimDebug.log(this._entity.name, 'EXITING state: ', this.constructor.name);
+        }
     }
 
     run(t, dt) {
 
-        PsyanimDebug.log('state RUNNING: ', this.constructor.name);
+        if (this.fsm.debug)
+        {
+            PsyanimDebug.log(this._entity.name, 'state RUNNING: ', this.constructor.name);            
+        }
     }
 }
 

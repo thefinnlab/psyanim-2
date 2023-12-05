@@ -18,6 +18,8 @@ export default class FSMTest extends PsyanimComponent {
         // setup fsm and add states
         this._fsm = this.entity.addComponent(PsyanimFSM);
 
+        this._fsm.debug = true;
+
         let idleState = this._fsm.addState(IdleState);
         let patrolState = this._fsm.addState(PatrolState);
 
