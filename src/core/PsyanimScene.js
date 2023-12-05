@@ -37,10 +37,10 @@ export default class PsyanimScene extends Phaser.Scene {
      * This method adds a new `PsyanimEntity` to the scene.
      * 
      * @param {string} name - entity name, must be unique per scene!
-     * @param {Number} [x] -  x-coordinate of entity's initial position in the world
-     * @param {Number} [y] -  y-coordinate of entity's initial position in the world
-     * @param {Object} [shapeParams] -  object defines entity shape & color
-     * @param {Object} [matterOptions] -  object defines physics properties of entity for matter-js
+     * @param {Number} [x] - x-coordinate of entity's initial position in the world
+     * @param {Number} [y] - y-coordinate of entity's initial position in the world
+     * @param {Object} [shapeParams] - object defines entity shape & color
+     * @param {Object} [matterOptions] - object defines physics properties of entity for matter-js
      * @returns {PsyanimEntity} - reference to newly created entity
      */
     addEntity(name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {

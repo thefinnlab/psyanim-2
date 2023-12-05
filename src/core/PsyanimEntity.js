@@ -41,6 +41,16 @@ import PsyanimApp from './PsyanimApp.js';
  */
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
+    /**
+     * Constructor for PsyanimEntity objects.
+     * 
+     * @param {PsyanimScene} scene - scene this entity belongs to.
+     * @param {string} name - - entity name, must be unique per scene!
+     * @param {Number} [x] - x-coordinate of entity's initial position in the world
+     * @param {Number} [y] - y-coordinate of entity's initial position in the world
+     * @param {Object} [shapeParams] - object defines entity shape & color
+     * @param {Object} [matterOptions] - object defines physics properties of entity for matter-js
+     */
     constructor(scene, name, x = 0, y = 0, shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         // before we call super(), let's generate the necessary textures and matter config
@@ -210,22 +220,16 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     /**
      *  Parameters defining the shape of the entity.
      * 
-     *  If `isEmpty` is `true`, this entity will not have a visual representation.
-     * 
-     *  If `isEmpty` is false, it will have a visual representation defined by the following parameters:
-     * 
-     *  - `shapeType`: `PsyanimConstants.SHAPE_TYPE`
-     * 
-     *  If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.
-     * 
-     *  If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.
-     *  
-     *  If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.
-     *
-     *  - `color`: `Number` representing RGB color
-     *  - `visible`: `boolean`
-     * 
-     *  @type {Object}
+     *  @return {Object}
+     *  @property {boolean} isEmpty - If `true`, this entity will not have a visual representation or physics applied.
+     *  @property {PsyanimConstants.SHAPE_TYPE} shapeType - can be a circle, rectangle, or triangle
+     *  @property {number} radius - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.
+     *  @property {number} width - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.
+     *  @property {number} height - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.
+     *  @property {number} base - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.
+     *  @property {number} altitude - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.
+     *  @property {number} color - integer representing RGB color
+     *  @property {boolean} visible - `true` if entity is visible
      */
     get shapeParams() {
 
@@ -233,31 +237,16 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
-     *  Parameters defining the physics settings of the entity:
+     *  Parameters defining the physics settings of the entity.
      * 
-     *  - `isSensor`: `boolean`
-     * 
-     *  If `isSensor` is `true`, this entity will be able to emit collision events, but will not have 
-     *  impulses applied to it or others which collide with it.
-     * 
-     *  - `isSleeping`: `boolean`
-     * 
-     *  If `isSleeping` is `true`, this entity will not have physics updates applied to it at all.
-     *  Physics will be completely disabled for this entity.
-     * 
-     *  - `collisionFilter`: `Object`
-     * 
-     *  `collisionFilter` is a matter-js collision filter.  Default is `PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER`
-     * 
-     *  @type {Object}
+     *  @return {Object}
+     *  @property {boolean} isSensor - If true, entity will be able to emit collision events, but will not be receive physics updates
+     *  @property {boolean} isSleeping - If true, entity will not have physics updates or receive collision events
+     *  @property {Object} collisionFilter - matter-js collision filter
      */
     get matterOptions() {
 
         return this._matterOptions;
-    }
-
-    get geomParams() {
-        return this._geomParams;
     }
 
     get shapeType() {
