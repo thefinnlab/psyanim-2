@@ -301,7 +301,7 @@ class _PsyanimJsPsychPlugin {
                             });
                     }
 
-                    if (this._currentTrial.agentNamesToRecord.includes(agent.name) && 
+                    if (agentNamesToRecord.includes(agent.name) && 
                     this._currentTrial.recordAnimationClips)
                     {
                         // save baked animation data
