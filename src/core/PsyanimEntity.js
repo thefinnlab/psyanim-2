@@ -5,6 +5,10 @@ import PsyanimGeomUtils from './utils/PsyanimGeomUtils.js';
 
 import PsyanimApp from './PsyanimApp.js';
 
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
+
 /**
  *  Any object that exists in a scene, regardless of its visual representation, is called a `PsyanimEntity`.
  *
