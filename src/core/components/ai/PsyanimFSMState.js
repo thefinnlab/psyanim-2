@@ -68,6 +68,10 @@ export default class PsyanimFSMState {
         return transition;
     }
 
+    afterCreate() {
+
+    }
+
     enter() {
 
         this._stage = PsyanimFSMState.STAGE.RUNNING;

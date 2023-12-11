@@ -61,6 +61,12 @@ export default class PsyanimFSM extends PsyanimComponent {
         console.log('initialState: ', this.initialState);
 
         super.afterCreate();
+
+        // call after create on each state
+        for (let i = 0; i < this._states.length; ++i)
+        {
+            this._states[i].afterCreate();
+        }
     }
 
     stateVariableExists(key) {

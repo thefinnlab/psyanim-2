@@ -31,6 +31,8 @@ import AdvancedArriveTest from './scenes/AdvancedArriveTest.js';
 
 import FSMTest from './scenes/FSMTest.js';
 
+import PlayfightTestv2 from './scenes/PlayfightTestv2.js';
+
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
@@ -54,6 +56,7 @@ createRoot(document.getElementById('psyanim-app'))
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
+let playfightTestv2Copy = PsyanimUtils.cloneSceneDefinition(PlayfightTestv2);
 let fsmTestCopy = PsyanimUtils.cloneSceneDefinition(FSMTest);
 let obstacleAvoidanceCopy = PsyanimUtils.cloneSceneDefinition(ObstacleAvoidanceTest);
 let mimicInteractiveCopy = PsyanimUtils.cloneSceneDefinition(MimicInteractiveTest);
@@ -73,6 +76,7 @@ let EvadeTestCopy = PsyanimUtils.cloneSceneDefinition(EvadeTest);
 let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(playfightTestv2Copy);
 PsyanimApp.Instance.config.registerScene(PlayfightTestCopy);
 PsyanimApp.Instance.config.registerScene(fsmTestCopy);
 PsyanimApp.Instance.config.registerScene(AdvancedFleeTestCopy);
