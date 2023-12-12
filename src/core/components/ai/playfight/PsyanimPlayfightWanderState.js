@@ -1,3 +1,4 @@
+import PsyanimFSM from '../PsyanimFSM.js';
 import PsyanimFSMState from '../PsyanimFSMState.js';
 
 import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
@@ -5,42 +6,68 @@ import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 
-import { PsyanimUtils } from 'psyanim-utils';
+import { PsyanimUtils, PsyanimDebug } from 'psyanim-utils';
 
 export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
-    maxBreakDuration; // ms
+    targetAgent;
+    maxTargetDistanceForCharge;
+
+    breakDurationAverage; // ms
     breakDurationVariance; // ms
+
+    fleeWhenAttacked; // boolean
+    panicDistance; // pixels
+    fleeRate; // percentage
 
     constructor(fsm) {
 
         super(fsm);
 
-        this.maxBreakDuration = 3500;
-        this.breakDurationVariance = 1500;
+        this.breakDurationAverage = 2000;
+        this.breakDurationVariance = 1000;
 
-        this._breakDuration = this.maxBreakDuration 
+        this.fleeWhenAttacked = false;
+        this.fleeRate = 0.5;
+
+        this.maxTargetDistanceForCharge = 500;
+
+        this._breakDuration = this.breakDurationAverage 
             + PsyanimUtils.getRandomInt(-this.breakDurationVariance, this.breakDurationVariance);
 
         // set default state variables
         this.fsm.setStateVariable('wanderTimer', 0);
+        this.fsm.setStateVariable('distanceToTarget', this.maxTargetDistanceForCharge);
+        this.fsm.setStateVariable('flee', false);
 
         /**
          *  Setup transitions here
          */
 
-        this.addTransition(PsyanimPlayfightChargeState, 'wanderTimer', (value) => value > this._breakDuration);
+        this.addTransition(PsyanimPlayfightChargeState, 'wanderTimer', this._isChargeTransitionTriggered.bind(this));
+        this.addTransition
+    }
+
+    _isChargeTransitionTriggered(wanderTimer) {
+
+        let distanceToTarget = this.fsm.getStateVariable('distanceToTarget');
+
+        return (distanceToTarget < this.maxTargetDistanceForCharge)
+            && (wanderTimer > this._breakDuration);
     }
 
     enter() {
 
         super.enter();
 
+        this._targetChargeState = this.targetAgent.getComponent(PsyanimFSM)
+            .getState(PsyanimPlayfightChargeState);
+
         this._wanderBehavior = this.entity.getComponent(PsyanimWanderBehavior);
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
 
         // compute a new break duration with random variance
-        this._breakDuration = this.maxBreakDuration 
+        this._breakDuration = this.breakDurationAverage 
             + PsyanimUtils.getRandomInt(-this.breakDurationVariance, this.breakDurationVariance);
 
         this.fsm.setStateVariable('wanderTimer', 0);
@@ -49,8 +76,6 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
     exit() {
 
         super.exit();
-
-
     }
 
     run(t, dt) {
@@ -58,9 +83,23 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         super.run();
 
         // update state variables
-        let wanderTimer = this.fsm.getStateVariable('wanderTimer');
+        let updatedWanderTimer = this.fsm.getStateVariable('wanderTimer') + dt;
+        
+        let distanceToTarget = this.targetAgent.position
+            .subtract(this.entity.position)
+            .length();
 
-        this.fsm.setStateVariable('wanderTimer', wanderTimer + dt);
+        this.fsm.setStateVariable('distanceToTarget', distanceToTarget);
+
+        if (distanceToTarget < this.maxTargetDistanceForCharge)
+        {
+            this.fsm.setStateVariable('wanderTimer', updatedWanderTimer);
+        }
+
+        if (this.fsm.debug && this._targetChargeState.isActive)
+        {
+            PsyanimDebug.log('target agent is CHARGING!');
+        }
 
         // apply steering
         let steering = this._wanderBehavior.getSteering();

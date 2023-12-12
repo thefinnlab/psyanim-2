@@ -54,6 +54,11 @@ export default class PsyanimFSM extends PsyanimComponent {
         return newState;
     }
 
+    get currentState() {
+
+        return this._currentState;
+    }
+
     afterCreate() {
 
         this._currentState = this.initialState;

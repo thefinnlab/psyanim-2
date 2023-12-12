@@ -87,6 +87,7 @@ export default class PsyanimPlayfightFSM extends PsyanimComponent {
         this._fsm.debug = this.debug;
         this._chargeState.setTarget(this.target);
         this._wanderState.breakDuration = this.breakDuration;
+        this._wanderState.targetAgent = this.target;
 
         this._arriveBehavior.maxSpeed = this.maxChargeSpeed;
         this._arriveBehavior.maxAcceleration = this.maxChargeAcceleration;

@@ -30,8 +30,9 @@ export default {
                     type: PsyanimPlayfightFSM,
                     params: {
                         target: {
-                            entityName: 'agent2'
-                        }
+                            entityName: 'agent2',
+                        },
+                        debug: true
                     }
                 }
             ]

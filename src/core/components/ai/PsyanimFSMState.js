@@ -14,6 +14,11 @@ export default class PsyanimFSMState {
         this._transitions = [];
     }
 
+    get name() {
+
+        return this.constructor.name;
+    }
+
     get fsm() {
 
         return this._fsm;
@@ -32,6 +37,11 @@ export default class PsyanimFSMState {
     get transitions() {
 
         return this._transitions;
+    }
+
+    get isActive() {
+
+        return this._stage === PsyanimFSMState.STAGE.RUNNING;
     }
 
     getTransition(targetStateType, variableKey) {
