@@ -9,6 +9,7 @@ import PsyanimPlayfightFSM from '../../src/core/components/ai/playfight/PsyanimP
 export default {
 
     key: 'Playfight Test v2',
+    wrapScreenBoundary: false,
     entities: [
         {
             name: 'sceneControls',
@@ -29,9 +30,24 @@ export default {
                 { 
                     type: PsyanimPlayfightFSM,
                     params: {
+
+                        breakDurationAverage: 2000,
+                        breakDurationVariance: 1000,
+                        maxTargetDistanceForCharge: 350,
+
+                        maxWanderSpeed: 4,
+                        maxWanderAcceleration: 0.2,
+                        wanderRadius: 50,
+                        wanderOffset: 250,
+                        maxWanderAngleChangePerFrame: 20,
+
+                        maxChargeSpeed: 9,
+                        maxChargeAcceleration: 0.4,
+
                         target: {
                             entityName: 'agent2',
                         },
+                        wanderFleeRate: 0.0,
                         debug: true
                     }
                 }
@@ -48,9 +64,25 @@ export default {
                 { 
                     type: PsyanimPlayfightFSM,
                     params: {
+
+                        breakDurationAverage: 2000,
+                        breakDurationVariance: 1000,
+                        maxTargetDistanceForCharge: 350,
+
+                        maxWanderSpeed: 4,
+                        maxWanderAcceleration: 0.2,
+                        wanderRadius: 50,
+                        wanderOffset: 250,
+                        maxWanderAngleChangePerFrame: 20,
+
+                        maxChargeSpeed: 9,
+                        maxChargeAcceleration: 0.4,
+
                         target: {
                             entityName: 'agent1'
-                        }
+                        },
+                        wanderFleeRate: 0.0,
+                        debug: false
                     }
                 }
             ]

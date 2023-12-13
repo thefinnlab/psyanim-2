@@ -6,32 +6,50 @@ import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
 import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
+import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
 
 import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
 import PsyanimPlayfightWanderState from './PsyanimPlayfightWanderState.js';
+import PsyanimPlayfightFleeState from './PsyanimFleeState.js';
 
-export default class PsyanimPlayfightFSM extends PsyanimComponent {
+export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
     /** playfight params */
     target;
-    breakDuration;
 
-    /** arrive params */
+    /** wander state params */
+    breakDurationAverage;
+    breakDurationVariance;
+    maxTargetDistanceForCharge;
+
+    wanderFleeWhenAttacked;
+    wanderPanicDistance;
+    wanderFleeRate;
+
+    /** flee state params */
+    maxFleeDuration;
+
+    /** arrive behavior params */
     maxChargeSpeed;
     maxChargeAcceleration;
     innerDecelerationRadius;
     outerDecelerationRadius;
 
-    /** wander params */
+    /** wander behavior params */
     maxWanderSpeed;
     maxWanderAcceleration;
     wanderRadius;
     wanderOffset;
     maxWanderAngleChangePerFrame;
 
-    /** general params */
+    /** flee behavior params */
+    maxFleeSpeed;
+    maxFleeAcceleration;
+    fleePanicDistance;
+
+    /** general behavior params */
     debug;
 
     constructor(entity) {
@@ -39,12 +57,25 @@ export default class PsyanimPlayfightFSM extends PsyanimComponent {
         super(entity);
 
         // default parameters
-        this.breakDuration = 2000;
         this.debug = false;
 
+        // wander state
+        this.breakDurationAverage = 2000;
+        this.breakDurationVariance = 1000;
+        this.maxTargetDistanceForCharge = 500;
+
+        this.wanderFleeWhenAttacked = true;
+        this.wanderPanicDistance = 300;
+        this.wanderFleeRate = 0.5;
+
+        // flee state
+        this.maxFleeDuration = 2000;
+
+        // arrive behavior
         this.maxChargeSpeed = 9;
         this.maxChargeAcceleration = 0.4;
 
+        // wander behavior
         this.innerDecelerationRadius = 12;
         this.outerDecelerationRadius = 30;
 
@@ -54,19 +85,24 @@ export default class PsyanimPlayfightFSM extends PsyanimComponent {
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 20;
 
+        // flee behavior
+        this.maxFleeSpeed = 4;
+        this.maxFleeAcceleration = 0.2;
+        this.panicDistance = 250;
+
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
         this._arriveBehavior = this.entity.addComponent(PsyanimArriveBehavior);
         this._seekBehavior = this.entity.addComponent(PsyanimSeekBehavior);
         this._wanderBehavior = this.entity.addComponent(PsyanimWanderBehavior);
+        this._fleeBehavior = this.entity.addComponent(PsyanimFleeBehavior);
         
         // setup FSM
-        this._fsm = this.entity.addComponent(PsyanimFSM);
+        this._chargeState = this.addState(PsyanimPlayfightChargeState);
+        this._wanderState = this.addState(PsyanimPlayfightWanderState);
+        this._fleeState = this.addState(PsyanimPlayfightFleeState);
 
-        this._chargeState = this._fsm.addState(PsyanimPlayfightChargeState);
-        this._wanderState = this._fsm.addState(PsyanimPlayfightWanderState);
-
-        this._fsm.initialState = this._wanderState;
+        this.initialState = this._wanderState;
     }
 
     onEnable() {
@@ -81,25 +117,45 @@ export default class PsyanimPlayfightFSM extends PsyanimComponent {
 
     afterCreate() {
 
-        super.afterCreate();
-
         // configure defaults for fsm & components
-        this._fsm.debug = this.debug;
-        this._chargeState.setTarget(this.target);
-        this._wanderState.breakDuration = this.breakDuration;
-        this._wanderState.targetAgent = this.target;
+        this.debug = this.debug;
 
+        // charge state
+        this._chargeState.setTarget(this.target);
+
+        // wander state
+        this._wanderState.targetAgent = this.target;
+        this._wanderState.breakDurationAverage = this.breakDurationAverage;
+        this._wanderState.breakDurationVariance = this.breakDurationVariance;
+        this._wanderState.maxTargetDistanceForCharge = this.maxTargetDistanceForCharge;
+        this._wanderState.fleeWhenAttacked = this.wanderFleeWhenAttacked;
+        this._wanderState.panicDistance = this.wanderPanicDistance;
+        this._wanderState.fleeRate = this.wanderFleeRate;
+
+        // flee state
+        this._fleeState.target = this.target;
+        this._fleeState.maxFleeDuration = this.maxFleeDuration;
+
+        // arrive behavior
         this._arriveBehavior.maxSpeed = this.maxChargeSpeed;
         this._arriveBehavior.maxAcceleration = this.maxChargeAcceleration;
         this._arriveBehavior.innerDecelerationRadius = this.innerDecelerationRadius;
         this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
 
+        // wander behavior
         this._wanderBehavior.seekBehavior = this._seekBehavior;
         this._wanderBehavior.maxSeekSpeed = this.maxWanderSpeed;
         this._wanderBehavior.maxSeekAcceleration = this.maxWanderAcceleration;
         this._wanderBehavior.radius = this.wanderRadius;
         this._wanderBehavior.offset = this.wanderOffset;
         this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
+
+        // flee behavior
+        this._fleeBehavior.maxSpeed = this.maxFleeSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxFleeAcceleration;
+        this._fleeBehavior.panicDistance = this.panicDistance;
+
+        super.afterCreate();
     }
 
     beforeShutdown() {

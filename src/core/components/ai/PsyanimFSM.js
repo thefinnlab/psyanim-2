@@ -17,6 +17,8 @@ export default class PsyanimFSM extends PsyanimComponent {
         this._states = [];
 
         this._initialized = false;
+
+        this.events = new Phaser.Events.EventEmitter();
     }
 
     stringifyStateVariables() {
@@ -119,11 +121,15 @@ export default class PsyanimFSM extends PsyanimComponent {
         {
             this._currentState.exit();
 
+            this.events.emit('exit', this._currentState.name);
+
             // TODO: maybe we should wire this stuff up ahead of time in the base state class's
             // enter() method so we don't have to do a getState() in our main loop here
             let targetState = this.getState(currentTransition.targetStateType);
 
             targetState.enter();
+
+            this.events.emit('enter', this._currentState.name);
 
             this._currentState = targetState;
         }
