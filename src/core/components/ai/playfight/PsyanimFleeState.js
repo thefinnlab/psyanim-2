@@ -37,11 +37,8 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
         this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
 
-        // this._targetAgentChargeState = this.target.getComponent(PsyanimPlayfightFSM)
-        //     .getState(PsyanimPlayfightChargeState);
-
-        this._targetAgentWanderState = this.target.getComponent(PsyanimPlayfightFSM)
-            .getState(PsyanimPlayfightWanderState);
+        this._targetAgentChargeState = this.target.getComponent(PsyanimPlayfightFSM)
+            .getState(PsyanimPlayfightChargeState);
     }
 
     enter() {
@@ -50,13 +47,16 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('fleeTimer', 0);
         this.fsm.setStateVariable('wander', false);
+
+        if (this.fsm.debug)
+        {
+            this.entity.setTintFill(0x0000ff);            
+        }
     }
 
     exit() {
 
         super.exit();
-
-        console.warn('flee duration = ', this.fsm.getStateVariable('fleeTimer'));
     }
 
     run(t, dt) {
@@ -68,12 +68,7 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('fleeTimer', updatedFleeTimer);
 
-        // TODO: for some reason this is only running for 1 frame before the target agent's wander
-        // state becomes active or the charge state becomes inactive... doesn't make sense for it to
-        // be consistently 1 frame tho - need to debug...
-
-        // if (!this._targetAgentChargeState.isActive)
-        if (this._targetAgentWanderState.isActive)
+        if (!this._targetAgentChargeState.isActive)
         {
             this.fsm.setStateVariable('wander', true);
         }

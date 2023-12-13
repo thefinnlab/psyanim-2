@@ -24,7 +24,7 @@ export default {
             initialPosition: { x: 200, y: 300 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-                radius: 12, color: 0xff0000
+                radius: 12, color: 0x00ff00
             },
             components: [
                 { 
@@ -34,6 +34,8 @@ export default {
                         breakDurationAverage: 2000,
                         breakDurationVariance: 1000,
                         maxTargetDistanceForCharge: 350,
+
+                        wanderFleeRate: 0.5,
 
                         maxWanderSpeed: 4,
                         maxWanderAcceleration: 0.2,
@@ -47,7 +49,6 @@ export default {
                         target: {
                             entityName: 'agent2',
                         },
-                        wanderFleeRate: 0.0,
                         debug: true
                     }
                 }
@@ -58,7 +59,7 @@ export default {
             initialPosition: { x: 600, y: 300 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
-                radius: 12, color: 0x0000ff
+                radius: 12, color: 0x000000
             },
             components: [
                 { 
@@ -68,6 +69,8 @@ export default {
                         breakDurationAverage: 2000,
                         breakDurationVariance: 1000,
                         maxTargetDistanceForCharge: 350,
+
+                        wanderFleeRate: 0.5,
 
                         maxWanderSpeed: 4,
                         maxWanderAcceleration: 0.2,
@@ -81,7 +84,6 @@ export default {
                         target: {
                             entityName: 'agent1'
                         },
-                        wanderFleeRate: 0.0,
                         debug: false
                     }
                 }

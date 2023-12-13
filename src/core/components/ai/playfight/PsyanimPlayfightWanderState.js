@@ -1,7 +1,8 @@
-import PsyanimFSM from '../PsyanimFSM.js';
 import PsyanimFSMState from '../PsyanimFSMState.js';
 
 import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
+
+import PsyanimPlayfightFSM from './PsyanimPlayfightFSM.js';
 
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
 import PsyanimPlayfightFleeState from './PsyanimFleeState.js';
@@ -44,10 +45,6 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
         this._fleeOnPanic = false;
 
-        // subscribe to fsm events
-        this._fsm.events.on('enter', this._handleTargetAgentStateEntered.bind(this));
-        this._fsm.events.on('exit', this._handleTargetAgentStateExited.bind(this));
-
         /**
          *  Setup transitions here
          */
@@ -63,13 +60,23 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
             let chargeRate = 1.0 - this.fleeRate;
 
             this._fleeOnPanic = Math.random() > chargeRate;
+
+            if (this.fsm.debug)
+            {
+                this.entity.setTintFill(0xffff00);
+            }
         }
     }
 
     _handleTargetAgentStateExited(state) {
 
-        if (state === typeof(PsyanimPlayfightChargeState))
+        if (state === PsyanimPlayfightChargeState.name)
         {
+            if (this.fsm.debug)
+            {
+                this.entity.setTintFill(0x00ff00);
+            }
+
             this._fleeOnPanic = false;
         }
     }
@@ -87,6 +94,12 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this._wanderBehavior = this.entity.getComponent(PsyanimWanderBehavior);
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
 
+        // subscribe to fsm events
+        let targetAgentFSM = this.targetAgent.getComponent(PsyanimPlayfightFSM);
+
+        targetAgentFSM.events.on('enter', this._handleTargetAgentStateEntered.bind(this));
+        targetAgentFSM.events.on('exit', this._handleTargetAgentStateExited.bind(this));
+
         super.afterCreate();
     }
 
@@ -102,6 +115,11 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.fsm.setStateVariable('flee', false);
 
         this._fleeOnPanic = false;
+
+        if (this.fsm.debug)
+        {
+            this.entity.setTintFill(0x00ff00);
+        }
     }
 
     exit() {

@@ -129,7 +129,7 @@ export default class PsyanimFSM extends PsyanimComponent {
 
             targetState.enter();
 
-            this.events.emit('enter', this._currentState.name);
+            this.events.emit('enter', targetState.name);
 
             this._currentState = targetState;
         }

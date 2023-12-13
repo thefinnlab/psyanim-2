@@ -55,6 +55,11 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
         this._arriveBehavior = this.entity.getComponent(PsyanimArriveBehavior);
 
         this.fsm.setStateVariable('charge', 1);
+
+        if (this.fsm.debug)
+        {
+            this.entity.setTintFill(0xff0000);
+        }
     }
 
     exit() {

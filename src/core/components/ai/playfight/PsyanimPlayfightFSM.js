@@ -65,11 +65,11 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.maxTargetDistanceForCharge = 500;
 
         this.wanderFleeWhenAttacked = true;
-        this.wanderPanicDistance = 300;
+        this.wanderPanicDistance = 250;
         this.wanderFleeRate = 0.5;
 
         // flee state
-        this.maxFleeDuration = 2000;
+        this.maxFleeDuration = 500;
 
         // arrive behavior
         this.maxChargeSpeed = 9;
@@ -86,9 +86,9 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.maxWanderAngleChangePerFrame = 20;
 
         // flee behavior
-        this.maxFleeSpeed = 4;
-        this.maxFleeAcceleration = 0.2;
-        this.panicDistance = 250;
+        this.maxFleeSpeed = 12;
+        this.maxFleeAcceleration = 0.5;
+        this.fleePanicDistance = 200;
 
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
@@ -153,7 +153,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         // flee behavior
         this._fleeBehavior.maxSpeed = this.maxFleeSpeed;
         this._fleeBehavior.maxAcceleration = this.maxFleeAcceleration;
-        this._fleeBehavior.panicDistance = this.panicDistance;
+        this._fleeBehavior.panicDistance = this.fleePanicDistance;
 
         super.afterCreate();
     }
