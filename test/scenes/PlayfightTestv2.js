@@ -31,20 +31,36 @@ export default {
                     type: PsyanimPlayfightFSM,
                     params: {
 
+                        // wander state
                         breakDurationAverage: 2000,
                         breakDurationVariance: 1000,
                         maxTargetDistanceForCharge: 350,
 
+                        wanderFleeWhenAttacked: true,
+                        wanderPanicDistance: 250,
                         wanderFleeRate: 0.5,
 
+                        // flee state
+                        wanderFleeRate: 0.5,
+
+                        // arrive behavior
+                        maxChargeSpeed: 9,
+                        maxChargeAcceleration: 0.4,
+
+                        // wander behavior
                         maxWanderSpeed: 4,
                         maxWanderAcceleration: 0.2,
                         wanderRadius: 50,
                         wanderOffset: 250,
                         maxWanderAngleChangePerFrame: 20,
 
-                        maxChargeSpeed: 9,
-                        maxChargeAcceleration: 0.4,
+                        innerDecelerationRadius: 12,
+                        outerDecelerationRadius: 30,
+
+                        // flee behavior
+                        maxFleeSpeed: 12,
+                        maxFleeAcceleration: 0.5,
+                        fleePanicDistance: 200,
 
                         target: {
                             entityName: 'agent2',
@@ -66,20 +82,36 @@ export default {
                     type: PsyanimPlayfightFSM,
                     params: {
 
+                        // wander state
                         breakDurationAverage: 2000,
                         breakDurationVariance: 1000,
                         maxTargetDistanceForCharge: 350,
 
+                        wanderFleeWhenAttacked: true,
+                        wanderPanicDistance: 250,
                         wanderFleeRate: 0.5,
 
+                        // flee state
+                        wanderFleeRate: 0.5,
+
+                        // arrive behavior
+                        maxChargeSpeed: 9,
+                        maxChargeAcceleration: 0.4,
+
+                        // wander behavior
                         maxWanderSpeed: 4,
                         maxWanderAcceleration: 0.2,
                         wanderRadius: 50,
                         wanderOffset: 250,
                         maxWanderAngleChangePerFrame: 20,
 
-                        maxChargeSpeed: 9,
-                        maxChargeAcceleration: 0.4,
+                        innerDecelerationRadius: 12,
+                        outerDecelerationRadius: 30,
+
+                        // flee behavior
+                        maxFleeSpeed: 12,
+                        maxFleeAcceleration: 0.5,
+                        fleePanicDistance: 200,
 
                         target: {
                             entityName: 'agent1'
