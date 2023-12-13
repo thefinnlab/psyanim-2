@@ -12,7 +12,7 @@ import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
 import PsyanimPlayfightWanderState from './PsyanimPlayfightWanderState.js';
-import PsyanimPlayfightFleeState from './PsyanimFleeState.js';
+import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
 
 export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
@@ -30,6 +30,9 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
     /** flee state params */
     maxFleeDuration;
+
+    /** charge state params */
+    maxChargeDuration;
 
     /** arrive behavior params */
     maxChargeSpeed;
@@ -71,14 +74,17 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         // flee state
         this.maxFleeDuration = 500;
 
+        // charge state
+        this.maxChargeDuration = 1500;
+
         // arrive behavior
         this.maxChargeSpeed = 9;
         this.maxChargeAcceleration = 0.4;
 
-        // wander behavior
         this.innerDecelerationRadius = 12;
         this.outerDecelerationRadius = 30;
 
+        // wander behavior
         this.maxWanderSpeed = 4;
         this.maxWanderAcceleration = 0.2;
         this.wanderRadius = 50;
@@ -122,6 +128,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
         // charge state
         this._chargeState.setTarget(this.target);
+        this._chargeState.maxChargeDuration = this.maxChargeDuration;
 
         // wander state
         this._wanderState.targetAgent = this.target;

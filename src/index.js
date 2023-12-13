@@ -74,7 +74,7 @@ import PsyanimFSMStateTransition from './core/components/ai/PsyanimFSMStateTrans
 import PsyanimPlayfightFSM from './core/components/ai/playfight/PsyanimPlayfightFSM.js';
 import PsyanimPlayfightWanderState from './core/components/ai/playfight/PsyanimPlayfightWanderState.js';
 import PsyanimPlayfightChargeState from './core/components/ai/playfight/PsyanimPlayfightChargeState.js';
-import PsyanimPlayfightFleeState from './core/components/ai/playfight/PsyanimFleeState.js';
+import PsyanimPlayfightFleeState from './core/components/ai/playfight/PsyanimPlayfightFleeState.js';
 
 // ui
 import PsyanimExperimentControls from './core/components/ui/PsyanimExperimentControls.js';

@@ -5,7 +5,7 @@ import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
 import PsyanimPlayfightFSM from './PsyanimPlayfightFSM.js';
 
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
-import PsyanimPlayfightFleeState from './PsyanimFleeState.js';
+import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 
 import { PsyanimUtils, PsyanimDebug } from 'psyanim-utils';
@@ -55,7 +55,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     _handleTargetAgentStateEntered(state) {
 
-        if (state === PsyanimPlayfightChargeState.name)
+        if (this.isActive && state === PsyanimPlayfightChargeState.name)
         {
             let chargeRate = 1.0 - this.fleeRate;
 
@@ -70,7 +70,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     _handleTargetAgentStateExited(state) {
 
-        if (state === PsyanimPlayfightChargeState.name)
+        if (this.isActive && state === PsyanimPlayfightChargeState.name)
         {
             if (this.fsm.debug)
             {

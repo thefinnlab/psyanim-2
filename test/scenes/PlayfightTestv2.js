@@ -41,11 +41,17 @@ export default {
                         wanderFleeRate: 0.5,
 
                         // flee state
-                        wanderFleeRate: 0.5,
+                        maxFleeDuration: 500,
+
+                        // charge state
+                        maxChargeDuration: 1500,
 
                         // arrive behavior
                         maxChargeSpeed: 9,
                         maxChargeAcceleration: 0.4,
+
+                        innerDecelerationRadius: 12,
+                        outerDecelerationRadius: 30,
 
                         // wander behavior
                         maxWanderSpeed: 4,
@@ -53,9 +59,6 @@ export default {
                         wanderRadius: 50,
                         wanderOffset: 250,
                         maxWanderAngleChangePerFrame: 20,
-
-                        innerDecelerationRadius: 12,
-                        outerDecelerationRadius: 30,
 
                         // flee behavior
                         maxFleeSpeed: 12,
@@ -92,11 +95,17 @@ export default {
                         wanderFleeRate: 0.5,
 
                         // flee state
-                        wanderFleeRate: 0.5,
+                        maxFleeDuration: 500,
+
+                        // charge state
+                        maxChargeDuration: 1500,
 
                         // arrive behavior
                         maxChargeSpeed: 9,
                         maxChargeAcceleration: 0.4,
+
+                        innerDecelerationRadius: 12,
+                        outerDecelerationRadius: 30,
 
                         // wander behavior
                         maxWanderSpeed: 4,
@@ -104,9 +113,6 @@ export default {
                         wanderRadius: 50,
                         wanderOffset: 250,
                         maxWanderAngleChangePerFrame: 20,
-
-                        innerDecelerationRadius: 12,
-                        outerDecelerationRadius: 30,
 
                         // flee behavior
                         maxFleeSpeed: 12,

@@ -9,17 +9,22 @@ import PsyanimPlayfightWanderState from './PsyanimPlayfightWanderState.js'
 
 export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
+    maxChargeDuration;
+
     constructor(fsm) {
 
         super(fsm);
 
-        this.fsm.setStateVariable('charge', 0);
+        this.maxChargeDuration = 1500;
+
+        this.fsm.setStateVariable('charge', false);
+        this.fsm.setStateVariable('chargeTimer', 0);
 
         /**
          *  Setup transitions here
          */
 
-        this.addTransition(PsyanimPlayfightWanderState, 'charge', (value) => value == 0);
+        this.addTransition(PsyanimPlayfightWanderState, 'charge', (value) => value === false);
     }
 
     afterCreate() {
@@ -44,7 +49,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
     _handleCollision(matterCollisionData) {
 
-        this.fsm.setStateVariable('charge', 0);
+        this.fsm.setStateVariable('charge', false);
     }
 
     enter() {
@@ -54,7 +59,8 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
         this._arriveBehavior = this.entity.getComponent(PsyanimArriveBehavior);
 
-        this.fsm.setStateVariable('charge', 1);
+        this.fsm.setStateVariable('charge', true);
+        this.fsm.setStateVariable('chargeTimer', 0);
 
         if (this.fsm.debug)
         {
@@ -70,6 +76,15 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
     run(t, dt) {
 
         super.run();
+
+        let updatedChargeTimer = this.fsm.getStateVariable('chargeTimer') + dt;
+
+        this.fsm.setStateVariable('chargeTimer', updatedChargeTimer);
+
+        if (updatedChargeTimer > this.maxChargeDuration)
+        {
+            this.fsm.setStateVariable('charge', false);
+        }
 
         let steering = this._arriveBehavior.getSteering(this._target);
 
