@@ -21,7 +21,7 @@ export default {
         },
         {
             name: 'agent1',
-            initialPosition: { x: 200, y: 300 },
+            initialPosition: { x: 50, y: 50 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
                 radius: 12, color: 0x00ff00
@@ -75,7 +75,7 @@ export default {
         },
         {
             name: 'agent2',
-            initialPosition: { x: 600, y: 300 },
+            initialPosition: { x: 350, y: 250 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
                 radius: 12, color: 0x000000

@@ -158,8 +158,6 @@ class _PsyanimJsPsychPlugin {
 
     /**
      * Called by jsPsych at the end of every trial
-     * @param {*} display_element 
-     * @param {*} trial 
      */
     endTrial() {
 
@@ -222,24 +220,20 @@ class _PsyanimJsPsychPlugin {
                     if (this._agentNamesToRecord.includes(agent.name) && 
                         this._currentTrial.recordStateLogs)
                     {
-                        let recorders = agent.getComponentsByType(PsyanimComponentStateRecorder);
+                        let recorder = agent.getComponentByType(PsyanimComponentStateRecorder);
 
-                        if (recorders)
+                        if (recorder)
                         {
                             metadata.stateLogs = [];
 
-                            recorders.forEach(recorder => {
+                            console.log(recorder.data);
 
-                                console.log(recorder.data);
+                            let stateLogId = this._documentWriter.addAgentStateLog(recorder.data);
 
-                                let stateLogId = this._documentWriter.addAgentStateLog(recorder.data);
-
-                                metadata.stateLogs.push({
-                                    stateLogId: stateLogId,
-                                    componentTypeName: recorder.componentType.name,
-                                });
-                            });
-                        }
+                            metadata.stateLogs.push({
+                                stateLogId: stateLogId,
+                                componentTypeName: recorder.componentType.name,
+                            });                        }
                     }
 
                     agentMetadata.push(metadata);

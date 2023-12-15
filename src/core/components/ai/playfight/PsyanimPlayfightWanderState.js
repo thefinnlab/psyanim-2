@@ -63,7 +63,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
             if (this.fsm.debug)
             {
-                this.entity.setTintFill(0xffff00);
+                this.entity.color = 0xffff00;
             }
         }
     }
@@ -74,7 +74,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         {
             if (this.fsm.debug)
             {
-                this.entity.setTintFill(0x00ff00);
+                this.entity.color = 0x00ff00;
             }
 
             this._fleeOnPanic = false;
@@ -118,7 +118,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
         if (this.fsm.debug)
         {
-            this.entity.setTintFill(0x00ff00);
+            this.entity.color = 0x00ff00;
         }
     }
 

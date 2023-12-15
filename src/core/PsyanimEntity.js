@@ -253,19 +253,53 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return this._matterOptions;
     }
 
+    /**
+     *  Entity shape type (defined in PsyanimConstants)
+     * 
+     *  @return {string}
+     */
     get shapeType() {
         return this._shapeType;
     }
 
+    /**
+     *  Entity color
+     * 
+     *  @return {number}
+     */
     get color() {
         return this._color;
     }
 
+    /**
+     *  Set's entity's color
+     * 
+     *  @param {number} - RGB color value
+     */
+    set color(value) {
+
+        this.setTintFill(value);
+    }
+
+    /**
+     *  Entity's initial position, supplied on construction
+     * 
+     *  @return {Object}
+     *  @property {number} - x
+     *  @property {number} - y
+     */
     get initialPosition() {
 
         return this._initialPosition;
     }
 
+    /**
+     * Enabled friction on entity in physics simulation
+     * 
+     * @param {number} friction - 
+     * @param {number} frictionAir - 
+     * @param {number} frictionStatic - 
+     */
     enableFriction(friction = 0.1, frictionAir = 0.01, frictionStatic = 0.5) {
 
         this.body.friction = friction;
@@ -273,6 +307,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.body.frictionStatic = frictionStatic;
     }
 
+    /**
+     * Disables friction on entity in physics simulation
+     */
     disableFriction() {
 
         this.body.friction = 0;
@@ -280,6 +317,12 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.body.frictionStatic = 0;
     }
 
+    /**
+     * Attaches a newly created instance of `componentType` to this entity.
+     * 
+     * @param {Type} componentType - the type of the component that should be added to this entity
+     * @returns {PsyanimComponent} - reference to newly added PsyanimComponent
+     */
     addComponent(componentType) {
 
         if (this.hasComponent(componentType))
@@ -297,11 +340,21 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return newComponent;
     }
 
+    /**
+     * @param {Type} componentType 
+     * @returns {boolean} - `true` if this entity has at least 1 component attached of type `componentType`
+     */
     hasComponent(componentType) {
 
         return this.getComponent(componentType) != null;
     }
 
+    /**
+     * Get an attached component instance on this entity by type.
+     * 
+     * @param {Type} componentType 
+     * @returns {PsyanimComponent}
+     */
     getComponent(componentType) {
 
         let components = this._components.filter(c => c instanceof componentType);
@@ -314,34 +367,44 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return components[0];
     }
 
+    /**
+     * Get an attached component instance on this entity by index.
+     * 
+     * Component indices are based on the order they were added using `AddComponent`
+     * 
+     * @param {number} index 
+     * @returns {PsyanimComponent} - reference to attached component instance at `index`
+     */
     getComponentByIndex(index) {
 
         return this._components[index];
     }
 
-    getComponentsByType(componentType) {
-
-        let components = this._components.filter(c => c instanceof componentType);
-
-        if (components.length == 0)
-        {
-            return null;
-        }
-
-        return components;
-    }
-
+    /**
+     * 
+     * @returns {PsyanimComponent[]} - a shallow copy of PsyanimComponents attached to this entity
+     */
     getComponents() {
 
         return this._components.slice();
     }
 
+    /**
+     * Enables / disables the physics simulation for this entity
+     * 
+     * @param {boolean} enabled 
+     */
     setPhysicsEnabled(enabled) {
 
         this.body.isSensor = !enabled;
         this.body.isSleeping = !enabled;
     }
     
+    /**
+     * Destroys this entity, cleaning up all of its resources.
+     * 
+     * NOTE: When overriding this in a derived class, the base class destroy() should be called last.
+     */
     destroy() {
 
         this._components.forEach(c => {
@@ -358,27 +421,46 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this._components = this._components.filter(c => c != component);
     }
 
+    /**
+     * @returns {Phaser.Math.Vector2}
+     * @property {number} x
+     * @property {number} y
+     */
     get position() {
 
         return new Phaser.Math.Vector2(this.x, this.y);
     }
 
+    /**
+     * @param {Phaser.Math.Vector2}
+     * @property {number} x
+     * @property {number} y
+     */
     set position(value) {
 
         this.x = value.x;
         this.y = value.y;
     }
 
+    /**
+     * @return {Phaser.Math.Vector2} - A unit vector oriented in the direction this entity is facing
+     */
     get forward() {
 
         return new Phaser.Math.Vector2(1, 0).setAngle(this.angle * Math.PI / 180);
     }
 
+    /**
+     * @return {Phaser.Math.Vector2} - A unit vector oriented to the right of this entity's forward direction
+     */
     get right() {
 
         return this.forward.rotate(90 * Math.PI / 180);
     }
 
+    /**
+     * @return {Phaser.Math.Vector2} -  the velocity vector of this entity
+     */
     get velocity() {
 
         let currentVelocityXY = this.scene.matter.body.getVelocity(this.body);

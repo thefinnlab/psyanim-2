@@ -1,4 +1,5 @@
 import PsyanimConstants from '../PsyanimConstants.js';
+import PsyanimEntity from '../PsyanimEntity.js';
 
 export default class PsyanimScreenBoundary {
 
@@ -69,11 +70,17 @@ export default class PsyanimScreenBoundary {
         this.wrap = wrap;
     }
 
+    /**
+     * @return {boolean} - if true, characters crossing the screen boundary will be wrapped around to the other side, as if the world is spherical.
+     */
     get wrap() {
 
         return this._wrap;
     }
 
+    /**
+     * @param {boolean} - if true, characters crossing the screen boundary will be wrapped around to the other side, as if the world is spherical.
+     */
     set wrap(value) {
 
         this._wrap = value;
@@ -84,6 +91,9 @@ export default class PsyanimScreenBoundary {
         this.rightBoundary.body.isSensor = this._wrap;
     }
 
+    /**
+     * @return {PsyanimEntity[]} - an array of entities this screen boundary is composed of: top, bottom, left, and right boundaries, respectively
+     */
     get boundaries() {
 
         return [

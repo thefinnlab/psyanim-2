@@ -64,7 +64,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
         if (this.fsm.debug)
         {
-            this.entity.setTintFill(0xff0000);
+            this.entity.color = 0xff0000;
         }
     }
 

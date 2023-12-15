@@ -18,11 +18,15 @@ export default class PsyanimScene extends Phaser.Scene {
 
     /**
      *  If set to `true`, all textures in texture manager will be deleted when this scene shuts down.
+     * 
+     * @type {boolean}
      */
     deleteTexturesOnShutdown;
 
     /**
      *  A reference to the `PsyanimScreenBoundary` used by this scene.
+     * 
+     * @type {PsyanimScreenBoundary}
      */
     screenBoundary;
 
@@ -193,7 +197,12 @@ export default class PsyanimScene extends Phaser.Scene {
     create() {
 
         // setup wrapping with screen boundary
-        this.screenBoundary = new PsyanimScreenBoundary(this);
+        let width = this.game.config.width;
+        let height = this.game.config.height;
+        let centerX = width / 2;
+        let centerY = height / 2;
+
+        this.screenBoundary = new PsyanimScreenBoundary(this, centerX, centerY, width, height);
     }
 
     /**
