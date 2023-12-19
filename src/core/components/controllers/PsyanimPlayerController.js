@@ -3,11 +3,30 @@ import Phaser from 'phaser';
 import PsyanimComponent from "../../PsyanimComponent.js";
 import PsyanimClickToMove from './PsyanimClickToMove.js';
 
+/**
+ * The `PsyanimPlayerController` provides a `WASD keyboard controller` for controlling any entity in a `PsyanimScene`.
+ * 
+ * If used with a `PsyanimClickToMove` controller, WASD inputs will interrupt click-to-move traversal path-following.
+ */
 export default class PsyanimPlayerController extends PsyanimComponent {
 
+    /**
+     * Speed at which the entity moves in response to WASD keyboard input.
+     * @type {number}
+     */
     speed;
+
+    /**
+     * Speed at which the entity rotates when changing directions.
+     * @type {number} 
+     */
     turnSpeed;
 
+    /**
+     * An (optional) reference to a PsyanimClickToMove component that this controller can work in conjunction with.
+     * 
+     * @type {PsyanimClickToMove}
+     */
     clickToMoveController;
 
     constructor(entity) {

@@ -1,54 +1,56 @@
+/**
+ * This is the base class for all `prefabs` in psyanim-2.
+ */
 export default class PsyanimEntityPrefab {
 
     /**
      *  Parameters defining the shape of the entity.
      * 
-     *  If `isEmpty` is `true`, this entity will not have a visual representation.
-     * 
-     *  If `isEmpty` is false, it will have a visual representation defined by the following parameters:
-     * 
-     *  - `shapeType`: `PsyanimConstants.SHAPE_TYPE`
-     * 
-     *  If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.
-     * 
-     *  If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.
-     *  
-     *  If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.
-     *
-     *  - `color`: `Number` representing RGB color
-     *  - `visible`: `boolean`
-     * 
-     *  @type {Object}
+     *  @return {Object}
+     *  @property {boolean} isEmpty - If `true`, this entity will not have a visual representation or physics applied.
+     *  @property {PsyanimConstants.SHAPE_TYPE} shapeType - can be a circle, rectangle, or triangle
+     *  @property {number} radius - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.
+     *  @property {number} width - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.
+     *  @property {number} height - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.
+     *  @property {number} base - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.
+     *  @property {number} altitude - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.
+     *  @property {number} color - integer representing RGB color
+     *  @property {boolean} visible - `true` if entity is visible
      */
     shapeParams;
 
     /**
-     *  Parameters defining the physics settings of the entity:
+     *  Parameters defining the physics settings of the entity.
      * 
-     *  - `isSensor`: `boolean`
-     * 
-     *  If `isSensor` is `true`, this entity will be able to emit collision events, but will not have 
-     *  impulses applied to it or others which collide with it.
-     * 
-     *  - `isSleeping`: `boolean`
-     * 
-     *  If `isSleeping` is `true`, this entity will not have physics updates applied to it at all.
-     *  Physics will be completely disabled for this entity.
-     * 
-     *  - `collisionFilter`: `Object`
-     * 
-     *  `collisionFilter` is a matter-js collision filter.  Default is `PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER`
-     * 
-     *  @type {Object}
+     *  @return {Object}
+     *  @property {boolean} isSensor - If true, entity will be able to emit collision events, but will not be receive physics updates
+     *  @property {boolean} isSleeping - If true, entity will not have physics updates or receive collision events
+     *  @property {Object} collisionFilter - matter-js collision filter
      */
     matterOptions;
 
+    /**
+     * All prefabs must be constructed before they can be instantiated in the PsyanimScene.
+     * 
+     * A single prefab object may be instantiated in the scene multiple times.
+     * 
+     * During construction, `shapeParams` and `matterOptions` for the entity may optionally be supplied.
+     * 
+     * @param {Object} shapeParams 
+     * @param {Object} matterOptions 
+     */
     constructor(shapeParams = { isEmpty: true }, matterOptions = {}) {
 
         this.shapeParams = shapeParams;
         this.matterOptions = matterOptions;
     }
 
+    /**
+     * This `create()` method is intended to be overriden by the child class.
+     * 
+     * @param {PsyanimEntity} entity - the entity this prefab will work on during instantiation
+     * @returns {PsyanimEntity} - the entity this prefab used during instantiation
+     */
     create(entity) {
 
         return entity;

@@ -48,6 +48,10 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     /**
      * Constructor for PsyanimEntity objects.
      * 
+     * To create entities in your app, use the PsyanimScene::addEntity() method.
+     * 
+     * This is usually only called by the PsyanimScene.
+     * 
      * @param {PsyanimScene} scene - scene this entity belongs to.
      * @param {string} name - - entity name, must be unique per scene!
      * @param {Number} [x] - x-coordinate of entity's initial position in the world
@@ -381,8 +385,8 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
-     * 
-     * @returns {PsyanimComponent[]} - a shallow copy of PsyanimComponents attached to this entity
+     * Gets a shallow copy of PsyanimComponents attached to this entity
+     * @returns {PsyanimComponent[]}
      */
     getComponents() {
 
@@ -422,6 +426,8 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
+     * The x-coordinate of this entity's position in the scene.
+     * 
      * @returns {Phaser.Math.Vector2}
      * @property {number} x
      * @property {number} y
@@ -432,18 +438,33 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
+     * The y-coordinate of this entity's position in the scene.
+     * 
      * @param {Phaser.Math.Vector2}
      * @property {number} x
      * @property {number} y
      */
     set position(value) {
 
+        /**
+         * The x-coordinate of this entity's position in the scene.
+         * 
+         * @type {number}
+         */
         this.x = value.x;
+
+        /**
+         * The y-coordinate of this entity's position in the scene.
+         * 
+         * @type {number}
+         */
         this.y = value.y;
     }
 
     /**
-     * @return {Phaser.Math.Vector2} - A unit vector oriented in the direction this entity is facing
+     * A unit vector oriented in the direction this entity is facing.
+     * 
+     * @return {Phaser.Math.Vector2}
      */
     get forward() {
 
@@ -451,7 +472,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
-     * @return {Phaser.Math.Vector2} - A unit vector oriented to the right of this entity's forward direction
+     * A unit vector oriented to the right of this entity's forward direction.
+     * 
+     * @return {Phaser.Math.Vector2} 
      */
     get right() {
 
@@ -459,7 +482,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
-     * @return {Phaser.Math.Vector2} -  the velocity vector of this entity
+     * The velocity vector of this entity.
+     * 
+     * @return {Phaser.Math.Vector2}
      */
     get velocity() {
 

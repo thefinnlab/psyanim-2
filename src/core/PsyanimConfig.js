@@ -195,6 +195,9 @@ export default class PsyanimConfig {
 
     /**
      *  The underlying Phaser config object managed by this PsyanimConfig object.
+     * 
+     *  For full API docs of Phaser config object, see https://newdocs.phaser.io/docs/3.70.0/Phaser.Core.Config
+     * 
      *  @type {Object}
      */
     get phaserConfig() {
