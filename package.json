@@ -13,6 +13,8 @@
     "test": "jasmine --config=src/test/unit/jasmine.json",
     "dev-build": "webpack --config ./webpack.dev.config.js",
     "dev-watch": "webpack --config ./webpack.dev.config.js --watch",
+    "docs-build": "npx esdoc",
+    "docs-serve": "npx http-server ./docs -p 5000",
     "dev-serve": "npx http-server ./dist -p 3000",
     "clean": "rimraf -v ./dist"
   },
