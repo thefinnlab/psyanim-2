@@ -5,6 +5,7 @@ import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
 import PsyanimPlayfightFSM from './PsyanimPlayfightFSM.js';
 
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
+import PsyanimPlayfightChargeDelayState from './PsyanimPlayfightChargeDelayState.js';
 import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 
@@ -18,7 +19,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
     breakDurationAverage; // ms
     breakDurationVariance; // ms
 
-    fleeWhenAttacked; // boolean
+    fleeOrChargeWhenAttacked; // boolean
     panicDistance; // pixels
     fleeRate; // percentage
 
@@ -29,7 +30,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.breakDurationAverage = 2000;
         this.breakDurationVariance = 1000;
 
-        this.fleeWhenAttacked = true;
+        this.fleeOrChargeWhenAttacked = true;
         this.panicDistance = 300;
         this.fleeRate = 0.5;
 
@@ -42,7 +43,9 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.fsm.setStateVariable('wanderTimer', 0);
         this.fsm.setStateVariable('distanceToTarget', this.maxTargetDistanceForCharge);
         this.fsm.setStateVariable('flee', false);
+        this.fsm.setStateVariable('delayedCharge', false);
 
+        this._targetAgentCharging = false;
         this._fleeOnPanic = false;
 
         /**
@@ -51,17 +54,24 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
         this.addTransition(PsyanimPlayfightChargeState, 'wanderTimer', this._isChargeTransitionTriggered.bind(this));
         this.addTransition(PsyanimPlayfightFleeState, 'flee', (value) => value === true);
+        this.addTransition(PsyanimPlayfightChargeDelayState, 'delayedCharge', (value) => value === true);
     }
 
     _handleTargetAgentStateEntered(state) {
 
-        if (this.isActive && state === PsyanimPlayfightChargeState.name)
+        if (state === PsyanimPlayfightChargeState.name)
         {
             let chargeRate = 1.0 - this.fleeRate;
 
+            this._targetAgentCharging = true;
             this._fleeOnPanic = Math.random() > chargeRate;
 
             if (this.fsm.debug)
+            {
+                console.log('charge rate = ', chargeRate, ', fleeOnPanic = ', this._fleeOnPanic);
+            }
+
+            if (this.isActive && this.fsm.debug)
             {
                 this.entity.color = 0xffff00;
             }
@@ -70,13 +80,14 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     _handleTargetAgentStateExited(state) {
 
-        if (this.isActive && state === PsyanimPlayfightChargeState.name)
+        if (state === PsyanimPlayfightChargeState.name)
         {
-            if (this.fsm.debug)
+            if (this.isActive && this.fsm.debug)
             {
                 this.entity.color = 0x00ff00;
             }
 
+            this._targetAgentCharging = false;
             this._fleeOnPanic = false;
         }
     }
@@ -112,9 +123,8 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
             + PsyanimUtils.getRandomInt(-this.breakDurationVariance, this.breakDurationVariance);
 
         this.fsm.setStateVariable('wanderTimer', 0);
+        this.fsm.setStateVariable('delayedCharge', false);
         this.fsm.setStateVariable('flee', false);
-
-        this._fleeOnPanic = false;
 
         if (this.fsm.debug)
         {
@@ -129,7 +139,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     run(t, dt) {
 
-        super.run();
+        super.run(t, dt);
 
         // update state variables
         let updatedWanderTimer = this.fsm.getStateVariable('wanderTimer') + dt;
@@ -145,9 +155,19 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
             this.fsm.setStateVariable('wanderTimer', updatedWanderTimer);
         }
 
-        if (this.fleeWhenAttacked && distanceToTarget < this.panicDistance && this._fleeOnPanic)
+        if (this.fleeOrChargeWhenAttacked && this._targetAgentCharging)
         {
-            this.fsm.setStateVariable('flee', true);
+            if (distanceToTarget < this.panicDistance)
+            {
+                if (this._fleeOnPanic)
+                {
+                    this.fsm.setStateVariable('flee', true);
+                }
+                else
+                {
+                    this.fsm.setStateVariable('delayedCharge', true);
+                }
+            }
         }
 
         // apply steering

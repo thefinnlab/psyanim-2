@@ -11,6 +11,7 @@ import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
 import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
+import PsyanimPlayfightChargeDelayState from './PsyanimPlayfightChargeDelayState.js';
 import PsyanimPlayfightWanderState from './PsyanimPlayfightWanderState.js';
 import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
 
@@ -24,9 +25,12 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     breakDurationVariance;
     maxTargetDistanceForCharge;
 
-    wanderFleeWhenAttacked;
+    wanderFleeOrChargeWhenAttacked;
     wanderPanicDistance;
     wanderFleeRate;
+
+    averageChargeDelay;
+    chargeDelayVariance;
 
     /** flee state params */
     maxFleeDuration;
@@ -67,9 +71,12 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.breakDurationVariance = 1000;
         this.maxTargetDistanceForCharge = 500;
 
-        this.wanderFleeWhenAttacked = true;
+        this.wanderFleeOrChargeWhenAttacked = true;
         this.wanderPanicDistance = 250;
         this.wanderFleeRate = 0.5;
+
+        this.averageChargeDelay = 1000;
+        this.chargeDelayVariance = 600;
 
         // flee state
         this.maxFleeDuration = 500;
@@ -105,6 +112,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         
         // setup FSM
         this._chargeState = this.addState(PsyanimPlayfightChargeState);
+        this._chargeDelayState = this.addState(PsyanimPlayfightChargeDelayState);
         this._wanderState = this.addState(PsyanimPlayfightWanderState);
         this._fleeState = this.addState(PsyanimPlayfightFleeState);
 
@@ -130,12 +138,16 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this._chargeState.setTarget(this.target);
         this._chargeState.maxChargeDuration = this.maxChargeDuration;
 
+        // charge delay state
+        this._chargeDelayState.averageDelay = this.averageChargeDelay;
+        this._chargeDelayState.delayVariance = this.chargeDelayVariance;
+
         // wander state
         this._wanderState.targetAgent = this.target;
         this._wanderState.breakDurationAverage = this.breakDurationAverage;
         this._wanderState.breakDurationVariance = this.breakDurationVariance;
         this._wanderState.maxTargetDistanceForCharge = this.maxTargetDistanceForCharge;
-        this._wanderState.fleeWhenAttacked = this.wanderFleeWhenAttacked;
+        this._wanderState.fleeOrChargeWhenAttacked = this.wanderFleeOrChargeWhenAttacked;
         this._wanderState.panicDistance = this.wanderPanicDistance;
         this._wanderState.fleeRate = this.wanderFleeRate;
 

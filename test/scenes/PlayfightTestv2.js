@@ -36,7 +36,7 @@ export default {
                         breakDurationVariance: 1000,
                         maxTargetDistanceForCharge: 350,
 
-                        wanderFleeWhenAttacked: true,
+                        wanderFleeOrChargeWhenAttacked: true,
                         wanderPanicDistance: 250,
                         wanderFleeRate: 0.5,
 
@@ -45,6 +45,10 @@ export default {
 
                         // charge state
                         maxChargeDuration: 1500,
+
+                        // charge delay state
+                        averageChargeDelay: 800,
+                        chargeDelayVariance: 600,
 
                         // arrive behavior
                         maxChargeSpeed: 9,
@@ -90,7 +94,7 @@ export default {
                         breakDurationVariance: 1000,
                         maxTargetDistanceForCharge: 350,
 
-                        wanderFleeWhenAttacked: true,
+                        wanderFleeOrChargeWhenAttacked: true,
                         wanderPanicDistance: 250,
                         wanderFleeRate: 0.5,
 
