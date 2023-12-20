@@ -9,3 +9,5 @@ To view the API docs from this repo:
 - First build the docs with: `npm run docs-build`
 - Then start a server to host the docs locally on port `5000` with: `npm run docs-serve`
 - Then navigate to `localhost:5000` in your web browser
+
+Psyanim 2.0 depends on [`psyanim-utils`](https://github.com/thefinnlab/psyanim-utils), which is a small collection of javascript APIs that can be used in *both* browsers and nodejs apps.

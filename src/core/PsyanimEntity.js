@@ -53,7 +53,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
      * This is usually only called by the PsyanimScene.
      * 
      * @param {PsyanimScene} scene - scene this entity belongs to.
-     * @param {string} name - - entity name, must be unique per scene!
+     * @param {string} name - entity name, must be unique per scene!
      * @param {Number} [x] - x-coordinate of entity's initial position in the world
      * @param {Number} [y] - y-coordinate of entity's initial position in the world
      * @param {Object} [shapeParams] - object defines entity shape & color

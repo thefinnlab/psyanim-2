@@ -7,8 +7,22 @@ import {
     PsyanimDebug
 } from 'psyanim-utils';
 
+/**
+ * PsyanimJsPsychTrial class provides an API for building up a trial object as required
+ * by the PsyanimJsPsychPlugin, for ease-of-use and to serve as a form of documentation itself.
+ * 
+ * It is highly recommended to use this class to generate the jsPsych trial object for your scene, 
+ * rather than building it up manually.
+ * 
+ * It is also recommmended that you construct a new PsyanimJsPsychTrial object for each trial
+ * in your jsPsych experiment.
+ */
 export default class PsyanimJsPsychTrial {
 
+    /**
+     * @param {Object} sceneDefinitionTemplate - the Psyanim scene definition which will be used as a template for this trial
+     * @param {string} [sceneKey] - if provided, the scene key used for this trial will be overriden with this field's value
+     */
     constructor(sceneDefinitionTemplate, sceneKey = null) {
 
         this._sceneDefinition = PsyanimUtils.cloneSceneDefinition(sceneDefinitionTemplate);
@@ -52,6 +66,11 @@ export default class PsyanimJsPsychTrial {
         this._animationParameters = [];
     }
 
+    /**
+     * Returns the `jsPsych trial object` corresponding to this trial's configuration for your `jsPsych timeline`.
+     * 
+     * @return {Object} - jsPsych trial object, to be added to jsPsych timeline
+     */
     get jsPsychTrialDefinition() {
 
         return {
@@ -72,21 +91,37 @@ export default class PsyanimJsPsychTrial {
         };
     }
 
+    /**
+     * The scene key associated with this trial
+     */
     get sceneKey() {
 
         return this._sceneDefinition.key;
     }
 
+    /**
+     * The `duration` parameter for a trial determines the maximum amount of time the trial should last.
+     * 
+     * @return {number} - trial duration parameter
+     */
     get duration() {
 
         return this._duration;
     }
 
+    /**
+     * The `duration` parameter for a trial determines the maximum amount of time the trial should last.
+     * 
+     * @param {number} - trial duration parameter
+     */
     set duration(value) {
 
         this._duration = value;
     }
 
+    /**
+     * 
+     */
     get endTrialOnContact() {
 
         return this._endTrialOnContact;
