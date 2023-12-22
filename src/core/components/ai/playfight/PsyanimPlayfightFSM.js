@@ -75,8 +75,8 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.wanderPanicDistance = 250;
         this.wanderFleeRate = 0.5;
 
-        this.averageChargeDelay = 1000;
-        this.chargeDelayVariance = 600;
+        this.averageChargeDelay = 600;
+        this.chargeDelayVariance = 400;
 
         // flee state
         this.maxFleeDuration = 500;

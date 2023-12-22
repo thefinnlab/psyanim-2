@@ -38,7 +38,7 @@ export default {
 
                         wanderFleeOrChargeWhenAttacked: true,
                         wanderPanicDistance: 250,
-                        wanderFleeRate: 0.5,
+                        wanderFleeRate: 0.3,
 
                         // flee state
                         maxFleeDuration: 500,
@@ -47,8 +47,8 @@ export default {
                         maxChargeDuration: 1500,
 
                         // charge delay state
-                        averageChargeDelay: 800,
-                        chargeDelayVariance: 600,
+                        averageChargeDelay: 600,
+                        chargeDelayVariance: 400,
 
                         // arrive behavior
                         maxChargeSpeed: 9,
@@ -96,13 +96,17 @@ export default {
 
                         wanderFleeOrChargeWhenAttacked: true,
                         wanderPanicDistance: 250,
-                        wanderFleeRate: 0.5,
+                        wanderFleeRate: 0.3,
 
                         // flee state
                         maxFleeDuration: 500,
 
                         // charge state
                         maxChargeDuration: 1500,
+
+                        // charge delay state
+                        averageChargeDelay: 600,
+                        chargeDelayVariance: 400,
 
                         // arrive behavior
                         maxChargeSpeed: 9,

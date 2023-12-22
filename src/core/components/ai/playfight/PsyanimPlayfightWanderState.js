@@ -57,19 +57,20 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.addTransition(PsyanimPlayfightChargeDelayState, 'delayedCharge', (value) => value === true);
     }
 
+    _recomputeFleeOnPanic() {
+
+        let chargeRate = 1.0 - this.fleeRate;
+
+        this._fleeOnPanic = Math.random() > chargeRate;
+    }
+
     _handleTargetAgentStateEntered(state) {
 
         if (state === PsyanimPlayfightChargeState.name)
         {
-            let chargeRate = 1.0 - this.fleeRate;
-
             this._targetAgentCharging = true;
-            this._fleeOnPanic = Math.random() > chargeRate;
 
-            if (this.fsm.debug)
-            {
-                console.log('charge rate = ', chargeRate, ', fleeOnPanic = ', this._fleeOnPanic);
-            }
+            this._recomputeFleeOnPanic();
 
             if (this.isActive && this.fsm.debug)
             {
@@ -82,13 +83,14 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
         if (state === PsyanimPlayfightChargeState.name)
         {
+            this._targetAgentCharging = false;
+
+            this._fleeOnPanic = false;
+
             if (this.isActive && this.fsm.debug)
             {
                 this.entity.color = 0x00ff00;
             }
-
-            this._targetAgentCharging = false;
-            this._fleeOnPanic = false;
         }
     }
 
@@ -121,6 +123,8 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         // compute a new break duration with random variance
         this._breakDuration = this.breakDurationAverage 
             + PsyanimUtils.getRandomInt(-this.breakDurationVariance, this.breakDurationVariance);
+
+        this._recomputeFleeOnPanic();
 
         this.fsm.setStateVariable('wanderTimer', 0);
         this.fsm.setStateVariable('delayedCharge', false);

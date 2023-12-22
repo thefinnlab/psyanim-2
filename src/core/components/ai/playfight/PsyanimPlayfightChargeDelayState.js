@@ -16,8 +16,8 @@ export default class PsyanimPlayfightChargeDelayState extends PsyanimFSMState {
 
         super(fsm);
 
-        this.averageDelay = 1000;
-        this.delayVariance = 600;
+        this.averageDelay = 600;
+        this.delayVariance = 400;
 
         this._delay = this.averageDelay;
 
