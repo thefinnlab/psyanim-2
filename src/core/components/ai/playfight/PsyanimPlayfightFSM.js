@@ -1,7 +1,3 @@
-import Phaser from 'phaser';
-
-import PsyanimComponent from '../../../PsyanimComponent.js';
-
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
@@ -21,7 +17,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     target;
 
     /** wander state params */
-    breakDurationAverage;
+    breakDurationAverage; 
     breakDurationVariance;
     maxTargetDistanceForCharge;
 
