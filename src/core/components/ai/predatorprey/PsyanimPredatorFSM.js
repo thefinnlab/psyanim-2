@@ -14,7 +14,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
 
     // charge state params
 
-    // wall avoidance params
+    // wall avoidance state params
 
     // arrive behavior params
 
