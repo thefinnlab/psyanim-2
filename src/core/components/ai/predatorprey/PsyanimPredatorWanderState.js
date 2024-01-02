@@ -15,6 +15,11 @@ export default class PsyanimPredatorWanderState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0x00ff00;
+        }
     }
 
     exit() {

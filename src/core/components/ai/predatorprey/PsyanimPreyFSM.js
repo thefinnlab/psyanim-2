@@ -1,5 +1,11 @@
 import PsyanimFSM from './PsyanimFSM.js';
 
+import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
+import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
+import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
+import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
+
+
 import PsyanimPreyWanderState from './PsyanimPreyWanderState.js';
 import PsyanimPreyFleeState from './PsyanimPreyFleeState.js';
 import PsyanimPreyWallAvoidanceState from './PsyanimPreyWallAvoidanceState.js';
@@ -8,22 +14,78 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
 
     // prey agent parameters
     target;
-    debug;
+
+    /**
+     *  Maximum number of degrees which this agent will offset it's flee direction.
+     *  @type {Number}
+     */
+    subtlety;
+
+    /**
+     *  Determines how often the agent will recompute it's flee direction based on the `subtlety` parameter.
+     *  @type {Number}
+     */    
+    subtletyLag;
+
+    /**
+     *  Min. distance, in 'px', to target in which this agent will flee to maintain.
+     *  @type {Number}
+     */
+    safetyDistance;
 
     // wander state params
 
     // flee state params
+    maxFleeSpeed;
+    maxFleeAcceleration;
 
     // wall avoidance state params
 
-    // arrive behavior params
+    // flee behavior params
+    maxFleeSpeed;
+    maxFleeAcceleration;
+    panicDistance;
 
     // wander behavior params
-
+    maxWanderSpeed;
+    maxWanderAcceleration;
+    wanderRadius;
+    wanderOffset;
+    maxWanderAngleChangePerFrame;
+    
     constructor(entity) {
 
         super(entity);
 
+        // wander state
+
+        // flee state
+
+        // wall avoidance state
+    
+        // flee behavior
+        this.maxFleeSpeed = 2;
+        this.maxFleeAcceleration = 0.1;
+        this.panicDistance = 250;
+
+        // arrive behavior
+        this.innerDecelerationRadius = 12;
+        this.outerDecelerationRadius = 30;
+
+        // wander behavior
+        this.maxWanderSpeed = 4;
+        this.maxWanderAcceleration = 0.2;
+        this.wanderRadius = 50;
+        this.wanderOffset = 250;
+        this.maxWanderAngleChangePerFrame = 20;
+
+        // attach behaviors for this FSM
+        this._vehicle = this.entity.addComponent(PsyanimVehicle);
+        this._seekBehavior = this.entity.addComponent(PsyanimSeekBehavior);
+        this._wanderBehavior = this.entity.addComponent(PsyanimWanderBehavior);
+        this._fleeBehavior = this.entity.addComponent(PsyanimFleeBehavior);
+
+        // setup fsm
         this._wanderState = this.addState(PsyanimPreyWanderState);
         this._fleeState = this.addState(PsyanimPreyFleeState);
         this._wallAvoidanceState = this.addState(PsyanimPreyWallAvoidanceState);
@@ -44,6 +106,27 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     afterCreate() {
 
         super.afterCreate();
+
+        // fsm-level parameters
+
+        // wander state
+
+        // flee state
+
+        // wall avoidance state
+
+        // wander behavior
+        this._wanderBehavior.seekBehavior = this._seekBehavior;
+        this._wanderBehavior.maxSeekSpeed = this.maxWanderSpeed;
+        this._wanderBehavior.maxSeekAcceleration = this.maxWanderAcceleration;
+        this._wanderBehavior.radius = this.wanderRadius;
+        this._wanderBehavior.offset = this.wanderOffset;
+        this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
+
+        // flee behavior
+        this._fleeBehavior.maxSpeed = this.maxFleeSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxFleeAcceleration;
+        this._fleeBehavior.panicDistance = this.fleePanicDistance;
     }
 
     beforeShutdown() {

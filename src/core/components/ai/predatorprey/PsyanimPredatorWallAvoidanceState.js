@@ -15,6 +15,11 @@ export default class PsyanimPredatorWallAvoidanceState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0xffff00;
+        }
     }
 
     exit() {

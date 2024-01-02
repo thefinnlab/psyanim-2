@@ -15,6 +15,11 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0xff0000;
+        }
     }
 
     exit() {

@@ -52,7 +52,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     maxFleeAcceleration;
     fleePanicDistance;
 
-    /** general behavior params */
+    // TODO: I don't think we need a 'debug' param here since the base class has one :|
     debug;
 
     constructor(entity) {

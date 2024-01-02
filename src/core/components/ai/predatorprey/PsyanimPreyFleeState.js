@@ -15,6 +15,11 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0x0000ff;
+        }
     }
 
     exit() {
