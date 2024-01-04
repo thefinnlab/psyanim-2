@@ -39,7 +39,7 @@ export default class PsyanimBasicPredatorBehavior extends PsyanimComponent {
 
         this._state = PsyanimBasicPredatorBehavior.STATE.WANDERING;
 
-        this._arriveTarget = this.scene.addEntity(this.name + '_arriveTarget');
+        this._arriveTarget = this.scene.addEntity(this.entity.name + '_arriveTarget');
 
         this._subtletyUpdateTimer = 0;
 
