@@ -1,4 +1,4 @@
-import PsyanimFSM from './PsyanimFSM.js';
+import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
@@ -64,13 +64,9 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         // wall avoidance state
     
         // flee behavior
-        this.maxFleeSpeed = 2;
-        this.maxFleeAcceleration = 0.1;
+        this.maxFleeSpeed = 8;
+        this.maxFleeAcceleration = 0.2;
         this.panicDistance = 250;
-
-        // arrive behavior
-        this.innerDecelerationRadius = 12;
-        this.outerDecelerationRadius = 30;
 
         // wander behavior
         this.maxWanderSpeed = 4;
@@ -110,8 +106,10 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         // fsm-level parameters
 
         // wander state
+        this._wanderState.target = this.target;
 
         // flee state
+        this._fleeState.target = this.target;
 
         // wall avoidance state
 
@@ -126,7 +124,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         // flee behavior
         this._fleeBehavior.maxSpeed = this.maxFleeSpeed;
         this._fleeBehavior.maxAcceleration = this.maxFleeAcceleration;
-        this._fleeBehavior.panicDistance = this.fleePanicDistance;
+        this._fleeBehavior.panicDistance = this.panicDistance;
     }
 
     beforeShutdown() {

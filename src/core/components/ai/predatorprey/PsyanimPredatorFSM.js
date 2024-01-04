@@ -1,4 +1,4 @@
-import PsyanimFSM from './PsyanimFSM.js';
+import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimPredatorWanderState from './PsyanimPredatorWanderState.js';
 import PsyanimPredatorChargeState from './PsyanimPredatorChargeState.js';
@@ -107,8 +107,10 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         // fsm-level params
 
         // wander state
-        
+        this._wanderState.target = this.target;
+
         // charge state
+        this._chargeState.target = this.target;
 
         // wall avoidance state
 
