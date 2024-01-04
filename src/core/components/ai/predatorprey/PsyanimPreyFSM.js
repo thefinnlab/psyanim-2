@@ -2,6 +2,7 @@ import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
+import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
 import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
 
@@ -78,6 +79,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
         this._seekBehavior = this.entity.addComponent(PsyanimSeekBehavior);
+        this._arriveBehavior = this.entity.addComponent(PsyanimArriveBehavior);
         this._wanderBehavior = this.entity.addComponent(PsyanimWanderBehavior);
         this._fleeBehavior = this.entity.addComponent(PsyanimFleeBehavior);
 
@@ -120,6 +122,11 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this._wanderBehavior.radius = this.wanderRadius;
         this._wanderBehavior.offset = this.wanderOffset;
         this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
+
+        // arrive behavior
+        this._arriveBehavior.maxSpeed = this.maxFleeSpeed;
+        this._arriveBehavior.maxAcceleration = this.maxFleeAcceleration;
+        // TODO: configure inner and outer deceleration radii
 
         // flee behavior
         this._fleeBehavior.maxSpeed = this.maxFleeSpeed;

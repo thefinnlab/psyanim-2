@@ -2,12 +2,17 @@ import PsyanimFSMState from "../PsyanimFSMState.js";
 
 import PsyanimVehicle from "../../steering/PsyanimVehicle.js";
 import PsyanimFleeBehavior from "../../steering/PsyanimFleeBehavior.js";
+import PsyanimArriveBehavior from "../../steering/PsyanimArriveBehavior.js";
 
-import PsyanimPreyFleeState from "./PsyanimPreyFleeState.js";
+import PsyanimPreyWanderState from './PsyanimPreyWanderState.js';
 
 export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
     minimumWallSeparation;
+
+    useSeekTargets;
+
+    seekTargetLocations;
 
     constructor(fsm) {
 
@@ -15,19 +20,23 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
         this.minimumWallSeparation = 200;
 
-        this.fsm.setStateVariable('distanceToWall', 0);
+        this.useSeekTargets = true;
+
+        this.seekTargetLocations = [
+            { x: 400, y: 450 }, // bottom middle
+            { x: 400, y: 150 }, // top middle
+            { x: 150, y: 300 }, // left middle
+            { x: 650, y: 300 }, // right middle
+        ];
+
+        this.fsm.setStateVariable('wander', false);
 
         this._canvasHeight = this.entity.scene.game.config.height;
         this._canvasWidth = this.entity.scene.game.config.width;
 
-        console.log('canvas size = (', this._canvasHeight, ', ', this._canvasWidth, ')');
+        this._target = this.entity.scene.addEntity(this.entity.name + '_wallAvoidanceState');
 
-        this.addTransition(PsyanimPreyFleeState, 'distanceToWall', this._canTransitionToFleeState.bind(this));
-    }
-
-    _canTransitionToFleeState(distanceToWall) {
-
-        return distanceToWall > this.minimumWallSeparation;
+        this.addTransition(PsyanimPreyWanderState, 'wander', (value) => value === true);
     }
 
     afterCreate() {
@@ -36,11 +45,14 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
         this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
+        this._arriveBehavior = this.entity.getComponent(PsyanimArriveBehavior);
     }
 
     enter() {
 
         super.enter();
+
+        this.fsm.setStateVariable('wander', false);
 
         if (this.fsm.debug)
         {
@@ -53,31 +65,164 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         super.exit();
     }
 
-    _computeClosestDistanceToWall() {
+    _computeWallDistances() {
 
-        let leftDistance = this.entity.position.x;
-        let rightDistance = this._canvasWidth - this.entity.position.x;
-        let topDistance = this.entity.position.y;
-        let bottomDistance = this._canvasHeight - this.entity.position.y;
+        let walls = [
+            {
+                location: 'left',
+                distance: this.entity.position.x
+            },
+            {
+                location: 'right',
+                distance: this._canvasWidth - this.entity.position.x
+            },
+            {
+                location: 'top',
+                distance: this.entity.position.y
+            },
+            {
+                location: 'bottom',
+                distance: this._canvasHeight - this.entity.position.y
+            }
+        ];
 
-        let closestDistance = Math.max(leftDistance, rightDistance, topDistance, bottomDistance);
+        walls.sort((a, b) => a.distance - b.distance);
+    }
 
-        // TODO: need to compute which wall was closest too!
+    _computeSeekTargetLocation(walls) {
 
-        this.fsm.setStateVariable('distanceToWall', closestDistance);
+        let closestWall = walls[0];
+        let targetLocation = null;
+
+        let centerX = this._canvasWidth / 2;
+        let centerY = this._canvasHeight / 2;
+
+        // TODO: don't hard-code seek target selection - randomly select a seek target
+        if (closestWall.distance < this.minimumWallSeparation)
+        {
+            if (wall.location === 'left')
+            {
+                if (this.entity.position.y > centerY)
+                {
+                    targetLocation = this.seekTargetLocations[0];
+                }
+                else
+                {
+                    targetLocation = this.seekTargetLocations[1];
+                }
+            }
+            else if (wall.location === 'right')
+            {
+                if (this.entity.position.y > centerY)
+                {
+                    targetLocation = this.seekTargetLocations[0];
+                }
+                else
+                {
+                    targetLocation = this.seekTargetLocations[1];
+                }
+            }
+            else if (wall.location === 'top')
+            {
+                if (this.entity.position.x > centerX)
+                {
+                    targetLocation = this.seekTargetLocations[2];
+                }
+                else
+                {
+                    targetLocation = this.seekTargetLocations[3];
+                }
+            }
+            else if (wall.location === 'bottom')
+            {
+                if (this.entity.position.x > centerX)
+                {
+                    targetLocation = this.seekTargetLocations[2];
+                }
+                else
+                {
+                    targetLocation = this.seekTargetLocations[3];
+                }
+            }
+        }
+
+        return targetLocation;
+    }
+
+    _computeFleeTargetLocation(walls) {
+
+        /**
+         * TODO: we have enough information here to let the agent flee from corners + middle points,
+         * depending on what the situation is...
+         * 
+         * could also try seeking a different point on the canvas instead of fleeing from a wall!
+         */
+
+        let closestWall = walls[0];
+
+        let targetLocation = null;
+
+        if (closestWall.distance < this.minimumWallSeparation)
+        {
+            if (wall.location === 'left')
+            {
+                targetLocation = new Phaser.Math.Vector2(0, this._canvasHeight / 2);
+            }
+            else if (wall.location === 'right')
+            {
+                targetLocation = new Phaser.Math.Vector2(this._canvasWidth, this._canvasHeight / 2);
+            }
+            else if (wall.location === 'top')
+            {
+                targetLocation = new Phaser.Math.Vector2(this._canvasWidth / 2, 0);
+            }
+            else if (wall.location === 'bottom')
+            {
+                targetLocation = new Phaser.Math.Vector2(this._canvasWidth / 2, this._canvasHeight);
+            }
+        }
+
+        return targetLocation;
     }
 
     run(t, dt) {
 
         super.run(t, dt);
 
-        this._computeClosestDistanceToWall();
+        let walls = this._computeWallDistances();
 
-        // TODO: need to compute a flee target location based on wall calcs
+        let steering = null;
 
+        if (this.useSeekTargets)
+        {
+            let seekTargetLocation = this._computeSeekTargetLocation(walls);
 
-        let steering = this._fleeBehavior.getSteering(/** TODO: see last TODO */);
+            if (seekTargetLocation)
+            {
+                this._target.position = seekTargetLocation;
 
-        this._vehicle.steer(steering);
+                steering = this._arriveBehavior.getSteering(this._target);
+            }
+        }
+        else
+        {
+            let fleeTargetLocation = this._computeFleeTargetLocation(walls);
+
+            if (fleeTargetLocation)
+            {
+                this._target.position = fleeTargetLocation;
+    
+                steering = this._fleeBehavior.getSteering(this._target);
+            }
+        }
+
+        if (steering)
+        {
+            this._vehicle.steer(steering);
+        }
+        else
+        {
+            this.fsm.setStateVariable('wander', true);
+        }    
     }
 }
