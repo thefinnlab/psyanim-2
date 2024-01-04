@@ -29,7 +29,7 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
         this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
 
-        this._fleeTarget = this.scene.addEntity(this.name + '_fleeTarget');
+        this._fleeTarget = this.scene.addEntity(this.entity.name + '_fleeTarget');
 
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
