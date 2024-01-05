@@ -220,7 +220,7 @@ class _PsyanimJsPsychPlugin {
                     if (this._agentNamesToRecord.includes(agent.name) && 
                         this._currentTrial.recordStateLogs)
                     {
-                        let recorder = agent.getComponentByType(PsyanimComponentStateRecorder);
+                        let recorder = agent.getComponent(PsyanimComponentStateRecorder);
 
                         if (recorder)
                         {
