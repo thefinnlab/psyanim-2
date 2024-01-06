@@ -114,6 +114,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this._fleeState.target = this.target;
 
         // wall avoidance state
+        this._wallAvoidanceState.target = this.target;
 
         // wander behavior
         this._wanderBehavior.seekBehavior = this._seekBehavior;

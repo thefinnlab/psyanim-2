@@ -52,6 +52,7 @@ export default {
                         target: {
                             entityName: 'predator',
                         },
+                        panicDistance: 200,
                         debug: true
                     }
                 }

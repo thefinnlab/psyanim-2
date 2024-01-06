@@ -403,6 +403,20 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         this.body.isSensor = !enabled;
         this.body.isSleeping = !enabled;
     }
+
+    /**
+     * 
+     * @returns An array of distances for each screen boundary as [left, right, top, bottom]
+     */
+    computeDistancesToScreenBoundaries() {
+
+        return [
+            this.position.x,
+            this.scene._canvasWidth - this.position.x,
+            this.position.y,
+            this.scene._canvasHeight - this.position.y
+        ];
+    }
     
     /**
      * Destroys this entity, cleaning up all of its resources.

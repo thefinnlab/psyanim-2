@@ -197,12 +197,13 @@ export default class PsyanimScene extends Phaser.Scene {
     create() {
 
         // setup wrapping with screen boundary
-        let width = this.game.config.width;
-        let height = this.game.config.height;
-        let centerX = width / 2;
-        let centerY = height / 2;
+        this._canvasWidth = this.game.config.width;
+        this._canvasHeight = this.game.config.height;
+        let centerX = this._canvasWidth / 2;
+        let centerY = this._canvasHeight / 2;
 
-        this.screenBoundary = new PsyanimScreenBoundary(this, centerX, centerY, width, height);
+        this.screenBoundary = new PsyanimScreenBoundary(this, centerX, centerY, 
+            this._canvasWidth, this._canvasHeight);
     }
 
     /**
