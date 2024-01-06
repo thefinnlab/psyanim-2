@@ -11,6 +11,9 @@ import { PsyanimUtils } from 'psyanim-utils';
 
 export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
+    subtlety;
+    subtletyLag;
+
     target;
 
     seekTargetStoppingDistance;
@@ -20,6 +23,9 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
     constructor(fsm) {
 
         super(fsm);
+
+        this.subtlety = 30; // degrees
+        this.subtletyLag = 500; // ms
 
         this.seekTargetStoppingDistance = 50;
 
@@ -34,6 +40,9 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
             { x: 650, y: 300 }, // right middle
         ];
 
+        this._subtletyAngle = 0;
+        this._subtletyUpdateTimer = 0;
+
         this.fsm.setStateVariable('wander', false);
 
         this._canvasHeight = this.entity.scene.game.config.height;
@@ -42,6 +51,18 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         this._seekTarget = this.entity.scene.addEntity(this.entity.name + '_wallAvoidanceState');
 
         this.addTransition(PsyanimPreyWanderState, 'wander', (value) => value === true);
+    }
+
+    _recomputeSubtletyAngle() {
+
+        let newAngle = this.subtlety * (2 * Math.random() - 1);
+
+        if (Math.abs(newAngle) < 0.001)
+        {
+            newAngle = 0;
+        }
+
+        this._subtletyAngle = newAngle;
     }
 
     afterCreate() {
@@ -59,12 +80,19 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('wander', false);
 
+        this._recomputeSubtletyAngle();
+        this._subtletyUpdateTimer = 0;
+
         this._seekBehavior.maxSpeed = this._fleeBehavior.maxSpeed;
         this._seekBehavior.maxAcceleration = this._fleeBehavior.maxAcceleration;
 
         let index = PsyanimUtils.getRandomInt(0, this.seekTargetLocations.length - 1);
 
-        this._seekTarget.position = this.seekTargetLocations[index];
+        this.currentSeekTargetLocation = new Phaser.Math.Vector2(
+            this.seekTargetLocations[index].x,
+            this.seekTargetLocations[index].y);
+
+        this._seekTarget.position = this.currentSeekTargetLocation;
 
         if (this.fsm.debug)
         {
@@ -80,7 +108,7 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
     _canTransitionToWander() {
 
         let distanceToSeekTarget = this.entity.position
-            .subtract(this._seekTarget.position)
+            .subtract(this.currentSeekTargetLocation)
             .length();
 
         let distanceToTarget = this.entity.position
@@ -94,9 +122,42 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         return (hasReachedSeekTarget || surroundingAreaIsSafe);
     }
 
+    _updateSeekTargetLocation() {
+
+        let targetRelativePosition = this.currentSeekTargetLocation.clone()
+            .subtract(this.entity.position);
+
+        targetRelativePosition.rotate(this._subtletyAngle * Math.PI / 180.0);
+
+        let newTargetPosition = this.entity.position
+            .add(targetRelativePosition);
+
+        console.log('pos = ', newTargetPosition, ', ', this.currentSeekTargetLocation);
+
+        this._seekTarget.position = newTargetPosition;
+    }
+
+    _updateSubtlety(dt) {
+
+        this._subtletyUpdateTimer += dt;
+
+        if (this._subtletyUpdateTimer > this.subtletyLag)
+        {
+            this._subtletyUpdateTimer = 0;
+
+            this._recomputeSubtletyAngle();
+        }
+    }
+
     run(t, dt) {
 
         super.run(t, dt);
+
+        console.log('subtlety angle = ', this._subtletyAngle);
+
+        this._updateSubtlety(dt);
+
+        this._updateSeekTargetLocation();
 
         let steering = this._seekBehavior.getSteering(this._seekTarget);
 

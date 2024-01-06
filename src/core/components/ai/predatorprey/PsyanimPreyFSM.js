@@ -65,12 +65,12 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         // wall avoidance state
     
         // flee behavior
-        this.maxFleeSpeed = 8;
+        this.maxFleeSpeed = 3;
         this.maxFleeAcceleration = 0.2;
         this.panicDistance = 250;
 
         // wander behavior
-        this.maxWanderSpeed = 4;
+        this.maxWanderSpeed = 3;
         this.maxWanderAcceleration = 0.2;
         this.wanderRadius = 50;
         this.wanderOffset = 250;

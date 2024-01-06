@@ -60,8 +60,8 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         // wander state
 
         // charge state
-        this.maxChargeSpeed = 7;
-        this.maxChargeAcceleration = 0.3;
+        this.maxChargeSpeed = 4;
+        this.maxChargeAcceleration = 0.2;
 
         // wall avoidance state
 

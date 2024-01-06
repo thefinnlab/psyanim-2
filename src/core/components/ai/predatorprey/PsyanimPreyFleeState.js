@@ -8,6 +8,9 @@ import PsyanimPreyWallAvoidanceState from "./PsyanimPreyWallAvoidanceState.js";
 
 export default class PsyanimPreyFleeState extends PsyanimFSMState {
 
+    subtlety;
+    subtletyLag;
+
     target;
 
     minimumWallSeparation;
@@ -16,13 +19,33 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
 
         super(fsm);
 
+        this.subtlety = 30; // degrees
+        this.subtletyLag = 500; // ms
+
         this.minimumWallSeparation = 50;
+
+        this._subtletyAngle = 0;
+        this._subtletyUpdateTimer = 0;
+
+        this._fleeTarget = this.entity.scene.addEntity(this.entity.name + '_fleeTarget');
 
         this.fsm.setStateVariable('distanceToTarget', Infinity);
         this.fsm.setStateVariable('avoidWalls', false);
 
         this.addTransition(PsyanimPreyWanderState, 'distanceToTarget', this._canTransitionToWander.bind(this));
         this.addTransition(PsyanimPreyWallAvoidanceState, 'avoidWalls', (value) => value === true);
+    }
+
+    _recomputeSubtletyAngle() {
+
+        let newAngle = this.subtlety * (2 * Math.random() - 1);
+
+        if (Math.abs(newAngle) < 0.001)
+        {
+            newAngle = 0;
+        }
+
+        this._subtletyAngle = newAngle;
     }
 
     _canTransitionToWander(distanceToTarget) {
@@ -41,6 +64,9 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        this._recomputeSubtletyAngle();
+        this._subtletyUpdateTimer = 0;
 
         this._computeDistanceToTarget();
 
@@ -66,6 +92,31 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
         this.fsm.setStateVariable('distanceToTarget', distanceToTarget);
     }
 
+    _updateFleeTargetLocation() {
+
+        let targetRelativePosition = this.target.position
+            .subtract(this.entity.position);
+
+        targetRelativePosition.rotate(this._subtletyAngle * Math.PI / 180.0);
+
+        let newTargetPosition = this.entity.position
+            .add(targetRelativePosition);
+
+        this._fleeTarget.position = newTargetPosition;
+    }
+
+    _updateSubtlety(dt) {
+
+        this._subtletyUpdateTimer += dt;
+
+        if (this._subtletyUpdateTimer > this.subtletyLag)
+        {
+            this._subtletyUpdateTimer = 0;
+
+            this._recomputeSubtletyAngle();
+        }
+    }
+
     run(t, dt) {
 
         super.run(t, dt);
@@ -79,7 +130,11 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
             this.fsm.setStateVariable('avoidWalls', true);
         }
 
-        let steering = this._fleeBehavior.getSteering(this.target);
+        this._updateSubtlety(dt);
+
+        this._updateFleeTargetLocation();
+
+        let steering = this._fleeBehavior.getSteering(this._fleeTarget);
 
         this._vehicle.steer(steering);
     }

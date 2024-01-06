@@ -1,14 +1,15 @@
-import PsyanimConstants from "../../src/core/PsyanimConstants.js";
+import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimPredatorFSM from "../../src/core/components/ai/predatorprey/PsyanimPredatorFSM.js";
+import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController.js';
+
 import PsyanimPreyFSM from '../../src/core/components/ai/predatorprey/PsyanimPreyFSM.js';
 
 export default {
-    key: 'Predator Prey v2',
+    key: 'Prey v2 test',
     wrapScreenBoundary: false,
     entities: [
         {
@@ -20,20 +21,17 @@ export default {
             ]
         },
         {
-            name: 'predator',
-            initialPosition: { x: 200, y: 300 },
+            name: 'player',
+            initialPosition: { x: 400, y: 300 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-                radius: 12, color: 0x000000
+                radius: 12, color: 0x0000ff
             },
             components: [
                 {
-                    type: PsyanimPredatorFSM,
+                    type: PsyanimPlayerController,
                     params: {
-                        target: {
-                            entityName: 'prey'
-                        },
-                        debug: true
+                        speed: 4
                     }
                 }
             ]
@@ -50,13 +48,13 @@ export default {
                     type: PsyanimPreyFSM,
                     params: {
                         target: {
-                            entityName: 'predator',
+                            entityName: 'player',
                         },
-                        panicDistance: 250,
+                        panicDistance: 150,
                         debug: true
                     }
                 }
             ]
         }
-    ],
+    ]
 }
