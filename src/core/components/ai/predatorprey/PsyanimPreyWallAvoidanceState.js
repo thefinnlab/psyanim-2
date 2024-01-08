@@ -3,7 +3,6 @@ import PsyanimFSMState from "../PsyanimFSMState.js";
 import PsyanimVehicle from "../../steering/PsyanimVehicle.js";
 import PsyanimSeekBehavior from "../../steering/PsyanimSeekBehavior.js";
 import PsyanimFleeBehavior from "../../steering/PsyanimFleeBehavior.js";
-import PsyanimArriveBehavior from "../../steering/PsyanimArriveBehavior.js";
 
 import PsyanimPreyWanderState from './PsyanimPreyWanderState.js';
 
@@ -11,10 +10,10 @@ import { PsyanimUtils } from 'psyanim-utils';
 
 export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
+    target;
+
     subtlety;
     subtletyLag;
-
-    target;
 
     seekTargetStoppingDistance;
 
@@ -132,8 +131,6 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         let newTargetPosition = this.entity.position
             .add(targetRelativePosition);
 
-        console.log('pos = ', newTargetPosition, ', ', this.currentSeekTargetLocation);
-
         this._seekTarget.position = newTargetPosition;
     }
 
@@ -152,8 +149,6 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
     run(t, dt) {
 
         super.run(t, dt);
-
-        console.log('subtlety angle = ', this._subtletyAngle);
 
         this._updateSubtlety(dt);
 

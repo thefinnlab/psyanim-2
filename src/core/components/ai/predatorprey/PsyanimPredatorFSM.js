@@ -2,7 +2,6 @@ import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimPredatorWanderState from './PsyanimPredatorWanderState.js';
 import PsyanimPredatorChargeState from './PsyanimPredatorChargeState.js';
-import PsyanimPredatorWallAvoidanceState from './PsyanimPredatorWallAvoidanceState.js';
 
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
@@ -11,7 +10,14 @@ import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 
 export default class PsyanimPredatorFSM extends PsyanimFSM {
 
-    // predator agent parameters
+    /***********************************************************************************************/
+    /********************************* Predator FSM Parameters *************************************/
+    /***********************************************************************************************/
+
+    /**
+     *  Agent which this predator will watch and pursue.
+     *  @type {PsyanimEntity}
+     */
     target;
 
     /**
@@ -26,55 +32,76 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
      */
     subtletyLag;
 
+    /***********************************************************************************************/
+    /********************************** Wander State Parameters ************************************/
+    /***********************************************************************************************/
+
+    averageWanderTime;
+
     /**
-     *  Max. distance, in 'px', to target beyond which this predator will no longer chase it
+     *  Maximum speed at which the agent will wander.
      *  @type {Number}
      */
-    boredomDistance;
+    maxWanderSpeed;
 
-    // wander state params
+    /**
+     *  Maximum acceleration the agent can attain during wander.
+     *  @type {Number}
+     */
+    maxWanderAcceleration;
+    
+    /**
+     *  Radius of the wander circle.
+     *  @type {Number}
+     */
+    wanderRadius;
+    
+    /**
+     *  Distance the wander circle is offset from the agent's position.
+     *  @type {Number}
+     */
+    wanderOffset;
+    
+    /**
+     *  Maximum number of degrees the wander target can move around the wander circle per frame.
+     *  @type {Number}
+     */
+    maxWanderAngleChangePerFrame;
 
-    // charge state params
+    /***********************************************************************************************/
+    /********************************* Charge State Parameters *************************************/
+    /***********************************************************************************************/
+
+    maxChargeDuration;
     maxChargeSpeed;
     maxChargeAcceleration;
 
-    // wall avoidance state params
-
-    // arrive behavior params
     innerDecelerationRadius;
     outerDecelerationRadius;
 
-    // wander behavior params
-    maxWanderSpeed;
-    maxWanderAcceleration;
-    wanderRadius;
-    wanderOffset;
-    maxWanderAngleChangePerFrame;
-    
     constructor(entity) {
 
         super(entity);
 
-        // fsm-level parameters
+        // predator FSM params
+        this.subtlety = 30;
+        this.subtletyLag = 500;
 
-        // wander state
-
-        // charge state
-        this.maxChargeSpeed = 4;
-        this.maxChargeAcceleration = 0.2;
-
-        // wall avoidance state
-
-        // arrive behavior
-        this.innerDecelerationRadius = 12;
-        this.outerDecelerationRadius = 30;
-
-        // wander behavior
+        // wander state params
+        this.averageWanderTime = 2000;
         this.maxWanderSpeed = 4;
         this.maxWanderAcceleration = 0.2;
         this.wanderRadius = 50;
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 20;    
+
+        // charge state params
+        this.maxChargeDuration = 1400;
+        this.maxChargeSpeed = 4;
+        this.maxChargeAcceleration = 0.2;
+
+        this.innerDecelerationRadius = 12;
+        this.outerDecelerationRadius = 30;
 
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
@@ -85,7 +112,6 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         // setup FSM
         this._wanderState = this.addState(PsyanimPredatorWanderState);
         this._chargeState = this.addState(PsyanimPredatorChargeState);
-        this._wallAvoidanceState = this.addState(PsyanimPredatorWallAvoidanceState);
 
         this.initialState = this._wanderState;
     }
@@ -108,11 +134,13 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
 
         // wander state
         this._wanderState.target = this.target;
+        this._wanderState.averageWanderTime = this.averageWanderTime;
 
         // charge state
         this._chargeState.target = this.target;
-
-        // wall avoidance state
+        this._chargeState.subtlety = this.subtlety;
+        this._chargeState.subtletyLag = this.subtletyLag;
+        this._chargeState.maxChargeDuration = this.maxChargeDuration;
 
         // arrive behavior
         this._arriveBehavior.maxSpeed = this.maxChargeSpeed;
@@ -121,6 +149,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
 
         // wander behavior
+        this._wanderBehavior.averageWanderTime = this.averageWanderTime;
         this._wanderBehavior.seekBehavior = this._seekBehavior;
         this._wanderBehavior.maxSeekSpeed = this.maxWanderSpeed;
         this._wanderBehavior.maxSeekAcceleration = this.maxWanderAcceleration;

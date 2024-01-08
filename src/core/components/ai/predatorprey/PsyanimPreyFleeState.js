@@ -8,16 +8,18 @@ import PsyanimPreyWallAvoidanceState from "./PsyanimPreyWallAvoidanceState.js";
 
 export default class PsyanimPreyFleeState extends PsyanimFSMState {
 
+    target;
+
     subtlety;
     subtletyLag;
-
-    target;
 
     minimumWallSeparation;
 
     constructor(fsm) {
 
         super(fsm);
+
+        console.warn("TODO: make sure the predator never chooses a direction that's into a wall!");
 
         this.subtlety = 30; // degrees
         this.subtletyLag = 500; // ms

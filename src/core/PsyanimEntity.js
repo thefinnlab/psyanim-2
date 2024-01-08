@@ -440,7 +440,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
-     * The x-coordinate of this entity's position in the scene.
+     * This entity's position in the scene.
      * 
      * @returns {Phaser.Math.Vector2}
      * @property {number} x
@@ -452,11 +452,9 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     /**
-     * The y-coordinate of this entity's position in the scene.
+     *  Sets this entity's position in the scene.
      * 
-     * @param {Phaser.Math.Vector2}
-     * @property {number} x
-     * @property {number} y
+     *  @param {Object} - vector of the form: { x, y }
      */
     set position(value) {
 

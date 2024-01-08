@@ -50,6 +50,8 @@ export default {
                         target: {
                             entityName: 'player'
                         },
+                        subtlety: 30,
+                        averageWanderTime: 2000,
                         debug: true
                     }
                 }
