@@ -89,15 +89,15 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
 
         // wander state params
         this.averageWanderTime = 2000;
-        this.maxWanderSpeed = 4;
+        this.maxWanderSpeed = 3;
         this.maxWanderAcceleration = 0.2;
         this.wanderRadius = 50;
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 20;    
 
         // charge state params
-        this.maxChargeDuration = 1400;
-        this.maxChargeSpeed = 4;
+        this.maxChargeDuration = 2500;
+        this.maxChargeSpeed = 3;
         this.maxChargeAcceleration = 0.2;
 
         this.innerDecelerationRadius = 12;
