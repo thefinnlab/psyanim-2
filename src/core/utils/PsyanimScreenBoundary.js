@@ -67,7 +67,16 @@ export default class PsyanimScreenBoundary {
             collisionFilter: PsyanimConstants.DEFAULT_SCREEN_BOUNDARY_COLLISION_FILTER,
         });
 
+        this.width = width;
+        this.height = height;
+
         this.wrap = wrap;
+    }
+
+    isPointInBounds(point) {
+
+        return point.x > 0 && point.x < this.width &&
+                point.y > 0 && point.y < this.height;
     }
 
     /**

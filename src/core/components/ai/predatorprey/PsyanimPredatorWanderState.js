@@ -5,17 +5,21 @@ import PsyanimPredatorChargeState from './PsyanimPredatorChargeState.js';
 import PsyanimVehicle from "../../steering/PsyanimVehicle.js";
 import PsyanimWanderBehavior from "../../steering/PsyanimWanderBehavior.js";
 
+import { PsyanimUtils } from 'psyanim-utils';
+
 export default class PsyanimPredatorWanderState extends PsyanimFSMState {
 
     target;
 
-    averageWanderTime;
+    averageWanderDuration;
+    wanderDurationVariance;
 
     constructor(fsm) {
 
         super(fsm);
 
-        this.averageWanderTime = 2000;
+        this.averageWanderDuration = 2000;
+        this.wanderDurationVariance = 500;
 
         this.fsm.setStateVariable('wanderTimer', 0);
 
@@ -24,7 +28,15 @@ export default class PsyanimPredatorWanderState extends PsyanimFSMState {
 
     _canTransitionToChargeState(wanderTimer) {
 
-        return wanderTimer > this.averageWanderTime;
+        return wanderTimer > this._wanderDuration;
+    }
+
+    _recomputeWanderDuration() {
+
+        this._wanderDuration = PsyanimUtils.getRandomInt(
+            this.averageWanderDuration - this.wanderDurationVariance,
+            this.averageWanderDuration + this.wanderDurationVariance
+        );
     }
 
     afterCreate() {
@@ -38,6 +50,8 @@ export default class PsyanimPredatorWanderState extends PsyanimFSMState {
     enter() {
 
         super.enter();
+
+        this._recomputeWanderDuration();
 
         if (this.fsm.debug)
         {

@@ -5,6 +5,8 @@ import PsyanimArriveBehavior from "../../steering/PsyanimArriveBehavior.js";
 
 import PsyanimPredatorWanderState from "./PsyanimPredatorWanderState.js";
 
+import { PsyanimUtils } from 'psyanim-utils';
+
 export default class PsyanimPredatorChargeState extends PsyanimFSMState {
 
     target;
@@ -12,7 +14,8 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
     subtlety; // degrees
     subtletyLag; // ms
 
-    maxChargeDuration;
+    averageChargeDuration;
+    chargeDurationVariance;
 
     constructor(fsm) {
 
@@ -23,7 +26,8 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
         this.subtlety = 30;
         this.subtletyLag = 500;
 
-        this.maxChargeDuration = 1400;
+        this.averageChargeDuration = 1800;
+        this.chargeDurationVariance = 500;
 
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
@@ -36,12 +40,20 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
 
     _canTransitionToWanderState(chargeDuration) {
 
-        return chargeDuration > this.maxChargeDuration;
+        return chargeDuration > this._chargeDuration;
     }
 
     _recomputeSubtletyAngle() {
 
         this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+    }
+
+    _recomputeChargeDuration() {
+
+        this._chargeDuration = PsyanimUtils.getRandomInt(
+            this.averageChargeDuration - this.chargeDurationVariance,
+            this.averageChargeDuration + this.chargeDurationVariance
+        );
     }
 
     afterCreate() {
@@ -61,6 +73,8 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('chargeDuration', 0);
 
+        this._recomputeChargeDuration();
+
         this._recomputeSubtletyAngle();
 
         if (this.fsm.debug)
@@ -74,15 +88,26 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
         super.exit();
     }
 
-    _updateSeekTargetLocation() {
+    _calculateSeekTargetPosition() {
 
         let targetRelativePosition = this.target.position
             .subtract(this.entity.position);
 
         targetRelativePosition.rotate(this._subtletyAngle * Math.PI / 180);
 
-        let newTargetPosition = this.entity.position
+        return this.entity.position
             .add(targetRelativePosition);
+    }
+
+    _updateSeekTargetLocation() {
+
+        let newTargetPosition = this._calculateSeekTargetPosition();
+
+        while (!this.entity.scene.screenBoundary.isPointInBounds(newTargetPosition))
+        {
+            this._recomputeSubtletyAngle();
+            newTargetPosition = this._calculateSeekTargetPosition();
+        }
 
         this._arriveTarget.position = newTargetPosition;
     }

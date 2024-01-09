@@ -36,7 +36,17 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     /********************************** Wander State Parameters ************************************/
     /***********************************************************************************************/
 
-    averageWanderTime;
+    /**
+     *  Amount of time, in millseconds, this agent will wander before attempting another charge.
+     *  @type {Number}
+     */
+    averageWanderDuration;
+
+    /**
+     *  Variance in wander duration, which gets recomputed each time agent enters wander state.
+     *  @type {Number}
+     */
+    wanderDurationVariance;
 
     /**
      *  Maximum speed at which the agent will wander.
@@ -72,11 +82,40 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     /********************************* Charge State Parameters *************************************/
     /***********************************************************************************************/
 
-    maxChargeDuration;
+    /**
+     *  Average time which the agent will remain in a charge state.
+     *  @type {Number} - milliseconds
+     */
+    averageChargeDuration;
+
+    /**
+     *  Variance in charge duration, which is recomputed every time agent enters charge state.
+     *  @type {Number} - milliseconds
+     */
+    chargeDurationVariance;
+
+    /**
+     *  Maximum speed agent can reach during charge.
+     *  @type {Number}
+     */
     maxChargeSpeed;
+
+    /**
+     *  Maximum acceleration agent can attain during a charge.
+     *  @type {Number}
+     */
     maxChargeAcceleration;
 
+    /**
+     *  Inner deceleration radius of 'Arrive behavior' used during charge.
+     *  @type {Number}
+     */
     innerDecelerationRadius;
+
+    /**
+     *  Outer deceleration radius of 'Arrive behavior' used during charge.
+     *  @type {Number}
+     */
     outerDecelerationRadius;
 
     constructor(entity) {
@@ -88,7 +127,9 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         this.subtletyLag = 500;
 
         // wander state params
-        this.averageWanderTime = 2000;
+        this.averageWanderDuration = 2000;
+        this.wanderDurationVariance = 500;
+
         this.maxWanderSpeed = 3;
         this.maxWanderAcceleration = 0.2;
         this.wanderRadius = 50;
@@ -96,7 +137,9 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         this.maxWanderAngleChangePerFrame = 20;    
 
         // charge state params
-        this.maxChargeDuration = 2500;
+        this.averageChargeDuration = 2000;
+        this.chargeDurationVariance = 500;
+
         this.maxChargeSpeed = 3;
         this.maxChargeAcceleration = 0.2;
 
@@ -134,13 +177,15 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
 
         // wander state
         this._wanderState.target = this.target;
-        this._wanderState.averageWanderTime = this.averageWanderTime;
+        this._wanderState.averageWanderDuration = this.averageWanderDuration;
+        this._wanderState.wanderDurationVariance = this.wanderDurationVariance;
 
         // charge state
         this._chargeState.target = this.target;
         this._chargeState.subtlety = this.subtlety;
         this._chargeState.subtletyLag = this.subtletyLag;
-        this._chargeState.maxChargeDuration = this.maxChargeDuration;
+        this._chargeState.averageChargeDuration = this.averageChargeDuration;
+        this._chargeState.chargeDurationVariance = this.chargeDurationVariance;
 
         // arrive behavior
         this._arriveBehavior.maxSpeed = this.maxChargeSpeed;
@@ -149,7 +194,6 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
 
         // wander behavior
-        this._wanderBehavior.averageWanderTime = this.averageWanderTime;
         this._wanderBehavior.seekBehavior = this._seekBehavior;
         this._wanderBehavior.maxSeekSpeed = this.maxWanderSpeed;
         this._wanderBehavior.maxSeekAcceleration = this.maxWanderAcceleration;
