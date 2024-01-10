@@ -2,8 +2,16 @@ import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimFSM extends PsyanimComponent {
 
+    /**
+     *  The initial state of the FSM is the first state the FSM will enter() on start.
+     *  @type {PsyanimFSMState}
+     */
     initialState;
 
+    /**
+     *  If true, this FSM will run in debug mode.
+     *  @type {boolean}
+     */
     debug;
 
     constructor(entity) {
@@ -18,6 +26,10 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         this._initialized = false;
 
+        /**
+         *  Event emitter for this FSM.
+         *  @type {Phaser.Events.EventEmitter}
+         */
         this.events = new Phaser.Events.EventEmitter();
     }
 
@@ -56,6 +68,10 @@ export default class PsyanimFSM extends PsyanimComponent {
         return newState;
     }
 
+    /**
+     *  The state that is currently executing.
+     *  @type {PsyanimFSMState}
+     */
     get currentState() {
 
         return this._currentState;

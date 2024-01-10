@@ -173,8 +173,6 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
 
         super.afterCreate();
 
-        // fsm-level params
-
         // wander state
         this._wanderState.target = this.target;
         this._wanderState.averageWanderDuration = this.averageWanderDuration;

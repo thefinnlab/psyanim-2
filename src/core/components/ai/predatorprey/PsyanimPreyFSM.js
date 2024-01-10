@@ -182,8 +182,6 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
 
         super.afterCreate();
 
-        // fsm-level parameters
-
         // wander state
         this._wanderState.target = this.target;
 
