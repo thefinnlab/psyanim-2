@@ -94,15 +94,26 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
         this.fsm.setStateVariable('distanceToTarget', distanceToTarget);
     }
 
-    _updateFleeTargetLocation() {
+    _calculateFleeTargetPosition() {
 
         let targetRelativePosition = this.target.position
             .subtract(this.entity.position);
 
         targetRelativePosition.rotate(this._subtletyAngle * Math.PI / 180.0);
 
-        let newTargetPosition = this.entity.position
+        return this.entity.position
             .add(targetRelativePosition);
+    }
+
+    _updateFleeTargetLocation() {
+
+        let newTargetPosition = this._calculateFleeTargetPosition();
+
+        while (!this.entity.scene.screenBoundary.isPointInBounds(newTargetPosition))
+        {
+            this._recomputeSubtletyAngle();
+            newTargetPosition = this._calculateFleeTargetPosition();
+        }
 
         this._fleeTarget.position = newTargetPosition;
     }

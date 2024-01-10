@@ -121,15 +121,27 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         return (hasReachedSeekTarget || surroundingAreaIsSafe);
     }
 
-    _updateSeekTargetLocation() {
+    _calculateSeekTargetLocation() {
 
         let targetRelativePosition = this.currentSeekTargetLocation.clone()
             .subtract(this.entity.position);
 
         targetRelativePosition.rotate(this._subtletyAngle * Math.PI / 180.0);
 
-        let newTargetPosition = this.entity.position
+        return this.entity.position
             .add(targetRelativePosition);
+
+    }
+
+    _updateSeekTargetLocation() {
+
+        let newTargetPosition = this._calculateSeekTargetLocation();
+
+        while (!this.entity.scene.screenBoundary.isPointInBounds(newTargetPosition))
+        {
+            this._recomputeSubtletyAngle();
+            newTargetPosition = this._calculateSeekTargetLocation();
+        }
 
         this._seekTarget.position = newTargetPosition;
     }
