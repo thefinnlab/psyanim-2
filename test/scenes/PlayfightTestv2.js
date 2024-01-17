@@ -6,6 +6,8 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js
 
 import PsyanimPlayfightFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightFSM.js';
 
+import FsmApiKeyboardControls from '../components/FsmApiKeyboardControls.js';
+
 export default {
 
     key: 'Playfight Test v2',
@@ -17,6 +19,20 @@ export default {
                 { type: PsyanimSceneTitle },
                 { type: PsyanimPhysicsSettingsController },
                 { type: PsyanimSceneChangeController }
+            ]
+        },
+        {
+            name: 'fsmApiTestControls',
+            components: [
+                { 
+                    type: FsmApiKeyboardControls,
+                    params: {
+                        fsm: {
+                            entityName: 'agent1',
+                            componentType: PsyanimPlayfightFSM
+                        }
+                    }
+                }
             ]
         },
         {

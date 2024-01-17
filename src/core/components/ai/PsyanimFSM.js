@@ -90,6 +90,8 @@ export default class PsyanimFSM extends PsyanimComponent {
         {
             this._states[i].afterCreate();
         }
+
+        this._running = true;
     }
 
     stateVariableExists(key) {
@@ -107,6 +109,30 @@ export default class PsyanimFSM extends PsyanimComponent {
         return this._stateVariables[key];
     }
 
+    pause() {
+
+        this._running = false;
+    }
+
+    stop() {
+
+        this._running = false;
+
+        this._currentState = this.initialState;
+        this._initialized = false;
+    }
+
+    restart() {
+
+        this.stop();
+        this.resume();
+    }
+
+    resume() {
+
+        this._running = true;
+    }
+
     update(t, dt) {
 
         super.update(t, dt);
@@ -116,6 +142,11 @@ export default class PsyanimFSM extends PsyanimComponent {
         {
             this._currentState.enter();
             this._initialized = true;
+        }
+
+        if (!this._running)
+        {
+            return;
         }
 
         // see if we have any transition conditions met
