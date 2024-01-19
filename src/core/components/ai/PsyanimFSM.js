@@ -1,4 +1,7 @@
 import PsyanimComponent from '../../PsyanimComponent.js';
+import PsyanimFSMState from './PsyanimFSMState.js';
+
+import { PsyanimDebug } from 'psyanim-utils';
 
 export default class PsyanimFSM extends PsyanimComponent {
 
@@ -116,10 +119,18 @@ export default class PsyanimFSM extends PsyanimComponent {
 
     stop() {
 
-        this._running = false;
+        if (this._currentState.stage != PsyanimFSMState.STAGE.EXITED)
+        {
+            this._currentState.exit();
+        }
 
         this._currentState = this.initialState;
+
+        this._running = false;
+
         this._initialized = false;
+
+        PsyanimDebug.log(this.constructor.name, 'was stopped!');
     }
 
     restart() {
@@ -137,16 +148,16 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         super.update(t, dt);
 
+        if (!this._running)
+        {
+            return;
+        }
+
         // we don't enter the 'initialState' until the first update() runs
         if (!this._initialized)
         {
             this._currentState.enter();
             this._initialized = true;
-        }
-
-        if (!this._running)
-        {
-            return;
         }
 
         // see if we have any transition conditions met

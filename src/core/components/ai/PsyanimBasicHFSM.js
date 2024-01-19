@@ -2,33 +2,7 @@ import PsyanimComponent from "../../PsyanimComponent.js";
 
 import { PsyanimDebug } from "psyanim-utils";
 
-class PsyanimBasicHFSMInterrupt {
-
-    constructor(sourceFSM, variableKey, condition, destinationFSM = null) {
-
-        this._sourceFSM = sourceFSM;
-        this._destinationFSM = destinationFSM;
-        this._variableKey = variableKey;
-        this._condition = condition;
-    }
-
-    get sourceFSM() {
-
-        return this._sourceFSM;
-    }
-
-    get destinationFSM() {
-
-        return this._destinationFSM;
-    }
-    
-    get isTriggered() {
-
-        let variableValue = this._sourceFSM.getStateVariable(this._variableKey);
-
-        return this._condition(variableValue);
-    }
-}
+import PsyanimBasicHFSMInterrupt from "./PsyanimBasicHFSMInterrupt.js";
 
 export default class PsyanimBasicHFSM extends PsyanimComponent {
 
@@ -38,16 +12,7 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
         super(entity);
 
-        /**
-         *  Going to allow for adding 'SubStateMachines' and declaring 
-         *  transitions between them based on the fsm.events EventEmitter.
-         * 
-         *  Certain FSM event types, prefixed with an '_' will be reserved
-         *  specifically for communicating with the higher-level HFSM.
-         *  
-         *  These event types get published based on state variable changes.
-         *  So, the state variables themselves should be prefixed with '_'.
-         */
+        this._initialized = false;
 
         this._subStateMachines = [];
         this._interrupts = [];
@@ -77,16 +42,68 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
         let sourceFSM = this.getSubStateMachine(sourceFSMType);
 
-        let destinationFSM = this.getSubStateMachine(destinationFSMType);
+        if (!sourceFSM)
+        {
+            PsyanimDebug.error('ERROR: no sub-state machine exists in this PsyanimBasicHFSM for type: ', typeof(sourceFSM));
+        }
+
+        let destinationFSM = null;
+
+        if (destinationFSMType != null)
+        {
+            destinationFSM = this.getSubStateMachine(destinationFSMType);
+
+            if (!destinationFSM)
+            {
+                PsyanimDebug.error('ERROR: no sub-state machine exists in this PsyanimBasicHFSM for type: ', typeof(destinationFSMType));
+            }    
+        }
 
         let interrupt = new PsyanimBasicHFSMInterrupt(sourceFSM, variableKey, condition, destinationFSM);
 
         this._interrupts.push(interrupt);
+
+        console.log(this._interrupts);
     }
 
     afterCreate() {
 
         super.afterCreate();
+    }
+
+    _handleInterruptTriggered(interrupt) {
+
+        console.log('interrupt triggered: ', interrupt);
+
+        if (interrupt.destinationFSM)
+        {
+            // pause current FSM and add destination FSM to stack
+            interrupt.sourceFSM.pause();
+
+            interrupt.destinationFSM.resume();
+
+            this._fsmStack.push(interrupt.destinationFSM);
+        }
+        else // stop the current FSM and pop it off stack
+        {
+            interrupt.sourceFSM.stop();
+
+            if (this._fsmStack.length >= 2)
+            {
+                console.log('about to pop fsm stack:', this._fsmStack);
+
+                this._fsmStack.pop();
+
+                this._fsmStack.at(-1).resume();    
+            }
+            else
+            {
+                PsyanimDebug.error('ERROR FSM Stack corrupted: ', this._fsmStack);
+            }
+        }
+    }
+    
+    _init() {
 
         // only 1 sub-state machine on stack to start
         this._fsmStack = [this.initialSubStateMachine];
@@ -96,38 +113,36 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
         // run the configured initial sub-state machine
         this.initialSubStateMachine.resume();
+
+        this._currentFSM = this.initialSubStateMachine;
+
+        this._initialized = true;
     }
 
-    _handleInterruptTriggered(interrupt) {
-
-        if (interrupt.destinationFSM)
-        {
-            interrupt.sourceFSM.pause();
-
-            interrupt.destinationFSM.start();
-
-            this._fsmStack.push(interrupt.destinationFSM);
-        }
-        else
-        {
-            interrupt.sourceFSM.stop();
-
-            this._fsmStack.pop();
-
-            this._fsmStack.at(-1).resume();
-        }
-    }
-    
     update(t, dt) {
 
         super.update(t, dt);
 
-        // see if we have triggered any interrupts
-        for (let i = 0; i < this._interrupts.length; ++i)
+        if (!this._initialized)
         {
-            if (this._interrupts[i].isTriggered)
+            this._init();
+        }
+
+        // see if we have triggered any interrupts for the current fsm at top of stack
+
+        // TODO: can we clean this up so it's not filtering every frame 
+        //          and add some helper methods somewhere else for this?
+        let currentFsmName = this._fsmStack.at(-1).constructor.name;
+
+        let filteredInterrupts = this._interrupts.filter(i => i.sourceFSM.constructor.name == currentFsmName);
+
+        for (let i = 0; i < filteredInterrupts.length; ++i)
+        {
+            if (filteredInterrupts[i].isTriggered)
             {
-                this._handleInterruptTriggered(this._interrupts[i]);
+                this._handleInterruptTriggered(filteredInterrupts[i]);
+                
+                break; // users should design for only 1 interrupt triggered at a time
             }
         }
     }

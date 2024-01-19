@@ -12,16 +12,16 @@ import PsyanimPathFollowingAgent from '../../src/core/components/steering/agents
 import PsyanimFleeBehavior from '../../src/core/components/steering/PsyanimFleeBehavior.js';
 import PsyanimFleeAgent from '../../src/core/components/steering/agents/PsyanimFleeAgent.js';
 
-import MyPatrolFleeAgentFSM from '../components/HFSMTest/MyPatrolFleeAgentFSM.js';
+import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor.js';
 
 import MyItemSpawner from '../components/HFSMTest/MyItemSpawner.js';
 
-import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor.js';
-
+import MyPatrolFleeAgentFSM from '../components/HFSMTest/MyPatrolFleeAgentFSM.js';
 import MyCollectItemFSM from '../components/HFSMTest/MyCollectItemFSM.js';
+import MyBasicHFSM from '../components/HFSMTest/MyBasicHFSM.js';
 
 export default {
-    key: 'HelloAIScene',
+    key: 'Basic HFSM Test',
     wrapScreenBoundary: true,
     entities: [
         {
@@ -141,6 +141,9 @@ export default {
                 },
                 {
                     type: MyCollectItemFSM,
+                },
+                {
+                    type: MyBasicHFSM
                 }
             ]
         }

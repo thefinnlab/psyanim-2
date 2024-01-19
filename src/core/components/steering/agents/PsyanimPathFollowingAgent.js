@@ -38,6 +38,8 @@ export default class PsyanimPathFollowingAgent extends PsyanimComponent {
         super.onEnable();
 
         this.arriveAgent.enabled = true;
+
+        this.arriveAgent.target = this._pathFollowingTarget;
     }
 
     onDisable() {
