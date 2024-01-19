@@ -83,6 +83,8 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
             this._fsmStack.push(interrupt.destinationFSM);
 
             interrupt.destinationFSM.resume();
+
+            this._filterInterruptsByCurrentFSM();
         }
         else // stop the current FSM and pop it off stack
         {
@@ -92,7 +94,9 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
             {
                 this._fsmStack.pop();
 
-                this._fsmStack.at(-1).resume();    
+                this._fsmStack.at(-1).resume();
+
+                this._filterInterruptsByCurrentFSM();
             }
             else
             {
@@ -101,6 +105,13 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         }
     }
     
+    _filterInterruptsByCurrentFSM() {
+
+        let currentFsmName = this._fsmStack.at(-1).constructor.name;
+
+        this._filteredInterrupts = this._interrupts.filter(i => i.sourceFSM.constructor.name == currentFsmName);
+    }
+
     _init() {
 
         // only 1 sub-state machine on stack to start
@@ -114,6 +125,8 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
         this._currentFSM = this.initialSubStateMachine;
 
+        this._filterInterruptsByCurrentFSM();
+
         this._initialized = true;
     }
 
@@ -126,19 +139,11 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
             this._init();
         }
 
-        // see if we have triggered any interrupts for the current fsm at top of stack
-
-        // TODO: can we clean this up so it's not filtering every frame 
-        //          and add some helper methods somewhere else for this?
-        let currentFsmName = this._fsmStack.at(-1).constructor.name;
-
-        let filteredInterrupts = this._interrupts.filter(i => i.sourceFSM.constructor.name == currentFsmName);
-
-        for (let i = 0; i < filteredInterrupts.length; ++i)
+        for (let i = 0; i < this._filteredInterrupts.length; ++i)
         {
-            if (filteredInterrupts[i].isTriggered)
+            if (this._filteredInterrupts[i].isTriggered)
             {
-                this._handleInterruptTriggered(filteredInterrupts[i]);
+                this._handleInterruptTriggered(this._filteredInterrupts[i]);
                 
                 break; // users should design for only 1 interrupt triggered at a time
             }

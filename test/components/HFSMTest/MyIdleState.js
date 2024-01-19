@@ -33,6 +33,13 @@ export default class MyIdleState extends PsyanimFSMState {
         this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
     }
 
+    onResume() {
+
+        super.onResume();
+
+        this.entity.color = 0xffff00;
+    }
+
     enter() {
     
         super.enter();

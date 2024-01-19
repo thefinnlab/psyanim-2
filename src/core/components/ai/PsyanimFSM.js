@@ -29,6 +29,8 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         this._initialized = false;
 
+        this._running = true;
+
         /**
          *  Event emitter for this FSM.
          *  @type {Phaser.Events.EventEmitter}
@@ -91,8 +93,6 @@ export default class PsyanimFSM extends PsyanimComponent {
         {
             this._states[i].afterCreate();
         }
-
-        this._running = true;
     }
 
     stateVariableExists(key) {
@@ -115,9 +115,9 @@ export default class PsyanimFSM extends PsyanimComponent {
         if (this._running)
         {
             this.onPause();
-        }
 
-        this._running = false;
+            this._running = false;
+        }
     }
 
     stop() {
@@ -125,18 +125,18 @@ export default class PsyanimFSM extends PsyanimComponent {
         if (this._running)
         {
             this.onStop();
+
+            if (this._currentState.stage != PsyanimFSMState.STAGE.EXITED)
+            {
+                this._currentState.exit();
+            }
+    
+            this._currentState = this.initialState;
+    
+            this._running = false;
+    
+            this._initialized = false;
         }
-
-        if (this._currentState.stage != PsyanimFSMState.STAGE.EXITED)
-        {
-            this._currentState.exit();
-        }
-
-        this._currentState = this.initialState;
-
-        this._running = false;
-
-        this._initialized = false;
     }
 
     restart() {
@@ -150,9 +150,9 @@ export default class PsyanimFSM extends PsyanimComponent {
         if (this._running === false)
         {
             this.onResume();
-        }
 
-        this._running = true;
+            this._running = true;
+        }
     }
 
     onPause() {

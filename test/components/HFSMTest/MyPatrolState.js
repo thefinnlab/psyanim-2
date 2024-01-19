@@ -54,6 +54,8 @@ export default class MyPatrolState extends PsyanimFSMState {
 
         this._pathFollowingAgent.enabled = true;
         this._pathFollowingAgent.setupArriveAgent();
+
+        this.entity.color = 0x00ff00;
     }
 
     run(t, dt) {

@@ -72,6 +72,8 @@ export default class MyFleeState extends PsyanimFSMState {
         {
             this._fleeAgent.enabled = true;
         }
+
+        this.entity.color = 0x0000ff;
     }
 
     run(t, dt) {
