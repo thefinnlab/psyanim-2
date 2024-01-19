@@ -32,6 +32,8 @@ export default class MyPatrolState extends PsyanimFSMState {
 
         super.enter();
 
+        this.entity.color = 0x00ff00;
+
         this._target = this._fleeAgent.target;
 
         this._pathFollowingAgent.enabled = true;
@@ -46,24 +48,17 @@ export default class MyPatrolState extends PsyanimFSMState {
         this.entity.setVelocity(0, 0);
     }
 
+    onResume() {
+
+        super.onResume();
+
+        this._pathFollowingAgent.enabled = true;
+        this._pathFollowingAgent.setupArriveAgent();
+    }
+
     run(t, dt) {
 
         super.run();
-
-        // TODO: OK, this is a fundamental flaw you need to fix, which is that, if the other 
-        // FSMs that run in the HFSM happen to enable / disable certain components, 
-        // this FSM needs to make sure they are re-enabled and reconfigured...  not good!
-
-        if (!this._pathFollowingAgent.enabled)
-        {
-            this._pathFollowingAgent.enabled = true;
-        }
-
-        if (!this._pathFollowingAgent.arriveAgent.enabled)
-        {
-            this._pathFollowingAgent.arriveAgent.enabled = true;
-            this._pathFollowingAgent.arriveAgent.target = this._pathFollowingAgent._pathFollowingTarget;
-        }
 
         let distanceToTarget = this.entity.position.subtract(this._target.position).length();
 

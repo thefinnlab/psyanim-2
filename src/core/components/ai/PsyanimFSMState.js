@@ -102,6 +102,18 @@ export default class PsyanimFSMState {
         }
     }
 
+    onPause() {
+
+    }
+
+    onStop() {
+
+    }
+
+    onResume() {
+        
+    }
+
     run(t, dt) {
 
         if (this.fsm.debug)

@@ -84,8 +84,6 @@ export default class PsyanimFSM extends PsyanimComponent {
 
         this._currentState = this.initialState;
 
-        console.log('initialState: ', this.initialState);
-
         super.afterCreate();
 
         // call after create on each state
@@ -114,10 +112,20 @@ export default class PsyanimFSM extends PsyanimComponent {
 
     pause() {
 
+        if (this._running)
+        {
+            this.onPause();
+        }
+
         this._running = false;
     }
 
     stop() {
+
+        if (this._running)
+        {
+            this.onStop();
+        }
 
         if (this._currentState.stage != PsyanimFSMState.STAGE.EXITED)
         {
@@ -129,8 +137,6 @@ export default class PsyanimFSM extends PsyanimComponent {
         this._running = false;
 
         this._initialized = false;
-
-        PsyanimDebug.log(this.constructor.name, 'was stopped!');
     }
 
     restart() {
@@ -141,7 +147,27 @@ export default class PsyanimFSM extends PsyanimComponent {
 
     resume() {
 
+        if (this._running === false)
+        {
+            this.onResume();
+        }
+
         this._running = true;
+    }
+
+    onPause() {
+
+        this._currentState.onPause();
+    }
+
+    onStop() {
+
+        this._currentState.onStop();
+    }
+
+    onResume() {
+
+        this._currentState.onResume();
     }
 
     update(t, dt) {

@@ -73,16 +73,16 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
     _handleInterruptTriggered(interrupt) {
 
-        console.log('interrupt triggered: ', interrupt);
+        PsyanimDebug.log(this.constructor.name, 'Interrupt Triggered:', interrupt);
 
         if (interrupt.destinationFSM)
         {
             // pause current FSM and add destination FSM to stack
             interrupt.sourceFSM.pause();
 
-            interrupt.destinationFSM.resume();
-
             this._fsmStack.push(interrupt.destinationFSM);
+
+            interrupt.destinationFSM.resume();
         }
         else // stop the current FSM and pop it off stack
         {
@@ -90,8 +90,6 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
             if (this._fsmStack.length >= 2)
             {
-                console.log('about to pop fsm stack:', this._fsmStack);
-
                 this._fsmStack.pop();
 
                 this._fsmStack.at(-1).resume();    

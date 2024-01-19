@@ -21,12 +21,19 @@ export default class MyFleeState extends PsyanimFSMState {
         this.addTransition(MyIdleState, 'flee', (value) => value == 0);
     }
 
+    afterCreate() {
+
+        super.afterCreate();
+
+        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
+        this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
+    }
+
     enter() {
 
         super.enter();
 
-        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
-        this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
+        this.entity.color = 0x0000ff;
 
         this._target = this._fleeAgent.target;
 
@@ -38,6 +45,33 @@ export default class MyFleeState extends PsyanimFSMState {
         super.exit();
 
         this._fleeAgent.enabled = false;
+    }
+
+    onPause() {
+
+        super.onPause();
+
+        this._fleeAgent.enabled = false;
+    }
+
+    onStop() {
+
+        super.onStop();
+
+        if (this._fleeAgent)
+        {
+            this._fleeAgent.enabled = false;
+        }
+    }
+
+    onResume() {
+
+        super.onResume();
+
+        if (this._fleeAgent)
+        {
+            this._fleeAgent.enabled = true;
+        }
     }
 
     run(t, dt) {

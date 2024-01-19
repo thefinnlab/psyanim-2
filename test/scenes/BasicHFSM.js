@@ -37,7 +37,7 @@ export default {
             initialPosition: { x: 400, y: 550 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
-                color: 0xff0000,
+                color: 0xff00ff,
                 base: 12, altitude: 20
             },
             components: [

@@ -25,14 +25,21 @@ export default class MyIdleState extends PsyanimFSMState {
         this.addTransition(MyPatrolState, 'idleTimer', (value) => value > this.returnToPatrolTime);
     }
     
+    afterCreate() {
+
+        super.afterCreate();
+
+        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
+        this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
+    }
+
     enter() {
     
         super.enter();
 
-        this.fsm.setStateVariable('idleTimer', 0);
+        this.entity.color = 0xffff00;
 
-        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
-        this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
+        this.fsm.setStateVariable('idleTimer', 0);
     
         this._target = this._fleeAgent.target;
     }

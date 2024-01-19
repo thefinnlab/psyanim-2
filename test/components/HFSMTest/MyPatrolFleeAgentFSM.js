@@ -17,16 +17,9 @@ export default class MyPatrolFleeAgentFSM extends PsyanimFSM {
         this.initialState = this._patrolState;
     }
 
-    stop() {
+    onResume() {
 
-        super.stop();
-
-        this.setStateVariable('itemInScene', false);
-    }
-
-    pause() {
-
-        super.pause();
+        super.onResume();
 
         this.setStateVariable('itemInScene', false);
     }

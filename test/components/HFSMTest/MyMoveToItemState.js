@@ -41,6 +41,8 @@ export default class MyMoveToItemState extends PsyanimFSMState {
 
         super.enter();
 
+        this.entity.color = 0xff0000;
+
         this.fsm.setStateVariable('itemCollected', false);
 
         let item = this.entity.scene.getEntityByName('item');

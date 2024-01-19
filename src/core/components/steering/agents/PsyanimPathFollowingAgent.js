@@ -33,13 +33,17 @@ export default class PsyanimPathFollowingAgent extends PsyanimComponent {
         this._direction = 1;
     }
 
+    setupArriveAgent() {
+
+        this.arriveAgent.enabled = true;
+        this.arriveAgent.target = this._pathFollowingTarget;
+    }
+
     onEnable() {
 
         super.onEnable();
 
-        this.arriveAgent.enabled = true;
-
-        this.arriveAgent.target = this._pathFollowingTarget;
+        this.setupArriveAgent();
     }
 
     onDisable() {
@@ -73,7 +77,7 @@ export default class PsyanimPathFollowingAgent extends PsyanimComponent {
 
         this.targetParameterOffset = this.targetPositionOffset / this._currentPath.getTotalLength();
 
-        this.arriveAgent.target = this._pathFollowingTarget;
+        this.setupArriveAgent();
     }
 
     _computePathFollowingTargetPosition() {
