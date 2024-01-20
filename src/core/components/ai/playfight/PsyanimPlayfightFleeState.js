@@ -41,6 +41,21 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
             .getState(PsyanimPlayfightChargeState);
     }
 
+    onPause() {
+
+        super.onPause();
+    }
+
+    onStop() {
+
+        super.onStop();
+    }
+
+    onResume() {
+
+        super.onResume();
+    }
+
     enter() {
 
         super.enter();

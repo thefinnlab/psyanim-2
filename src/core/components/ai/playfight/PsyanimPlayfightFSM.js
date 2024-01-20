@@ -127,6 +127,21 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         super.onDisable();
     }
 
+    onPause() {
+
+        super.onPause();
+    }
+
+    onStop() {
+
+        super.onStop();
+    }
+
+    onResume() {
+
+        super.onResume();
+    }
+
     afterCreate() {
 
         // configure defaults for fsm & components

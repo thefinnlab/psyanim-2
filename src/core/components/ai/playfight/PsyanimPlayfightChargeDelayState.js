@@ -41,6 +41,21 @@ export default class PsyanimPlayfightChargeDelayState extends PsyanimFSMState {
         this._delay = this.averageDelay;
     }
 
+    onPause() {
+
+        super.onPause();
+    }
+
+    onStop() {
+
+        super.onStop();
+    }
+
+    onResume() {
+
+        super.onResume();
+    }
+
     enter() {
 
         super.enter();
