@@ -1,3 +1,5 @@
+import PsyanimConstants from '../../../PsyanimConstants.js';
+
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
@@ -10,6 +12,8 @@ import PsyanimPlayfightChargeState from './PsyanimPlayfightChargeState.js';
 import PsyanimPlayfightChargeDelayState from './PsyanimPlayfightChargeDelayState.js';
 import PsyanimPlayfightWanderState from './PsyanimPlayfightWanderState.js';
 import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
+
+import PsyanimSensor from '../../physics/PsyanimSensor.js';
 
 export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
@@ -101,6 +105,13 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.maxFleeAcceleration = 0.5;
         this.fleePanicDistance = 200;
 
+        // attach components for this FSM
+        this._sensor = this.entity.addComponent(PsyanimSensor);
+        this._sensor.bodyShapeParams = {
+            shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+            radius: 18
+        };
+
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
         this._arriveBehavior = this.entity.addComponent(PsyanimArriveBehavior);
@@ -148,6 +159,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.debug = this.debug;
 
         // charge state
+        this._chargeState.sensor = this._sensor;
         this._chargeState.setTarget(this.target);
         this._chargeState.maxChargeDuration = this.maxChargeDuration;
         this._chargeState.backoffDistance = this.backoffDistance;

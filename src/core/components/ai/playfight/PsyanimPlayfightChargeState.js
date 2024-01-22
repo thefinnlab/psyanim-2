@@ -9,6 +9,8 @@ import PsyanimPlayfightWanderState from './PsyanimPlayfightWanderState.js'
 
 export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
+    sensor;
+
     backoffDistance;
 
     maxChargeDuration;
@@ -54,9 +56,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
         if (target) 
         {
-            this.entity.setOnCollideWith(target.body, (matterCollisionData) => {
-                this._handleCollision(matterCollisionData);
-            });
+            this.sensor.events.on('triggerEnter', this._handleCollision.bind(this));
 
             this._target = target;
         }
@@ -66,7 +66,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
         }
     }
 
-    _handleCollision(matterCollisionData) {
+    _handleCollision(body) {
 
         this.fsm.setStateVariable('charge', false);
     }
@@ -96,15 +96,15 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
         super.run();
 
-        // check to see if we're within the backoffDistance
-        let distanceToTarget = this._target.position
-            .subtract(this.entity.position)
-            .length();
+        // // check to see if we're within the backoffDistance
+        // let distanceToTarget = this._target.position
+        //     .subtract(this.entity.position)
+        //     .length();
 
-        if (distanceToTarget <= this.backoffDistance)
-        {
-            this.fsm.setStateVariable('charge', false);
-        }
+        // if (distanceToTarget <= this.backoffDistance)
+        // {
+        //     this.fsm.setStateVariable('charge', false);
+        // }
 
         // update charge timer and see if we've exceeded the max charge duration
         let updatedChargeTimer = this.fsm.getStateVariable('chargeTimer') + dt;

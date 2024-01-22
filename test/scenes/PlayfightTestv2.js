@@ -6,7 +6,7 @@ import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js
 
 import PsyanimPlayfightFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightFSM.js';
 
-import FsmApiKeyboardControls from '../components/FsmApiKeyboardControls.js';
+import PsyanimPlayfightHFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
 export default {
 
@@ -19,20 +19,6 @@ export default {
                 { type: PsyanimSceneTitle },
                 { type: PsyanimPhysicsSettingsController },
                 { type: PsyanimSceneChangeController }
-            ]
-        },
-        {
-            name: 'fsmApiTestControls',
-            components: [
-                { 
-                    type: FsmApiKeyboardControls,
-                    params: {
-                        fsm: {
-                            entityName: 'agent1',
-                            componentType: PsyanimPlayfightFSM
-                        }
-                    }
-                }
             ]
         },
         {
@@ -89,6 +75,15 @@ export default {
                             entityName: 'agent2',
                         },
                         debug: true
+                    }
+                },
+                {
+                    type: PsyanimPlayfightHFSM,
+                    params: {
+                        playfightFSM: {
+                            entityName: 'agent1',
+                            componentType: PsyanimPlayfightFSM
+                        }
                     }
                 }
             ]
@@ -147,6 +142,15 @@ export default {
                             entityName: 'agent1'
                         },
                         debug: false
+                    }
+                },
+                {
+                    type: PsyanimPlayfightHFSM,
+                    params: {
+                        playfightFSM: {
+                            entityName: 'agent2',
+                            componentType: PsyanimPlayfightFSM
+                        }
                     }
                 }
             ]
