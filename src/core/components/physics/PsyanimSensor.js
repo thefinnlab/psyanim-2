@@ -64,12 +64,12 @@ export default class PsyanimSensor extends PsyanimComponent {
 
     onEnable() {
 
-        this.entity.body.isSleeping = false;
+        this._sensorBody.isSleeping = false;
     }
 
     onDisable() {
 
-        this.entity.body.isSleeping = true;
+        this._sensorBody.isSleeping = true;
     }
 
     _onTriggerEnter(pair) {
@@ -96,6 +96,9 @@ export default class PsyanimSensor extends PsyanimComponent {
             }
         }
     }
+
+    // TODO: this is awful to have to filter out the player's body each frame...
+    // let's see if we can clean this up with better use of collision filters!
 
     _onTriggerExit(pair) {
 

@@ -11,6 +11,8 @@ PsyanimConstants.SHAPE_TYPE = {
 
 /**
  * These are the collision categories used by Psyanim-2 in phaser.
+ * 
+ * These must be a power of 2!
  */
 PsyanimConstants.COLLISION_CATEGORIES = {
     NONE: 0x0000,
@@ -19,6 +21,19 @@ PsyanimConstants.COLLISION_CATEGORIES = {
     SCREEN_BOUNDARY: 0x0004,
     SENSOR: 0x0008,
     VISUAL_ONLY: 0x0010
+    // 0x000020
+    // 0x000040
+    // 0x000080
+    // 0x000100
+    // 0x000200
+    // 0x000400
+    // 0x000800
+    // 0x001000
+    // 0x002000
+    // 0x004000
+    // 0x008000
+    // 0x010000
+    // ...
 };
 
 /**

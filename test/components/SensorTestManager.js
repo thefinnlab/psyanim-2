@@ -8,6 +8,9 @@ import {
 
 export default class SensorTestManager extends PsyanimComponent {
 
+    // TODO: this was working fine before, w/ only a single event fired on enter + exit...
+    // so something has likely changed here.  let's figure out what it is.
+
     sensor;
 
     constructor(entity) {
@@ -27,12 +30,18 @@ export default class SensorTestManager extends PsyanimComponent {
         super.afterCreate();
 
         this.sensor.events.on('triggerEnter', (entity) => {
-            console.log(entity.name + ' has ENTERED the building...');
+
+            console.log(entity.name + ' has ENTERED the building at position =', 
+                this.sensor.entity.position);
         });
 
         this.sensor.events.on('triggerExit', (entity) => {
-            console.log(entity.name + ' has EXITED the building...');
+
+            console.log(entity.name + ' has EXITED the building at position =',
+                this.sensor.entity.position);
         });
+
+        console.log('body collision filter group = ', this.sensor.entity.body.collisionFilter.group);
 
         PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
     }
