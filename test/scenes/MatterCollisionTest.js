@@ -22,12 +22,18 @@ export default {
         },
         // TODO: setup custom collision categories.
         {
-            name: 'collisionTest',
+            name: 'player',
             initialPosition: { x: 400, y: 300 },
             shapeParams: {
                 shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
                 radius: 12,
                 color: 0xff0000, depth: 1
+            },
+            matterOptions: {
+                collisionFilter: {
+                    category: 0x000000,
+                    mask: 0x000000
+                }
             },
             components: [
                 { type: MatterCollisionTest },
@@ -43,7 +49,7 @@ export default {
                 color: 0x00ff00, depth: 0
             },
             matterOptions: {
-                isSensor: true,
+                // isSensor: true,
             }
         }
     ]

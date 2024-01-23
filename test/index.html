@@ -1,29 +1,27 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <link rel="shortcut icon" href="#">
         <style>
+
             .canvas-container {
                 display: grid;
                 align-items: center;
                 justify-content: center;
 
-                /* height: 1000px; */
+                height: 1000px;
 
                 grid-template-columns: 1fr 850px 1fr;
                 grid-template-rows: 1fr 650px 3fr;
             } 
 
-            .phaser-scene-title {
-
-                grid-column: 2 / 3;
-                grid-row: 1 / 2;
-            }
-
-            .test-controls {
+            .canvas-subtext {
 
                 grid-column: 2 / 3;
                 grid-row: 3 / 4;
+
+                text-align: center;
             }
 
             .phaser-canvas {
@@ -31,11 +29,20 @@
                 grid-column: 2 / 3;
                 grid-row: 2 / 3;
             }
+
+            .scene-title {
+
+                text-align: center;
+            }
+
         </style>
     </head>
+
     <body>
-
-        <div id="psyanim-app" class="canvas-container"></div>
-
+        <h1 id="sceneName" class="scene-title"></h1>
+        <div id="psyanim-app" class="canvas-container">
+            <div id="phaser-app" class="phaser-canvas"></div>
+        </div>
     </body>
+
 </html>

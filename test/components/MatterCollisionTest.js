@@ -41,5 +41,15 @@ export default class MatterCollisionTest extends PsyanimComponent {
     update(t, dt) {
 
         super.update(t, dt);
+
+        // keep bodies in sync with entity
+        this.entity.scene.matter.body
+            .setPosition(this._sensorBody, { x: this.entity.x, y: this.entity.y });
+
+        this.scene.matter.world.on(Phaser.Physics.Matter.Events.COLLISION_START,
+            function(event, bodyA, bodyB) {
+
+                console.log('received matter collision event!', bodyA, bodyB);
+            });
     }
 }
