@@ -31,17 +31,13 @@ export default class SensorTestManager extends PsyanimComponent {
 
         this.sensor.events.on('triggerEnter', (entity) => {
 
-            console.log(entity.name + ' has ENTERED the building at position =', 
-                this.sensor.entity.position);
+            console.log(entity.name + ' has ENTERED the building');
         });
 
         this.sensor.events.on('triggerExit', (entity) => {
 
-            console.log(entity.name + ' has EXITED the building at position =',
-                this.sensor.entity.position);
+            console.log(entity.name + ' has EXITED the building');
         });
-
-        console.log('body collision filter group = ', this.sensor.entity.body.collisionFilter.group);
 
         PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
     }

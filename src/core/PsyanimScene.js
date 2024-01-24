@@ -97,6 +97,11 @@ export default class PsyanimScene extends Phaser.Scene {
         return this._entities.map(e => e.name);
     }
 
+    get entities() {
+
+        return this._entities.slice();
+    }
+
     /**
      * Get a reference to an entity in this scene by name.
      * @param {string} name 

@@ -52,8 +52,8 @@ export default {
             name: 'wall',
             initialPosition: { x: 650, y: 200 },
             shapeParams: {
-                shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
-                width: 100, height: 150, color: 0xff00ff,
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 75, color: 0xff00ff,
                 depth: 1
             },
             matterOptions: {
@@ -64,8 +64,8 @@ export default {
             name: 'killzone1',
             initialPosition: { x: 600, y: 200 },
             shapeParams: {
-                shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
-                width: 100, height: 300, color: 0xff0000
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
+                radius: 200, color: 0xff0000
             },
             matterOptions: {
                 isSensor: true
@@ -83,6 +83,7 @@ export default {
                 {
                     type: PsyanimSensor,
                     params: {
+                        debug: true,
                         bodyShapeParams: {
                             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
                             radius: 75,

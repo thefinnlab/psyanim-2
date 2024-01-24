@@ -2,11 +2,15 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent.js';
 import PsyanimConstants from '../../PsyanimConstants.js';
-import PsyanimEntity from '../../PsyanimEntity.js';
 
 export default class PsyanimSensor extends PsyanimComponent {
 
+    debug;
     bodyShapeParams;
+
+    // TODO: implement!  we need to respect collision categories
+    collisionCategory;
+    collisionMask;
 
     constructor(entity) {
 
@@ -14,113 +18,108 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         this.events = new Phaser.Events.EventEmitter();
 
-        this._sensorBody = null;
+        this.debug = false;
 
         this.bodyShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 10
         };
+
+        this._debugGraphics = this.entity.scene.add.graphics(
+            { 
+                lineStyle: { 
+                    width: 2, color: 0x00ff00, alpha: 0.6 
+                },
+            });
+
+        this._intersectingEntities = [];
     }
 
     afterCreate() {
 
-        this.setBody(this.bodyShapeParams);
-    }
+        this._debugGraphics.clear();
 
-    setBody(shapeParams) {
+        this._debugCircle = new Phaser.Geom.Circle(
+            this.entity.x,
+            this.entity.y,
+            this.bodyShapeParams.radius);
 
-        this.bodyShapeParams = shapeParams;
+        this._entities = this.scene.entities;
 
-        if (this._sensorBody != null)
+        // assign an ID to each entity so we can do quick comparisons w/o checking names
+        for (let i = 0; i < this._entities.length; ++i)
         {
-            this.entity.scene.matter.world.remove(this._sensorBody);
-
-            this._sensorBody = null;
+            this._entities[i].psyanimSensorId = i;
         }
 
-        switch (shapeParams.shapeType) 
-        {
-            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
-
-                this._sensorBody = this.entity.scene.matter.add.circle(
-                    this.entity.x, this.entity.y,
-                    shapeParams.radius,
-                    {
-                        label: this.entity.name,
-                        isSensor: true,
-                        collisionFilter: PsyanimConstants.DEFAULT_SENSOR_COLLISION_FILTER,
-                        onCollideCallback: (pair) => this._onTriggerEnter(pair),
-                        onCollideEndCallback: (pair) => this._onTriggerExit(pair)
-                    }
-                );
-
-                break;
-            
-            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
-
-                break;
-        }
+        // TODO: in the event that entities are added to a scene at runtime, not just during init,
+        // we need to update PsyanimScene to throw events when entities are added & removed
+        // and update our entity list here...
     }
 
     onEnable() {
 
-        this._sensorBody.isSleeping = false;
+        super.onEnable();
     }
 
     onDisable() {
 
-        this._sensorBody.isSleeping = true;
+        super.onDisable();
     }
 
-    _onTriggerEnter(pair) {
+    _testCircleCircleIntersection(entity) {
 
-        let bodyA = pair.bodyA;
-        let bodyB = pair.bodyB;
+        let otherRadius = entity.shapeParams.radius;
 
-        let body = null;
+        let distanceToEntity = entity.position
+            .subtract(this.entity.position)
+            .length();
 
-        if (bodyA != this._sensorBody && bodyA != this.entity.body)
+        if (distanceToEntity <= otherRadius + this.bodyShapeParams.radius)
         {
-            body = bodyA;
-        }
-        else if (bodyB != this._sensorBody && bodyB != this.entity.body)
-        {
-            body = bodyB;
+            return true;
         }
 
-        if (body != null)
+        return false;
+    }
+
+    _updateEntityIntersectionList(entity, isIntersecting) {
+
+        let entityInList = this._intersectingEntities.find(e => e.psyanimSensorId === entity.psyanimSensorId);
+
+        if (entityInList)
         {
-            if (body.gameObject instanceof PsyanimEntity)
+            if (!isIntersecting)
             {
-                this.events.emit('triggerEnter', body.gameObject);
+                this.events.emit('triggerExit', entity);
+                this._intersectingEntities = this._intersectingEntities
+                    .filter(e => e.psyanimSensorId !== entity.psyanimSensorId);
+            }
+        }
+        else
+        {
+            if (isIntersecting)
+            {
+                this.events.emit('triggerEnter', entity);
+                this._intersectingEntities.push(entity);
             }
         }
     }
 
-    // TODO: this is awful to have to filter out the player's body each frame...
-    // let's see if we can clean this up with better use of collision filters!
+    _testIntersections() {
 
-    _onTriggerExit(pair) {
-
-        let bodyA = pair.bodyA;
-        let bodyB = pair.bodyB;
-
-        let body = null;
-
-        if (bodyA != this._sensorBody && bodyA != this.entity.body)
+        if (this.bodyShapeParams.shapeType === PsyanimConstants.SHAPE_TYPE.CIRCLE)
         {
-            body = bodyA;
-        }
-        else if (bodyB != this._sensorBody && bodyB != this.entity.body)
-        {
-            body = bodyB;
-        }
-
-        if (body != null)
-        {
-            if (body.gameObject instanceof PsyanimEntity)
+            for (let i = 0; i < this._entities.length; ++i)
             {
-                this.events.emit('triggerExit', body.gameObject);
+                let entity = this._entities[i];
+
+                if (entity.shapeParams.shapeType === PsyanimConstants.SHAPE_TYPE.CIRCLE)
+                {
+                    let isIntersecting = this._testCircleCircleIntersection(entity);
+
+                    this._updateEntityIntersectionList(entity, isIntersecting);
+                }
             }
         }
     }
@@ -129,8 +128,18 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         super.update(t, dt);
 
-        // keep bodies in sync with entity
-        this.entity.scene.matter.body
-            .setPosition(this._sensorBody, { x: this.entity.x, y: this.entity.y });
+        if (this.debug)
+        {
+            this._debugCircle.setPosition(
+                this.entity.x,
+                this.entity.y
+            );
+
+            this._debugGraphics.clear();
+
+            this._debugGraphics.strokeCircleShape(this._debugCircle);
+        }
+
+        this._testIntersections();
     }
 }

@@ -40,8 +40,6 @@ import PreyV2Test from './scenes/PreyV2Test.js';
 
 import BasicHFSM from './scenes/BasicHFSM.js';
 
-import MatterCollisionTest from './scenes/MatterCollisionTest.js';
-
 // react app
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -88,10 +86,9 @@ let WanderTestCopy = PsyanimUtils.cloneSceneDefinition(WanderTest);
 let SensorTestCopy = PsyanimUtils.cloneSceneDefinition(SensorTest);
 let EvadeTestCopy = PsyanimUtils.cloneSceneDefinition(EvadeTest);
 let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
-let MatterCollisionTestCopy = PsyanimUtils.cloneSceneDefinition(MatterCollisionTest);
 
 // register the scene def clones to make sure the clones are g2g too
-PsyanimApp.Instance.config.registerScene(MatterCollisionTestCopy);
+PsyanimApp.Instance.config.registerScene(SensorTestCopy);
 PsyanimApp.Instance.config.registerScene(playfightTestv2Copy);
 PsyanimApp.Instance.config.registerScene(basicHFSMCopy);
 PsyanimApp.Instance.config.registerScene(preyV2TestCopy);
@@ -113,7 +110,6 @@ PsyanimApp.Instance.config.registerScene(PredatorTestCopy);
 PsyanimApp.Instance.config.registerScene(SeekTestCopy);
 PsyanimApp.Instance.config.registerScene(FleeTestCopy);
 PsyanimApp.Instance.config.registerScene(WanderTestCopy);
-PsyanimApp.Instance.config.registerScene(SensorTestCopy);
 PsyanimApp.Instance.config.registerScene(EvadeTestCopy);
 
 // just use the original scene defs here
