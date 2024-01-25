@@ -4,6 +4,11 @@ import PsyanimPlayfightSeparationState from './PsyanimPlayfightSeparationState.j
 
 export default class PsyanimPlayfightSeparationFSM extends PsyanimFSM {
 
+    target;
+
+    maxSeparationSpeed;
+    maxSeparationAcceleration;
+
     constructor(entity) {
 
         super(entity);
@@ -17,7 +22,22 @@ export default class PsyanimPlayfightSeparationFSM extends PsyanimFSM {
 
         super.afterCreate();
 
-        this.stop();
+        this._separationState.target = this.target;
+        this._separationState.maxAcceleration = this.maxSeparationAcceleration;
+    }
+
+    setMaxSeparationSpeed(value) {
+
+        this.maxSeparationSpeed = value;
+
+        this._separationState.maxSpeed = this.maxSeparationSpeed;
+    }
+
+    setMaxSeparationAcceleration(value) {
+
+        this.maxSeparationAcceleration = value;
+        
+        this._separationState.maxAcceleration = this.maxSeparationAcceleration;
     }
 
     onPause() {

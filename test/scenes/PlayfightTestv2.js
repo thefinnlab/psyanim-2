@@ -5,6 +5,7 @@ import PsyanimSceneChangeController from '../../src/core/components/controllers/
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
 import PsyanimPlayfightFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightFSM.js';
+import PsyanimPlayfightSeparationFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightSeparationFSM.js';
 
 import PsyanimPlayfightHFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
@@ -74,7 +75,14 @@ export default {
                         target: {
                             entityName: 'agent2',
                         },
-                        debug: true
+                    }
+                },
+                {
+                    type: PsyanimPlayfightSeparationFSM,
+                    params: {
+                        target: {
+                            entityName: 'agent2'
+                        },
                     }
                 },
                 {
@@ -83,7 +91,12 @@ export default {
                         playfightFSM: {
                             entityName: 'agent1',
                             componentType: PsyanimPlayfightFSM
-                        }
+                        },
+                        separationFSM: {
+                            entityName: 'agent1',
+                            componentType: PsyanimPlayfightSeparationFSM
+                        },
+                        debug: true
                     }
                 }
             ]
@@ -141,7 +154,14 @@ export default {
                         target: {
                             entityName: 'agent1'
                         },
-                        debug: false
+                    }
+                },
+                {
+                    type: PsyanimPlayfightSeparationFSM,
+                    params: {
+                        target: {
+                            entityName: 'agent1'
+                        },
                     }
                 },
                 {
@@ -150,9 +170,15 @@ export default {
                         playfightFSM: {
                             entityName: 'agent2',
                             componentType: PsyanimPlayfightFSM
-                        }
+                        },
+                        separationFSM: {
+                            entityName: 'agent2',
+                            componentType: PsyanimPlayfightSeparationFSM
+                        },
+                        debug: true
                     }
                 }
+
             ]
         }
     ]

@@ -57,9 +57,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     maxFleeAcceleration;
     fleePanicDistance;
 
-    // TODO: I don't think we need a 'debug' param here since the base class has one :|
-    debug;
-
     constructor(entity) {
 
         super(entity);
@@ -109,8 +106,18 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this._sensor = this.entity.addComponent(PsyanimSensor);
         this._sensor.bodyShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: 18
+            radius: this.entity.shapeParams.radius + 2
         };
+
+        // this._sensor.debug = true;
+
+        this._sensor.events.on("triggerEnter", (entity) => {
+
+            if (entity.name === this.target.name)
+            {
+                this.setStateVariable('chargeContact', true);
+            }
+        });
 
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
@@ -141,11 +148,15 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     onPause() {
 
         super.onPause();
+
+        this.setStateVariable('chargeContact', false);
     }
 
     onStop() {
 
         super.onStop();
+
+        this.setStateVariable('chargeContact', false);
     }
 
     onResume() {
@@ -154,9 +165,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     }
 
     afterCreate() {
-
-        // configure defaults for fsm & components
-        this.debug = this.debug;
 
         // charge state
         this._chargeState.sensor = this._sensor;
@@ -180,6 +188,8 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         // flee state
         this._fleeState.target = this.target;
         this._fleeState.maxFleeDuration = this.maxFleeDuration;
+        this._fleeState.maxSpeed = this.maxFleeSpeed;
+        this._fleeState.maxAcceleration = this.maxFleeAcceleration;
 
         // arrive behavior
         this._arriveBehavior.maxSpeed = this.maxChargeSpeed;

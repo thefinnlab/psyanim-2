@@ -116,6 +116,16 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         super.afterCreate();
     }
 
+    onResume() {
+
+        super.onResume();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0x00ff00;
+        }
+    }
+
     enter() {
 
         super.enter();

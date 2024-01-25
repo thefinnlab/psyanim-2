@@ -50,6 +50,11 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
     onResume() {
 
         super.onResume();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0xff0000;
+        }
     }
 
     setTarget(target) {
@@ -66,9 +71,12 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
         }
     }
 
-    _handleCollision(body) {
+    _handleCollision(entity) {
 
-        this.fsm.setStateVariable('charge', false);
+        if  (entity.name === this._target.name)
+        {
+            this.fsm.setStateVariable('charge', false);
+        }
     }
 
     enter() {
@@ -78,7 +86,15 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
         this._arriveBehavior = this.entity.getComponent(PsyanimArriveBehavior);
 
-        this.fsm.setStateVariable('charge', true);
+        if (this.sensor.isIntersecting(this._target))
+        {
+            this.fsm.setStateVariable('charge', false);
+        }
+        else
+        {
+            this.fsm.setStateVariable('charge', true);
+        }
+
         this.fsm.setStateVariable('chargeTimer', 0);
 
         if (this.fsm.debug)

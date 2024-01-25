@@ -16,6 +16,9 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
 
     maxFleeDuration;
 
+    maxSpeed;
+    maxAcceleration;
+
     constructor(fsm) {
 
         super(fsm);
@@ -54,6 +57,14 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
     onResume() {
 
         super.onResume();
+
+        if (this.fsm.debug)
+        {
+            this.entity.color = 0x0000ff;
+        }
+
+        this._fleeBehavior.maxSpeed = this.maxSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxAcceleration;
     }
 
     enter() {
@@ -62,6 +73,9 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('fleeTimer', 0);
         this.fsm.setStateVariable('wander', false);
+
+        this._fleeBehavior.maxSpeed = this.maxSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxAcceleration;
 
         if (this.fsm.debug)
         {

@@ -8,8 +8,6 @@ export default class PsyanimSensor extends PsyanimComponent {
     debug;
     bodyShapeParams;
 
-    // TODO: implement!  we need to respect collision categories
-    collisionCategory;
     collisionMask;
 
     constructor(entity) {
@@ -24,6 +22,8 @@ export default class PsyanimSensor extends PsyanimComponent {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
             radius: 10
         };
+
+        this.collisionMask = PsyanimConstants.DEFAULT_SENSOR_COLLISION_FILTER.mask;
 
         this._debugGraphics = this.entity.scene.add.graphics(
             { 
@@ -67,6 +67,16 @@ export default class PsyanimSensor extends PsyanimComponent {
         super.onDisable();
     }
 
+    isIntersecting(entity) {
+
+        if (this._intersectingEntities.find(e => e.psyanimSensorId === entity.psyanimSensorId))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
     _testCircleCircleIntersection(entity) {
 
         let otherRadius = entity.shapeParams.radius;
@@ -108,18 +118,21 @@ export default class PsyanimSensor extends PsyanimComponent {
 
     _testIntersections() {
 
-        if (this.bodyShapeParams.shapeType === PsyanimConstants.SHAPE_TYPE.CIRCLE)
+        for (let i = 0; i < this._entities.length; ++i)
         {
-            for (let i = 0; i < this._entities.length; ++i)
+            let entity = this._entities[i];
+
+            if (this.collisionMask & entity.matterOptions.collisionFilter.category)
             {
-                let entity = this._entities[i];
-
-                if (entity.shapeParams.shapeType === PsyanimConstants.SHAPE_TYPE.CIRCLE)
+                if (this.bodyShapeParams.shapeType === PsyanimConstants.SHAPE_TYPE.CIRCLE)
                 {
-                    let isIntersecting = this._testCircleCircleIntersection(entity);
-
-                    this._updateEntityIntersectionList(entity, isIntersecting);
-                }
+                    if (entity.shapeParams.shapeType === PsyanimConstants.SHAPE_TYPE.CIRCLE)
+                    {
+                        let isIntersecting = this._testCircleCircleIntersection(entity);
+    
+                        this._updateEntityIntersectionList(entity, isIntersecting);
+                    }                
+                }    
             }
         }
     }

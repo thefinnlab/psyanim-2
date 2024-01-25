@@ -1,7 +1,7 @@
 import PsyanimBasicHFSM from "../PsyanimBasicHFSM.js";
 
-// import PsyanimPlayfightFSM from './PsyanimPlayfightFSM.js';
-// import PsyanimPlayfightSeparationFSM from './PsyanimPlayfightSeparationFSM.js';
+import PsyanimPlayfightFSM from './PsyanimPlayfightFSM.js';
+import PsyanimPlayfightSeparationFSM from './PsyanimPlayfightSeparationFSM.js';
 
 import PsyanimSensor from "../../physics/PsyanimSensor.js";
 
@@ -10,9 +10,23 @@ export default class PsyanimPlayfightHFSM extends PsyanimBasicHFSM {
     playfightFSM;
     separationFSM;
 
+    maxSeparationDuration;
+
+    maxSeparationSpeed;
+    maxSeparationAcceleration;
+
+    debug;
+
     constructor(entity) {
 
         super(entity);
+
+        this.maxSeparationDuration = 100;
+
+        this.maxSeparationSpeed = 12;
+        this.maxSeparationAcceleration = 0.5;
+
+        this.debug = false;
     }
 
     afterCreate() {
@@ -21,24 +35,26 @@ export default class PsyanimPlayfightHFSM extends PsyanimBasicHFSM {
 
         // add sub-state machines
         this.addSubStateMachine(this.playfightFSM);
-        // this.addSubStateMachine(this.separationFSM);
+        this.addSubStateMachine(this.separationFSM);
+
+        this.playfightFSM.debug = this.debug;
+        this.separationFSM.debug = this.debug;
+
+        this.separationFSM.setMaxSeparationSpeed(this.maxSeparationSpeed);
+        this.separationFSM.setMaxSeparationAcceleration(this.maxSeparationAcceleration);
 
         // add interrupts
+        this.addInterrupt(PsyanimPlayfightFSM, 'chargeContact', 
+            value => value === true, 
+            PsyanimPlayfightSeparationFSM);
 
-        // TODO:
+        this.addInterrupt(PsyanimPlayfightSeparationFSM, 'separationTimer', 
+            value => value >= this.maxSeparationDuration);
 
         // setup initial substate machine to run
         this.initialSubStateMachine = this.playfightFSM;
 
         this._sensor = this.entity.getComponent(PsyanimSensor);
-
-        this._sensor.events.on('triggerEnter', (gameObject) => {
-            console.log(this.entity.name, "onTriggerEnter detected!");
-        });
-
-        this._sensor.events.on('triggerExit', (gameObject) => {
-            console.log(this.entity.name, 'onTriggerExit detected!');
-        });
     }
 
     update(t, dt) {
