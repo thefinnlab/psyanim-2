@@ -37,7 +37,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
     /** charge state params */
     maxChargeDuration;
-    backoffDistance;
 
     /** arrive behavior params */
     maxChargeSpeed;
@@ -81,7 +80,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
         // charge state
         this.maxChargeDuration = 1500;
-        this.backoffDistance = 25;
 
         // arrive behavior
         this.maxChargeSpeed = 9;
@@ -170,7 +168,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this._chargeState.sensor = this._sensor;
         this._chargeState.setTarget(this.target);
         this._chargeState.maxChargeDuration = this.maxChargeDuration;
-        this._chargeState.backoffDistance = this.backoffDistance;
 
         // charge delay state
         this._chargeDelayState.averageDelay = this.averageChargeDelay;

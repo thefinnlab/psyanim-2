@@ -11,15 +11,11 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
     sensor;
 
-    backoffDistance;
-
     maxChargeDuration;
 
     constructor(fsm) {
 
         super(fsm);
-
-        this.backoffDistance = 25;
 
         this.maxChargeDuration = 1500;
 
@@ -111,16 +107,6 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
     run(t, dt) {
 
         super.run();
-
-        // // check to see if we're within the backoffDistance
-        // let distanceToTarget = this._target.position
-        //     .subtract(this.entity.position)
-        //     .length();
-
-        // if (distanceToTarget <= this.backoffDistance)
-        // {
-        //     this.fsm.setStateVariable('charge', false);
-        // }
 
         // update charge timer and see if we've exceeded the max charge duration
         let updatedChargeTimer = this.fsm.getStateVariable('chargeTimer') + dt;

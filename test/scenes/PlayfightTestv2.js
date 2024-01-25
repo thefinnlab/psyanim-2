@@ -83,11 +83,17 @@ export default {
                         target: {
                             entityName: 'agent2'
                         },
+                        
+                        maxSeparationSpeed: 9,
+                        maxSeparationAcceleration: 0.3,
                     }
                 },
                 {
                     type: PsyanimPlayfightHFSM,
                     params: {
+
+                        maxSeparationDuration: 100,
+
                         playfightFSM: {
                             entityName: 'agent1',
                             componentType: PsyanimPlayfightFSM
@@ -159,14 +165,21 @@ export default {
                 {
                     type: PsyanimPlayfightSeparationFSM,
                     params: {
+
                         target: {
                             entityName: 'agent1'
                         },
+
+                        maxSeparationSpeed: 9,
+                        maxSeparationAcceleration: 0.3,
                     }
                 },
                 {
                     type: PsyanimPlayfightHFSM,
                     params: {
+                        
+                        maxSeparationDuration: 100,
+
                         playfightFSM: {
                             entityName: 'agent2',
                             componentType: PsyanimPlayfightFSM

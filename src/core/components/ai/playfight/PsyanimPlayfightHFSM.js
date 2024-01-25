@@ -12,9 +12,6 @@ export default class PsyanimPlayfightHFSM extends PsyanimBasicHFSM {
 
     maxSeparationDuration;
 
-    maxSeparationSpeed;
-    maxSeparationAcceleration;
-
     debug;
 
     constructor(entity) {
@@ -22,9 +19,6 @@ export default class PsyanimPlayfightHFSM extends PsyanimBasicHFSM {
         super(entity);
 
         this.maxSeparationDuration = 100;
-
-        this.maxSeparationSpeed = 12;
-        this.maxSeparationAcceleration = 0.5;
 
         this.debug = false;
     }
@@ -39,9 +33,6 @@ export default class PsyanimPlayfightHFSM extends PsyanimBasicHFSM {
 
         this.playfightFSM.debug = this.debug;
         this.separationFSM.debug = this.debug;
-
-        this.separationFSM.setMaxSeparationSpeed(this.maxSeparationSpeed);
-        this.separationFSM.setMaxSeparationAcceleration(this.maxSeparationAcceleration);
 
         // add interrupts
         this.addInterrupt(PsyanimPlayfightFSM, 'chargeContact', 
