@@ -2,6 +2,8 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent.js';
 
+import { PsyanimUtils } from 'psyanim-utils';
+
 export default class PsyanimWanderBehavior extends PsyanimComponent {
 
     radius;
@@ -31,7 +33,9 @@ export default class PsyanimWanderBehavior extends PsyanimComponent {
 
         this._debug = false;
 
-        this._angle = 270;
+        this._angle = PsyanimUtils.getRandomInt(-180, 180);
+        this.entity.angle = this._angle;
+
         this._targetVector = null;
 
         this.target = this.entity.scene.addEntity("_" + this.entity.name + '_wanderTarget', 0, 0, { isEmpty: true });
