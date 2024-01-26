@@ -9,6 +9,11 @@ import PsyanimPlayfightSeparationFSM from '../../src/core/components/ai/playfigh
 
 import PsyanimPlayfightHFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
+const maxChargeSpeed = 9;
+const maxChargeAcceleration = 0.3;
+
+const maxChargeDuration = 2000;
+
 export default {
 
     key: 'Playfight Test v2',
@@ -47,15 +52,15 @@ export default {
                         maxFleeDuration: 500,
 
                         // charge state
-                        maxChargeDuration: 1500,
+                        maxChargeDuration: maxChargeDuration,
 
                         // charge delay state
                         averageChargeDelay: 600,
                         chargeDelayVariance: 400,
 
                         // arrive behavior
-                        maxChargeSpeed: 9,
-                        maxChargeAcceleration: 0.4,
+                        maxChargeSpeed: maxChargeSpeed,
+                        maxChargeAcceleration: maxChargeAcceleration,
 
                         innerDecelerationRadius: 12,
                         outerDecelerationRadius: 30,
@@ -132,15 +137,15 @@ export default {
                         maxFleeDuration: 500,
 
                         // charge state
-                        maxChargeDuration: 1500,
+                        maxChargeDuration: maxChargeDuration,
 
                         // charge delay state
                         averageChargeDelay: 600,
                         chargeDelayVariance: 400,
 
                         // arrive behavior
-                        maxChargeSpeed: 9,
-                        maxChargeAcceleration: 0.4,
+                        maxChargeSpeed: maxChargeSpeed,
+                        maxChargeAcceleration: maxChargeAcceleration,
 
                         innerDecelerationRadius: 12,
                         outerDecelerationRadius: 30,
