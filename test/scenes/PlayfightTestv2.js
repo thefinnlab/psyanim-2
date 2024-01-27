@@ -9,20 +9,47 @@ import PsyanimPlayfightSeparationFSM from '../../src/core/components/ai/playfigh
 
 import PsyanimPlayfightHFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
+/**
+ *  NOTE: 'minWanderDuration' needs to be large than the sum of (averageChargeDelay + chargeDelayVariance)
+ *  but smaller than the difference of (breakDurationAverage - breakDurationVariance).
+ * 
+ *  The purpose of this parameter is to prevent an agent from performing a 'charge back' multiple times
+ *  by guaranteeing that, after returning to the wander state (which only happens after a charge or flee),
+ *  it can't transition out of wander state until it has been in it longer than the other agent's 
+ *  charge delay.
+ */
+
+// arrive behavior
 const maxChargeSpeed = 9;
-const maxChargeAcceleration = 0.3;
+const maxChargeAcceleration = 0.5;
 
-const breakDurationVariance = 100;
-const minWanderDuration = 150; // TODO: this parameter possibly needs to be calculated, not configurable...
-const averageChargeDelay = 100;
-const chargeDelayVariance = 10;
-
+// charge state
 const maxChargeDuration = 2000;
+
+// wander state
+const breakDurationAverage = 2000;
+const breakDurationVariance = 500;
+
+const minWanderDuration = 700; // see notes above
+
+const minTargetDistanceForCharge = 250;
+const maxTargetDistanceForCharge = 500;
+
+const wanderPanicDistance = 450;
 
 const wanderFleeRate = 0;
 
-const minTargetDistanceForCharge = 200;
-const maxTargetDistanceForCharge = 500;
+// charge delay state
+const averageChargeDelay = 500;
+const chargeDelayVariance = 50;
+
+// wander behavior
+const maxWanderSpeed = 3;
+
+/**
+ *  Parameters below here are the same for both agents, and defined above so we don't have to update
+ *  each agent individually every time we want to change one parameter to observe its effect.
+ */
 
 export default {
 
@@ -55,14 +82,14 @@ export default {
                     params: {
 
                         // wander state
-                        breakDurationAverage: 2000,
+                        breakDurationAverage: breakDurationAverage,
                         breakDurationVariance: breakDurationVariance,
                         minWanderDuration: minWanderDuration,
                         minTargetDistanceForCharge: minTargetDistanceForCharge,
                         maxTargetDistanceForCharge: maxTargetDistanceForCharge,
 
                         wanderFleeOrChargeWhenAttacked: true,
-                        wanderPanicDistance: 250,
+                        wanderPanicDistance: wanderPanicDistance,
                         wanderFleeRate: wanderFleeRate,
 
                         // flee state
@@ -83,7 +110,7 @@ export default {
                         outerDecelerationRadius: 30,
 
                         // wander behavior
-                        maxWanderSpeed: 4,
+                        maxWanderSpeed: maxWanderSpeed,
                         maxWanderAcceleration: 0.2,
                         wanderRadius: 50,
                         wanderOffset: 250,
@@ -142,14 +169,14 @@ export default {
                     params: {
 
                         // wander state
-                        breakDurationAverage: 2000,
+                        breakDurationAverage: breakDurationAverage,
                         breakDurationVariance: breakDurationVariance,
                         minWanderDuration: minWanderDuration,
                         minTargetDistanceForCharge: minTargetDistanceForCharge,
                         maxTargetDistanceForCharge: maxTargetDistanceForCharge,
 
                         wanderFleeOrChargeWhenAttacked: true,
-                        wanderPanicDistance: 250,
+                        wanderPanicDistance: wanderPanicDistance,
                         wanderFleeRate: wanderFleeRate,
 
                         // flee state
@@ -170,7 +197,7 @@ export default {
                         outerDecelerationRadius: 30,
 
                         // wander behavior
-                        maxWanderSpeed: 3,
+                        maxWanderSpeed: maxWanderSpeed,
                         maxWanderAcceleration: 0.2,
                         wanderRadius: 50,
                         wanderOffset: 250,
