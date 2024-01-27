@@ -14,6 +14,7 @@ import { PsyanimUtils, PsyanimDebug } from 'psyanim-utils';
 export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     targetAgent;
+    minTargetDistanceForCharge;
     maxTargetDistanceForCharge;
 
     breakDurationAverage; // ms
@@ -22,6 +23,8 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
     fleeOrChargeWhenAttacked; // boolean
     panicDistance; // pixels
     fleeRate; // percentage
+
+    minWanderDuration;
 
     constructor(fsm) {
 
@@ -34,7 +37,10 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.panicDistance = 300;
         this.fleeRate = 0.5;
 
+        this.minTargetDistanceForCharge = 200;
         this.maxTargetDistanceForCharge = 500;
+
+        this.minWanderDuration = 150;
 
         this._breakDuration = this.breakDurationAverage 
             + PsyanimUtils.getRandomInt(-this.breakDurationVariance, this.breakDurationVariance);
@@ -99,6 +105,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         let distanceToTarget = this.fsm.getStateVariable('distanceToTarget');
 
         return (distanceToTarget < this.maxTargetDistanceForCharge)
+            && (distanceToTarget > this.minTargetDistanceForCharge)
             && (wanderTimer > this._breakDuration);
     }
 
@@ -177,7 +184,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
                 {
                     this.fsm.setStateVariable('flee', true);
                 }
-                else
+                else if (updatedWanderTimer > this.minWanderDuration)
                 {
                     this.fsm.setStateVariable('delayedCharge', true);
                 }

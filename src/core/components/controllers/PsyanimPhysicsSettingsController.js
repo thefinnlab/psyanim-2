@@ -4,9 +4,13 @@ import PsyanimComponent from '../../PsyanimComponent.js';
 
 export default class PsyanimPhysicsSettingsController extends PsyanimComponent {
 
+    slowTimeScale;
+
     constructor(entity) {
 
         super(entity);
+
+        this.slowTimeScale = 0.05;
 
         this._keys = {
             T: this.entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T)
@@ -25,7 +29,7 @@ export default class PsyanimPhysicsSettingsController extends PsyanimComponent {
             }
             else
             {
-                this.entity.scene.matter.world.engine.timing.timeScale = 0.05;
+                this.entity.scene.matter.world.engine.timing.timeScale = this.slowTimeScale;
             }
         }
     }

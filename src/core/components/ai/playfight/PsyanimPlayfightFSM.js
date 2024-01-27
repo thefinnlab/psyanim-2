@@ -23,6 +23,9 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     /** wander state params */
     breakDurationAverage; 
     breakDurationVariance;
+    minWanderDuration;
+
+    minTargetDistanceForCharge;
     maxTargetDistanceForCharge;
 
     wanderFleeOrChargeWhenAttacked;
@@ -66,6 +69,9 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         // wander state
         this.breakDurationAverage = 2000;
         this.breakDurationVariance = 1000;
+        this.minWanderDuration = 150;
+
+        this.minTargetDistanceForCharge = 200;
         this.maxTargetDistanceForCharge = 500;
 
         this.wanderFleeOrChargeWhenAttacked = true;
@@ -177,6 +183,8 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this._wanderState.targetAgent = this.target;
         this._wanderState.breakDurationAverage = this.breakDurationAverage;
         this._wanderState.breakDurationVariance = this.breakDurationVariance;
+        this._wanderState.minWanderDuration = this.minWanderDuration;
+        this._wanderState.minTargetDistanceForCharge = this.minTargetDistanceForCharge;
         this._wanderState.maxTargetDistanceForCharge = this.maxTargetDistanceForCharge;
         this._wanderState.fleeOrChargeWhenAttacked = this.wanderFleeOrChargeWhenAttacked;
         this._wanderState.panicDistance = this.wanderPanicDistance;
