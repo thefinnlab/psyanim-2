@@ -86,7 +86,7 @@ export default class PsyanimFSMState {
 
         this._stage = PsyanimFSMState.STAGE.RUNNING;
 
-        if (this.fsm.debug)
+        if (this.fsm.debugLogging)
         {
             PsyanimDebug.log(this._entity.name, 'ENTERING state: ', this.constructor.name);
         }
@@ -96,7 +96,7 @@ export default class PsyanimFSMState {
 
         this._stage = PsyanimFSMState.STAGE.EXITED;
 
-        if (this.fsm.debug)
+        if (this.fsm.debugLogging)
         {
             PsyanimDebug.log(this._entity.name, 'EXITING state: ', this.constructor.name);
         }
@@ -116,7 +116,7 @@ export default class PsyanimFSMState {
 
     run(t, dt) {
 
-        if (this.fsm.debug)
+        if (this.fsm.debugLogging)
         {
             PsyanimDebug.log(this._entity.name, 'state RUNNING: ', this.constructor.name);            
         }

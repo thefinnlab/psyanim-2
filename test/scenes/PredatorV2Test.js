@@ -52,7 +52,8 @@ export default {
                         },
                         subtlety: 30,
                         averageWanderTime: 2000,
-                        debug: true
+                        debugLogging: false,
+                        debugGraphics: true
                     }
                 }
             ]

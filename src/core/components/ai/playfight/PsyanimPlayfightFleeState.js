@@ -58,7 +58,7 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
 
         super.onResume();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x0000ff;
         }
@@ -77,7 +77,7 @@ export default class PsyanimPlayfightFleeState extends PsyanimFSMState {
         this._fleeBehavior.maxSpeed = this.maxSpeed;
         this._fleeBehavior.maxAcceleration = this.maxAcceleration;
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x0000ff;
         }

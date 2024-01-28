@@ -93,7 +93,7 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
         this._seekTarget.position = this.currentSeekTargetLocation;
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0xffff00;
         }

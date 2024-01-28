@@ -8,11 +8,17 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
     initialSubStateMachine;
 
+    debugLogging;
+    debugGraphics;
+
     constructor(entity) {
 
         super(entity);
 
         this._initialized = false;
+
+        this.debugLogging = false;
+        this.debugGraphics = false;
 
         this._subStateMachines = [];
         this._interrupts = [];
@@ -62,8 +68,6 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         let interrupt = new PsyanimBasicHFSMInterrupt(sourceFSM, variableKey, condition, destinationFSM);
 
         this._interrupts.push(interrupt);
-
-        console.log(this._interrupts);
     }
 
     afterCreate() {
@@ -73,7 +77,10 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
     _handleInterruptTriggered(interrupt) {
 
-        PsyanimDebug.log(this.constructor.name, 'Interrupt Triggered:', interrupt);
+        if (this.debugLogging)
+        {
+            PsyanimDebug.log(this.constructor.name, 'Interrupt Triggered:', interrupt);
+        }
 
         if (interrupt.destinationFSM)
         {

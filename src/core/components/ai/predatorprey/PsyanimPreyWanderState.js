@@ -46,7 +46,7 @@ export default class PsyanimPreyWanderState extends PsyanimFSMState {
 
         super.enter();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x00ff00;
         }

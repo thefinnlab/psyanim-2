@@ -78,7 +78,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
             this._recomputeFleeOnPanic();
 
-            if (this.isActive && this.fsm.debug)
+            if (this.isActive && this.fsm.debugGraphics)
             {
                 this.entity.color = 0xffff00;
             }
@@ -93,7 +93,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
             this._fleeOnPanic = false;
 
-            if (this.isActive && this.fsm.debug)
+            if (this.isActive && this.fsm.debugGraphics)
             {
                 this.entity.color = 0x00ff00;
             }
@@ -127,7 +127,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
         super.onResume();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x00ff00;
         }
@@ -147,7 +147,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.fsm.setStateVariable('delayedCharge', false);
         this.fsm.setStateVariable('flee', false);
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x00ff00;
         }

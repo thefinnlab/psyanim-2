@@ -64,7 +64,7 @@ export default class PsyanimPlayfightChargeDelayState extends PsyanimFSMState {
 
         this._delay = (2 * Math.random() - 1) * this.delayVariance + this.averageDelay;
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0xfc9803;
         }

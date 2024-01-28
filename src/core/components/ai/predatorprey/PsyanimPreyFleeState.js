@@ -74,7 +74,7 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('avoidWalls', false);
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x0000ff;
         }

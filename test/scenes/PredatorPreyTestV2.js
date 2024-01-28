@@ -33,7 +33,8 @@ export default {
                         target: {
                             entityName: 'prey'
                         },
-                        debug: true
+                        debugLogging: false,
+                        debugGraphics: true
                     }
                 }
             ]
@@ -53,7 +54,8 @@ export default {
                             entityName: 'predator',
                         },
                         panicDistance: 250,
-                        debug: true
+                        debugLogging: false,
+                        debugGraphics: true
                     }
                 }
             ]

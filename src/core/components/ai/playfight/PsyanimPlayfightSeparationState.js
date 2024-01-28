@@ -50,7 +50,7 @@ export default class PsyanimPlayfightSeparationState extends PsyanimFSMState {
 
         super.onResume();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x800080;
         }
@@ -60,7 +60,7 @@ export default class PsyanimPlayfightSeparationState extends PsyanimFSMState {
 
         super.enter();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x800080;
         }

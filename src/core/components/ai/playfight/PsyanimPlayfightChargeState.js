@@ -47,7 +47,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
         super.onResume();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0xff0000;
         }
@@ -93,7 +93,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('chargeTimer', 0);
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0xff0000;
         }

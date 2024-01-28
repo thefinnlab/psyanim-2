@@ -64,7 +64,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         super(entity);
 
         // default parameters
-        this.debug = false;
+        this.debugLogging = false;
 
         // wander state
         this.breakDurationAverage = 2000;
@@ -113,7 +113,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
             radius: this.entity.shapeParams.radius + 2
         };
 
-        // this._sensor.debug = true;
+        // this._sensor.debugLogging = true;
 
         this._sensor.events.on("triggerEnter", (entity) => {
 

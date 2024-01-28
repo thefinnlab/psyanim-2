@@ -51,8 +51,9 @@ export default {
                             entityName: 'player',
                         },
                         panicDistance: 150,
-                        debug: true,
-                        subtlety: 30
+                        subtlety: 30,
+                        debugLogging: false,
+                        debugGraphics: true
                     }
                 }
             ]

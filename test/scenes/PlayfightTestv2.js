@@ -151,7 +151,8 @@ export default {
                             entityName: 'agent1',
                             componentType: PsyanimPlayfightSeparationFSM
                         },
-                        debug: true
+                        debugLogging: false,
+                        debugGraphics: true
                     }
                 }
             ]
@@ -239,7 +240,8 @@ export default {
                             entityName: 'agent2',
                             componentType: PsyanimPlayfightSeparationFSM
                         },
-                        debug: true
+                        debugLogging: false,
+                        debugGraphics: true
                     }
                 }
 

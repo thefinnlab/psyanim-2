@@ -77,7 +77,7 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
 
         this._recomputeSubtletyAngle();
 
-        if (this.fsm.debug)
+        if (this.fsm.debugGraphics)
         {
             this.entity.color = 0xff0000;
         }

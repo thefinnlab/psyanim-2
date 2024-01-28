@@ -6,8 +6,6 @@ export default class PsyanimBasicHFSMInterrupt {
         this._destinationFSM = destinationFSM;
         this._variableKey = variableKey;
         this._condition = condition;
-
-        console.log('interrupt dest fsm = ', this.destinationFSM);
     }
 
     get sourceFSM() {

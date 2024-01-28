@@ -15,14 +15,14 @@ export default class PsyanimFSM extends PsyanimComponent {
      *  If true, this FSM will run in debug mode.
      *  @type {boolean}
      */
-    debug;
+    debugLogging;
 
     constructor(entity) {
 
         super(entity);
 
-        // TODO: this should probably be 'false' by default, but you need to update the tutorial if so
-        this.debug = true;
+        this.debugLogging = false;
+        this.debugGraphics = false;
 
         this._stateVariables = {};
         this._states = [];
