@@ -28,26 +28,36 @@ export default class PsyanimGeomUtils {
 
         let verts = PsyanimGeomUtils.computeTriangleVertices(geomParams.base, geomParams.altitude);
 
-        let viewportWidth = scene.game.config.width;
-        let viewportHeight = scene.game.config.height;
+        // let verts = [
+        //     { x: 0, y: 0 },
+        //     { x: geomParams.altitude, y: geomParams.base / 2 },
+        //     { x: 0, y: geomParams.base }
+        // ];
 
-        let viewportCenter = { x: viewportWidth / 2, y: viewportHeight / 2 };
+        let textureWidth = geomParams.altitude;
+        let textureHeight = geomParams.base;
 
         let translatedVerts = [
-            verts[0].x + viewportCenter.x, verts[0].y + viewportCenter.y,
-            verts[1].x + viewportCenter.x, verts[1].y + viewportCenter.y,
-            verts[2].x + viewportCenter.x, verts[2].y + viewportCenter.y
-        ];
+            { x: verts[0].x + (1/3) * geomParams.altitude, y: verts[0].y + (1/2) * geomParams.base },
+            { x: verts[1].x + (1/3) * geomParams.altitude, y: verts[1].y + (1/2) * geomParams.base },
+            { x: verts[2].x + (1/3) * geomParams.altitude, y: verts[2].y + (1/2) * geomParams.base }
+        ]
 
         let graphics = scene.add.graphics();
         graphics.fillStyle(color);
 
-        graphics.fillTriangle(
-            translatedVerts[0], translatedVerts[1],
-            translatedVerts[2], translatedVerts[3],
-            translatedVerts[4], translatedVerts[5]);
+        // graphics.fillTriangle(
+        //     verts[0].x, verts[0].y,
+        //     verts[1].x, verts[1].y,
+        //     verts[2].x, verts[2].y,
+        // );
 
-        graphics.generateTexture(textureKey);
+        graphics.fillTriangle(
+            translatedVerts[0].x, translatedVerts[0].y,
+            translatedVerts[1].x, translatedVerts[1].y,
+            translatedVerts[2].x, translatedVerts[2].y);
+
+        graphics.generateTexture(textureKey, textureWidth, textureHeight);
         graphics.destroy();
     }
 

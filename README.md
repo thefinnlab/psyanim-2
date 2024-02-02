@@ -4,6 +4,13 @@ Psyanim 2.0 is a tool for rapid design, prototyping and deployment of psychology
 
 For a quick intro to Psyanim 2.0, check out our [docs](https://thefinnlab.github.io/psyanim-docs)!
 
+To run the test suite:
+
+- Run `npm i` from project root
+- Start a watch service in a separate terminal with `npm run dev-watch`
+- Start a local server to host the test suite with `npm run dev-serve`
+- Navigate to `localhost:3000` in your web browser. Controls are at bottom of page.
+
 To view the API docs from this repo:
 
 - First build the docs with: `npm run docs-build`
