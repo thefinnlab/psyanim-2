@@ -32,6 +32,8 @@ export default class PsyanimSensor extends PsyanimComponent {
                 },
             });
 
+        this._handleEntityDestroyedCallback = this._handleEntityDestroyed.bind(this);
+
         this._intersectingEntities = [];
     }
 
@@ -54,9 +56,14 @@ export default class PsyanimSensor extends PsyanimComponent {
             this._entities[i].psyanimSensorId = i;
         }
 
-        // TODO: in the event that entities are added to a scene at runtime, not just during init,
-        // we need to update PsyanimScene to throw events when entities are added & removed
-        // and update our entity list here...
+        this._handleEntityAddedToSceneCallback = this._handleEntityAddedToScene.bind(this);
+
+        this.scene.events.on(Phaser.Scenes.Events.ADDED_TO_SCENE, this._handleEntityAddedToSceneCallback);
+    }
+
+    _handleEntityAddedToScene(gameObject, scene) {
+
+        this._entities.push(gameObject);
     }
 
     onEnable() {
@@ -67,6 +74,13 @@ export default class PsyanimSensor extends PsyanimComponent {
     onDisable() {
 
         super.onDisable();
+    }
+
+    destroy() {
+
+        this.scene.events.off(Phaser.Scenes.Events.ADDED_TO_SCENE, this._handleEntityAddedToSceneCallback);
+
+        super.destroy();
     }
 
     isIntersecting(entity) {
@@ -104,6 +118,9 @@ export default class PsyanimSensor extends PsyanimComponent {
             if (!isIntersecting)
             {
                 this.events.emit('triggerExit', entity);
+
+                entity.off(Phaser.GameObjects.Events.DESTROY, this._handleEntityDestroyedCallback);
+
                 this._intersectingEntities = this._intersectingEntities
                     .filter(e => e.psyanimSensorId !== entity.psyanimSensorId);
             }
@@ -112,10 +129,22 @@ export default class PsyanimSensor extends PsyanimComponent {
         {
             if (isIntersecting)
             {
+                entity.on(Phaser.GameObjects.Events.DESTROY, this._handleEntityDestroyedCallback);
+
                 this.events.emit('triggerEnter', entity);
+
                 this._intersectingEntities.push(entity);
             }
         }
+    }
+
+    _handleEntityDestroyed(entity) {
+
+        this._intersectingEntities = this._intersectingEntities.filter(e => e.psyanimSensorId !== entity.psyanimSensorId);
+
+        this._entities = this._entities.filter(e => e.psyanimSensorId !== entity.psyanimSensorId);
+
+        entity.off(Phaser.GameObjects.Events.DESTROY, this._handleEntityDestroyedCallback);
     }
 
     _testIntersections() {
