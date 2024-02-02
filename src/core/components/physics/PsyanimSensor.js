@@ -37,6 +37,8 @@ export default class PsyanimSensor extends PsyanimComponent {
 
     afterCreate() {
 
+        super.afterCreate();
+
         this._debugGraphics.clear();
 
         this._debugCircle = new Phaser.Geom.Circle(
