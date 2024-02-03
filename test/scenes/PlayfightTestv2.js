@@ -10,7 +10,7 @@ import PsyanimPlayfightSeparationFSM from '../../src/core/components/ai/playfigh
 import PsyanimPlayfightHFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
 /**
- *  NOTE: 'minWanderDuration' needs to be large than the sum of (averageChargeDelay + chargeDelayVariance)
+ *  NOTE: 'minWanderDuration' needs to be larger than the sum of (averageChargeDelay + chargeDelayVariance)
  *  but smaller than the difference of (breakDurationAverage - breakDurationVariance).
  * 
  *  The purpose of this parameter is to prevent an agent from performing a 'charge back' multiple times

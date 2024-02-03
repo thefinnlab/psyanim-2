@@ -224,16 +224,22 @@ class _PsyanimJsPsychPlugin {
 
                         if (recorder)
                         {
-                            metadata.stateLogs = [];
+                            if (!metadata.stateLogs)
+                            {
+                                metadata.stateLogs = [];
+                            }
 
                             console.log(recorder.data);
 
+                            // TODO: let's not do this anymore - let's add to a single state log and then
+                            // write it out to firestore
                             let stateLogId = this._documentWriter.addAgentStateLog(recorder.data);
 
                             metadata.stateLogs.push({
                                 stateLogId: stateLogId,
                                 componentTypeName: recorder.componentType.name,
-                            });                        }
+                            });                        
+                        }
                     }
 
                     agentMetadata.push(metadata);
