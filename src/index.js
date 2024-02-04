@@ -82,7 +82,7 @@ import PsyanimSceneTitle from './core/components/ui/PsyanimSceneTitle.js';
 // utility components
 import PsyanimAnimationBaker from './core/components/utils/PsyanimAnimationBaker.js';
 import PsyanimAnimationPlayer from './core/components/utils/PsyanimAnimationPlayer.js';
-import PsyanimComponentStateRecorder from './core/components/utils/PsyanimComponentStateRecorder.js';
+import PsyanimFSMStateRecorder from './core/components/utils/PsyanimFSMStateRecorder.js';
 import PsyanimExperimentTimer from './core/components/utils/PsyanimExperimentTimer.js';
 import PsyanimVideoRecorder from './core/components/utils/PsyanimVideoRecorder.js';
 
@@ -207,7 +207,7 @@ export {
     // utility components
     PsyanimAnimationBaker,
     PsyanimAnimationPlayer,
-    PsyanimComponentStateRecorder,
+    PsyanimFSMStateRecorder,
     PsyanimExperimentTimer,
     PsyanimVideoRecorder,
 

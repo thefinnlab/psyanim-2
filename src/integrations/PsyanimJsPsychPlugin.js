@@ -4,7 +4,7 @@ import PsyanimApp from '../../src/core/PsyanimApp.js';
 
 import PsyanimAnimationBaker from '../core/components/utils/PsyanimAnimationBaker.js';
 
-import PsyanimComponentStateRecorder from '../core/components/utils/PsyanimComponentStateRecorder.js';
+import PsyanimFSMStateRecorder from '../core/components/utils/PsyanimFSMStateRecorder.js';
 
 import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter.js';
 
@@ -220,7 +220,7 @@ class _PsyanimJsPsychPlugin {
                     if (this._agentNamesToRecord.includes(agent.name) && 
                         this._currentTrial.recordStateLogs)
                     {
-                        let recorder = agent.getComponent(PsyanimComponentStateRecorder);
+                        let recorder = agent.getComponent(PsyanimFSMStateRecorder);
 
                         if (recorder)
                         {

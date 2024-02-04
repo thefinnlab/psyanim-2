@@ -22,6 +22,60 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
         this._subStateMachines = [];
         this._interrupts = [];
+
+        this.events = new Phaser.Events.EventEmitter();
+    }
+
+    get currentFSMName() {
+
+        return this.getCurrentSubStateMachine().constructor.name;
+    }
+
+    get currentStateName() {
+
+        return this.getCurrentSubStateMachine().currentStateName;
+    }
+
+    getStateVariableSnapshot() {
+
+        let fsmSnapshots = [];
+
+        for (let i = 0; i < this._subStateMachines.length; ++i)
+        {
+            let fsm = this._subStateMachines[i];
+            let fsmName = fsm.constructor.name;
+
+            let snapshot = {
+                fsmName: fsmName,
+                stateVariables: fsm.getStateVariableSnapshot()
+            };
+
+            fsmSnapshots.push(snapshot);
+        }
+
+        return fsmSnapshots;
+    }
+
+    stringifyStateVariables() {
+
+        let data = [];
+
+        for (let i = 0; i < this._subStateMachines.length; ++i)
+        {
+            let subStateMachine = this._subStateMachines[i];
+
+            data.push({ 
+                fsmType: subStateMachine.constructor.name,
+                stateVariables: subStateMachine.stringifyStateVariables()
+            });
+        }
+
+        return JSON.stringify(data);
+    }
+
+    getCurrentSubStateMachine() {
+
+        return this._fsmStack.at(-1);
     }
 
     getSubStateMachine(fsmType) {
@@ -75,6 +129,16 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         super.afterCreate();
     }
 
+    _handleFSMStateEntered(stateName) {
+
+        this.events.emit('enter', stateName);
+    }
+
+    _handleFSMStateExited(stateName) {
+
+        this.events.emit('exit', stateName);
+    }
+
     _handleInterruptTriggered(interrupt) {
 
         if (this.debugLogging)
@@ -91,17 +155,23 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
             interrupt.destinationFSM.resume();
 
+            this.events.emit('resume', interrupt.destinationFSM);
+
             this._filterInterruptsByCurrentFSM();
         }
         else // stop the current FSM and pop it off stack
         {
             interrupt.sourceFSM.stop();
 
+            this.events.emit('stop', interrupt.sourceFSM);
+
             if (this._fsmStack.length >= 2)
             {
                 this._fsmStack.pop();
 
-                this._fsmStack.at(-1).resume();
+                this.getCurrentSubStateMachine().resume();
+
+                this.events.emit('resume', this.getCurrentSubStateMachine());
 
                 this._filterInterruptsByCurrentFSM();
             }
@@ -114,7 +184,7 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
     
     _filterInterruptsByCurrentFSM() {
 
-        let currentFsmName = this._fsmStack.at(-1).constructor.name;
+        let currentFsmName = this.currentFSMName;
 
         this._filteredInterrupts = this._interrupts.filter(i => i.sourceFSM.constructor.name == currentFsmName);
     }
@@ -133,6 +203,18 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         this._currentFSM = this.initialSubStateMachine;
 
         this._filterInterruptsByCurrentFSM();
+
+        // sub to fsm events
+        this._fsmEnterEventHandler = this._handleFSMStateEntered.bind(this);
+        this._fsmExitEventHandler = this._handleFSMStateExited.bind(this);
+
+        for (let i = 0; i < this._subStateMachines.length; ++i)
+        {
+            let fsm = this._subStateMachines[i];
+
+            fsm.events.on('enter', this._fsmEnterEventHandler);
+            fsm.events.on('exit', this._fsmExitEventHandler);
+        }
 
         this._initialized = true;
     }

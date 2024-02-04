@@ -18,7 +18,7 @@ export default class PsyanimPlayfightHFSM extends PsyanimBasicHFSM {
 
         this.maxSeparationDuration = 100;
     }
-
+    
     afterCreate() {
 
         super.afterCreate();

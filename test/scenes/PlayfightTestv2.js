@@ -9,6 +9,8 @@ import PsyanimPlayfightSeparationFSM from '../../src/core/components/ai/playfigh
 
 import PsyanimPlayfightHFSM from '../../src/core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
+import PsyanimFSMStateRecorder from '../../src/core/components/utils/PsyanimFSMStateRecorder.js';
+
 /**
  *  NOTE: 'minWanderDuration' needs to be larger than the sum of (averageChargeDelay + chargeDelayVariance)
  *  but smaller than the difference of (breakDurationAverage - breakDurationVariance).
@@ -153,6 +155,16 @@ export default {
                         },
                         debugLogging: false,
                         debugGraphics: true
+                    },
+                },
+                {
+                    type: PsyanimFSMStateRecorder,
+                    params: {
+                        stateMachine: {
+                            entityName: 'agent1',
+                            componentType: PsyanimPlayfightHFSM
+                        },
+                        debug: true
                     }
                 }
             ]

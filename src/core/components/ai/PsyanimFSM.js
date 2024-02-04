@@ -38,6 +38,28 @@ export default class PsyanimFSM extends PsyanimComponent {
         this.events = new Phaser.Events.EventEmitter();
     }
 
+    get currentStateName() {
+
+        return this._currentState.constructor.name;
+    }
+
+    getStateVariableSnapshot() {
+
+        let snapshot = {};
+
+        let stateKeys = Object.keys(this._stateVariables);
+
+        // copy the whole object
+        for (let i = 0; i < stateKeys.length; ++i)
+        {
+            let key = stateKeys[i];
+
+            snapshot[stateKeys] = this._stateVariables[key];
+        }
+
+        return snapshot;
+    }
+
     stringifyStateVariables() {
 
         return JSON.stringify(this._stateVariables, null, 4);
@@ -207,8 +229,6 @@ export default class PsyanimFSM extends PsyanimComponent {
 
             this.events.emit('exit', this._currentState.name);
 
-            // TODO: maybe we should wire this stuff up ahead of time in the base state class's
-            // enter() method so we don't have to do a getState() in our main loop here
             let targetState = this.getState(currentTransition.targetStateType);
 
             targetState.enter();
