@@ -10,6 +10,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
     stateMachine;
 
     saveResumeEventSnapshot;
+    savePauseEventSnapshot;
     saveStopEventSnapshot;
     saveEnterEventSnapshot;
     saveExitEventSnapshot;
@@ -27,6 +28,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         this.recordOnStart = true;
 
         this.saveResumeEventSnapshot = false;
+        this.savePauseEventSnapshot = false;
         this.saveStopEventSnapshot = false;
         this.saveEnterEventSnapshot = false;
         this.saveExitEventSnapshot = false;
@@ -34,6 +36,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         this.debug = false;
 
         this._fsmResumedHandler = this._handleFSMResumed.bind(this);
+        this._fsmPausedHandler = this._handleFSMPaused.bind(this);
         this._fsmStoppedHandler = this._handleFSMStopped.bind(this);
         this._fsmEnterHandler = this._handleFSMStateEntered.bind(this);
         this._fsmExitHandler = this._handleFSMStateExited.bind(this);
@@ -62,6 +65,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         if (this.stateMachine instanceof PsyanimBasicHFSM)
         {
             this.stateMachine.events.on('resume', this._fsmResumedHandler);
+            this.stateMachine.events.on('pause', this._fsmPausedHandler);
             this.stateMachine.events.on('stop', this._fsmStoppedHandler);
             this.stateMachine.events.on('enter', this._fsmEnterHandler);
             this.stateMachine.events.on('exit', this._fsmExitHandler);
@@ -84,6 +88,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         if (this.stateMachine instanceof PsyanimBasicHFSM)
         {
             this.stateMachine.events.off('resume', this._fsmResumedHandler);
+            this.stateMachine.events.off('pause', this._fsmPausedHandler);
             this.stateMachine.events.off('stop', this._fsmStoppedHandler);
             this.stateMachine.events.off('enter', this._fsmEnterHandler);
             this.stateMachine.events.off('exit', this._fsmExitHandler);
@@ -170,6 +175,23 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         };
 
         if (this.saveStopEventSnapshot)
+        {
+            data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
+        }
+
+        this._stateBuffer.push(data);
+    }
+
+    _handleFSMPaused(fsm) {
+
+        let data = {
+            eventType: 'pause',
+            stateMachine: fsm.constructor.name,
+            currentState: fsm.currentStateName,
+            t: this.entity.scene.time.now
+        };
+
+        if (this.savePauseEventSnapshot)
         {
             data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
         }

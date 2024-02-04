@@ -151,6 +151,8 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
             // pause current FSM and add destination FSM to stack
             interrupt.sourceFSM.pause();
 
+            this.events.emit('pause', interrupt.sourceFSM);
+
             this._fsmStack.push(interrupt.destinationFSM);
 
             interrupt.destinationFSM.resume();

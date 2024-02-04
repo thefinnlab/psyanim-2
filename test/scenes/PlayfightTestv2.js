@@ -166,6 +166,7 @@ export default {
                         },
                         
                         saveResumeEventSnapshot: true,
+                        savePauseEventSnapshot: true,
                         saveStopEventSnapshot: true,
                         saveEnterEventSnapshot: true,
                         saveExitEventSnapshot: true,
