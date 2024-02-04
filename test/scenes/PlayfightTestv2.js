@@ -165,10 +165,10 @@ export default {
                             componentType: PsyanimPlayfightHFSM
                         },
                         
-                        recordResumeEvents: true,
-                        recordStopEvents: true,
-                        recordEnterEvents: true,
-                        recordExitEvents: true,
+                        saveResumeEventSnapshot: true,
+                        saveStopEventSnapshot: true,
+                        saveEnterEventSnapshot: true,
+                        saveExitEventSnapshot: true,
 
                         recordOnStart: false,
 

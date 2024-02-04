@@ -9,10 +9,10 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
     stateMachine;
 
-    recordResumeEvents;
-    recordStopEvents;
-    recordEnterEvents;
-    recordExitEvents;
+    saveResumeEventSnapshot;
+    saveStopEventSnapshot;
+    saveEnterEventSnapshot;
+    saveExitEventSnapshot;
 
     recordOnStart;
 
@@ -26,10 +26,10 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
         this.recordOnStart = true;
 
-        this.recordResumeEvents = false;
-        this.recordStopEvents = false;
-        this.recordEnterEvents = false;
-        this.recordExitEvents = false;
+        this.saveResumeEventSnapshot = false;
+        this.saveStopEventSnapshot = false;
+        this.saveEnterEventSnapshot = false;
+        this.saveExitEventSnapshot = false;
 
         this.debug = false;
 
@@ -61,37 +61,15 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
         if (this.stateMachine instanceof PsyanimBasicHFSM)
         {
-            if (this.recordResumeEvents)
-            {
-                this.stateMachine.events.on('resume', this._fsmResumedHandler);
-            }
-
-            if (this.recordStopEvents)
-            {
-                this.stateMachine.events.on('stop', this._fsmStoppedHandler);
-            }
-
-            if (this.recordEnterEvents)
-            {
-                this.stateMachine.events.on('enter', this._fsmEnterHandler);
-            }
-
-            if (this.recordExitEvents)
-            {
-                this.stateMachine.events.on('exit', this._fsmExitHandler);
-            }
+            this.stateMachine.events.on('resume', this._fsmResumedHandler);
+            this.stateMachine.events.on('stop', this._fsmStoppedHandler);
+            this.stateMachine.events.on('enter', this._fsmEnterHandler);
+            this.stateMachine.events.on('exit', this._fsmExitHandler);
         }
         else if (this.stateMachine instanceof PsyanimFSM)
         {
-            if (this.recordEnterEvents)
-            {
-                this.stateMachine.events.on('enter', this._fsmEnterHandler);
-            }
-
-            if (this.recordExitEvents)
-            {
-                this.stateMachine.events.on('exit', this._fsmExitHandler);
-            }
+            this.stateMachine.events.on('enter', this._fsmEnterHandler);
+            this.stateMachine.events.on('exit', this._fsmExitHandler);
         }
         else
         {
@@ -135,49 +113,68 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
     _handleFSMStateEntered(stateName) {
 
-        this._stateBuffer.push({
+        let data = {
             eventType: 'enter', 
             stateName: stateName,
-            stateVariableSnapshot: this.stateMachine.getStateVariableSnapshot(),
             t: this.entity.scene.time.now
-        });
+        };
+
+        if (this.saveEnterEventSnapshot)
+        {
+            data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
+        }
+
+        this._stateBuffer.push(data);
     }
 
     _handleFSMStateExited(stateName) {
 
-        this._stateBuffer.push({
+        let data = {
             eventType: 'exit',
             stateName, stateName,
-            stateVariableSnapshot: this.stateMachine.getStateVariableSnapshot(),
             t: this.entity.scene.time.now
-        });
+        };
+
+        if (this.saveExitEventSnapshot)
+        {
+            data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
+        }
+
+        this._stateBuffer.push();
     }
 
     _handleFSMResumed(fsm) {
 
-        this._stateBuffer.push({
+        let data = {
             eventType: 'resume',
             stateMachine: fsm.constructor.name,
             currentState: fsm.currentStateName,
-            stateVariableSnapshot: this.stateMachine.getStateVariableSnapshot(),
             t: this.entity.scene.time.now
-        });
+        };
+
+        if (this.saveResumeEventSnapshot)
+        {
+            data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
+        }
+
+        this._stateBuffer.push(data);
     }
 
     _handleFSMStopped(fsm) {
 
-        this._stateBuffer.push({
+        let data = {
             eventType: 'stop',
             stateMachine: fsm.constructor.name,
             currentState: fsm.currentStateName,
-            stateVariableSnapshot: this.stateMachine.getStateVariableSnapshot(),
             t: this.entity.scene.time.now
-        });
-    }
+        };
 
-    _recordSnapshot() {
+        if (this.saveStopEventSnapshot)
+        {
+            data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
+        }
 
-        this._stateBuffer.push(this.stateMachine.getStateVariableSnapshot());
+        this._stateBuffer.push(data);
     }
 
     update(t, dt) {
