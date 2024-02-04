@@ -164,6 +164,14 @@ export default {
                             entityName: 'agent1',
                             componentType: PsyanimPlayfightHFSM
                         },
+                        
+                        recordResumeEvents: true,
+                        recordStopEvents: true,
+                        recordEnterEvents: true,
+                        recordExitEvents: true,
+
+                        recordOnStart: false,
+
                         debug: true
                     }
                 }

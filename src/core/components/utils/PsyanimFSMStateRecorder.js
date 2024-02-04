@@ -9,6 +9,13 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
     stateMachine;
 
+    recordResumeEvents;
+    recordStopEvents;
+    recordEnterEvents;
+    recordExitEvents;
+
+    recordOnStart;
+
     debug;
 
     constructor(entity) {
@@ -17,9 +24,25 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
         this._stateBuffer = [];
 
+        this.recordOnStart = true;
+
+        this.recordResumeEvents = false;
+        this.recordStopEvents = false;
+        this.recordEnterEvents = false;
+        this.recordExitEvents = false;
+
         this.debug = false;
 
+        this._fsmResumedHandler = this._handleFSMResumed.bind(this);
+        this._fsmStoppedHandler = this._handleFSMStopped.bind(this);
+        this._fsmEnterHandler = this._handleFSMStateEntered.bind(this);
+        this._fsmExitHandler = this._handleFSMStateExited.bind(this);
+
+        this._recording = false;
+
         this._keys = {
+            Q: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
+            R: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R),
             SPACE: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
         };
     }
@@ -29,28 +52,84 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         return this._stateBuffer;
     }
 
-    afterCreate() {
+    record() {
 
-        super.afterCreate();
-
-        console.warn("TODO: we should be able to configure which events we want to take snapshots at!"
-         + " ...to save memory and disk space.");
+        if (this._recording)
+        {
+            return;
+        }
 
         if (this.stateMachine instanceof PsyanimBasicHFSM)
         {
-            this.stateMachine.events.on('resume', this._handleFSMResumed.bind(this));
-            this.stateMachine.events.on('stop', this._handleFSMStopped.bind(this));
-            this.stateMachine.events.on('enter', this._handleFSMStateEntered.bind(this));
-            this.stateMachine.events.on('exit', this._handleFSMStateExited.bind(this));
+            if (this.recordResumeEvents)
+            {
+                this.stateMachine.events.on('resume', this._fsmResumedHandler);
+            }
+
+            if (this.recordStopEvents)
+            {
+                this.stateMachine.events.on('stop', this._fsmStoppedHandler);
+            }
+
+            if (this.recordEnterEvents)
+            {
+                this.stateMachine.events.on('enter', this._fsmEnterHandler);
+            }
+
+            if (this.recordExitEvents)
+            {
+                this.stateMachine.events.on('exit', this._fsmExitHandler);
+            }
         }
         else if (this.stateMachine instanceof PsyanimFSM)
         {
-            this.stateMachine.events.on('enter', this._handleFSMStateEntered.bind(this));
-            this.stateMachine.events.on('exit', this._handleFSMStateExited.bind(this));
+            if (this.recordEnterEvents)
+            {
+                this.stateMachine.events.on('enter', this._fsmEnterHandler);
+            }
+
+            if (this.recordExitEvents)
+            {
+                this.stateMachine.events.on('exit', this._fsmExitHandler);
+            }
         }
         else
         {
             PsyanimDebug.error("'stateMachine' must be an instance of PsyanimFSM or PsyanimBasicFSM!");
+        }
+
+        this._recording = true;
+    }
+
+    stop() {
+        
+        if (this.stateMachine instanceof PsyanimBasicHFSM)
+        {
+            this.stateMachine.events.off('resume', this._fsmResumedHandler);
+            this.stateMachine.events.off('stop', this._fsmStoppedHandler);
+            this.stateMachine.events.off('enter', this._fsmEnterHandler);
+            this.stateMachine.events.off('exit', this._fsmExitHandler);
+        }
+        else if (this.stateMachine instanceof PsyanimFSM)
+        {
+            this.stateMachine.events.off('enter', this._fsmEnterHandler);
+            this.stateMachine.events.off('exit', this._fsmExitHandler);
+        }
+        else
+        {
+            PsyanimDebug.error("'stateMachine' must be an instance of PsyanimFSM or PsyanimBasicFSM!");
+        }
+
+        this._recording = false;
+    }
+
+    afterCreate() {
+
+        super.afterCreate();
+
+        if (this.recordOnStart)
+        {
+            this.record();
         }
     }
 
@@ -105,11 +184,24 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
 
         super.update(t, dt);
 
-        if (this.debug && Phaser.Input.Keyboard.JustDown(this._keys.SPACE))
+        if (this.debug)
         {
-            let length = JSON.stringify(this._stateBuffer).length;
+            if (Phaser.Input.Keyboard.JustDown(this._keys.SPACE))
+            {
+                let length = JSON.stringify(this._stateBuffer).length;
 
-            console.log('PsyanimFSMStateRecorder buffer length =', length, ', buffer =', this._stateBuffer);
+                console.log('PsyanimFSMStateRecorder buffer length =', length, ', buffer =', this._stateBuffer);
+            }
+
+            if (Phaser.Input.Keyboard.JustDown(this._keys.R))
+            {
+                this.record();
+            }
+
+            if (Phaser.Input.Keyboard.JustDown(this._keys.Q))
+            {
+                this.stop();
+            }
         }
     }
 }

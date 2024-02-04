@@ -54,7 +54,7 @@ export default class PsyanimFSM extends PsyanimComponent {
         {
             let key = stateKeys[i];
 
-            snapshot[stateKeys] = this._stateVariables[key];
+            snapshot[key] = this._stateVariables[key];
         }
 
         return snapshot;
