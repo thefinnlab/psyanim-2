@@ -140,7 +140,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
             data.stateVariableSnapshot = this.stateMachine.getStateVariableSnapshot();
         }
 
-        this._stateBuffer.push();
+        this._stateBuffer.push(data);
     }
 
     _handleFSMResumed(fsm) {
