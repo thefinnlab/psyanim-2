@@ -121,7 +121,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         let data = {
             eventType: 'enter', 
             stateName: stateName,
-            t: this.entity.scene.time.now
+            t: this.entity.scene.timeSinceLastInit
         };
 
         if (this.saveEnterEventSnapshot)
@@ -137,7 +137,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
         let data = {
             eventType: 'exit',
             stateName, stateName,
-            t: this.entity.scene.time.now
+            t: this.entity.scene.timeSinceLastInit
         };
 
         if (this.saveExitEventSnapshot)
@@ -154,7 +154,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
             eventType: 'resume',
             stateMachine: fsm.constructor.name,
             currentState: fsm.currentStateName,
-            t: this.entity.scene.time.now
+            t: this.entity.scene.timeSinceLastInit
         };
 
         if (this.saveResumeEventSnapshot)
@@ -171,7 +171,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
             eventType: 'stop',
             stateMachine: fsm.constructor.name,
             currentState: fsm.currentStateName,
-            t: this.entity.scene.time.now
+            t: this.entity.scene.timeSinceLastInit
         };
 
         if (this.saveStopEventSnapshot)
@@ -188,7 +188,7 @@ export default class PsyanimFSMStateRecorder extends PsyanimComponent {
             eventType: 'pause',
             stateMachine: fsm.constructor.name,
             currentState: fsm.currentStateName,
-            t: this.entity.scene.time.now
+            t: this.entity.scene.timeSinceLastInit
         };
 
         if (this.savePauseEventSnapshot)

@@ -1,6 +1,6 @@
 import PsyanimConstants from '../../src/core/PsyanimConstants.js';
 import PsyanimPlayerController from '../../src/core/components/controllers/PsyanimPlayerController.js';
-import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor.js';
+import PsyanimMatterSensor from '../../src/core/components/physics/PsyanimMatterSensor.js';
 
 import PsyanimPhysicsSettingsController from '../../src/core/components/controllers/PsyanimPhysicsSettingsController.js';
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
@@ -29,7 +29,7 @@ export default {
                     params: {
                         sensor: {
                             entityName: 'player',
-                            componentType: PsyanimSensor
+                            componentType: PsyanimMatterSensor
                         }
                     }
                 },
@@ -38,7 +38,7 @@ export default {
                     params: {
                         sensor: {
                             entityName: 'player',
-                            componentType: PsyanimSensor
+                            componentType: PsyanimMatterSensor
                         },
                         targetEntityNames: [
                             "wall",
@@ -81,7 +81,7 @@ export default {
             components: [
                 { type: PsyanimPlayerController },
                 {
-                    type: PsyanimSensor,
+                    type: PsyanimMatterSensor,
                     params: {
                         debug: true,
                         bodyShapeParams: {

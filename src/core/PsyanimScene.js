@@ -37,6 +37,11 @@ export default class PsyanimScene extends Phaser.Scene {
         this._afterCreateCalled = false;
     }
 
+    get timeSinceLastInit() {
+
+        return this._timeSinceLastInit;
+    }
+
     /**
      * This method adds a new `PsyanimEntity` to the scene.
      * 
@@ -164,6 +169,8 @@ export default class PsyanimScene extends Phaser.Scene {
      *  The base `init()` method for all classes inheriting from `PsyanimScene`.
      */
     init() {
+
+        this._timeSinceLastInit = this.time.now;
 
         this._entities = [];
 
