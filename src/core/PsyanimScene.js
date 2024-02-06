@@ -62,6 +62,8 @@ export default class PsyanimScene extends Phaser.Scene {
 
         let entity = new PsyanimEntity(this, name, x, y, shapeParams, matterOptions);
 
+        entity.psyanimSensorId = this._nextAvailableSensorId++;
+
         this._entities.push(entity);
 
         if (this._afterCreateCalled)
@@ -173,6 +175,7 @@ export default class PsyanimScene extends Phaser.Scene {
         this._timeSinceLastInit = this.time.now;
 
         this._entities = [];
+        this._nextAvailableSensorId = 0;
 
         this.registry.set('psyanim_currentScene', this);
 

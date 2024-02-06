@@ -113,8 +113,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
             radius: this.entity.shapeParams.radius + 2
         };
 
-        // this._sensor.debugLogging = true;
-
         this._sensor.events.on("triggerEnter", (entity) => {
 
             if (entity.name === this.target.name)
