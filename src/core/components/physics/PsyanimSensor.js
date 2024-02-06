@@ -22,13 +22,10 @@ export default class PsyanimSensor extends PsyanimComponent {
         };
 
         this._intersectingEntities = [];
-    }
 
-    afterCreate() {
+        this._handleEntityDestroyedCallback = this._handleEntityDestroyed.bind(this);
 
-        super.afterCreate();
-
-        this.setBody(this.bodyShapeParams);
+        this._handleEntityAddedToSceneCallback = this._handleEntityAddedToScene.bind(this);
     }
 
     isIntersecting(entity) {
@@ -76,6 +73,35 @@ export default class PsyanimSensor extends PsyanimComponent {
         }
     }
 
+    _handleEntityAddedToScene(gameObject, scene) {
+
+        gameObject.on(Phaser.GameObjects.Events.DESTROY, this._handleEntityDestroyedCallback);
+    }
+
+    _handleEntityDestroyed(entity) {
+
+        this._intersectingEntities = this._intersectingEntities
+            .filter(e => e.psyanimSensorId !== entity.psyanimSensorId);
+
+        entity.off(Phaser.GameObjects.Events.DESTROY, this._handleEntityDestroyedCallback);
+    }
+
+    afterCreate() {
+
+        super.afterCreate();
+
+        this.setBody(this.bodyShapeParams);
+
+        this.scene.events.on(Phaser.Scenes.Events.ADDED_TO_SCENE, this._handleEntityAddedToSceneCallback);
+    }
+
+    destroy() {
+
+        this.scene.events.off(Phaser.Scenes.Events.ADDED_TO_SCENE, this._handleEntityAddedToSceneCallback);
+
+        super.destroy();
+    }
+
     onEnable() {
 
         this._sensorBody.isSleeping = false;
@@ -102,13 +128,18 @@ export default class PsyanimSensor extends PsyanimComponent {
             body = bodyB;
         }
 
-        if (body != null)
+        if (body != null && body.gameObject != null)
         {
             if (body.gameObject instanceof PsyanimEntity)
             {
                 this.events.emit('triggerEnter', body.gameObject);
 
-                this._intersectingEntities.push(body.gameObject);
+                // sometimes, body.gameObject can become 'null' after firing 'triggerEnter'
+                // e.g. if one of the listening objects decides to destroy the gameobject
+                if (body.gameObject)
+                {
+                    this._intersectingEntities.push(body.gameObject);
+                }
             }
         }
     }
@@ -135,8 +166,13 @@ export default class PsyanimSensor extends PsyanimComponent {
             {
                 this.events.emit('triggerExit', body.gameObject);
 
-                this._intersectingEntities = this._intersectingEntities
-                    .filter(e => e.psyanimSensorId !== body.gameObject.psyanimSensorId);
+                // sometimes, body.gameObject can become 'null' after firing 'triggerExit'
+                // e.g. if one of the listening objects decides to destroy the gameobject
+                if (body.gameObject)
+                {
+                    this._intersectingEntities = this._intersectingEntities
+                        .filter(e => e.psyanimSensorId !== body.gameObject.psyanimSensorId);
+                }
             }
         }
     }
