@@ -28,6 +28,8 @@ export default class MyFleeState extends PsyanimFSMState {
 
         super.afterCreate();
 
+        this._minDistanceForTransition = this.panicDistance + this.safetyDistance;
+
         this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
     }
 
@@ -64,18 +66,6 @@ export default class MyFleeState extends PsyanimFSMState {
         {
             this._fleeAgent.enabled = false;
         }
-    }
-
-    onResume() {
-
-        super.onResume();
-
-        if (this._fleeAgent)
-        {
-            this._fleeAgent.enabled = true;
-        }
-
-        this.entity.color = 0x0000ff;
     }
 
     run(t, dt) {

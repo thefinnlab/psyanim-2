@@ -45,8 +45,6 @@ export default class MyMoveToItemState extends PsyanimFSMState {
 
         super.enter();
 
-        this.entity.color = 0xff0000;
-
         this.fsm.setStateVariable('itemCollected', false);
 
         let item = this.entity.scene.getEntityByName('item');
@@ -56,8 +54,11 @@ export default class MyMoveToItemState extends PsyanimFSMState {
             console.error("ERROR: no item found in scene!");
         }
 
-        this._arriveAgent.enabled = true;
         this._arriveAgent.target = item;
+
+        this._arriveAgent.enabled = true;
+
+        this.entity.color = 0xff0000;
     }
 
     exit() {
@@ -71,7 +72,16 @@ export default class MyMoveToItemState extends PsyanimFSMState {
 
         super.onResume();
 
+        this._arriveAgent.enabled = true;
+
         this.entity.color = 0xff0000;
+    }
+
+    onPause() {
+
+        super.onPause();
+
+        this._arriveAgent.enabled = false;
     }
 
     run(t, dt) {

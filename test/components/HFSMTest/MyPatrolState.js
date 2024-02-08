@@ -1,12 +1,9 @@
 import PsyanimFSMState from '../../../src/core/components/ai/PsyanimFSMState.js';
-import PsyanimFleeAgent from "../../../src/core/components/steering/agents/PsyanimFleeAgent.js";
 import PsyanimPathFollowingAgent from "../../../src/core/components/steering/agents/PsyanimPathFollowingAgent.js";
 
 import MyMoveToItemState from './MyMoveToItemState.js';
 
 export default class MyPatrolState extends PsyanimFSMState {
-
-    target;
 
     constructor(fsm) {
 
@@ -32,9 +29,10 @@ export default class MyPatrolState extends PsyanimFSMState {
 
         this.fsm.setStateVariable('itemInScene', false);
 
-        this.entity.color = 0x00ff00;
-
         this._pathFollowingAgent.enabled = true;
+        this._pathFollowingAgent.setupArriveAgent();
+
+        this.entity.color = 0x00ff00;
     }
 
     exit() {
@@ -42,8 +40,6 @@ export default class MyPatrolState extends PsyanimFSMState {
         super.exit();
 
         this._pathFollowingAgent.enabled = false;
-
-        this.entity.setVelocity(0, 0);
     }
 
     onResume() {
@@ -54,6 +50,13 @@ export default class MyPatrolState extends PsyanimFSMState {
         this._pathFollowingAgent.setupArriveAgent();
 
         this.entity.color = 0x00ff00;
+    }
+
+    onPause() {
+
+        super.onPause();
+
+        this._pathFollowingAgent.enabled = false;
     }
 
     run(t, dt) {

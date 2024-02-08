@@ -11,7 +11,7 @@ export default class MyItemSpawner extends PsyanimComponent {
 
         super(entity);
 
-        this.spawnLocation = new Phaser.Math.Vector2(400, 300);
+        this.spawnLocation = new Phaser.Math.Vector2(400, 200);
 
         this.spawnFrequency = 6000;
 

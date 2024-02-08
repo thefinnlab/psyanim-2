@@ -28,7 +28,6 @@ export default class MyBasicHFSM extends PsyanimBasicHFSM {
         // configure and add sub-state machines
         this._itemPatrolFSM = this.entity.getComponent(MyItemPatrolFSM);
         this._itemPatrolFSM.target = this.target;
-        this._itemPatrolFSM.fleePanicDistance = this.fleePanicDistance;
 
         this._fleeFSM = this.entity.getComponent(MyFleeFSM);
         this._fleeFSM.target = this.target;

@@ -27,25 +27,21 @@ export default class MyIdleState extends PsyanimFSMState {
         super.afterCreate();
     }
 
-    onResume() {
-
-        super.onResume();
-
-        this.entity.color = 0xffff00;
-    }
-
     enter() {
     
         super.enter();
 
         this.entity.color = 0xffff00;
-
-        this.fsm.setStateVariable('idleTime', 0);
     }
 
     exit() {
 
         super.exit();
+    }
+
+    onStop() {
+
+        super.onStop();
 
         this.fsm.setStateVariable('idleTime', 0);
     }
