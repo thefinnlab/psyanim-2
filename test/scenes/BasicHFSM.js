@@ -16,8 +16,8 @@ import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor.js';
 
 import MyItemSpawner from '../components/HFSMTest/MyItemSpawner.js';
 
-import MyPatrolFleeAgentFSM from '../components/HFSMTest/MyPatrolFleeAgentFSM.js';
-import MyCollectItemFSM from '../components/HFSMTest/MyCollectItemFSM.js';
+import MyItemPatrolFSM from '../components/HFSMTest/MyItemPatrolFSM.js';
+import MyFleeFSM from '../components/HFSMTest/MyFleeFSM.js';
 import MyBasicHFSM from '../components/HFSMTest/MyBasicHFSM.js';
 
 export default {
@@ -116,7 +116,6 @@ export default {
                     params: {
                         maxSpeed: 8,
                         maxAcceleration: 0.3,
-                        panicDistance: 150
                     }
                 },
                 {
@@ -137,13 +136,23 @@ export default {
                     }
                 },
                 {
-                    type: MyPatrolFleeAgentFSM,
+                    type: MyItemPatrolFSM,
                 },
                 {
-                    type: MyCollectItemFSM,
+                    type: MyFleeFSM,
                 },
                 {
-                    type: MyBasicHFSM
+                    type: MyBasicHFSM,
+                    params: {
+                        target: {
+                            entityName: 'player',
+                        },
+                        
+                        fleePanicDistance: 150,
+                        fleeSafetyDistance: 50,
+
+                        returnToPatrolTime: 1500
+                    }
                 }
             ]
         }

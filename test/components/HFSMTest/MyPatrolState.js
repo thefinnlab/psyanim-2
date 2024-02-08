@@ -1,11 +1,12 @@
 import PsyanimFSMState from '../../../src/core/components/ai/PsyanimFSMState.js';
-import PsyanimFleeBehavior from "../../../src/core/components/steering/PsyanimFleeBehavior.js";
 import PsyanimFleeAgent from "../../../src/core/components/steering/agents/PsyanimFleeAgent.js";
 import PsyanimPathFollowingAgent from "../../../src/core/components/steering/agents/PsyanimPathFollowingAgent.js";
 
-import MyFleeState from './MyFleeState.js';
+import MyMoveToItemState from './MyMoveToItemState.js';
 
 export default class MyPatrolState extends PsyanimFSMState {
+
+    target;
 
     constructor(fsm) {
 
@@ -15,15 +16,12 @@ export default class MyPatrolState extends PsyanimFSMState {
          *  Setup transitions here
          */
 
-        this.addTransition(MyFleeState, 'flee', (value) => value == 1);
+        this.addTransition(MyMoveToItemState, 'itemInScene', (value) => value === true);
     }
 
     afterCreate() {
 
         super.afterCreate();
-
-        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
-        this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
 
         this._pathFollowingAgent = this.entity.getComponent(PsyanimPathFollowingAgent);
     }
@@ -32,9 +30,9 @@ export default class MyPatrolState extends PsyanimFSMState {
 
         super.enter();
 
-        this.entity.color = 0x00ff00;
+        this.fsm.setStateVariable('itemInScene', false);
 
-        this._target = this._fleeAgent.target;
+        this.entity.color = 0x00ff00;
 
         this._pathFollowingAgent.enabled = true;
     }
@@ -62,11 +60,16 @@ export default class MyPatrolState extends PsyanimFSMState {
 
         super.run();
 
-        let distanceToTarget = this.entity.position.subtract(this._target.position).length();
+        let item = this.entity.scene.getEntityByName('item');
 
-        if (distanceToTarget < this._fleeBehavior.panicDistance)
+        if (item)
         {
-            this.fsm.setStateVariable('flee', 1);
+            this.fsm.setStateVariable('itemInScene', true);
+        }
+        else
+        {
+            // TODO: you shouldn't have to set this each time... can't we just do this in onResume()?
+            this.fsm.setStateVariable('itemInScene', false);
         }
     }
 }

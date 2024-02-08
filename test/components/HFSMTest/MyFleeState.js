@@ -1,11 +1,11 @@
 import PsyanimFSMState from '../../../src/core/components/ai/PsyanimFSMState.js';
-import PsyanimFleeBehavior from "../../../src/core/components/steering/PsyanimFleeBehavior.js";
 import PsyanimFleeAgent from "../../../src/core/components/steering/agents/PsyanimFleeAgent.js";
 
 import MyIdleState from "./MyIdleState.js";
 
 export default class MyFleeState extends PsyanimFSMState {
 
+    panicDistance;
     safetyDistance;
 
     constructor(fsm) {
@@ -13,19 +13,21 @@ export default class MyFleeState extends PsyanimFSMState {
         super(fsm);
 
         this.safetyDistance = 50;
+        this.panicDistance = 150;
+
+        this._minDistanceForTransition = this.panicDistance + this.safetyDistance;
 
         /**
          *  Setup transitions here
          */
 
-        this.addTransition(MyIdleState, 'flee', (value) => value == 0);
+        this.addTransition(MyIdleState, 'distanceToTarget', (value) => value > this._minDistanceForTransition);
     }
 
     afterCreate() {
 
         super.afterCreate();
 
-        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
         this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
     }
 
@@ -81,11 +83,7 @@ export default class MyFleeState extends PsyanimFSMState {
         super.run();
 
         let distanceToTarget = this.entity.position.subtract(this._target.position).length();
-        let transitionDistance = this._fleeBehavior.panicDistance + this.safetyDistance;
         
-        if (distanceToTarget > transitionDistance)
-        {
-            this.fsm.setStateVariable('flee', 0);
-        }
+        this.fsm.setStateVariable('distanceToTarget', distanceToTarget);
     }
 }

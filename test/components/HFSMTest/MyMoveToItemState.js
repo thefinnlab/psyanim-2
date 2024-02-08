@@ -4,6 +4,8 @@ import PsyanimSensor from '../../../src/core/components/physics/PsyanimSensor.js
 
 import PsyanimArriveAgent from '../../../src/core/components/steering/agents/PsyanimArriveAgent.js';
 
+import MyPatrolState from './MyPatrolState.js';
+
 export default class MyMoveToItemState extends PsyanimFSMState {
 
     constructor(fsm) {
@@ -11,6 +13,8 @@ export default class MyMoveToItemState extends PsyanimFSMState {
         super(fsm);
 
         this.fsm.setStateVariable('itemCollected', false);
+
+        this.addTransition(MyPatrolState, 'itemCollected', value => value === true);
     }
 
     afterCreate() {
@@ -61,6 +65,13 @@ export default class MyMoveToItemState extends PsyanimFSMState {
         super.exit();
 
         this._arriveAgent.enabled = false;
+    }
+
+    onResume() {
+
+        super.onResume();
+
+        this.entity.color = 0xff0000;
     }
 
     run(t, dt) {

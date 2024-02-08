@@ -1,36 +1,30 @@
 import PsyanimFSMState from '../../../src/core/components/ai/PsyanimFSMState.js';
-import PsyanimFleeBehavior from "../../../src/core/components/steering/PsyanimFleeBehavior.js";
-import PsyanimFleeAgent from "../../../src/core/components/steering/agents/PsyanimFleeAgent.js";
 
 import MyFleeState from './MyFleeState.js';
-import MyPatrolState from './MyPatrolState.js';
 
 export default class MyIdleState extends PsyanimFSMState {
 
-    returnToPatrolTime;
+    target;
+    panicDistance;
 
     constructor(fsm) {
     
         super(fsm);
     
-        this.returnToPatrolTime = 1500;
+        this.panicDistance = 150;
 
-        this.fsm.setStateVariable('idleTimer', 0);
+        this.fsm.setStateVariable('idleTime', 0);
     
         /**
          *  Setup transitions here
          */
     
-        this.addTransition(MyFleeState, 'flee', (value) => value == 1);
-        this.addTransition(MyPatrolState, 'idleTimer', (value) => value > this.returnToPatrolTime);
+        this.addTransition(MyFleeState, 'distanceToTarget', (value) => value < this.panicDistance);
     }
     
     afterCreate() {
 
         super.afterCreate();
-
-        this._fleeBehavior = this.entity.getComponent(PsyanimFleeBehavior);
-        this._fleeAgent = this.entity.getComponent(PsyanimFleeAgent);
     }
 
     onResume() {
@@ -46,14 +40,14 @@ export default class MyIdleState extends PsyanimFSMState {
 
         this.entity.color = 0xffff00;
 
-        this.fsm.setStateVariable('idleTimer', 0);
-    
-        this._target = this._fleeAgent.target;
+        this.fsm.setStateVariable('idleTime', 0);
     }
 
     exit() {
 
         super.exit();
+
+        this.fsm.setStateVariable('idleTime', 0);
     }
 
     run(t, dt) {
@@ -61,16 +55,13 @@ export default class MyIdleState extends PsyanimFSMState {
         super.run();
 
         // update timer
-        let timer = this.fsm.getStateVariable('idleTimer');
+        let timer = this.fsm.getStateVariable('idleTime');
 
-        this.fsm.setStateVariable('idleTimer', timer + dt);
+        this.fsm.setStateVariable('idleTime', timer + dt);
 
-        // check if we need to flee
-        let distanceToTarget = this.entity.position.subtract(this._target.position).length();
+        // update distance to target
+        let distanceToTarget = this.entity.position.subtract(this.target.position).length();
 
-        if (distanceToTarget < this._fleeBehavior.panicDistance)
-        {
-            this.fsm.setStateVariable('flee', 1);
-        }
+        this.fsm.setStateVariable('distanceToTarget', distanceToTarget);
     }
 }
