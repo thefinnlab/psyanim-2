@@ -67,6 +67,7 @@ import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent
 import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent.js';
 
 // FSM components
+import PsyanimBasicHFSM from './core/components/ai/PsyanimBasicHFSM.js';
 import PsyanimFSM from './core/components/ai/PsyanimFSM.js';
 import PsyanimFSMState from './core/components/ai/PsyanimFSMState.js';
 import PsyanimFSMStateTransition from './core/components/ai/PsyanimFSMStateTransition.js';
@@ -192,6 +193,7 @@ export {
     PsyanimWanderAgent,
 
     // fsm components
+    PsyanimBasicHFSM,
     PsyanimFSM,
     PsyanimFSMState,
     PsyanimFSMStateTransition,
