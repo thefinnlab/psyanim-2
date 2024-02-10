@@ -46,6 +46,8 @@ export default class MyPatrolState extends PsyanimFSMState {
 
         super.onResume();
 
+        this.fsm.setStateVariable('itemInScene', false);
+
         this._pathFollowingAgent.enabled = true;
         this._pathFollowingAgent.setupArriveAgent();
 
@@ -68,11 +70,6 @@ export default class MyPatrolState extends PsyanimFSMState {
         if (item)
         {
             this.fsm.setStateVariable('itemInScene', true);
-        }
-        else
-        {
-            // TODO: you shouldn't have to set this each time... can't we just do this in onResume()?
-            this.fsm.setStateVariable('itemInScene', false);
         }
     }
 }
