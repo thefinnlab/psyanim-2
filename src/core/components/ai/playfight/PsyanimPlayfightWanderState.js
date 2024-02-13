@@ -9,6 +9,8 @@ import PsyanimPlayfightChargeDelayState from './PsyanimPlayfightChargeDelayState
 import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 
+import PsyanimSensor from '../../physics/PsyanimSensor.js';
+
 import { PsyanimUtils, PsyanimDebug } from 'psyanim-utils';
 
 export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
@@ -26,6 +28,9 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     minWanderDuration;
 
+    sensorTightRadius;
+    sensorAvoidanceRadius;
+
     constructor(fsm) {
 
         super(fsm);
@@ -41,6 +46,9 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.maxTargetDistanceForCharge = 500;
 
         this.minWanderDuration = 150;
+
+        this.sensorTightRadius = 12;
+        this.sensorAvoidanceRadius = 75;
 
         this._breakDuration = this.breakDurationAverage 
             + PsyanimUtils.getRandomInt(-this.breakDurationVariance, this.breakDurationVariance);
@@ -111,6 +119,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
     afterCreate() {
 
+        this._sensor = this.entity.getComponent(PsyanimSensor);
         this._wanderBehavior = this.entity.getComponent(PsyanimWanderBehavior);
         this._vehicle = this.entity.getComponent(PsyanimVehicle);
 
@@ -131,6 +140,15 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         {
             this.entity.color = 0x00ff00;
         }
+
+        this._sensor.setSize({ circleRadius: this.sensorAvoidanceRadius });
+    }
+
+    onPause() {
+
+        super.onPause();
+
+        this._sensor.setSize({ circleRadius: this.sensorTightRadius });
     }
 
     enter() {
@@ -147,6 +165,8 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.fsm.setStateVariable('delayedCharge', false);
         this.fsm.setStateVariable('flee', false);
 
+        this._sensor.setSize({ circleRadius: this.sensorAvoidanceRadius });
+
         if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x00ff00;
@@ -156,6 +176,8 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
     exit() {
 
         super.exit();
+
+        this._sensor.setSize({ circleRadius: this.sensorTightRadius });
     }
 
     run(t, dt) {

@@ -16,6 +16,11 @@ export default class SensorTestManager extends PsyanimComponent {
     constructor(entity) {
 
         super(entity);
+
+        this._keys = {
+            plus: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.PLUS),
+            minus: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.MINUS)
+        };
     }
 
     destroy() {
@@ -39,11 +44,29 @@ export default class SensorTestManager extends PsyanimComponent {
             console.log(entity.name + ' has EXITED the building');
         });
 
+        console.log('sensor body = ', this.sensor);
+
         PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
     }
 
     _handlePlayerContact(entity) {
         
         PsyanimDebug.log("player contact occured with entity named: '" + entity.name + "'");
+    }
+
+    update(t, dt) {
+
+        super.update(t, dt);
+
+        let sensorRadius = this.sensor.getSize().circleRadius;
+
+        if (Phaser.Input.Keyboard.JustDown(this._keys.plus))
+        {
+            this.sensor.setSize({ circleRadius: sensorRadius + 5 });
+        }
+        else if (Phaser.Input.Keyboard.JustDown(this._keys.minus))
+        {
+            this.sensor.setSize({ circleRadius: sensorRadius - 5 });
+        }
     }
 }

@@ -107,13 +107,20 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.fleePanicDistance = 200;
 
         // attach components for this FSM
+        this.sensorTightRadius = this.entity.shapeParams.radius + 100;
+
+        console.warn("TODO: make this configurable! should be a padding parameter!");
+        this.sensorAvoidanceRadius = this.entity.shapeParams.radius + 200;
+
         this._sensor = this.entity.addComponent(PsyanimSensor);
         this._sensor.bodyShapeParams = {
             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-            radius: this.entity.shapeParams.radius + 2
+            radius: this.sensorTightRadius
         };
 
         this._sensor.events.on("triggerEnter", (entity) => {
+
+            console.log('sensor collided with:', entity.name);
 
             if (entity.name === this.target.name)
             {
@@ -187,6 +194,9 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this._wanderState.fleeOrChargeWhenAttacked = this.wanderFleeOrChargeWhenAttacked;
         this._wanderState.panicDistance = this.wanderPanicDistance;
         this._wanderState.fleeRate = this.wanderFleeRate;
+
+        this._wanderState.sensorTightRadius = this.sensorTightRadius;
+        this._wanderState.sensorAvoidanceRadius = this.sensorAvoidanceRadius;
 
         // flee state
         this._fleeState.target = this.target;

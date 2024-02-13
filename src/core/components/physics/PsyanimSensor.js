@@ -38,6 +38,45 @@ export default class PsyanimSensor extends PsyanimComponent {
         return false;
     }
 
+    get sensorBody() {
+
+        return this._sensorBody;
+    }
+    
+    setSize(sizeParams) {
+
+        switch (this.bodyShapeParams.shapeType)
+        {
+            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
+
+                this._sensorBody.circleRadius = sizeParams.circleRadius;
+
+                break;
+
+            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
+
+                break;
+        }
+    }
+
+    getSize() {
+
+        switch (this.bodyShapeParams.shapeType)
+        {
+            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
+
+                return {
+                    circleRadius: this._sensorBody.circleRadius
+                };
+
+            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
+
+                break;
+        }
+
+        return null;
+    }
+
     setBody(shapeParams) {
 
         this.bodyShapeParams = shapeParams;
