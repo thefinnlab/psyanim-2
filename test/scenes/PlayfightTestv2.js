@@ -41,6 +41,8 @@ const wanderPanicDistance = 450;
 
 const wanderFleeRate = 0;
 
+const wanderSensorRadiusPadding = 75;
+
 // charge delay state
 const averageChargeDelay = 500;
 const chargeDelayVariance = 50;
@@ -93,6 +95,8 @@ export default {
                         wanderFleeOrChargeWhenAttacked: true,
                         wanderPanicDistance: wanderPanicDistance,
                         wanderFleeRate: wanderFleeRate,
+
+                        wanderSensorRadiusPadding: wanderSensorRadiusPadding,
 
                         // flee state
                         maxFleeDuration: 500,
@@ -200,6 +204,8 @@ export default {
                         wanderFleeOrChargeWhenAttacked: true,
                         wanderPanicDistance: wanderPanicDistance,
                         wanderFleeRate: wanderFleeRate,
+
+                        wanderSensorRadiusPadding: wanderSensorRadiusPadding,
 
                         // flee state
                         maxFleeDuration: 500,

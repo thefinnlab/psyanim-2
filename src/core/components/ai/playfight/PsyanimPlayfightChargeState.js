@@ -31,6 +31,7 @@ export default class PsyanimPlayfightChargeState extends PsyanimFSMState {
 
     afterCreate() {
 
+        super.afterCreate();
     }
 
     onPause() {

@@ -42,7 +42,12 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         return this._sensorBody;
     }
-    
+
+    scale(factor) {
+
+        this.entity.scene.matter.body.scale(this._sensorBody, factor, factor);
+    }
+
     setSize(sizeParams) {
 
         switch (this.bodyShapeParams.shapeType)
@@ -57,24 +62,6 @@ export default class PsyanimSensor extends PsyanimComponent {
 
                 break;
         }
-    }
-
-    getSize() {
-
-        switch (this.bodyShapeParams.shapeType)
-        {
-            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
-
-                return {
-                    circleRadius: this._sensorBody.circleRadius
-                };
-
-            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
-
-                break;
-        }
-
-        return null;
     }
 
     setBody(shapeParams) {

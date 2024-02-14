@@ -58,15 +58,15 @@ export default class SensorTestManager extends PsyanimComponent {
 
         super.update(t, dt);
 
-        let sensorRadius = this.sensor.getSize().circleRadius;
+        let scaleFactor = 1.15;
 
         if (Phaser.Input.Keyboard.JustDown(this._keys.plus))
         {
-            this.sensor.setSize({ circleRadius: sensorRadius + 5 });
+            this.sensor.scale(scaleFactor);
         }
         else if (Phaser.Input.Keyboard.JustDown(this._keys.minus))
         {
-            this.sensor.setSize({ circleRadius: sensorRadius - 5 });
+            this.sensor.scale(1.0 / scaleFactor);
         }
     }
 }

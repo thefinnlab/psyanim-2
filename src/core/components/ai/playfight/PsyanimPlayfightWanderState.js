@@ -129,26 +129,50 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         targetAgentFSM.events.on('enter', this._handleTargetAgentStateEntered.bind(this));
         targetAgentFSM.events.on('exit', this._handleTargetAgentStateExited.bind(this));
 
+        this._sensorScalingFactor = this.sensorAvoidanceRadius / this.sensorTightRadius;
+
+        this._avoidanceSensorEnabled = false;
+
         super.afterCreate();
+    }
+
+    enableAvoidanceSensor() {
+
+        if (!this._avoidanceSensorEnabled)
+        {
+            this._sensor.scale(this._sensorScalingFactor);
+
+            this._avoidanceSensorEnabled = true;
+        }
+    }
+
+    disableAvoidanceSensor() {
+
+        if (this._avoidanceSensorEnabled)
+        {
+            this._sensor.scale(1.0 / this._sensorScalingFactor);
+
+            this._avoidanceSensorEnabled = false;
+        }
     }
 
     onResume() {
 
         super.onResume();
 
+        this.enableAvoidanceSensor();
+
         if (this.fsm.debugGraphics)
         {
             this.entity.color = 0x00ff00;
         }
-
-        this._sensor.setSize({ circleRadius: this.sensorAvoidanceRadius });
     }
 
     onPause() {
 
         super.onPause();
 
-        this._sensor.setSize({ circleRadius: this.sensorTightRadius });
+        this.disableAvoidanceSensor();
     }
 
     enter() {
@@ -165,7 +189,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
         this.fsm.setStateVariable('delayedCharge', false);
         this.fsm.setStateVariable('flee', false);
 
-        this._sensor.setSize({ circleRadius: this.sensorAvoidanceRadius });
+        this.enableAvoidanceSensor();
 
         if (this.fsm.debugGraphics)
         {
@@ -177,7 +201,7 @@ export default class PsyanimPlayfightWanderState extends PsyanimFSMState {
 
         super.exit();
 
-        this._sensor.setSize({ circleRadius: this.sensorTightRadius });
+        this.disableAvoidanceSensor();
     }
 
     run(t, dt) {

@@ -35,6 +35,8 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
     averageChargeDelay;
     chargeDelayVariance;
 
+    wanderSensorRadiusPadding;
+
     /** flee state params */
     maxFleeDuration;
 
@@ -81,6 +83,8 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.averageChargeDelay = 600;
         this.chargeDelayVariance = 400;
 
+        this.wanderSensorRadiusPadding = 75;
+
         // flee state
         this.maxFleeDuration = 500;
 
@@ -107,10 +111,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this.fleePanicDistance = 200;
 
         // attach components for this FSM
-        this.sensorTightRadius = this.entity.shapeParams.radius + 100;
-
-        console.warn("TODO: make this configurable! should be a padding parameter!");
-        this.sensorAvoidanceRadius = this.entity.shapeParams.radius + 200;
+        this.sensorTightRadius = this.entity.shapeParams.radius + 2;
 
         this._sensor = this.entity.addComponent(PsyanimSensor);
         this._sensor.bodyShapeParams = {
@@ -119,8 +120,6 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         };
 
         this._sensor.events.on("triggerEnter", (entity) => {
-
-            console.log('sensor collided with:', entity.name);
 
             if (entity.name === this.target.name)
             {
@@ -196,7 +195,7 @@ export default class PsyanimPlayfightFSM extends PsyanimFSM {
         this._wanderState.fleeRate = this.wanderFleeRate;
 
         this._wanderState.sensorTightRadius = this.sensorTightRadius;
-        this._wanderState.sensorAvoidanceRadius = this.sensorAvoidanceRadius;
+        this._wanderState.sensorAvoidanceRadius = this.entity.shapeParams.radius + this.wanderSensorRadiusPadding;
 
         // flee state
         this._fleeState.target = this.target;
