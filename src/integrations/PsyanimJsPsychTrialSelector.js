@@ -42,9 +42,9 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
         }
         else
         {
-            if (!this.scene.registry.has('psyanimTrialSelector_lastTrialIndex'))
+            if (!this.scene.registry.has('psyanimTrialSelector_nextTrialIndex'))
             {
-                this.scene.registry.set('psyanimTrialSelector_lastTrialIndex', 0);
+                this.scene.registry.set('psyanimTrialSelector_nextTrialIndex', 0);
             }
         }
 
@@ -54,7 +54,7 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
         this._animationData = this.scene.registry.get('psyanim_animationData');
     }
 
-    _getNextTrialIndexRandomized() {
+    _getNextTrialIDRandomized() {
 
         let availableTrialMetadata = this._trialMetadata.filter(t => {
             return !this._usedTrialIDs.includes(t.id)
@@ -62,18 +62,18 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
 
         let trialMetadataIndex = PsyanimUtils.getRandomInt(0, availableTrialMetadata.length - 1);
 
-        return trialMetadataIndex;
+        return availableTrialMetadata[trialMetadataIndex].id;
     }
 
-    _getNextTrialIndex() {
+    _getNextTrialID() {
 
-        let lastTrialIndex = this.scene.registry.get('psyanimTrialSelector_lastTrialIndex');
+        let nextTrialIndex = this.scene.registry.get('psyanimTrialSelector_nextTrialIndex');
 
-        let nextTrialIndex = lastTrialIndex + 1;
+        let trialID = this._trialMetadata[nextTrialIndex].id;
 
-        this.scene.registry.set('psyanimTrialSelector_lastTrialIndex', nextTrialIndex);
+        this.scene.registry.set('psyanimTrialSelector_nextTrialIndex', nextTrialIndex + 1);
 
-        return nextTrialIndex;
+        return trialID;
     }
 
     getTrialData() {
@@ -84,24 +84,22 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
             this._getTrialData();
         }
 
-        let trialMetadataIndex = -1;
-        
+        let trialID = null;
+
         if (this.randomizeTrialOrder)
         {
-            trialMetadataIndex = this._getNextTrialIndexRandomized();
+            trialID = this._getNextTrialIDRandomized();
+
+            this._usedTrialIDs.push(trialID);
         }
         else
         {
-            trialMetadataIndex = this._getNextTrialIndex();
+            trialID = this._getNextTrialID();
         }
-
-        let trialID = availableTrialMetadata[trialMetadataIndex].id;
 
         this._currentTrialJsPsychData['trialID'] = trialID;
 
         PsyanimDebug.log('playing back trial ID: ' + trialID);
-
-        this._usedTrialIDs.push(trialID);
 
         let trialMetadata = this._trialMetadata.find(doc => doc.id === trialID).data;
 
