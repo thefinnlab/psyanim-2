@@ -9,9 +9,13 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
 
     trialInfo;
 
+    randomizeTrialOrder;
+
     constructor(entity) {
 
         super(entity);
+
+        this.randomizeTrialOrder = false;
 
         this._currentTrialJsPsychData = this.scene.registry.get('psyanimJsPsychPlugin_trialData');
     }
@@ -27,16 +31,49 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
 
         this._usedTrialIDs = this.scene.registry.get('psyanimTrialSelector_usedTrialIDs');
 
-        if (!this._usedTrialIDs)
+        if (this.randomizeTrialOrder)
         {
-            this._usedTrialIDs = [];
-            this.scene.registry.set('psyanimTrialSelector_usedTrialIDs', this._usedTrialIDs);
+            if (!this._usedTrialIDs)
+            {
+                // reference to '_usedTrialIDs' *is* the reference pointed at by the phaser registry
+                this._usedTrialIDs = [];
+                this.scene.registry.set('psyanimTrialSelector_usedTrialIDs', this._usedTrialIDs);
+            }    
+        }
+        else
+        {
+            if (!this.scene.registry.has('psyanimTrialSelector_lastTrialIndex'))
+            {
+                this.scene.registry.set('psyanimTrialSelector_lastTrialIndex', 0);
+            }
         }
 
         this._trialMetadata = this.scene.registry.get('psyanim_trialMetadata')
             .filter(t => trialIDs.includes(t.id));
 
         this._animationData = this.scene.registry.get('psyanim_animationData');
+    }
+
+    _getNextTrialIndexRandomized() {
+
+        let availableTrialMetadata = this._trialMetadata.filter(t => {
+            return !this._usedTrialIDs.includes(t.id)
+        });
+
+        let trialMetadataIndex = PsyanimUtils.getRandomInt(0, availableTrialMetadata.length - 1);
+
+        return trialMetadataIndex;
+    }
+
+    _getNextTrialIndex() {
+
+        let lastTrialIndex = this.scene.registry.get('psyanimTrialSelector_lastTrialIndex');
+
+        let nextTrialIndex = lastTrialIndex + 1;
+
+        this.scene.registry.set('psyanimTrialSelector_lastTrialIndex', nextTrialIndex);
+
+        return nextTrialIndex;
     }
 
     getTrialData() {
@@ -47,11 +84,16 @@ export default class PsyanimJsPsychTrialSelector extends PsyanimComponent {
             this._getTrialData();
         }
 
-        let availableTrialMetadata = this._trialMetadata.filter(t => {
-            return !this._usedTrialIDs.includes(t.id)
-        });
-
-        let trialMetadataIndex = PsyanimUtils.getRandomInt(0, availableTrialMetadata.length - 1);
+        let trialMetadataIndex = -1;
+        
+        if (this.randomizeTrialOrder)
+        {
+            trialMetadataIndex = this._getNextTrialIndexRandomized();
+        }
+        else
+        {
+            trialMetadataIndex = this._getNextTrialIndex();
+        }
 
         let trialID = availableTrialMetadata[trialMetadataIndex].id;
 
