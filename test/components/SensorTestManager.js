@@ -2,6 +2,8 @@ import PsyanimComponent from "../../src/core/PsyanimComponent.js";
 
 import PsyanimApp from "../../src/core/PsyanimApp.js";
 
+import PsyanimSensor from "../../src/core/components/physics/PsyanimSensor.js";
+
 import {
     PsyanimDebug
 } from 'psyanim-utils';
@@ -11,7 +13,7 @@ export default class SensorTestManager extends PsyanimComponent {
     // TODO: this was working fine before, w/ only a single event fired on enter + exit...
     // so something has likely changed here.  let's figure out what it is.
 
-    sensor;
+    player;
 
     constructor(entity) {
 
@@ -34,17 +36,24 @@ export default class SensorTestManager extends PsyanimComponent {
 
         super.afterCreate();
 
-        this.sensor.events.on('triggerEnter', (entity) => {
+        let sensors = this.player.getComponents(PsyanimSensor);
 
-            console.log(entity.name + ' has ENTERED the building');
-        });
+        for (let i = 0; i < sensors.length; ++i)
+        {
+            let sensor = sensors[i];
 
-        this.sensor.events.on('triggerExit', (entity) => {
+            sensor.events.on('triggerEnter', (entity) => {
 
-            console.log(entity.name + ' has EXITED the building');
-        });
+                console.log(entity.name + ' has ENTERED the building');
+            });
+    
+            sensor.events.on('triggerExit', (entity) => {
+    
+                console.log(entity.name + ' has EXITED the building');
+            });    
 
-        console.log('sensor body = ', this.sensor);
+            // console.log('sensor body = ', sensor);
+        }
 
         PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
     }

@@ -74,6 +74,11 @@ export default class PsyanimScene extends Phaser.Scene {
         return entity;
     }
 
+    getNewPsyanimSensorId() {
+
+        return this._nextAvailableSensorId++;
+    }
+
     /**
      * This method adds a new 'PsyanimEntity' to the scene, using the `PsyanimEntityPrefab` to construct it.
      * 

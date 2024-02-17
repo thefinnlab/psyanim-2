@@ -329,14 +329,6 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
      */
     addComponent(componentType) {
 
-        if (this.hasComponent(componentType))
-        {
-            PsyanimDebug.error("Attempting to add the same component type, '" + componentType.constructor.name +
-                "' more than once to entity '" + this.name + "'!");
-
-            return null;
-        }
-
         let newComponent = new componentType(this);
 
         this._components.push(newComponent);
@@ -388,9 +380,23 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
      * Gets a shallow copy of PsyanimComponents attached to this entity
      * @returns {PsyanimComponent[]}
      */
-    getComponents() {
+    getComponents(componentType = null) {
 
-        return this._components.slice();
+        if (componentType)
+        {
+            let components = this._components.filter(c => c instanceof componentType);
+
+            if (components.length === 0)
+            {
+                return null;
+            }
+
+            return components;
+        }
+        else
+        {
+            return this._components.slice();
+        }
     }
 
     /**

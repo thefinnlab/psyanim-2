@@ -21,6 +21,8 @@ export default class PsyanimSensor extends PsyanimComponent {
             radius: 10
         };
 
+        this._psyanimSensorId = this.scene.getNewPsyanimSensorId();
+
         this._intersectingEntities = [];
 
         this._handleEntityDestroyedCallback = this._handleEntityDestroyed.bind(this);
@@ -48,22 +50,6 @@ export default class PsyanimSensor extends PsyanimComponent {
         this.entity.scene.matter.body.scale(this._sensorBody, factor, factor);
     }
 
-    setSize(sizeParams) {
-
-        switch (this.bodyShapeParams.shapeType)
-        {
-            case PsyanimConstants.SHAPE_TYPE.CIRCLE:
-
-                this._sensorBody.circleRadius = sizeParams.circleRadius;
-
-                break;
-
-            case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
-
-                break;
-        }
-    }
-
     setBody(shapeParams) {
 
         this.bodyShapeParams = shapeParams;
@@ -83,7 +69,6 @@ export default class PsyanimSensor extends PsyanimComponent {
                     this.entity.x, this.entity.y,
                     shapeParams.radius,
                     {
-                        label: this.entity.name,
                         isSensor: true,
                         collisionFilter: PsyanimConstants.DEFAULT_SENSOR_COLLISION_FILTER,
                         onCollideCallback: (pair) => this._onTriggerEnter(pair),
@@ -95,6 +80,16 @@ export default class PsyanimSensor extends PsyanimComponent {
             
             case PsyanimConstants.SHAPE_TYPE.RECTANGLE:
 
+                this._sensorBody = this.entity.scene.matter.add.rectangle(
+                    this.entity.x, this.entity.y,
+                    shapeParams.width, shapeParams.height,
+                    {
+                        isSensor: true,
+                        collisionFilter: PsyanimConstants.DEFAULT_SENSOR_COLLISION_FILTER,
+                        onCollideCallback: (pair) => this._onTriggerEnter(pair),
+                        onCollideEndCallback: (pair) => this._onTriggerExit(pair)
+                    }
+                );
                 break;
         }
     }
