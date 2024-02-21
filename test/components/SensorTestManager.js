@@ -10,10 +10,9 @@ import {
 
 export default class SensorTestManager extends PsyanimComponent {
 
-    // TODO: this was working fine before, w/ only a single event fired on enter + exit...
-    // so something has likely changed here.  let's figure out what it is.
+    sensor1;
 
-    player;
+    sensor2;
 
     constructor(entity) {
 
@@ -36,7 +35,9 @@ export default class SensorTestManager extends PsyanimComponent {
 
         super.afterCreate();
 
-        let sensors = this.player.getComponents(PsyanimSensor);
+        let sensors = [ this.sensor1, this.sensor2 ];
+
+        console.log('sensors = ', sensors);
 
         for (let i = 0; i < sensors.length; ++i)
         {
@@ -44,15 +45,13 @@ export default class SensorTestManager extends PsyanimComponent {
 
             sensor.events.on('triggerEnter', (entity) => {
 
-                console.log(entity.name + ' has ENTERED the building');
+                console.log(this.entity.name + ' has ENTERED', entity.name);
             });
     
             sensor.events.on('triggerExit', (entity) => {
     
-                console.log(entity.name + ' has EXITED the building');
+                console.log(this.entity.name + ' has EXITED', entity.name);
             });    
-
-            // console.log('sensor body = ', sensor);
         }
 
         PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
@@ -69,13 +68,13 @@ export default class SensorTestManager extends PsyanimComponent {
 
         let scaleFactor = 1.15;
 
-        if (Phaser.Input.Keyboard.JustDown(this._keys.plus))
-        {
-            this.sensor.scale(scaleFactor);
-        }
-        else if (Phaser.Input.Keyboard.JustDown(this._keys.minus))
-        {
-            this.sensor.scale(1.0 / scaleFactor);
-        }
+        // if (Phaser.Input.Keyboard.JustDown(this._keys.plus))
+        // {
+        //     this.sensor.scale(scaleFactor);
+        // }
+        // else if (Phaser.Input.Keyboard.JustDown(this._keys.minus))
+        // {
+        //     this.sensor.scale(1.0 / scaleFactor);
+        // }
     }
 }

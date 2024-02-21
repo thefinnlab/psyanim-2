@@ -172,6 +172,51 @@ export default class PsyanimScene extends Phaser.Scene {
             .map(e => e.getComponent(componentType));
     }
 
+    getNewComponentID() {
+
+        if (this._usedComponentIDs.length == Number.MAX_SAFE_INTEGER - 1)
+        {
+            PsyanimDebug.error("No unused component IDs available!")
+        }
+
+        for (let i = 0; i < Number.MAX_VALUE; ++i)
+        {
+            if (!this._usedComponentIDs.includes(i))
+            {
+                this._usedComponentIDs.push(i);
+                return i;
+            }
+        }
+    }
+
+    isComponentIDAvailable(id) {
+
+        return !this._usedComponentIDs.includes(id);
+    }
+
+    freeComponentID(id) {
+
+        if (this._usedComponentIDs.includes(id))
+        {
+            this._usedComponentIDs = this._usedComponentIDs.filter(i => i !== id);
+            return true;
+        }
+
+        return false;
+    }
+
+    reserveComponentID(id) {
+
+        if (this._usedComponentIDs.includes(id))
+        {
+            return false;
+        }
+
+        this._usedComponentIDs.push(id);
+
+        return true;
+    }
+
     /**
      *  The base `init()` method for all classes inheriting from `PsyanimScene`.
      */
@@ -180,6 +225,7 @@ export default class PsyanimScene extends Phaser.Scene {
         this._timeSinceLastInit = this.time.now;
 
         this._entities = [];
+        this._usedComponentIDs = [];
         this._nextAvailableSensorId = 0;
 
         this.registry.set('psyanim_currentScene', this);

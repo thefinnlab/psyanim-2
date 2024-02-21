@@ -331,6 +331,8 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
         let newComponent = new componentType(this);
 
+        newComponent.id = this.scene.getNewComponentID();
+
         this._components.push(newComponent);
 
         return newComponent;
@@ -361,6 +363,11 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         }
 
         return components[0];
+    }
+
+    getComponentByID(id) {
+
+        return this._components.find(c => c.id === id);
     }
 
     /**
@@ -441,6 +448,8 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
     }
 
     _removeComponent(component) {
+
+        this.scene.freeComponentID(component.id);
 
         this._components = this._components.filter(c => c != component);
     }

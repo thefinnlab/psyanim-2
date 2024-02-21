@@ -1,3 +1,7 @@
+import {
+    PsyanimDebug
+} from 'psyanim-utils';
+
 /**
  * A `PsyanimComponent` is the most fundamental building block of `user-defined state` and `behavior` in Psyanim-2.
  * 
@@ -29,9 +33,31 @@ export default class PsyanimComponent {
         this.entity = entity;
         this.scene = entity.scene;
 
+        this._id = null;
+
         this._enabled = true;
 
         this._afterCreateCalled = false;
+    }
+
+    get id() {
+
+        return this._id;
+    }
+
+    set id(value) {
+
+        if (typeof value !== 'number')
+        {
+            PsyanimDebug.error("Invalid type for 'id':", typeof value);
+        }
+
+        if (this._id)
+        {
+            this.scene.freeComponentID(this._id);
+        }
+
+        this._id = value;
     }
 
     /**

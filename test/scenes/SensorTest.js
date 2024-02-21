@@ -28,8 +28,13 @@ export default {
                 {
                     type: SensorTestManager,
                     params: {
-                        player: {
+                        sensor1: {
                             entityName: 'player',
+                            componentId: 42
+                        },
+                        sensor2: {
+                            entityName: 'player',
+                            componentId: 89
                         }
                     }
                 },
@@ -82,16 +87,18 @@ export default {
                 { type: PsyanimPlayerController },
                 {
                     type: PsyanimSensor,
+                    id: 42,
                     params: {
                         debug: true,
                         bodyShapeParams: {
                             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
                             radius: 75,
-                        }
+                        },
                     }
                 },
                 {
                     type: PsyanimSensor,
+                    id: 89,
                     params: {
                         debug: true,
                         bodyShapeParams: {

@@ -24,6 +24,8 @@ import {
 
 export default class PsyanimDataDrivenScene extends PsyanimScene {
 
+    debug;
+
     constructor(key = null) {
 
         let sceneKey = 'PsyanimDataDrivenScene';
@@ -34,6 +36,8 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
         }
 
         super(sceneKey);
+
+        this.debug = false;
     }
 
     create() {
@@ -55,6 +59,11 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
     }
 
     _validateSceneDefinition() {
+
+        if (this.debug)
+        {
+            PsyanimDebug.log('******** Validating Scene Definition ********');
+        }
 
         // validate scene definition exists
         if (!this._sceneDefinition)
@@ -231,7 +240,8 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                 PsyanimDebug.error("Entity index '" + i + "', prefab param index = '" + j + 
                                     "': prefab parameters shouldn't reference entities!");
 
-                                if (Object.hasOwn(paramValue, 'componentType'))
+                                if (Object.hasOwn(paramValue, 'componentType') || 
+                                    Object.hasOwn(paramValue, 'componentId'))
                                 {
                                     PsyanimDebug.error("Entity index '" + i + "', param key '" + paramKey + 
                                         "': prefab parameters shouldn't reference other components!");
@@ -292,9 +302,12 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                                 "', param key '" + paramKey + "': entity name doesn't exist in scene definition!");
                                         }
         
-                                        if (Object.hasOwn(paramValue, 'componentType'))
+                                        if (Object.hasOwn(paramValue, 'componentType') || 
+                                            Object.hasOwn(paramValue, 'componentId'))
                                         {
                                             let componentType = paramValue.componentType;
+                                            let componentId = paramValue.componentId;
+
                                             let entityDefinition = entityDefinitions.find(e => e.name == paramValue.entityName);
         
                                             if (!Object.hasOwn(entityDefinition, 'components'))
@@ -303,13 +316,24 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
                                                 "', param key '" + paramKey + "': entity doesn't have any configured components!");
                                             }
         
-                                            let componentDefinition = entityDefinition.components
-                                                .find(c => c.type == paramValue.componentType);
-
-                                            if (!componentDefinition)
+                                            if (componentId)
                                             {
-                                                PsyanimDebug.error("Entity index '" + i + "', component type '" + typeof(paramValue.componentType) + 
-                                                    "', param key '" + paramKey + "': component index is greater than number of components on entity!");
+                                                if (typeof componentId !== 'number')
+                                                {
+                                                    PsyanimDebug.error("Entity index '" + i + "', component id '" + componentId + 
+                                                        " must be an integer type!");
+                                                }
+                                            }
+                                            else if (componentType)
+                                            {
+                                                let componentDefinition = entityDefinition.components
+                                                    .find(c => c.type == componentType);
+
+                                                if (!componentDefinition)
+                                                {
+                                                    PsyanimDebug.error("Entity index '" + i + "', component type '" + typeof(componentDefinition) + 
+                                                    "', param key '" + paramKey + "': failed to find component on entity!");
+                                                }
                                             }
                                         }
                                     }
@@ -362,7 +386,16 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             {
                 let componentDefinition = componentDefinitions[j];
 
-                let componentReference = entityReference.getComponent(componentDefinition.type);
+                let componentReference = null;
+
+                if (Object.hasOwn(componentDefinition, 'id'))
+                {
+                    componentReference = entityReference.getComponentByID(componentDefinition.id);
+                }
+                else
+                {
+                    componentReference = entityReference.getComponent(componentDefinition.type);
+                }
 
                 if (Object.hasOwn(componentDefinition, 'enabled'))
                 {
@@ -390,9 +423,17 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
                             if (Object.hasOwn(paramValue, 'componentType'))
                             {
-                                // target is a component reference
+                                // target is a component reference, by 'type'
                                 let componentType = paramValue.componentType;
                                 let targetComponent = targetEntity.getComponent(componentType);
+
+                                componentReference[paramName] = targetComponent;
+                            }
+                            else if (Object.hasOwn(paramValue, 'componentId'))
+                            {
+                                // target is a component reference, by 'id'
+                                let componentId = paramValue.componentId;
+                                let targetComponent = targetEntity.getComponentByID(componentId);
 
                                 componentReference[paramName] = targetComponent;
                             }
@@ -569,6 +610,11 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
 
     _instantiateNonPrefabEntity(entityDefinition, nameOverride = null) {
 
+        if (this.debug)
+        {
+            PsyanimDebug.log("****** Instantiating a Non-Prefab Entity ******");
+        }
+
         /** Instantiate the non-prefab entity first */
         let name = (nameOverride) ? nameOverride : entityDefinition.name;
 
@@ -623,12 +669,28 @@ export default class PsyanimDataDrivenScene extends PsyanimScene {
             {
                 let componentDefinition = componentDefinitions[j];
 
-                newEntity.addComponent(componentDefinition.type);
+                let componentReference = newEntity.addComponent(componentDefinition.type);
+
+                if (componentDefinition.id)
+                {
+                    // if component definition has an ID specified, we'll override the autogenerated one
+                    componentReference.id = componentDefinition.id;
+                }
+                else
+                {
+                    // set componentDefinition 'id' to find the component reference later
+                    componentDefinition.id = componentReference.id;
+                }
             }    
         }
     }
 
     _instantiateNonPrefabEntities() {
+
+        if (this.debug)
+        {
+            PsyanimDebug.log('******** Instantiating Non-Prefab Entities ********');
+        }
 
         let entityDefinitions = this._sceneDefinition.entities;
 
