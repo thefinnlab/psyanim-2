@@ -37,6 +37,7 @@ export default {
                 { type: PsyanimPlayerController },
                 {
                     type: PsyanimFOVSensor,
+                    id: 23,
                     params: {
                         fovAngle: 120,
                         fovRange: 200
@@ -47,7 +48,7 @@ export default {
                     params: {
                         fovSensor: {
                             entityName: 'player',
-                            componentType: PsyanimFOVSensor
+                            componentId: 23
                         }
                     }
                 }

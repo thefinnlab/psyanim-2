@@ -120,6 +120,14 @@ export default class PsyanimComponent {
     onDisable() {
     }
 
+    onSensorEnter(entity) {
+
+    }
+
+    onSensorExit(entity) {
+        
+    }
+
     /**
      * This method is called once after a scene is created for each component instance.
      * 

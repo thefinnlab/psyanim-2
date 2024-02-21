@@ -13,8 +13,6 @@ export default class FSMTest extends PsyanimComponent {
 
         super(entity);
 
-        console.warn('TODO: update PsyanimDebug.log() to accept variable number of arguments like console.log()!');
-
         // setup fsm and add states
         this._fsm = this.entity.addComponent(PsyanimFSM);
 

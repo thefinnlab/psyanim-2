@@ -5,6 +5,8 @@ import PsyanimGeomUtils from './utils/PsyanimGeomUtils.js';
 
 import PsyanimApp from './PsyanimApp.js';
 
+import PsyanimSensor from './components/physics/PsyanimSensor.js';
+
 import {
     PsyanimDebug
 } from 'psyanim-utils';
@@ -520,7 +522,84 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
         return new Phaser.Math.Vector2(currentVelocityXY.x, currentVelocityXY.y);
     }
 
+    _handleSensorTriggerEnter(entity, sensor) {
+
+        // TODO: we need to get this working with the new Map() structure
+
+        console.log('sensor id:', sensor.psyanimSensorId);
+
+        let entityAlreadyIncluded = this._intersectingEntities.has(entity.psyanimSensorId);
+
+        if (entityAlreadyIncluded)
+        {
+            let sensorIDs = this._intersectingEntities.get(entity.psyanimSensorId);
+
+        }
+
+        if (!entityAlreadyIncluded)
+        {
+            this._intersectingEntities.push(entity);
+
+            this._components.forEach(c => {
+
+                c.onSensorEnter(entity);
+            });    
+        }
+    }
+
+    _handleSensorTriggerExit(entity, sensor) {
+
+        let isIntersecting = false;
+
+        // TODO: maybe we shouldn't use isIntersecting() here b.c. 
+        // multiple sensors may be about to exit at the same time, no?
+
+        for (let i = 0; i < this._sensors.length; ++i)
+        {
+            let s = this._sensors[i];
+
+            if (s.psyanimSensorId === sensor.psyanimSensorId)
+            {
+                continue;
+            }
+
+            if (s.isIntersecting(entity))
+            {
+                isIntersecting = true;
+                break;
+            }
+        }
+
+        if (!isIntersecting)
+        {
+            this._components.forEach(c => {
+
+                c.onSensorExit(entity);
+            });    
+        }
+    }
+
     afterCreate() {
+
+        this._sensors = [];
+
+        let attachedSensorComponents = this.getComponents(PsyanimSensor);
+
+        if (attachedSensorComponents)
+        {
+            this._sensors = this._sensors.concat(attachedSensorComponents);
+        }
+
+        this._intersectingEntities = new Map();
+
+        this._handleSensorTriggerEnterCallback = this._handleSensorTriggerEnter.bind(this);
+        this._handleSensorTriggerExitCallback = this._handleSensorTriggerExit.bind(this);
+
+        this._sensors.forEach(sensor => {
+
+            sensor.events.on('triggerEnter', this._handleSensorTriggerEnterCallback);
+            sensor.events.on('triggerExit', this._handleSensorTriggerExitCallback);
+        });
 
         this._components.forEach(c => {
 

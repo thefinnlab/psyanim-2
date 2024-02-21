@@ -83,6 +83,7 @@ export default {
             components: [
                 { 
                     type: PsyanimPlayfightFSM,
+                    id: 42,
                     params: {
 
                         // wander state
@@ -134,6 +135,7 @@ export default {
                 },
                 {
                     type: PsyanimPlayfightSeparationFSM,
+                    id: 89,
                     params: {
                         target: {
                             entityName: 'agent2'
@@ -151,11 +153,11 @@ export default {
 
                         playfightFSM: {
                             entityName: 'agent1',
-                            componentType: PsyanimPlayfightFSM
+                            componentId: 42,
                         },
                         separationFSM: {
                             entityName: 'agent1',
-                            componentType: PsyanimPlayfightSeparationFSM
+                            componentId: 89
                         },
                         debugLogging: false,
                         debugGraphics: true

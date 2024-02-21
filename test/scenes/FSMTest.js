@@ -31,6 +31,7 @@ export default {
                 { type: FSMTest },
                 {
                     type: PsyanimVehicle,
+                    id: 22
                 },
                 {
                     type: PsyanimArriveBehavior,
@@ -42,6 +43,7 @@ export default {
                 },
                 {
                     type: PsyanimArriveAgent,
+                    id: 33,
                     params: {
                         arriveBehavior: {
                             entityName: 'fsmTest',
@@ -49,7 +51,7 @@ export default {
                         },
                         vehicle: {
                             entityName: 'fsmTest',
-                            componentType: PsyanimVehicle
+                            componentId: 22
                         }
                     }
                 },
@@ -64,7 +66,8 @@ export default {
                         ],
                         arriveAgent: {
                             entityName: 'fsmTest',
-                            componentType: PsyanimArriveAgent
+                            componentId: 33,
+                            // componentType: PsyanimArriveAgent
                         },
                         targetPositionOffset: 50
                     }

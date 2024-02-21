@@ -26,19 +26,6 @@ export default {
             name: 'testManager',
             components: [
                 {
-                    type: SensorTestManager,
-                    params: {
-                        sensor1: {
-                            entityName: 'player',
-                            componentId: 42
-                        },
-                        sensor2: {
-                            entityName: 'player',
-                            componentId: 89
-                        }
-                    }
-                },
-                {
                     type: PsyanimJsPsychPlayerContactListener,
                     params: {
                         sensor: {
@@ -107,7 +94,20 @@ export default {
                             height: 100
                         }
                     }
-                }
+                },
+                {
+                    type: SensorTestManager,
+                    params: {
+                        sensor1: {
+                            entityName: 'player',
+                            componentId: 42
+                        },
+                        sensor2: {
+                            entityName: 'player',
+                            componentId: 89
+                        }
+                    }
+                },
             ]
         },
     ]

@@ -35,26 +35,21 @@ export default class SensorTestManager extends PsyanimComponent {
 
         super.afterCreate();
 
-        let sensors = [ this.sensor1, this.sensor2 ];
-
-        console.log('sensors = ', sensors);
-
-        for (let i = 0; i < sensors.length; ++i)
-        {
-            let sensor = sensors[i];
-
-            sensor.events.on('triggerEnter', (entity) => {
-
-                console.log(this.entity.name + ' has ENTERED', entity.name);
-            });
-    
-            sensor.events.on('triggerExit', (entity) => {
-    
-                console.log(this.entity.name + ' has EXITED', entity.name);
-            });    
-        }
-
         PsyanimApp.Instance.events.on('playerContact', this._handlePlayerContact, this);
+    }
+
+    onSensorEnter(entity) {
+
+        super.onSensorEnter(entity);
+
+        console.log(this.entity.name + ' has ENTERED', entity.name);
+    }
+
+    onSensorExit(entity) {
+
+        super.onSensorExit(entity);
+
+        console.log(this.entity.name + ' has EXITED', entity.name);
     }
 
     _handlePlayerContact(entity) {
