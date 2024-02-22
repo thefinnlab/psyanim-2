@@ -23,34 +23,38 @@ export default {
             ]
         },
         {
-            name: 'testManager',
+            name: 'wall',
+            initialPosition: { x: 650, y: 200 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
+                width: 75, height: 125, color: 0xff00ff,
+                depth: 1
+            },
+            matterOptions: {
+                isStatic: true
+            },
             components: [
                 {
                     type: PsyanimJsPsychPlayerContactListener,
                     params: {
-                        sensor: {
-                            entityName: 'player',
-                            componentType: PsyanimSensor
-                        },
                         targetEntityNames: [
                             "wall",
                             "killzone1"
                         ]
                     }
-                }
+                },
+                {
+                    type: PsyanimSensor,
+                    params: {
+                        debug: true,
+                        bodyShapeParams: {
+                            shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
+                            width: 75,
+                            height: 125
+                        }
+                    }
+                },
             ]
-        },
-        {
-            name: 'wall',
-            initialPosition: { x: 650, y: 200 },
-            shapeParams: {
-                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-                radius: 75, color: 0xff00ff,
-                depth: 1
-            },
-            matterOptions: {
-                isStatic: true
-            }
         },
         {
             name: 'killzone1',
@@ -79,7 +83,7 @@ export default {
                         debug: true,
                         bodyShapeParams: {
                             shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-                            radius: 75,
+                            radius: 40,
                         },
                     }
                 },
@@ -91,8 +95,9 @@ export default {
                         bodyShapeParams: {
                             shapeType: PsyanimConstants.SHAPE_TYPE.RECTANGLE,
                             width: 35,
-                            height: 100
-                        }
+                            height: 150
+                        },
+                        offset: { x: -30, y: 0 }
                     }
                 },
                 {

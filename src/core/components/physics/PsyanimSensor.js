@@ -8,6 +8,11 @@ export default class PsyanimSensor extends PsyanimComponent {
 
     bodyShapeParams;
 
+    /**
+     *  @type Phaser.Math.Vector2
+     */
+    offset;
+
     constructor(entity) {
 
         super(entity);
@@ -24,6 +29,8 @@ export default class PsyanimSensor extends PsyanimComponent {
         this._psyanimSensorId = this.scene.getNewPsyanimSensorId();
 
         this._intersectingEntities = [];
+
+        this.offset = Phaser.Math.Vector2.ZERO.clone();
 
         this._handleEntityDestroyedCallback = this._handleEntityDestroyed.bind(this);
 
@@ -209,6 +216,9 @@ export default class PsyanimSensor extends PsyanimComponent {
 
         // keep bodies in sync with entity
         this.entity.scene.matter.body
-            .setPosition(this._sensorBody, { x: this.entity.x, y: this.entity.y });
+            .setPosition(this._sensorBody, { 
+                x: this.entity.x + this.offset.x, 
+                y: this.entity.y + this.offset.y 
+            });
     }
 }

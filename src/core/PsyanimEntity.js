@@ -524,58 +524,57 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     _handleSensorTriggerEnter(entity, sensor) {
 
-        // TODO: we need to get this working with the new Map() structure
-
-        console.log('sensor id:', sensor.psyanimSensorId);
-
         let entityAlreadyIncluded = this._intersectingEntities.has(entity.psyanimSensorId);
 
         if (entityAlreadyIncluded)
         {
             let sensorIDs = this._intersectingEntities.get(entity.psyanimSensorId);
 
-        }
+            if (sensorIDs.includes(sensor.psyanimSensorId))
+            {
+                PsyanimDebug.error('sensorIDs already includes ID: ', sensor.psyanimSensorId);
+                return;
+            }
 
-        if (!entityAlreadyIncluded)
+            sensorIDs.push(sensor.psyanimSensorId);
+        }
+        else
         {
-            this._intersectingEntities.push(entity);
+            let sensorIDs = [ sensor.psyanimSensorId ];
+
+            this._intersectingEntities.set(entity.psyanimSensorId, sensorIDs);
 
             this._components.forEach(c => {
 
                 c.onSensorEnter(entity);
-            });    
+            });
         }
     }
 
     _handleSensorTriggerExit(entity, sensor) {
 
-        let isIntersecting = false;
+        let sensorIDs = this._intersectingEntities.get(entity.psyanimSensorId);
 
-        // TODO: maybe we shouldn't use isIntersecting() here b.c. 
-        // multiple sensors may be about to exit at the same time, no?
-
-        for (let i = 0; i < this._sensors.length; ++i)
+        if (!sensorIDs.includes(sensor.psyanimSensorId))
         {
-            let s = this._sensors[i];
-
-            if (s.psyanimSensorId === sensor.psyanimSensorId)
-            {
-                continue;
-            }
-
-            if (s.isIntersecting(entity))
-            {
-                isIntersecting = true;
-                break;
-            }
+            PsyanimDebug.error('sensor not in entity sensorIDs list!');
+            return;
         }
 
-        if (!isIntersecting)
+        sensorIDs = sensorIDs.filter(sid => sid !== sensor.psyanimSensorId);
+
+        if (sensorIDs.length > 0)
         {
+            this._intersectingEntities.set(entity.psyanimSensorId, sensorIDs)
+        }
+        else
+        {
+            this._intersectingEntities.delete(entity.psyanimSensorId);
+
             this._components.forEach(c => {
 
                 c.onSensorExit(entity);
-            });    
+            });
         }
     }
 
@@ -617,6 +616,7 @@ export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 
     update(t, dt) {
 
+        // update all components
         this._components.forEach(c => {
 
             if (c.enabled)

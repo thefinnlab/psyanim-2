@@ -10,8 +10,6 @@ export default class PsyanimJsPsychPlayerContactListener extends PsyanimComponen
 
     targetEntityNames;
 
-    sensor;
-
     constructor(entity) {
 
         super(entity);
@@ -19,28 +17,10 @@ export default class PsyanimJsPsychPlayerContactListener extends PsyanimComponen
         this.targetEntityNames = [];
     }
 
-    afterCreate() {
+    onSensorEnter(entity) {
 
-        super.afterCreate();
+        super.onSensorEnter(entity);
 
-        if (this.sensor)
-        {
-            this.sensor.events.on('triggerEnter', (entity) => {
-
-                if (this.targetEntityNames.includes(entity.name))
-                {
-                    PsyanimApp.Instance.events.emit('playerContact', entity);                    
-                }
-            });
-        }
-        else
-        {
-            PsyanimDebug.error("no sensor configured in PsyanimJsPsychContactListener");
-        }
-    }
-
-    update(t, dt) {
-
-        super.update(t, dt);
+        PsyanimApp.Instance.events.emit('playerContact', entity);
     }
 }
