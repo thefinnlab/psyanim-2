@@ -40,6 +40,8 @@ import PreyV2Test from './scenes/PreyV2Test.js';
 
 import BasicHFSM from './scenes/BasicHFSM.js';
 
+import BasicBehaviorTreeTest from './scenes/BasicBehaviorTreeTest.js';
+
 // react app
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -64,6 +66,7 @@ createRoot(document.getElementById('psyanim-app'))
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
+let basicBehaviorTreeTest = PsyanimUtils.cloneSceneDefinition(BasicBehaviorTreeTest);
 let basicHFSMCopy = PsyanimUtils.cloneSceneDefinition(BasicHFSM);
 let preyV2TestCopy = PsyanimUtils.cloneSceneDefinition(PreyV2Test);
 let predatorV2TestCopy = PsyanimUtils.cloneSceneDefinition(PredatorV2Test);
@@ -88,6 +91,7 @@ let EvadeTestCopy = PsyanimUtils.cloneSceneDefinition(EvadeTest);
 let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(BasicBehaviorTreeTest);
 PsyanimApp.Instance.config.registerScene(SensorTestCopy);
 PsyanimApp.Instance.config.registerScene(playfightTestv2Copy);
 PsyanimApp.Instance.config.registerScene(basicHFSMCopy);
