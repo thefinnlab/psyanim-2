@@ -1,4 +1,4 @@
-
+import { PsyanimDebug } from 'psyanim-utils';
 
 export default class PsyanimBehaviorTreeNode {
 
@@ -24,6 +24,25 @@ export default class PsyanimBehaviorTreeNode {
         this._children.push(node);
     }
 
+    validateChildStatus(status) {
+
+        let isValid = (status === PsyanimBehaviorTreeNode.STATUS.RUNNING ||
+            status === PsyanimBehaviorTreeNode.STATUS.SUCCESS || 
+            status === PsyanimBehaviorTreeNode.STATUS.FAILURE);
+
+        if (!isValid)
+        {
+            PsyanimDebug.error('Invalid child status!');
+        }
+    }
+
+    reset() {
+
+        this._children.forEach(child => child.reset());
+
+        this._currentChildIndex = 0;
+    }
+
     tick() {
 
         if (this._children.length === 0)
@@ -31,7 +50,11 @@ export default class PsyanimBehaviorTreeNode {
             return PsyanimBehaviorTreeNode.STATUS.FAILURE;
         }
 
-        return this._children[this._currentChildIndex].tick();
+        let childStatus = this._children[this._currentChildIndex].tick();
+
+        this.validateChildStatus(childStatus);
+
+        return childStatus;
     }
 }
 

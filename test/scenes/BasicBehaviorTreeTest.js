@@ -20,6 +20,11 @@ export default {
         },
         {
             name: 'myBasicBT',
+            initialPosition: { x: 400, y: 300 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+                color: 0x0000ff, base: 12, altitude: 24
+            },
             components: [
                 { type: MyBasicBT }
             ]

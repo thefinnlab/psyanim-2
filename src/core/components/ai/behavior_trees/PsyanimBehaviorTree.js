@@ -1,23 +1,28 @@
 import PsyanimBehaviorTreeNode from "./PsyanimBehaviorTreeNode.js";
 
-export default class PsyanimBehaviorTree {
+export default class PsyanimBehaviorTree extends PsyanimBehaviorTreeNode {
 
-    constructor() {
+    constructor(name = "root") {
 
-        this._root = new PsyanimBehaviorTreeNode("root");
+        super(name);
     }
 
     printTree() {
 
-    }
+        let nodeStack = [];
 
-    tick() {
+        nodeStack.push({ level: 0, node: this });
 
-        if (this._root.children.length === 0)
+        while (nodeStack.length !== 0)
         {
-            return PsyanimBehaviorTreeNode.STATUS.SUCCESS;
-        }
+            let nextNode = nodeStack.pop();
 
-        return this._root.tick();
+            console.log('---'.repeat(nextNode.level), nextNode.node.name);
+
+            for (let i = nextNode.node.children.length - 1; i >= 0; --i)
+            {
+                nodeStack.push({ level: nextNode.level + 1, node: nextNode.node.children[i] });
+            }
+        }
     }
 }
