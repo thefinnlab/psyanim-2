@@ -1,6 +1,7 @@
 import PsyanimBehaviorTreeNode from "./PsyanimBehaviorTreeNode.js";
 
-export default class PsyanimBehaviorTreeLeafNode extends PsyanimBehaviorTreeNode {
+export default class PsyanimBehaviorTreeDecoratorNode extends PsyanimBehaviorTreeNode {
+
 
     tickDelegate;
     tickParameters;
@@ -30,7 +31,16 @@ export default class PsyanimBehaviorTreeLeafNode extends PsyanimBehaviorTreeNode
 
             this.validateTaskStatus(status);
 
-            return status;
+            if (status === PsyanimBehaviorTreeNode.STATUS.SUCCESS)
+            {
+                let childStatus = this._children[0].tick();
+
+                return childStatus;
+            }
+            else
+            {
+                return status;
+            }
         }
         else
         {

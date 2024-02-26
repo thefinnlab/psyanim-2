@@ -6,7 +6,6 @@ export default class PsyanimBehaviorTreeNode {
 
         this._name = name;
         this._children = [];
-        this._currentChildIndex = 0;
     }
 
     get name() {
@@ -24,7 +23,7 @@ export default class PsyanimBehaviorTreeNode {
         this._children.push(node);
     }
 
-    validateChildStatus(status) {
+    validateTaskStatus(status) {
 
         let isValid = (status === PsyanimBehaviorTreeNode.STATUS.RUNNING ||
             status === PsyanimBehaviorTreeNode.STATUS.SUCCESS || 
@@ -39,8 +38,6 @@ export default class PsyanimBehaviorTreeNode {
     reset() {
 
         this._children.forEach(child => child.reset());
-
-        this._currentChildIndex = 0;
     }
 
     tick() {
@@ -50,9 +47,9 @@ export default class PsyanimBehaviorTreeNode {
             return PsyanimBehaviorTreeNode.STATUS.FAILURE;
         }
 
-        let childStatus = this._children[this._currentChildIndex].tick();
+        let childStatus = this._children[0].tick();
 
-        this.validateChildStatus(childStatus);
+        this.validateTaskStatus(childStatus);
 
         return childStatus;
     }

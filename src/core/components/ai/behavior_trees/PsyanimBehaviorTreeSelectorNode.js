@@ -5,13 +5,22 @@ export default class PsyanimBehaviorTreeSelectorNode extends PsyanimBehaviorTree
     constructor(name) {
 
         super(name);
+
+        this._currentChildIndex = 0;
+    }
+
+    reset() {
+
+        this._currentChildIndex = 0;
+
+        super.reset();
     }
 
     tick() {
         
         let childStatus = this._children[this._currentChildIndex].tick();
 
-        this.validateChildStatus(childStatus);
+        this.validateTaskStatus(childStatus);
 
         if (childStatus === PsyanimBehaviorTreeNode.STATUS.RUNNING)
         {
@@ -24,6 +33,7 @@ export default class PsyanimBehaviorTreeSelectorNode extends PsyanimBehaviorTree
             return PsyanimBehaviorTreeNode.STATUS.SUCCESS;
         }
 
+        // child tick returned failure, let's move onto the next child if there are more
         this._currentChildIndex++;
 
         if (this._currentChildIndex >= this._children.length)

@@ -8,7 +8,6 @@ import PsyanimPlayerController from '../../src/core/components/controllers/Psyan
 import PsyanimVehicle from '../../src/core/components/steering/PsyanimVehicle.js';
 import PsyanimArriveBehavior from '../../src/core/components/steering/PsyanimArriveBehavior.js';
 import PsyanimArriveAgent from '../../src/core/components/steering/agents/PsyanimArriveAgent.js';
-import PsyanimPathFollowingAgent from '../../src/core/components/steering/agents/PsyanimPathFollowingAgent.js';
 import PsyanimFleeBehavior from '../../src/core/components/steering/PsyanimFleeBehavior.js';
 import PsyanimFleeAgent from '../../src/core/components/steering/agents/PsyanimFleeAgent.js';
 
@@ -28,6 +27,20 @@ export default {
                 { type: PsyanimSceneTitle },
                 { type: PsyanimPhysicsSettingsController },
                 { type: PsyanimSceneChangeController }
+            ]
+        },
+        {
+            name: 'player',
+            initialPosition: { x: 400, y: 550 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
+                color: 0xff00ff,
+                base: 12, altitude: 20
+            },
+            components: [
+                {
+                    type: PsyanimPlayerController
+                }
             ]
         },
         {
@@ -82,6 +95,7 @@ export default {
                 {
                     type: PsyanimArriveAgent,
                     params: {
+                        enabled: false,
                         arriveBehavior: {
                             entityName: 'agent',
                             componentType: PsyanimArriveBehavior
@@ -93,8 +107,32 @@ export default {
                     }
                 },
                 {
+                    type: PsyanimFleeBehavior,
+                    params: {
+                        maxSpeed: 8,
+                        maxAcceleration: 0.3,
+                    }
+                },
+                {
+                    type: PsyanimFleeAgent,
+                    enabled: false,
+                    params: {
+                        fleeBehavior: {
+                            entityName: 'agent',
+                            componentType: PsyanimFleeBehavior
+                        },
+                        vehicle: {
+                            entityName: 'agent',
+                            componentType: PsyanimVehicle
+                        },
+                    }
+                },
+                {
                     type: MyAdvancedBehaviorTreeTest,
                     params: {
+                        player: {
+                            entityName: 'player'
+                        },
                         target1: {
                             entityName: 'target1'
                         },
@@ -107,6 +145,10 @@ export default {
                         arriveAgent: {
                             entityName: 'agent',
                             componentType: PsyanimArriveAgent
+                        },
+                        fleeAgent: {
+                            entityName: 'agent',
+                            componentType: PsyanimFleeAgent
                         }
                     }
                 }
