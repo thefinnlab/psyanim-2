@@ -3,16 +3,20 @@ import Phaser from 'phaser';
 import PsyanimComponent from '../../../PsyanimComponent.js';
 
 import PsyanimBehaviorTree from './PsyanimBehaviorTree.js';
+import PsyanimBehaviorTreeNode from './PsyanimBehaviorTreeNode.js';
 
 export default class PsyanimBehaviorTreeAgent extends PsyanimComponent {
-
-    tree;
 
     constructor(entity) {
 
         super(entity);
 
-        this.tree = null;
+        this._tree = null;
+    }
+
+    get tree() {
+
+        return this._tree;
     }
 
     onEnable() {
@@ -29,10 +33,7 @@ export default class PsyanimBehaviorTreeAgent extends PsyanimComponent {
 
         super.afterCreate();
 
-        if (!this.tree)
-        {
-            this._tree = new PsyanimBehaviorTree();
-        }
+        this._tree = new PsyanimBehaviorTree();
     }
 
     beforeShutdown() {
@@ -54,6 +55,11 @@ export default class PsyanimBehaviorTreeAgent extends PsyanimComponent {
         
         super.update(t, dt);
 
-        this._tree.tick();
+        let status = this._tree.tick();
+
+        if (status === PsyanimBehaviorTreeNode.STATUS.FAILURE)
+        {
+            this._tree.reset();
+        }
     }
 }

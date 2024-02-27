@@ -1,6 +1,6 @@
 import Phaser from 'phaser';
 
-import PsyanimComponent from '../../../src/core/PsyanimComponent.js';
+import PsyanimBehaviorTreeAgent from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeAgent.js';
 
 import PsyanimBehaviorTree from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTree.js';
 
@@ -11,7 +11,7 @@ import PsyanimBehaviorTreeInverterNode from '../../../src/core/components/ai/beh
 import PsyanimBehaviorTreeLeafNode from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeLeafNode.js';
 import PsyanimBehaviorTreeNode from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeNode.js';
 
-export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
+export default class MyAdvancedBehaviorTreeTest extends PsyanimBehaviorTreeAgent {
 
     player;
 
@@ -21,6 +21,8 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
 
     arriveAgent;
     fleeAgent;
+
+    idleDuration;
 
     fleePanicDistance;
     fleeSafetyDistance;
@@ -37,6 +39,8 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
 
         this.fleePanicDistance = 150;
         this.fleeSafetyDistance = 200;
+
+        this.idleDuration = 1500;
     }
 
     afterCreate() {
@@ -45,8 +49,8 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
 
         this._tree = new PsyanimBehaviorTree();
 
+        console.warn("TODO: should we be talking about 'tasks' instead of nodes here?");
         console.warn("TODO: tree node rules need to be enforced for each type!");
-        console.warn("TODO: need to get the flee working using decorator nodes...");
 
         // setup patrol task
         let selectTarget1Leaf = new PsyanimBehaviorTreeLeafNode("selectTarget1", 
@@ -86,24 +90,54 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
         itemCollectionDecorator.addChild(moveToTargetLeaf);
 
         // setup flee task
-        let checkIfTargetInPanicRadiusLeaf = new PsyanimBehaviorTreeLeafNode("checkIfTargetInPanicRadius",
-            this._checkIfPlayerInPanicRadius.bind(this));
-
         let fleeFromTargetLeaf = new PsyanimBehaviorTreeLeafNode("fleeFromTarget",
             this._fleeFromTarget.bind(this));
 
-        let fleeFromPlayerSequence = new PsyanimBehaviorTreeSequenceNode("fleeFromPlayerSequence");
+        let resetIdleTimerLeaf = new PsyanimBehaviorTreeLeafNode("resetIdleTimer",
+            this._resetIdleTimer.bind(this));
 
-        fleeFromPlayerSequence.addChild(checkIfTargetInPanicRadiusLeaf);
-        fleeFromPlayerSequence.addChild(fleeFromTargetLeaf);
+        let disableAllSteeringAgentsLeaf = new PsyanimBehaviorTreeLeafNode("disableAllSteeringAgents",
+            this._disableAllSteeringAgents.bind(this));
+
+        let idleLeaf = new PsyanimBehaviorTreeLeafNode("idleLeaf",
+            this._idle.bind(this));
+
+        let idleSequence = new PsyanimBehaviorTreeSequenceNode("idleSequence");
+
+        idleSequence.addChild(resetIdleTimerLeaf);
+        idleSequence.addChild(disableAllSteeringAgentsLeaf);
+        idleSequence.addChild(idleLeaf);
+
+        let playerNotNearbyDecorator = new PsyanimBehaviorTreeDecoratorNode("playerNotNearbyDecorator",
+            this._checkIfPlayerNotInPanicRadius.bind(this));
+
+        playerNotNearbyDecorator.addChild(idleSequence);
+
+        let selectPlayerAsTargetLeaf = new PsyanimBehaviorTreeLeafNode("selectPlayerAsTarget", 
+            this._selectTarget.bind(this), { target: this.player });
+
+        let idleFleeSequence = new PsyanimBehaviorTreeSequenceNode("idleFleeSequence");
+
+        idleFleeSequence.addChild(selectPlayerAsTargetLeaf);
+        idleFleeSequence.addChild(fleeFromTargetLeaf);
+        idleFleeSequence.addChild(playerNotNearbyDecorator);
+
+        // setup item collection and patrol task
+        let itemCollectionAndPatrolSelector = new PsyanimBehaviorTreeSelectorNode("itemCollectionAndPatrol");
+
+        itemCollectionAndPatrolSelector.addChild(patrolSequenceDecorator);
+        itemCollectionAndPatrolSelector.addChild(itemCollectionDecorator);
+
+        let itemCollectionAndPatrolDecorator = new PsyanimBehaviorTreeDecoratorNode("itemCollectionAndPatrolDecorator",
+            this._checkIfPlayerNotInPanicRadius.bind(this));
+
+        itemCollectionAndPatrolDecorator.addChild(itemCollectionAndPatrolSelector);
 
         // add to tree
         let mainSelector = new PsyanimBehaviorTreeSelectorNode("mainSelector");
 
-        // TODO: need to make this work still!
-        // mainSelector.addChild(fleeFromPlayerSequence);
-        mainSelector.addChild(itemCollectionDecorator);
-        mainSelector.addChild(patrolSequenceDecorator);
+        mainSelector.addChild(itemCollectionAndPatrolDecorator);
+        mainSelector.addChild(idleFleeSequence);
 
         this._tree.addChild(mainSelector);
 
@@ -171,42 +205,62 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
         return distanceToPlayer < this.fleeSafetyDistance;
     }
 
-    /**
-     *  TODO: don't do this - make this work with an inverter node!
-     */
-    _checkIfPlayerNotInPanicRadius() {
-
-        let status = this._checkIfPlayerInPanicRadius();
-
-        if (status === PsyanimBehaviorTreeLeafNode.STATUS.SUCCESS)
-        {
-            return PsyanimBehaviorTreeLeafNode.STATUS.FAILURE;
-        }
-        else if (status === PsyanimBehaviorTreeLeafNode.STATUS.FAILURE)
-        {
-            return PsyanimBehaviorTreeLeafNode.STATUS.SUCCESS;
-        }
-    }
-
-    _checkIfPlayerInPanicRadius() {
+    _isPlayerInPanicRadius() {
 
         let distanceToPlayer = this.entity.position
             .subtract(this.player)
             .length();
 
-        if (distanceToPlayer < this.fleePanicDistance)
-        {
-            this._target = this.player;
+        return distanceToPlayer < this.fleePanicDistance;
+    }
 
+    /**
+     *  TODO: don't do this - make this work with an inverter node!
+     */
+    _checkIfPlayerNotInPanicRadius() {
+
+        if (!this._isPlayerInPanicRadius())
+        {
             return PsyanimBehaviorTree.STATUS.SUCCESS;
         }
 
         return PsyanimBehaviorTree.STATUS.FAILURE;
     }
 
-    _fleeFromTarget() {
+    _checkIfPlayerInPanicRadius() {
 
-        console.log('fleeing!');
+        if (this._isPlayerInPanicRadius())
+        {
+            return PsyanimBehaviorTree.STATUS.SUCCESS;
+        }
+
+        return PsyanimBehaviorTree.STATUS.FAILURE;
+    }
+
+    _resetIdleTimer() {
+
+        this._idleStartTime = this.entity.scene.time.now;
+
+        return PsyanimBehaviorTreeNode.STATUS.SUCCESS;
+    }
+
+    _idle() {
+
+        console.log('idling');
+
+        this._idleTimer = this.entity.scene.time.now;
+
+        let idleTime = this._idleTimer - this._idleStartTime;
+
+        if (idleTime > this.idleDuration)
+        {
+            return PsyanimBehaviorTree.STATUS.SUCCESS;
+        }
+
+        return PsyanimBehaviorTreeNode.STATUS.RUNNING;
+    }
+
+    _fleeFromTarget() {
 
         if (!this._target)
         {
@@ -265,10 +319,12 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
         super.beforeShutdown();
     }
 
-    disableAllSteeringAgents() {
+    _disableAllSteeringAgents() {
 
         this.arriveAgent.enabled = false;
         this.fleeAgent.enabled = false;
+
+        return PsyanimBehaviorTreeNode.STATUS.SUCCESS;
     }
 
     onSensorEnter(entity) {
@@ -278,7 +334,7 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
         if (entity.name === 'item')
         {
             this._target = null;
-            this.disableAllSteeringAgents();
+            this._disableAllSteeringAgents();
 
             this.entity.scene.destroyEntityByName(entity.name);
 
@@ -294,12 +350,5 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimComponent {
     update(t, dt) {
         
         super.update(t, dt);
-
-        let status = this._tree.tick();
-
-        if (status === PsyanimBehaviorTreeNode.STATUS.FAILURE)
-        {
-            this._tree.reset();
-        }
     }
 }

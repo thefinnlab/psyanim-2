@@ -31,7 +31,7 @@ export default class PsyanimBehaviorTreeNode {
 
         if (!isValid)
         {
-            PsyanimDebug.error('Invalid child status!');
+            PsyanimDebug.error('Invalid task status! node: ', this.name);
         }
     }
 
