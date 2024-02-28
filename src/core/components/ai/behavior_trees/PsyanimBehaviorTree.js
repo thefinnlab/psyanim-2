@@ -40,7 +40,7 @@ export default class PsyanimBehaviorTree extends PsyanimBehaviorTreeNode {
                 console.error("Next node status is invalid!");
             }
 
-            console.log('%c' + '---'.repeat(nextNode.level) + nextNode.node.name, style);
+            console.log('%c' + '|    '.repeat(nextNode.level) + '|-' + nextNode.node.name, style);
 
             for (let i = nextNode.node.children.length - 1; i >= 0; --i)
             {
