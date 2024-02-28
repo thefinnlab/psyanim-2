@@ -20,18 +20,41 @@ export default class PsyanimBehaviorTreeDebugger extends PsyanimComponent {
             Q: entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q),
         };
 
-        this._agentKeys = [
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SIX),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SEVEN),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE),
-            entity.scene.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TEN),
-        ];
+        this._agentKeys = [];
+
+        for (let i = 1; i < 11; ++i)
+        {
+            this._agentKeys.push('' + i);
+        }
+
+        this.scene.input.keyboard.on('keydown', this._handleKeyDownEvent.bind(this));
+    }
+
+    _handleKeyDownEvent(e) {
+
+        if (e.key === 'q')
+        {
+            this.scene.resume();
+        }
+
+        for (let i = 0; i < this._behaviorTreeAgents.length; ++i)
+        {
+            let agent = this._behaviorTreeAgents[i];
+
+            if (e.key === this._agentKeys[i])
+            {
+                this.scene.pause();
+
+                console.clear();
+
+                console.log('********************************');
+                console.log('Agent name:', agent.entity.name);
+                console.log('********************************');
+                console.log('\n');
+
+                agent.tree.printTree();
+            }
+        }
     }
 
     onEnable() {
@@ -82,16 +105,5 @@ export default class PsyanimBehaviorTreeDebugger extends PsyanimComponent {
     update(t, dt) {
         
         super.update(t, dt);
-
-        if (Phaser.Input.Keyboard.JustDown(this._keys.Q))
-        {
-            // TODO: restore physics timescale
-        }
-
-        for (let i = 0; i < this._behaviorTreeAgents.length; ++i)
-        {
-            // TODO: print out tree with color-coded paths, 
-            // depending on which agent was selected
-        }
     }
 }

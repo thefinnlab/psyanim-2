@@ -13,15 +13,17 @@ export default class PsyanimBehaviorTreeInverterNode extends PsyanimBehaviorTree
 
         if (childStatus === PsyanimBehaviorTreeNode.STATUS.SUCCESS)
         {
-            return PsyanimBehaviorTreeNode.STATUS.FAILURE;
+            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
         }
         else if (childStatus === PsyanimBehaviorTreeNode.STATUS.FAILURE)
         {
-            return PsyanimBehaviorTreeNode.STATUS.SUCCESS;
+            this._status = PsyanimBehaviorTreeNode.STATUS.SUCCESS;
         }
         else
         {
-            return PsyanimBehaviorTreeNode.STATUS.RUNNING;
+            this._status = PsyanimBehaviorTreeNode.STATUS.RUNNING;
         }
+
+        return this._status;
     }
 }

@@ -66,17 +66,17 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimBehaviorTreeAgent
 
         let patrolSequence = new PsyanimBehaviorTreeSequenceNode("patrolSequence");
 
-        patrolSequence.addChild(selectTarget2Leaf);
-        patrolSequence.addChild(moveToTargetLeaf);
+        patrolSequence.addChild(selectTarget2Leaf.clone());
+        patrolSequence.addChild(moveToTargetLeaf.clone());
 
         patrolSequence.addChild(selectTarget3Leaf);
-        patrolSequence.addChild(moveToTargetLeaf);
+        patrolSequence.addChild(moveToTargetLeaf.clone());
 
-        patrolSequence.addChild(selectTarget2Leaf);
-        patrolSequence.addChild(moveToTargetLeaf);
+        patrolSequence.addChild(selectTarget2Leaf.clone());
+        patrolSequence.addChild(moveToTargetLeaf.clone());
 
         patrolSequence.addChild(selectTarget1Leaf);
-        patrolSequence.addChild(moveToTargetLeaf);
+        patrolSequence.addChild(moveToTargetLeaf.clone());
 
         let patrolSequenceDecorator = new PsyanimBehaviorTreeDecoratorNode("patrolSequenceDecorator",
             this._checkForItemNotInScene.bind(this));
@@ -87,7 +87,7 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimBehaviorTreeAgent
         let itemCollectionDecorator = new PsyanimBehaviorTreeDecoratorNode("itemCollectionDecorator",
             this._checkForItemInScene.bind(this));
 
-        itemCollectionDecorator.addChild(moveToTargetLeaf);
+        itemCollectionDecorator.addChild(moveToTargetLeaf.clone());
 
         // setup flee task
         let fleeFromTargetLeaf = new PsyanimBehaviorTreeLeafNode("fleeFromTarget",

@@ -24,26 +24,30 @@ export default class PsyanimBehaviorTreeSequenceNode extends PsyanimBehaviorTree
 
         if (childStatus === PsyanimBehaviorTreeNode.STATUS.RUNNING)
         {
-            return PsyanimBehaviorTreeNode.STATUS.RUNNING;
+            this._status = PsyanimBehaviorTreeNode.STATUS.RUNNING;
         }
-
-        if (childStatus  === PsyanimBehaviorTreeNode.STATUS.FAILURE)
+        else if (childStatus  === PsyanimBehaviorTreeNode.STATUS.FAILURE)
         {
             this._currentChildIndex = 0;
 
-            return PsyanimBehaviorTreeNode.STATUS.FAILURE;
+            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
         }
-
-        // child tick returned succes, move onto next one if there are more
-        this._currentChildIndex++;
-
-        if (this._currentChildIndex >= this._children.length)
+        else // child tick returned succes, move onto next one if there are more
         {
-            this._currentChildIndex = 0;
+            this._currentChildIndex++;
 
-            return PsyanimBehaviorTreeNode.STATUS.SUCCESS;
+            if (this._currentChildIndex >= this._children.length)
+            {
+                this._currentChildIndex = 0;
+
+                this._status = PsyanimBehaviorTreeNode.STATUS.SUCCESS;
+            }
+            else
+            {
+                this._status = PsyanimBehaviorTreeNode.STATUS.RUNNING;
+            }
         }
 
-        return PsyanimBehaviorTreeNode.STATUS.RUNNING;
+        return this._status;
     }
 }

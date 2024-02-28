@@ -35,6 +35,8 @@ export default class PsyanimScene extends Phaser.Scene {
         super(key);
 
         this._afterCreateCalled = false;
+
+        this._state = PsyanimScene.STATE.RUNNING;
     }
 
     get timeSinceLastInit() {
@@ -324,6 +326,36 @@ export default class PsyanimScene extends Phaser.Scene {
         this._entities.forEach(e => e.beforeShutdown());
     }
 
+    _pauseSimulation() {
+
+        if (this.matter.world.engine.timing.timeScale >= 1)
+        {
+            this.matter.world.engine.timing.timeScale = 0.0;
+        }
+    }
+
+    _resumeSimulation() {
+
+        if (this.matter.world.engine.timing.timeScale < 1)
+        {
+            this.matter.world.engine.timing.timeScale = 1.0;
+        }
+    }
+
+    pause() {
+
+        this._pauseSimulation();
+
+        this._state = PsyanimScene.STATE.PAUSED;
+    }
+
+    resume() {
+
+        this._resumeSimulation();
+
+        this._state = PsyanimScene.STATE.RUNNING;
+    }
+
     /**
      * This is the main real-time update() loop for the entire `PsyanimScene`.
      * 
@@ -334,6 +366,16 @@ export default class PsyanimScene extends Phaser.Scene {
      */
     update(t, dt) {
 
-        this._entities.forEach(e => e.update(t, dt));
+        if (this._state === PsyanimScene.STATE.RUNNING)
+        {
+            this._entities.forEach(e => e.update(t, dt));
+        }
     }
 }
+
+const PSYANIM_SCENE_STATE = {
+    RUNNING: 0x01,
+    PAUSED: 0x02
+};
+
+PsyanimScene.STATE = PSYANIM_SCENE_STATE;

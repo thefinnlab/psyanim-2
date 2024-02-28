@@ -13,6 +13,13 @@ export default class PsyanimBehaviorTreeLeafNode extends PsyanimBehaviorTreeNode
         this.tickParameters = tickParameters;
     }
 
+    clone() {
+
+        let newLeafNode = new PsyanimBehaviorTreeLeafNode(this._name, this.tickDelegate, this.tickParameters);
+
+        return newLeafNode;
+    }
+
     tick() {
         
         if (this.tickDelegate)
@@ -30,11 +37,13 @@ export default class PsyanimBehaviorTreeLeafNode extends PsyanimBehaviorTreeNode
 
             this.validateTaskStatus(status);
 
-            return status;
+            this._status = status;
         }
         else
         {
-            return PsyanimBehaviorTreeNode.STATUS.FAILURE;
+            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
         }
+
+        return this._status;
     }
 }

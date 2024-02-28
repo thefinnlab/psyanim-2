@@ -6,11 +6,17 @@ export default class PsyanimBehaviorTreeNode {
 
         this._name = name;
         this._children = [];
+        this._status = PsyanimBehaviorTreeNode.STATUS.UNTICKED;
     }
 
     get name() {
 
         return this._name;
+    }
+
+    get status() {
+
+        return this._status;
     }
 
     get children() {
@@ -25,7 +31,8 @@ export default class PsyanimBehaviorTreeNode {
 
     validateTaskStatus(status) {
 
-        let isValid = (status === PsyanimBehaviorTreeNode.STATUS.RUNNING ||
+        let isValid = (status === PsyanimBehaviorTreeNode.STATUS.UNTICKED ||
+            status === PsyanimBehaviorTreeNode.STATUS.RUNNING ||
             status === PsyanimBehaviorTreeNode.STATUS.SUCCESS || 
             status === PsyanimBehaviorTreeNode.STATUS.FAILURE);
 
@@ -37,6 +44,7 @@ export default class PsyanimBehaviorTreeNode {
 
     reset() {
 
+        this._status = PsyanimBehaviorTreeNode.STATUS.UNTICKED;
         this._children.forEach(child => child.reset());
     }
 
@@ -44,19 +52,24 @@ export default class PsyanimBehaviorTreeNode {
 
         if (this._children.length === 0)
         {
-            return PsyanimBehaviorTreeNode.STATUS.FAILURE;
+            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
+        }
+        else
+        {
+            let childStatus = this._children[0].tick();
+
+            this.validateTaskStatus(childStatus);
+    
+            this._status = childStatus;    
         }
 
-        let childStatus = this._children[0].tick();
-
-        this.validateTaskStatus(childStatus);
-
-        return childStatus;
+        return this._status;
     }
 }
 
 const STATUS_ENUM = {
-    FAILURE: 0X00,
+    UNTICKED: -1,
+    FAILURE: 0x00,
     SUCCESS: 0x01,
     RUNNING: 0x02
 };

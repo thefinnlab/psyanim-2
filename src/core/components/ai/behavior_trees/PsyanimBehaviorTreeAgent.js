@@ -57,7 +57,8 @@ export default class PsyanimBehaviorTreeAgent extends PsyanimComponent {
 
         let status = this._tree.tick();
 
-        if (status === PsyanimBehaviorTreeNode.STATUS.FAILURE)
+        if (status === PsyanimBehaviorTreeNode.STATUS.FAILURE ||
+            status === PsyanimBehaviorTreeNode.STATUS.SUCCESS)
         {
             this._tree.reset();
         }

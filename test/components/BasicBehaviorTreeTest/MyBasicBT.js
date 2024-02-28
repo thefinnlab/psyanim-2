@@ -5,11 +5,13 @@ import PsyanimComponent from '../../../src/core/PsyanimComponent.js';
 import PsyanimBehaviorTree from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTree.js';
 import PsyanimBehaviorTreeNode from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeNode.js';
 
+import PsyanimBehaviorTreeAgent from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeAgent.js';
+
 import PsyanimBehaviorTreeSequenceNode from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeSequenceNode.js';
 import PsyanimBehaviorTreeSelectorNode from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeSelectorNode.js';
 import PsyanimBehaviorTreeLeafNode from '../../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeLeafNode.js';
 
-export default class MyBasicBT extends PsyanimComponent {
+export default class MyBasicBT extends PsyanimBehaviorTreeAgent {
 
     idleDuration;
     walkDuration;
@@ -53,47 +55,6 @@ export default class MyBasicBT extends PsyanimComponent {
         this._idleTimer = 0;
         this._walkTimer = 0;
         this._eatTimer = 0;
-
-        this._tree = new PsyanimBehaviorTree();
-
-        let walkCanFailLeaf = new PsyanimBehaviorTreeLeafNode("walkCanFail", 
-            this.walk.bind(this), { canFail: true });
-            
-        let eatCanFailLeaf = new PsyanimBehaviorTreeLeafNode("eatCanFail", 
-            this.eat.bind(this), { canFail: true });
-
-        let walkLeaf = new PsyanimBehaviorTreeLeafNode("walk", this.walk.bind(this));
-        let eatLeaf = new PsyanimBehaviorTreeLeafNode("eat", this.eat.bind(this));
-        let idleLeaf = new PsyanimBehaviorTreeLeafNode("idle", this.idle.bind(this));
-
-        let resetLeaf = new PsyanimBehaviorTreeLeafNode("reset", this.resetBehaviorTree.bind(this));
-
-        let eatLunchSelector = new PsyanimBehaviorTreeSelectorNode("eatLunchSelector");
-
-        eatLunchSelector.addChild(eatCanFailLeaf);
-        eatLunchSelector.addChild(walkCanFailLeaf);
-
-        let doWorkSequence = new PsyanimBehaviorTreeSequenceNode("doWork");
-
-        doWorkSequence.addChild(idleLeaf);
-        doWorkSequence.addChild(walkLeaf);
-        doWorkSequence.addChild(eatLeaf);
-        doWorkSequence.addChild(idleLeaf);
-
-        let mainSelector = new PsyanimBehaviorTreeSelectorNode("mainSelector");
-
-        mainSelector.addChild(eatLunchSelector);
-        mainSelector.addChild(doWorkSequence);
-
-        let mainSequence = new PsyanimBehaviorTreeSequenceNode("mainSequence");
-
-        mainSequence.addChild(resetLeaf);
-        mainSequence.addChild(idleLeaf);
-        mainSequence.addChild(mainSelector);
-
-        this._tree.addChild(mainSequence);
-
-        this._tree.printTree();
     }
 
     resetBehaviorTree(params) {
@@ -201,35 +162,6 @@ export default class MyBasicBT extends PsyanimComponent {
         return PsyanimBehaviorTreeNode.STATUS.RUNNING;
     }
 
-    _testPrintTree() {
-
-        let node1 = new PsyanimBehaviorTreeNode("node1");
-        let node2 = new PsyanimBehaviorTreeNode("node2");
-        let node3 = new PsyanimBehaviorTreeNode("node3");
-
-        this._tree.addChild(node1);
-        this._tree.addChild(node2);
-        this._tree.addChild(node3);
-
-        let node4 = new PsyanimBehaviorTreeNode("node4");
-        let node5 = new PsyanimBehaviorTreeNode("node5");
-        let node6 = new PsyanimBehaviorTreeNode("node6");
-
-        node1.addChild(node4);
-        node1.addChild(node5);
-        node3.addChild(node6);
-
-        let node7 = new PsyanimBehaviorTreeNode("node7");
-        let node8 = new PsyanimBehaviorTreeNode("node8");
-        let node9 = new PsyanimBehaviorTreeNode("node9");
-
-        node2.addChild(node7);
-        node7.addChild(node8);
-        node8.addChild(node9);
-
-        this._tree.printTree();
-    }
-
     onEnable() {
 
         super.onEnable();
@@ -243,6 +175,45 @@ export default class MyBasicBT extends PsyanimComponent {
     afterCreate() {
 
         super.afterCreate();
+
+        let walkCanFailLeaf = new PsyanimBehaviorTreeLeafNode("walkCanFail", 
+            this.walk.bind(this), { canFail: true });
+            
+        let eatCanFailLeaf = new PsyanimBehaviorTreeLeafNode("eatCanFail", 
+            this.eat.bind(this), { canFail: true });
+
+        let walkLeaf = new PsyanimBehaviorTreeLeafNode("walk", this.walk.bind(this));
+        let eatLeaf = new PsyanimBehaviorTreeLeafNode("eat", this.eat.bind(this));
+        let idleLeaf = new PsyanimBehaviorTreeLeafNode("idle", this.idle.bind(this));
+
+        let resetLeaf = new PsyanimBehaviorTreeLeafNode("reset", this.resetBehaviorTree.bind(this));
+
+        let eatLunchSelector = new PsyanimBehaviorTreeSelectorNode("eatLunchSelector");
+
+        eatLunchSelector.addChild(eatCanFailLeaf);
+        eatLunchSelector.addChild(walkCanFailLeaf);
+
+        let doWorkSequence = new PsyanimBehaviorTreeSequenceNode("doWork");
+
+        doWorkSequence.addChild(idleLeaf.clone());
+        doWorkSequence.addChild(walkLeaf);
+        doWorkSequence.addChild(eatLeaf);
+        doWorkSequence.addChild(idleLeaf.clone());
+
+        let mainSelector = new PsyanimBehaviorTreeSelectorNode("mainSelector");
+
+        mainSelector.addChild(eatLunchSelector);
+        mainSelector.addChild(doWorkSequence);
+
+        let mainSequence = new PsyanimBehaviorTreeSequenceNode("mainSequence");
+
+        mainSequence.addChild(resetLeaf);
+        mainSequence.addChild(idleLeaf.clone());
+        mainSequence.addChild(mainSelector);
+
+        this._tree.addChild(mainSequence);
+
+        this._tree.printTree();
     }
 
     beforeShutdown() {
@@ -263,8 +234,6 @@ export default class MyBasicBT extends PsyanimComponent {
     update(t, dt) {
         
         super.update(t, dt);
-
-        this._tree.tick();
 
         if (this._state === MyBasicBT.STATE.WALK)
         {

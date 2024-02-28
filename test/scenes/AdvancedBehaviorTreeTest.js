@@ -15,6 +15,8 @@ import PsyanimSensor from '../../src/core/components/physics/PsyanimSensor.js';
 
 import MyAdvancedBehaviorTreeTest from '../components/AdvancedBehaviorTreeTest/MyAdvancedBehaviorTreeTest.js';
 
+import PsyanimBehaviorTreeDebugger from '../../src/core/components/ai/behavior_trees/PsyanimBehaviorTreeDebugger.js';
+
 import MyItemSpawner from '../components/HFSMTest/MyItemSpawner.js';
 
 export default {
@@ -150,6 +152,12 @@ export default {
                             entityName: 'agent',
                             componentType: PsyanimFleeAgent
                         }
+                    }
+                },
+                {
+                    type: PsyanimBehaviorTreeDebugger,
+                    params: {
+                        behaviorTreeAgentNames: [ 'agent' ]
                     }
                 }
             ]
