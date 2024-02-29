@@ -44,25 +44,6 @@ import BasicBehaviorTreeTest from './scenes/BasicBehaviorTreeTest.js';
 
 import AdvancedBehaviorTreeTest from './scenes/AdvancedBehaviorTreeTest.js';
 
-// react app
-import React from 'react';
-import { createRoot } from 'react-dom/client';
-
-import PsyanimTestApp from './PsyanimTestApp.jsx';
-
-// roboto font for mui
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-
-/**
- *  Setup react app:
- */
-
-createRoot(document.getElementById('psyanim-app'))
-    .render(<PsyanimTestApp/>);
-
 /**
  *  Setup Psyanim App - first register scenes:
  */
@@ -129,5 +110,7 @@ PsyanimApp.Instance.config.registerScene(PsyanimDebugLoggerTest);
 /**
  *  Make config edits & run the app
  */
+
+PsyanimApp.Instance.run();
 
 PsyanimApp.Instance.config.setDebugEnabled(true);
