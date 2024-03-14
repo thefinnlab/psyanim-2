@@ -21,8 +21,6 @@ export default class PsyanimPredatorChargeState extends PsyanimFSMState {
 
         super(fsm);
 
-        console.warn("TODO: make sure the predator never chooses a direction that's into a wall!");
-
         this.subtlety = 30;
         this.subtletyLag = 500;
 

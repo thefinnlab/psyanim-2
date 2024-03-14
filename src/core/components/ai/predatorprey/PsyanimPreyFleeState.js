@@ -19,8 +19,6 @@ export default class PsyanimPreyFleeState extends PsyanimFSMState {
 
         super(fsm);
 
-        console.warn("TODO: make sure the predator never chooses a direction that's into a wall!");
-
         this.subtlety = 30; // degrees
         this.subtletyLag = 500; // ms
 

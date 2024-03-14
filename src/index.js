@@ -76,6 +76,9 @@ import PsyanimPlayfightFSM from './core/components/ai/playfight/PsyanimPlayfight
 import PsyanimPlayfightSeparationFSM from './core/components/ai/playfight/PsyanimPlayfightSeparationFSM.js';
 import PsyanimPlayfightHFSM from './core/components/ai/playfight/PsyanimPlayfightHFSM.js';
 
+import PsyanimPredatorFSM from './core/components/ai/predatorprey/PsyanimPredatorFSM.js';
+import PsyanimPreyFSM from './core/components/ai/predatorprey/PsyanimPreyFSM.js';
+
 // ui
 import PsyanimExperimentControls from './core/components/ui/PsyanimExperimentControls.js';
 import PsyanimSceneTitle from './core/components/ui/PsyanimSceneTitle.js';
@@ -201,6 +204,9 @@ export {
     PsyanimPlayfightFSM,
     PsyanimPlayfightSeparationFSM,
     PsyanimPlayfightHFSM,
+
+    PsyanimPredatorFSM,
+    PsyanimPreyFSM,
 
     // ui
     PsyanimExperimentControls,
