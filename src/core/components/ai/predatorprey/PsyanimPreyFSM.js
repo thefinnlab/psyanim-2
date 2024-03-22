@@ -119,6 +119,13 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
      */
     seekTargetStoppingDistance;
 
+    /***********************************************************************************************/
+    /*********************************** Component Parameters **************************************/
+    /***********************************************************************************************/
+
+    /** Vehicle params */
+    nSamplesForLookSmoothing;
+
     constructor(entity) {
 
         super(entity);
@@ -153,6 +160,9 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
             { x: 150, y: 300 }, // left middle
             { x: 650, y: 300 }, // right middle
         ];
+
+        // vehicle component
+        this.nSamplesForLookSmoothing = 16;
 
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
@@ -207,6 +217,9 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this._fleeBehavior.maxSpeed = this.maxFleeSpeed;
         this._fleeBehavior.maxAcceleration = this.maxFleeAcceleration;
         this._fleeBehavior.panicDistance = this.panicDistance;
+
+        // vehicle component
+        this._vehicle.nSamplesForLookSmoothing = this.nSamplesForLookSmoothing;
     }
 
     beforeShutdown() {

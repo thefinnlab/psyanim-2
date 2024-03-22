@@ -118,6 +118,13 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
      */
     outerDecelerationRadius;
 
+    /***********************************************************************************************/
+    /*********************************** Component Parameters **************************************/
+    /***********************************************************************************************/
+
+    /** Vehicle params */
+    nSamplesForLookSmoothing;
+
     constructor(entity) {
 
         super(entity);
@@ -145,6 +152,9 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
 
         this.innerDecelerationRadius = 12;
         this.outerDecelerationRadius = 30;
+
+        // vehicle component
+        this.nSamplesForLookSmoothing = 16;
 
         // attach behaviors for this FSM
         this._vehicle = this.entity.addComponent(PsyanimVehicle);
@@ -198,6 +208,9 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         this._wanderBehavior.radius = this.wanderRadius;
         this._wanderBehavior.offset = this.wanderOffset;
         this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
+
+        // vehicle component
+        this._vehicle.nSamplesForLookSmoothing = this.nSamplesForLookSmoothing;
     }
 
     beforeShutdown() {
