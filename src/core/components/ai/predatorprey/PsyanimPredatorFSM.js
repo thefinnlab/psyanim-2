@@ -21,12 +21,16 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     target;
 
     /**
+     *  [Range: 0 - 180]
+     *  [Default: 30]
      *  Maximum number of degrees which this agent will offset its chase direction.
      *  @type {Number}
      */
     subtlety;
 
     /**
+     *  [Range: 0 - 1000 ]
+     *  [Default: 500 ]
      *  Determines how often the agent will recompute its chase direction offset based on the `subtlety` parameter.
      *  @type {Number}
      */
@@ -37,42 +41,56 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     /***********************************************************************************************/
 
     /**
+     *  [Range:  1000 - 10000 ]
+     *  [Default: 2000 ]
      *  Amount of time, in millseconds, this agent will wander before attempting another charge.
      *  @type {Number}
      */
     averageWanderDuration;
 
     /**
+     *  [Range: 0 - 10000 ]
+     *  [Default: 500 ]
      *  Variance in wander duration, which gets recomputed each time agent enters wander state.
      *  @type {Number}
      */
     wanderDurationVariance;
 
     /**
+     *  [Range: 0.5 - 10.0 ]
+     *  [Default: 3 ]
      *  Maximum speed at which the agent will wander.
      *  @type {Number}
      */
     maxWanderSpeed;
 
     /**
+     *  [Range: 0.05 - 0.4 ]
+     *  [Default: 0.2]
      *  Maximum acceleration the agent can attain during wander.
      *  @type {Number}
      */
     maxWanderAcceleration;
     
     /**
+     *  [Range: 25 - 200 ]
+     *  [Default: 50 ]
      *  Radius of the wander circle.
      *  @type {Number}
      */
     wanderRadius;
     
     /**
+     *  [Range: 75 - 500 ]
+     *  [Default: 250 ]
      *  Distance the wander circle is offset from the agent's position.
      *  @type {Number}
      */
     wanderOffset;
     
     /**
+     *  [Range: 5 - 90 ]
+     *  [Default: 10 ]
      *  Maximum number of degrees the wander target can move around the wander circle per frame.
      *  @type {Number}
      */
@@ -83,36 +101,48 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     /***********************************************************************************************/
 
     /**
+     *  [Range: 1000 - 10000 ]
+     *  [Default: 2000 ]
      *  Average time which the agent will remain in a charge state.
      *  @type {Number} - milliseconds
      */
     averageChargeDuration;
 
     /**
+     *  [Range: 0 - 10000 ]
+     *  [Default: 500 ]
      *  Variance in charge duration, which is recomputed every time agent enters charge state.
      *  @type {Number} - milliseconds
      */
     chargeDurationVariance;
 
     /**
+     *  [Range: 1.5 - 10.0 ]
+     *  [Default: 3 ]
      *  Maximum speed agent can reach during charge.
      *  @type {Number}
      */
     maxChargeSpeed;
 
     /**
+     *  [Range: 0.05 - 0.4 ]
+     *  [Default: 0.2 ]
      *  Maximum acceleration agent can attain during a charge.
      *  @type {Number}
      */
     maxChargeAcceleration;
 
     /**
+     *  [Range: 0 - 100 ]
+     *  [Default: 12 ]
      *  Inner deceleration radius of 'Arrive behavior' used during charge.
      *  @type {Number}
      */
     innerDecelerationRadius;
 
     /**
+     *  [Range: 100 - 300 ]
+     *  [Default: 30 ]
      *  Outer deceleration radius of 'Arrive behavior' used during charge.
      *  @type {Number}
      */

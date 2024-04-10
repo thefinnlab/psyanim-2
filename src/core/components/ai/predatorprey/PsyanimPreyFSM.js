@@ -23,12 +23,16 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     target;
 
     /**
+     *  [Range: 0 - 180 ]
+     *  [Default: 30 ]
      *  Maximum number of degrees which this agent will offset it's flee direction.
      *  @type {Number}
      */
     subtlety;
 
     /**
+     *  [Range: 0 - 1000 ]
+     *  [Default: 500 ]
      *  Determines how often the agent will recompute it's flee direction based on the `subtlety` parameter.
      *  @type {Number}
      */    
@@ -39,30 +43,40 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     /***********************************************************************************************/
 
     /**
+     *  [Range: 0.5 - 10.0 ]
+     *  [Default: 3 ]
      *  Maximum speed at which the agent will wander.
      *  @type {Number}
      */
     maxWanderSpeed;
 
     /**
+     *  [Range: 0.05 - 0.4 ]
+     *  [Default: 0.2 ]
      *  Maximum acceleration the agent can attain during wander.
      *  @type {Number}
      */
     maxWanderAcceleration;
     
     /**
+     *  [Range: 25 - 200 ]
+     *  [Default: 50 ]
      *  Radius of the wander circle.
      *  @type {Number}
      */
     wanderRadius;
     
     /**
+     *  [Range: 75 - 500 ]
+     *  [Default: 250 ]
      *  Distance the wander circle is offset from the agent's position.
      *  @type {Number}
      */
     wanderOffset;
     
     /**
+     *  [Range: 5 - 90 ]
+     *  [Default: 20 ]
      *  Maximum number of degrees the wander target can move around the wander circle per frame.
      *  @type {Number}
      */
@@ -73,24 +87,32 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     /***********************************************************************************************/
 
     /**
+     *  [Range: 50 - 600 ]
+     *  [Default: 250 ]
      *  Min. distance, in 'px', to target in which this agent will flee to maintain.
      *  @type {Number}
      */
     panicDistance;
 
     /**
+     *  [Range: 0.5 - 10.0 ]
+     *  [Default: 3 ]
      *  Max. speed agent can travel at when fleeing from target agent
      *  @type {Number}
      */
     maxFleeSpeed;
 
     /**
+     *  [Range: 0.05 - 4.0 ]
+     *  [Default: 0.2 ]
      *  Max. rate at which agent can accelerate when fleeing from target agent
      *  @type {Number}
      */
     maxFleeAcceleration;
 
     /**
+     *  [Range: 25 - 200 ]
+     *  [Default: 50 ]
      *  Minimum distance from all screen boundaries required for this agent to remain in 'Flee' state.
      * 
      *  If distance to any screen boundary is less than this distance, agent will transition to wall avoidance.
