@@ -8,6 +8,11 @@ import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
 import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 
+/**
+ *  `PsyanimPredatorFSM` implements the `Predator v2` algorithm.
+ * 
+ *  Members marked with the `[advanced]` tag typically don't need to be modified. Although they can be modified, doing so can require tuning of several other parameters.
+ */
 export default class PsyanimPredatorFSM extends PsyanimFSM {
 
     /***********************************************************************************************/
@@ -73,6 +78,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     maxWanderAcceleration;
     
     /**
+     *  [***advanced***]
      *  [Range: 25 - 200 ]
      *  [Default: 50 ]
      *  Radius of the wander circle.
@@ -81,6 +87,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     wanderRadius;
     
     /**
+     *  [***advanced***]
      *  [Range: 75 - 500 ]
      *  [Default: 250 ]
      *  Distance the wander circle is offset from the agent's position.
@@ -89,6 +96,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     wanderOffset;
     
     /**
+     *  [***advanced***]
      *  [Range: 5 - 90 ]
      *  [Default: 10 ]
      *  Maximum number of degrees the wander target can move around the wander circle per frame.
@@ -133,6 +141,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     maxChargeAcceleration;
 
     /**
+     *  [***advanced***]
      *  [Range: 0 - 100 ]
      *  [Default: 12 ]
      *  Inner deceleration radius of 'Arrive behavior' used during charge.
@@ -141,6 +150,7 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     innerDecelerationRadius;
 
     /**
+     *  [***advanced***]
      *  [Range: 100 - 300 ]
      *  [Default: 30 ]
      *  Outer deceleration radius of 'Arrive behavior' used during charge.
@@ -152,7 +162,11 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     /*********************************** Component Parameters **************************************/
     /***********************************************************************************************/
 
-    /** Vehicle params */
+    /** 
+     * [***advanced***]
+     * Number of samples used for vehicle smoothing
+     * @type {Number}
+     */
     nSamplesForLookSmoothing;
 
     constructor(entity) {

@@ -4,6 +4,11 @@ import {
     PsyanimDebug
 } from 'psyanim-utils';
 
+/**
+ *  `PsyanimMimic` component allows an entity to 'mimic' the behavior of `target` entity.
+ * 
+ *  For a 'Predator-Prey-Mimic' scene, we should set the prey's 'color' to white so it is invisible on the canvas.  We should also set the 'depth' field of the entity's shapeParams to '0' for the prey, and '1' for the mimic.  This ensures the mimic is always drawn on top of the prey in the canvas., since they can overlap.
+ */
 export default class PsyanimMimic extends PsyanimComponent {
 
     /**
@@ -13,6 +18,8 @@ export default class PsyanimMimic extends PsyanimComponent {
     target;
 
     /**
+     *  [Range: 0 - 360 ]
+     *  [Default: 30 ]
      *  Angle, in degrees, by which to rotate all of the target's displacements before applying them
      *  to this entity.
      *  @type {Number}

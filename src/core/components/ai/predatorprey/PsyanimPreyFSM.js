@@ -10,6 +10,11 @@ import PsyanimPreyWanderState from './PsyanimPreyWanderState.js';
 import PsyanimPreyFleeState from './PsyanimPreyFleeState.js';
 import PsyanimPreyWallAvoidanceState from './PsyanimPreyWallAvoidanceState.js';
 
+/**
+ *  `PsyanimPreyFSM` implements the `Prey v2` algorithm.
+ * 
+ *  Members marked with the `[advanced]` tag typically don't need to be modified. Although they can be modified, doing so can require tuning of several other parameters.
+ */
 export default class PsyanimPreyFSM extends PsyanimFSM {
 
     /***********************************************************************************************/
@@ -59,6 +64,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     maxWanderAcceleration;
     
     /**
+     *  [***advanced***]
      *  [Range: 25 - 200 ]
      *  [Default: 50 ]
      *  Radius of the wander circle.
@@ -67,6 +73,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     wanderRadius;
     
     /**
+     *  [***advanced***]
      *  [Range: 75 - 500 ]
      *  [Default: 250 ]
      *  Distance the wander circle is offset from the agent's position.
@@ -75,6 +82,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     wanderOffset;
     
     /**
+     *  [***advanced***]
      *  [Range: 5 - 90 ]
      *  [Default: 20 ]
      *  Maximum number of degrees the wander target can move around the wander circle per frame.
@@ -111,6 +119,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     maxFleeAcceleration;
 
     /**
+     *  [***advanced***]
      *  [Range: 25 - 200 ]
      *  [Default: 50 ]
      *  Minimum distance from all screen boundaries required for this agent to remain in 'Flee' state.
@@ -125,6 +134,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     /***********************************************************************************************/
 
     /**
+     *  [***advanced***]
      *  List of points in the world where agent can seek away from wall before returning to a wander state.
      * 
      *  @type {Object[]}
@@ -134,6 +144,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     seekTargetLocations;
 
     /**
+     *  [***advanced***]
      *  Distance from current seek target before agent is considered to have reached it 
      *  and transitions back to wander state.
      * 
@@ -145,7 +156,11 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     /*********************************** Component Parameters **************************************/
     /***********************************************************************************************/
 
-    /** Vehicle params */
+    /** 
+     * [***advanced***]
+     * Number of samples used for vehicle smoothing
+     * @type {Number}
+     */
     nSamplesForLookSmoothing;
 
     constructor(entity) {

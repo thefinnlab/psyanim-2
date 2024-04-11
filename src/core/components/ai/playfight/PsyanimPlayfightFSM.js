@@ -15,50 +15,249 @@ import PsyanimPlayfightFleeState from './PsyanimPlayfightFleeState.js';
 
 import PsyanimSensor from '../../physics/PsyanimSensor.js';
 
+/**
+ *  `PsyanimPlayfightFSM` implements the `Playfight v2` algorithm.
+ * 
+ *  Members marked with the `[advanced]` tag typically don't need to be modified. Although they can be modified, doing so can require tuning of several other parameters.
+ */
 export default class PsyanimPlayfightFSM extends PsyanimFSM {
 
-    /** playfight params */
+    /***********************************************************************************************/
+    /********************************* Playfight FSM Parameters ************************************/
+    /***********************************************************************************************/
+
+    /**
+     *  Required field specifies the target entity this agent will playfight with.
+     *  @type {PsyanimEntity}
+     */
     target;
 
-    /** wander state params */
+    /***********************************************************************************************/
+    /********************************** Wander State Parameters ************************************/
+    /***********************************************************************************************/
+
+    /**
+     *  [Range: 500 - 50000 ]
+     *  [Default: 2000 ]
+     *  Average time, in milliseconds, the agents will wander before attacking target again.
+     *  @type {Number}
+     */
     breakDurationAverage; 
+
+    /**
+     *  [Range: 500 - 50000 ]
+     *  [Default: 1000 ]
+     *  Allowed variance in break duration.
+     *  @type {Number}
+     */
     breakDurationVariance;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 50 - 50000 ]
+     *  [Default: 150 ]
+     *  Minimum time, in milliseconds, the agent must remain in wander state before it can transition out.
+     *  @type {Number}
+     */
     minWanderDuration;
 
+    /**
+     *  [Range: 50 - 1000 ]
+     *  [Default: 200 ]
+     *  Minimum distance from target from which this agent will initiate a charge.
+     *  @type {Number}
+     */
     minTargetDistanceForCharge;
+
+    /**
+     *  [Range: 200 - 1000 ]
+     *  [Default: 500 ]
+     *  Maximum distance from target which this agent will initiate a charge.
+     *  @type {Number}
+     */
     maxTargetDistanceForCharge;
 
+    /**
+     *  [Range: true/false ]
+     *  [Default: true ]
+     *  Controls whether the agent can flee or charge from wander state if attacked.
+     *  @type {boolean}
+     */
     wanderFleeOrChargeWhenAttacked;
+
+    /**
+     *  [Range: 200 - 1000 ]
+     *  [Default: 250 ]
+     *  Distance from attacker which this agent will transition to flee or charge delay state, if allowed.
+     *  @type {Number}
+     */
     wanderPanicDistance;
+
+    /**
+     *  [Range: 0.0 - 1.0 ]
+     *  [Default: 0.5 ]
+     *  Probability that agent will flee vs. charge when attacker is within panicDistance.
+     *  @type {Number}
+     */
     wanderFleeRate;
 
+    /**
+     *  [Range: 500 - 50000 ]
+     *  [Default: 600 ]
+     *  Average time, in milliseconds, the agents will wander before charging.
+     *  @type {Number}
+     */
     averageChargeDelay;
+
+    /**
+     *  [Range: 50 - 50000 ]
+     *  [Default: 400 ]
+     *  Allowed variance in charge delay.
+     *  @type {Number}
+     */
     chargeDelayVariance;
 
+    /**
+     *  [***advanced***]
+     *  [Default: 75 ]
+     *  @type {Number}
+     */
     wanderSensorRadiusPadding;
 
-    /** flee state params */
+    /***********************************************************************************************/
+    /*********************************** Flee State Parameters *************************************/
+    /***********************************************************************************************/
+
+    /**
+     *  [Range: 500 - 50000 ]
+     *  [Default: 500 ]
+     *  Maximum time this agent can remain in flee state since entering.
+     *  @type {Number}
+     */
     maxFleeDuration;
 
-    /** charge state params */
+    /***********************************************************************************************/
+    /********************************** Charge State Parameters ************************************/
+    /***********************************************************************************************/
+
+    /**
+     *  [Range: 500 - 50000 ]
+     *  [Default: 1500 ]
+     *  Maximum time the agent can stay in charge state.
+     *  @type {Number}
+     */
     maxChargeDuration;
 
-    /** arrive behavior params */
+    /***********************************************************************************************/
+    /******************************** Arrive Behavior Parameters ***********************************/
+    /***********************************************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 9 ]
+     *  Maximum speed at which this agent can charge at it's target.
+     *  @type {Number}
+     */
     maxChargeSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.4 ]
+     *  Maximum acceleration this agent can reach when charging at it's target.
+     *  @type {Number}
+     */
     maxChargeAcceleration;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 12 ]
+     *  Distance, in px, from target which the agent will come to rest.
+     *  @type {Number}
+     */
     innerDecelerationRadius;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 30 ]
+     *  Distance, in px, from target which the agent will begin slowing down.
+     *  @type {Number}
+     */
     outerDecelerationRadius;
 
-    /** wander behavior params */
+    /***********************************************************************************************/
+    /******************************** Wander Behavior Parameters ***********************************/
+    /***********************************************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 4 ]
+     *  Maximum speed at which the agent will wander.
+     *  @type {Number}
+     */
     maxWanderSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.2 ]
+     *  Maximum acceleration the agent can attain during wander.
+     *  @type {Number}
+     */
     maxWanderAcceleration;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 50 ]
+     *  Radius of the wander circle.
+     *  @type {Number}
+     */
     wanderRadius;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 250 ]
+     *  Distance the wander circle is offset from the agent's position.
+     *  @type {Number}
+     */
     wanderOffset;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 3 - 360 ]
+     *  [Default: 20 ]
+     *  Maximum number of degrees the wander target can move around the wander circle per frame.
+     *  @type {Number}
+     */
     maxWanderAngleChangePerFrame;
 
-    /** flee behavior params */
+    /***********************************************************************************************/
+    /********************************* Flee Behavior Parameters ************************************/
+    /***********************************************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 12 ]
+     *  Maximum speed this agent can flee from the target.
+     *  @type {Number}
+     */
     maxFleeSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.5 ]
+     *  Maximum acceleration this agent can reach during flee from target.
+     *  @type {Number}
+     */
     maxFleeAcceleration;
+
+    /**
+     *  [Range: - ]
+     *  [Default: ]
+     *  @type {Number}
+     */
     fleePanicDistance;
 
     constructor(entity) {
