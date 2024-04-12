@@ -23,8 +23,8 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
 
         super(fsm);
 
-        this.subtlety = 30; // degrees
-        this.subtletyLag = 500; // ms
+        this.subtlety = 10; // degrees
+        this.subtletyLag = 1000; // ms
 
         this.seekTargetStoppingDistance = 50;
 
@@ -73,6 +73,36 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         this._seekBehavior = this.entity.getComponent(PsyanimSeekBehavior);
     }
 
+    _findSafeSeekTargetLocation() {
+
+        this.currentSeekTargetLocation = null;
+        let currentSeekTargetOrientation = 2;
+
+        let directionToTarget = this.target.position
+            .subtract(this.entity.position)
+            .normalize();
+
+        for (let i = 0; i < this.seekTargetLocations.length; ++i)
+        {
+            let seekTargetLocation = new Phaser.Math.Vector2(
+                this.seekTargetLocations[i].x,
+                this.seekTargetLocations[i].y
+            );
+
+            let directionToSeekTarget = seekTargetLocation.clone()
+                .subtract(this.entity.position)
+                .normalize();
+
+            let relativeOrientation = directionToSeekTarget.dot(directionToTarget);
+
+            if (relativeOrientation < currentSeekTargetOrientation)
+            {
+                this.currentSeekTargetLocation = seekTargetLocation.clone();
+                currentSeekTargetOrientation = relativeOrientation;
+            }
+        }
+    }
+
     enter() {
 
         super.enter();
@@ -85,12 +115,10 @@ export default class PsyanimPreyWallAvoidanceState extends PsyanimFSMState {
         this._seekBehavior.maxSpeed = this._fleeBehavior.maxSpeed;
         this._seekBehavior.maxAcceleration = this._fleeBehavior.maxAcceleration;
 
-        let index = PsyanimUtils.getRandomInt(0, this.seekTargetLocations.length - 1);
+        // find a safe location to seek away from predator
+        this._findSafeSeekTargetLocation();
 
-        this.currentSeekTargetLocation = new Phaser.Math.Vector2(
-            this.seekTargetLocations[index].x,
-            this.seekTargetLocations[index].y);
-
+        // update our seek behavior's target
         this._seekTarget.position = this.currentSeekTargetLocation;
 
         if (this.fsm.debugGraphics)

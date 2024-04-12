@@ -36,7 +36,7 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     subtlety;
 
     /**
-     *  [Range: 0 - 1000 ]
+     *  [Range: 0 - 10000 ]
      *  [Default: 500 ]
      *  Determines how often the agent will recompute it's flee direction based on the `subtlety` parameter.
      *  @type {Number}
@@ -135,6 +135,24 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
 
     /**
      *  [***advanced***]
+     *  [Range: 5 - 90]
+     *  [Default: 10]
+     *  Maximum number of degrees which this agent will offset it's flee direction during wall avoidance.
+     *  @type {Number}
+     */
+    wallAvoidanceSubtlety;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 0 - 10000 ]
+     *  [Default: 1000 ]
+     *  Determines how often the agent will recompute it's flee direction based on the `wallAvoidanceSubtlety` parameter.
+     *  @type {Number}
+     */    
+    wallAvoidanceSubtletyLag;
+
+    /**
+     *  [***advanced***]
      *  List of points in the world where agent can seek away from wall before returning to a wander state.
      * 
      *  @type {Object[]}
@@ -185,6 +203,9 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this.minimumWallSeparation = 50;
 
         // wall avoidance params
+        this.wallAvoidanceSubtlety = 10;
+        this.wallAvoidanceSubtletyLag = 1000;
+
         this.seekTargetStoppingDistance = 50;
 
         this.seekTargetLocations = [
@@ -239,8 +260,8 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
 
         // wall avoidance state
         this._wallAvoidanceState.target = this.target;
-        this._wallAvoidanceState.subtlety = this.subtlety;
-        this._wallAvoidanceState.subtletyLag = this.subtletyLag;
+        this._wallAvoidanceState.subtlety = this.wallAvoidanceSubtlety;
+        this._wallAvoidanceState.subtletyLag = this.wallAvoidanceSubtletyLag;
 
         // wander behavior
         this._wanderBehavior.seekBehavior = this._seekBehavior;
