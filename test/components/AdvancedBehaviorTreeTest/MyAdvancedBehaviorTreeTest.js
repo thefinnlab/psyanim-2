@@ -47,6 +47,35 @@ export default class MyAdvancedBehaviorTreeTest extends PsyanimBehaviorTreeAgent
 
         super.afterCreate();
 
+        /**
+         *  Tree structure:
+         * 
+         *  root
+         *  --- mainSelector
+         *  ------ itemCollectionAndPatrolDecorator
+         *  --------- itemCollectionAndPatrol
+         *  ------------ patrolSequenceDecorator
+         *  --------------- patrolSequence
+         *  ------------------ selectTarget2
+         *  ------------------ moveToTarget
+         *  ------------------ selectTarget3
+         *  ------------------ moveToTarget
+         *  ------------------ selectTarget2
+         *  ------------------ moveToTarget
+         *  ------------------ selectTarget1
+         *  ------------------ moveToTarget
+         *  ------------ itemCollectionDecorator
+         *  --------------- moveToTarget
+         *  ------ idleFleeSequence
+         *  --------- selectPlayerAsTarget
+         *  --------- fleeFromTarget
+         *  --------- playerNotNearbyDecorator
+         *  ------------ idleSequence
+         *  --------------- resetIdleTimer
+         *  --------------- disableAllSteeringAgents
+         *  --------------- idleLeaf
+         */
+
         this._tree = new PsyanimBehaviorTree();
 
         console.warn("TODO: should we be talking about 'tasks' instead of nodes here?");
