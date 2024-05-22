@@ -11,6 +11,8 @@ import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter.js';
 /**
  *  _PsyanimJsPsychPlugin is a private singleton instance that maintains state across all trials
  *  and handles all communication with PsyanimApp.
+ * 
+ *  @ignore _PsyanimJsPsychPlugin
  */
 class _PsyanimJsPsychPlugin {
 

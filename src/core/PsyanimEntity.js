@@ -12,11 +12,15 @@ import {
 } from 'psyanim-utils';
 
 /**
- *  Any object that exists in a scene, regardless of its visual representation, is called a `PsyanimEntity`.
+ *  @module PsyanimEntity
+ */
+
+/**
+ *  @classdesc Any object that exists in a scene, regardless of its visual representation, is called a `PsyanimEntity`.
  *
- *  More technically, it's an abstraction for anything that exists in a `Psyanim Scene` with a particular location, rotation, and (optionally) a visual representation which can have physics applied to it.
+ *  <p>More technically, it's an abstraction for anything that exists in a `Psyanim Scene` with a particular location, rotation, and (optionally) a visual representation which can have physics applied to it.</p>
  *
- *  Entities may or may not have a visual representation in the scene.
+ *  <p>Entities may or may not have a visual representation in the scene.</p>
  *
  *  Moreover, entities alone do not have any logic or behaviors. While entities have no user-defined state, they do have a position, orientation and velocity in the world, and can have forces / accelerations applied to them.
  *
@@ -44,6 +48,7 @@ import {
  *      1 position = 1 px
  *      1 speed = 1 px per step
  *      1 step = 16.666ms"
+ * 
  */
 export default class PsyanimEntity extends Phaser.Physics.Matter.Sprite {
 

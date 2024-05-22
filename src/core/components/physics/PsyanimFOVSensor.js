@@ -2,6 +2,12 @@ import Phaser from 'phaser';
 
 import PsyanimComponent from '../../PsyanimComponent.js';
 
+/**
+ * 
+ * Field-of-View Sensor
+ * 
+ * @module
+ */
 export default class PsyanimFOVSensor extends PsyanimComponent {
 
     fovAngle; // degrees
