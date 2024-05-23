@@ -4,10 +4,6 @@ import PsyanimComponent from "../../PsyanimComponent.js";
 import PsyanimClickToMove from './PsyanimClickToMove.js';
 
 /**
- *  @module PsyanimPlayerController
- */
-
-/**
  * The `PsyanimPlayerController` provides a `WASD keyboard controller` for controlling any entity in a `PsyanimScene`.
  * 
  * If used with a `PsyanimClickToMove` controller, WASD inputs will interrupt click-to-move traversal path-following.
