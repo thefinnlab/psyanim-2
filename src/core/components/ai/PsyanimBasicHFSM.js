@@ -4,11 +4,29 @@ import { PsyanimDebug } from "psyanim-utils";
 
 import PsyanimBasicHFSMInterrupt from "./PsyanimBasicHFSMInterrupt.js";
 
+/**
+ *  `PsyanimBasicHFSM` is a variant of a hierarchical state machine which allows building a state machine
+ *  that's composed of other state machines, with a stack-based mechanism for interrupting a state machine
+ *  to begin execution of another, or to resume execution of a previously running machine from same state.
+ */
 export default class PsyanimBasicHFSM extends PsyanimComponent {
 
+    /**
+     *  Initial state machine to execute on start
+     *  @type {PsyanimFSM}
+     */
     initialSubStateMachine;
 
+    /**
+     *  Enabled debug logging in console
+     *  @type {boolean}
+     */
     debugLogging;
+
+    /**
+     *  Enabled debug visualization in phaser canvas
+     *  @type {boolean}
+     */
     debugGraphics;
 
     constructor(entity) {
@@ -26,16 +44,27 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         this.events = new Phaser.Events.EventEmitter();
     }
 
+    /**
+     * The name of the currently executing PsyanimFSM instance.
+     */
     get currentFSMName() {
 
         return this.getCurrentSubStateMachine().constructor.name;
     }
 
+    /**
+     * Returns the name of the current state for the currently executing PsyanimFSM instance.
+     */
     get currentStateName() {
 
         return this.getCurrentSubStateMachine().currentStateName;
     }
 
+    /**
+     * Returns a snapshot of the current state variables for all sub-state machines in the HFSM.
+     * 
+     * @returns {Object} - object containing the state variables as key-value pairs.
+     */
     getStateVariableSnapshot() {
 
         let fsmSnapshots = [];
@@ -56,6 +85,11 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         return fsmSnapshots;
     }
 
+    /**
+     * Returns a JSON object containing this HFSM's state variables
+     * 
+     * @returns {string} - a stringified version of this HFSM's state variables
+     */
     stringifyStateVariables() {
 
         let data = [];
@@ -73,16 +107,33 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         return JSON.stringify(data);
     }
 
+    /**
+     * Returns a reference to the currently executing sub-state machine
+     * 
+     * @returns {PsyanimFSM} - object of type that inherits from PsyanimFSM
+     */
     getCurrentSubStateMachine() {
 
         return this._fsmStack.at(-1);
     }
 
+    /**
+     * Gets a reference to sub-state machine of type `fsmType`
+     * 
+     * @param {PsyanimFSM} fsmType - type that inherits from `PsyanimFSM`
+     * @returns {PsyanimFSM}
+     */
     getSubStateMachine(fsmType) {
         
         return this._subStateMachines.find(fsm => fsm instanceof fsmType);
     }
 
+    /**
+     * Returns true if this HFSM is composed of an FSM of type `fsmType`
+     * 
+     * @param {PsyanimFSM} fsmType - type that inherits from `PsyanimFSM`
+     * @returns {boolean}
+     */
     hasSubStateMachine(fsmType) {
 
         if (this.getSubStateMachine(fsmType))
@@ -93,11 +144,24 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         return false;
     }
 
+    /**
+     * Adds a sub-state machine to this HFSM.
+     * 
+     * @param {PsyanimFSM} fsm - instance of a type that inherits from `PsyanimFSM`
+     */
     addSubStateMachine(fsm) {
 
         this._subStateMachines.push(fsm);
     }
 
+    /**
+     * TODO: complete this documentation
+     * 
+     * @param {PsyanimFSM} sourceFSMType - instance of a type that inherits from `PsyanimFSM`
+     * @param {string} variableKey - name of variable key to be checked in the `condition` function
+     * @param {function} condition - function that accepts the value of `variableKey` variable and returns true or false
+     * @param {PsyanimFSM} [destinationFSMType] - instance of a type that inherits from `PsyanimFSM`
+     */
     addInterrupt(sourceFSMType, variableKey, condition, destinationFSMType = null) {
 
         let sourceFSM = this.getSubStateMachine(sourceFSMType);

@@ -1,8 +1,11 @@
 import PsyanimComponent from '../../PsyanimComponent.js';
 import PsyanimFSMState from './PsyanimFSMState.js';
 
-import { PsyanimDebug } from 'psyanim-utils';
-
+/**
+ *  `PsyanimFSM` is the main finite-state machine class for the Psyanim Decision-Making framework.
+ *  
+ *  At any time, execution of this state machine may be resumed, paused, stopped and restarted programmatically.
+ */
 export default class PsyanimFSM extends PsyanimComponent {
 
     /**
@@ -38,11 +41,20 @@ export default class PsyanimFSM extends PsyanimComponent {
         this.events = new Phaser.Events.EventEmitter();
     }
 
+    /**
+     *  The name of the currently executing state.
+     *  @type {string}
+     */
     get currentStateName() {
 
         return this._currentState.constructor.name;
     }
 
+    /**
+     * Returns a snapshot of the current state variables for this FSM.
+     * 
+     * @returns {Object} - object containing state variables as key-value pairs
+     */
     getStateVariableSnapshot() {
 
         let snapshot = {};
@@ -60,16 +72,33 @@ export default class PsyanimFSM extends PsyanimComponent {
         return snapshot;
     }
 
+    /**
+     * Returns a JSON object containing this FSM's state variables
+     * 
+     * @returns {string} - a stringified version of this FSM's state variable object
+     */
     stringifyStateVariables() {
 
         return JSON.stringify(this._stateVariables, null, 4);
     }
 
+    /**
+     * Returns a reference to the state of type 'stateType' or null if not found
+     * 
+     * @param {PsyanimFSMState} stateType - a state type that inherits from PsyanimFSMState 
+     * @returns {PsyanimFSMState} 
+     */
     getState(stateType) {
 
         return this._states.find(state => state instanceof stateType);
     }
 
+    /**
+     * Returns `true` if this state machine is composed of `stateType`
+     * 
+     * @param {PsyanimFSMState} stateType - a state type that inherits from PsyanimFSMState
+     * @returns {boolean}
+     */
     hasState(stateType) {
 
         if (this.getState(stateType))
@@ -80,6 +109,12 @@ export default class PsyanimFSM extends PsyanimComponent {
         return false;
     }
 
+    /**
+     * This method creates a new state of type `stateType` within this state machine.
+     * 
+     * @param {PsyanimFSMState} stateType - a state type that inherits from PsyanimFSMState
+     * @returns a reference to the newly created state instance
+     */
     addState(stateType) {
 
         if (this.hasState(stateType))
@@ -96,7 +131,7 @@ export default class PsyanimFSM extends PsyanimComponent {
     }
 
     /**
-     *  The state that is currently executing.
+     *  A reference to the state that is currently executing.
      *  @type {PsyanimFSMState}
      */
     get currentState() {
@@ -117,21 +152,42 @@ export default class PsyanimFSM extends PsyanimComponent {
         }
     }
 
+    /**
+     * Checks if a state variable is defined for this state machine
+     * 
+     * @param {string} key
+     * @returns `true` if the variable is defined for this state machine
+     */
     stateVariableExists(key) {
 
         return Object.hasOwn(this._stateVariables, key);
     }
 
+    /**
+     * Sets the value of a state variable for this state machine.
+     * 
+     * @param {string} key 
+     * @param {*} value 
+     */
     setStateVariable(key, value) {
 
         this._stateVariables[key] = value;
     }
 
+    /**
+     * Gets the value of a state variable for this state machine.
+     * 
+     * @param {string} key 
+     * @returns {*} - the value of the state variable for `key`
+     */
     getStateVariable(key) {
 
         return this._stateVariables[key];
     }
 
+    /**
+     * Pauses the execution of this state machine, w/o resetting it's state (can be resumed in same state).
+     */
     pause() {
 
         if (this._running)
@@ -142,6 +198,11 @@ export default class PsyanimFSM extends PsyanimComponent {
         }
     }
 
+    /**
+     * Stops the execution of this state machine.
+     * 
+     * Current state is reset to initial state.
+     */
     stop() {
 
         if (this._running)
@@ -161,12 +222,18 @@ export default class PsyanimFSM extends PsyanimComponent {
         }
     }
 
+    /**
+     * Stops the execution of this state machine before resuming from initial state.
+     */
     restart() {
 
         this.stop();
         this.resume();
     }
 
+    /**
+     * Resumes the execution of this state machine.
+     */
     resume() {
 
         if (this._running === false)
