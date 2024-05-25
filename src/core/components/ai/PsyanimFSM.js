@@ -139,6 +139,9 @@ export default class PsyanimFSM extends PsyanimComponent {
         return this._currentState;
     }
 
+    /**
+     *  If overriden, must call super.afterCreate() in child class.
+     */
     afterCreate() {
 
         this._currentState = this.initialState;
@@ -244,21 +247,33 @@ export default class PsyanimFSM extends PsyanimComponent {
         }
     }
 
+    /**
+     * This method is called when this FSM is paused. Child classes may override to add custom logic, but must call `super.onPause()`
+     */
     onPause() {
 
         this._currentState.onPause();
     }
 
+    /**
+     * This method is called when this FSM is stopped. Child classes may override to add custom logic, but must call `super.onStop()`
+     */
     onStop() {
 
         this._currentState.onStop();
     }
 
+    /**
+     * This method is called when this FSM is resumed. Child classes may override to add custom logic, but must call `super.onResume()`
+     */
     onResume() {
 
         this._currentState.onResume();
     }
 
+    /**
+     *  If overriden, super.update(t, dt) must be called in child class update().
+     */
     update(t, dt) {
 
         super.update(t, dt);

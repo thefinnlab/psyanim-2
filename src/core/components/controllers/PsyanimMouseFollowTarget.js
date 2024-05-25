@@ -2,8 +2,15 @@ import PsyanimComponent from '../../PsyanimComponent.js';
 
 import PsyanimConstants from "../../PsyanimConstants.js";
 
+/**
+ *  This controller creates a visible target in the scene which follows the mouse cursor.
+ */
 export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
+    /**
+     * 
+     * @param {PsyanimEntity} entity 
+     */
     constructor(entity) {
 
         super(entity);

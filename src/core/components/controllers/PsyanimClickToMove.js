@@ -4,14 +4,30 @@ import PsyanimComponent from '../../PsyanimComponent.js';
 
 import PsyanimConstants from '../../PsyanimConstants.js';
 
+/**
+ *  `PsyanimClickToMove` gives agents the ability to move to location under cursor in response to mouse click on canvas.
+ */
 export default class PsyanimClickToMove extends PsyanimComponent {
 
+    /**
+     *  Reference to the navigation grid required for pathfinding to new location.
+     */
     grid;
 
+    /**
+     *  Reference to pathfinder used to find walkable routes to target locations.
+     */
     pathfinder;
 
+    /**
+     *  Reference to the arrive agent used for locomotion.
+     */
     arriveAgent;
 
+    /**
+     * 
+     * @param {PsyanimEntity} entity 
+     */
     constructor(entity) {
 
         super(entity);
@@ -34,11 +50,19 @@ export default class PsyanimClickToMove extends PsyanimComponent {
         this._state = PsyanimClickToMove.STATE.IDLE;
     }
 
+    /**
+     *  The state of the click-to-move controller.
+     * 
+     *  @type {PsyanimClickToMove}
+     */
     get state() {
 
         return this._state;
     }
 
+    /**
+     *  Cancels the current movement request that was triggered by the last mouse-click on a valid navgrid location.
+     */
     cancelMovementRequest() {
 
         this._state = PsyanimClickToMove.STATE.IDLE;

@@ -3,6 +3,11 @@ import Phaser from 'phaser';
 import PsyanimApp from '../../PsyanimApp.js';
 import PsyanimComponent from '../../PsyanimComponent.js';
 
+/**
+ *  This class is used specifically for changing scenes only in the `psyanim-2` test suite.
+ * 
+ *  Should not be used in production.
+ */
 export default class PsyanimSceneChangeController extends PsyanimComponent {
 
     constructor(entity) {

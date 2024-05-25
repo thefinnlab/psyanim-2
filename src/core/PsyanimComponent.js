@@ -120,10 +120,24 @@ export default class PsyanimComponent {
     onDisable() {
     }
 
+    /**
+     * onSensorEnter is called any time another entity enters this entity's sensor. This method is intended to be overriden in child class.
+     * 
+     * All sensors attached to an entity are treated as a single composite sensor.
+     * 
+     * @param {PsyanimEntity} entity - the entity that entered this entity's sensor. 
+     */
     onSensorEnter(entity) {
 
     }
 
+    /**
+     * onSensorExit is called any time another entity exits this entity's sensor. This method is intended to be overriden in child class.
+     * 
+     * All sensors attached to an entity are treated as a single composite sensor.
+     * 
+     * @param {PsyanimEntity} entity - the entity that exited this entity's sensor.
+     */
     onSensorExit(entity) {
         
     }

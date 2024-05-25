@@ -29,6 +29,13 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
      */
     debugGraphics;
 
+    /**
+     *  Event emitter for all PsyanimBasicHFSM events
+     * 
+     *  @type {Phaser.Matter.Events.EventEmitter}
+     */
+    events;
+
     constructor(entity) {
 
         super(entity);
@@ -46,6 +53,8 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
     /**
      * The name of the currently executing PsyanimFSM instance.
+     * 
+     * @type {string}
      */
     get currentFSMName() {
 
@@ -54,6 +63,8 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
 
     /**
      * Returns the name of the current state for the currently executing PsyanimFSM instance.
+     * 
+     * @type {string}
      */
     get currentStateName() {
 
@@ -155,12 +166,12 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
     }
 
     /**
-     * TODO: complete this documentation
+     * Sets up interrupt to either 1) transition from `sourceFSMType` to `destinationFSMType` or 2) pop running `sourceFSMType` off the stack.
      * 
      * @param {PsyanimFSM} sourceFSMType - instance of a type that inherits from `PsyanimFSM`
      * @param {string} variableKey - name of variable key to be checked in the `condition` function
      * @param {function} condition - function that accepts the value of `variableKey` variable and returns true or false
-     * @param {PsyanimFSM} [destinationFSMType] - instance of a type that inherits from `PsyanimFSM`
+     * @param {PsyanimFSM} [destinationFSMType] - instance of a type that inherits from `PsyanimFSM`. If null, `sourceFSMType` gets popped off stack on transition.
      */
     addInterrupt(sourceFSMType, variableKey, condition, destinationFSMType = null) {
 
@@ -188,6 +199,9 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         this._interrupts.push(interrupt);
     }
 
+    /**
+     *  If overriden, must call super.afterCreate() in child class.
+     */
     afterCreate() {
 
         super.afterCreate();
@@ -285,6 +299,9 @@ export default class PsyanimBasicHFSM extends PsyanimComponent {
         this._initialized = true;
     }
 
+    /**
+     *  If overriden, super.update(t, dt) must be called in child class update().
+     */
     update(t, dt) {
 
         super.update(t, dt);
