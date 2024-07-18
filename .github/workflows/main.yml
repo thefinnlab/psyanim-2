@@ -1,0 +1,14 @@
+name: build and deploy docs
+run-name: ${{ github.actor }} is building & deploying docs
+on: [push]
+jobs:
+  check-bats-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm i
+      - run: npm run docs-build
+      - run: rm -r ./docs/file/
