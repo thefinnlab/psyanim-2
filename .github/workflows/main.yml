@@ -9,6 +9,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
-      - run: npm i esdoc
+      - run: npm i esdoc --legacy-peer-deps
       - run: npm run docs-build
       - run: rm -r ./docs/file/
