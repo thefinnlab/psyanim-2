@@ -10,5 +10,5 @@ jobs:
         with:
           node-version: '20'
       - run: npm i -g esdoc
-      - run: npm run docs-build
+      - run: esdoc
       - run: rm -r ./docs/file/
