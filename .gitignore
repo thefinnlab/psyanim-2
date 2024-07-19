@@ -148,4 +148,4 @@ public
 **/firestore.indexes.json
 **/firestore.rules
 **/firebase.config.json
-docs/file/**
+docs/**
