@@ -9,6 +9,4 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '18'
-      - run: npm i -g esdoc esdoc-standard-plugin
-      - run: esdoc
-      - run: rm -r ./docs/file/
+      - run: ls
