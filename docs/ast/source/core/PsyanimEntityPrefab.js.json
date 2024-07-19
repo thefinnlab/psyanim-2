@@ -1,0 +1,2287 @@
+{
+  "type": "File",
+  "start": 0,
+  "end": 2687,
+  "loc": {
+    "start": {
+      "line": 1,
+      "column": 0
+    },
+    "end": {
+      "line": 58,
+      "column": 1
+    }
+  },
+  "program": {
+    "type": "Program",
+    "start": 0,
+    "end": 2687,
+    "loc": {
+      "start": {
+        "line": 1,
+        "column": 0
+      },
+      "end": {
+        "line": 58,
+        "column": 1
+      }
+    },
+    "sourceType": "module",
+    "body": [
+      {
+        "type": "ExportDefaultDeclaration",
+        "start": 69,
+        "end": 2687,
+        "loc": {
+          "start": {
+            "line": 4,
+            "column": 0
+          },
+          "end": {
+            "line": 58,
+            "column": 1
+          }
+        },
+        "declaration": {
+          "type": "ClassDeclaration",
+          "start": 84,
+          "end": 2687,
+          "loc": {
+            "start": {
+              "line": 4,
+              "column": 15
+            },
+            "end": {
+              "line": 58,
+              "column": 1
+            }
+          },
+          "id": {
+            "type": "Identifier",
+            "start": 90,
+            "end": 109,
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 21
+              },
+              "end": {
+                "line": 4,
+                "column": 40
+              },
+              "identifierName": "PsyanimEntityPrefab"
+            },
+            "name": "PsyanimEntityPrefab",
+            "leadingComments": null
+          },
+          "superClass": null,
+          "body": {
+            "type": "ClassBody",
+            "start": 110,
+            "end": 2687,
+            "loc": {
+              "start": {
+                "line": 4,
+                "column": 41
+              },
+              "end": {
+                "line": 58,
+                "column": 1
+              }
+            },
+            "body": [
+              {
+                "type": "ClassProperty",
+                "start": 1295,
+                "end": 1307,
+                "loc": {
+                  "start": {
+                    "line": 20,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 20,
+                    "column": 16
+                  }
+                },
+                "static": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 1295,
+                  "end": 1306,
+                  "loc": {
+                    "start": {
+                      "line": 20,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 20,
+                      "column": 15
+                    },
+                    "identifierName": "shapeParams"
+                  },
+                  "name": "shapeParams",
+                  "leadingComments": null
+                },
+                "value": null,
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     *  Parameters defining the shape of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isEmpty - If `true`, this entity will not have a visual representation or physics applied.\r\n     *  @property {PsyanimConstants.SHAPE_TYPE} shapeType - can be a circle, rectangle, or triangle\r\n     *  @property {number} radius - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.\r\n     *  @property {number} width - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.\r\n     *  @property {number} height - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.\r\n     *  @property {number} base - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.\r\n     *  @property {number} altitude - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.\r\n     *  @property {number} color - integer representing RGB color\r\n     *  @property {boolean} visible - `true` if entity is visible\r\n     ",
+                    "start": 119,
+                    "end": 1289,
+                    "loc": {
+                      "start": {
+                        "line": 6,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 19,
+                        "column": 7
+                      }
+                    }
+                  }
+                ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     *  Parameters defining the physics settings of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isSensor - If true, entity will be able to emit collision events, but will not be receive physics updates\r\n     *  @property {boolean} isSleeping - If true, entity will not have physics updates or receive collision events\r\n     *  @property {Object} collisionFilter - matter-js collision filter\r\n     ",
+                    "start": 1315,
+                    "end": 1751,
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 7
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassProperty",
+                "start": 1757,
+                "end": 1771,
+                "loc": {
+                  "start": {
+                    "line": 30,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 30,
+                    "column": 18
+                  }
+                },
+                "static": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 1757,
+                  "end": 1770,
+                  "loc": {
+                    "start": {
+                      "line": 30,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 30,
+                      "column": 17
+                    },
+                    "identifierName": "matterOptions"
+                  },
+                  "name": "matterOptions",
+                  "leadingComments": null
+                },
+                "value": null,
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     *  Parameters defining the physics settings of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isSensor - If true, entity will be able to emit collision events, but will not be receive physics updates\r\n     *  @property {boolean} isSleeping - If true, entity will not have physics updates or receive collision events\r\n     *  @property {Object} collisionFilter - matter-js collision filter\r\n     ",
+                    "start": 1315,
+                    "end": 1751,
+                    "loc": {
+                      "start": {
+                        "line": 22,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 29,
+                        "column": 7
+                      }
+                    }
+                  }
+                ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     * All prefabs must be constructed before they can be instantiated in the PsyanimScene.\r\n     * \r\n     * A single prefab object may be instantiated in the scene multiple times.\r\n     * \r\n     * During construction, `shapeParams` and `matterOptions` for the entity may optionally be supplied.\r\n     * \r\n     * @param {Object} shapeParams \r\n     * @param {Object} matterOptions \r\n     ",
+                    "start": 1779,
+                    "end": 2173,
+                    "loc": {
+                      "start": {
+                        "line": 32,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 41,
+                        "column": 7
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 2179,
+                "end": 2340,
+                "loc": {
+                  "start": {
+                    "line": 42,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 46,
+                    "column": 5
+                  }
+                },
+                "static": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 2179,
+                  "end": 2190,
+                  "loc": {
+                    "start": {
+                      "line": 42,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 42,
+                      "column": 15
+                    },
+                    "identifierName": "constructor"
+                  },
+                  "name": "constructor",
+                  "leadingComments": null
+                },
+                "kind": "constructor",
+                "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
+                "params": [
+                  {
+                    "type": "AssignmentPattern",
+                    "start": 2191,
+                    "end": 2222,
+                    "loc": {
+                      "start": {
+                        "line": 42,
+                        "column": 16
+                      },
+                      "end": {
+                        "line": 42,
+                        "column": 47
+                      }
+                    },
+                    "left": {
+                      "type": "Identifier",
+                      "start": 2191,
+                      "end": 2202,
+                      "loc": {
+                        "start": {
+                          "line": 42,
+                          "column": 16
+                        },
+                        "end": {
+                          "line": 42,
+                          "column": 27
+                        },
+                        "identifierName": "shapeParams"
+                      },
+                      "name": "shapeParams"
+                    },
+                    "right": {
+                      "type": "ObjectExpression",
+                      "start": 2205,
+                      "end": 2222,
+                      "loc": {
+                        "start": {
+                          "line": 42,
+                          "column": 30
+                        },
+                        "end": {
+                          "line": 42,
+                          "column": 47
+                        }
+                      },
+                      "properties": [
+                        {
+                          "type": "ObjectProperty",
+                          "start": 2207,
+                          "end": 2220,
+                          "loc": {
+                            "start": {
+                              "line": 42,
+                              "column": 32
+                            },
+                            "end": {
+                              "line": 42,
+                              "column": 45
+                            }
+                          },
+                          "method": false,
+                          "shorthand": false,
+                          "computed": false,
+                          "key": {
+                            "type": "Identifier",
+                            "start": 2207,
+                            "end": 2214,
+                            "loc": {
+                              "start": {
+                                "line": 42,
+                                "column": 32
+                              },
+                              "end": {
+                                "line": 42,
+                                "column": 39
+                              },
+                              "identifierName": "isEmpty"
+                            },
+                            "name": "isEmpty"
+                          },
+                          "value": {
+                            "type": "BooleanLiteral",
+                            "start": 2216,
+                            "end": 2220,
+                            "loc": {
+                              "start": {
+                                "line": 42,
+                                "column": 41
+                              },
+                              "end": {
+                                "line": 42,
+                                "column": 45
+                              }
+                            },
+                            "value": true
+                          }
+                        }
+                      ]
+                    }
+                  },
+                  {
+                    "type": "AssignmentPattern",
+                    "start": 2224,
+                    "end": 2242,
+                    "loc": {
+                      "start": {
+                        "line": 42,
+                        "column": 49
+                      },
+                      "end": {
+                        "line": 42,
+                        "column": 67
+                      }
+                    },
+                    "left": {
+                      "type": "Identifier",
+                      "start": 2224,
+                      "end": 2237,
+                      "loc": {
+                        "start": {
+                          "line": 42,
+                          "column": 49
+                        },
+                        "end": {
+                          "line": 42,
+                          "column": 62
+                        },
+                        "identifierName": "matterOptions"
+                      },
+                      "name": "matterOptions"
+                    },
+                    "right": {
+                      "type": "ObjectExpression",
+                      "start": 2240,
+                      "end": 2242,
+                      "loc": {
+                        "start": {
+                          "line": 42,
+                          "column": 65
+                        },
+                        "end": {
+                          "line": 42,
+                          "column": 67
+                        }
+                      },
+                      "properties": []
+                    }
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "start": 2244,
+                  "end": 2340,
+                  "loc": {
+                    "start": {
+                      "line": 42,
+                      "column": 69
+                    },
+                    "end": {
+                      "line": 46,
+                      "column": 5
+                    }
+                  },
+                  "body": [
+                    {
+                      "type": "ExpressionStatement",
+                      "start": 2257,
+                      "end": 2288,
+                      "loc": {
+                        "start": {
+                          "line": 44,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 44,
+                          "column": 39
+                        }
+                      },
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "start": 2257,
+                        "end": 2287,
+                        "loc": {
+                          "start": {
+                            "line": 44,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 44,
+                            "column": 38
+                          }
+                        },
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "start": 2257,
+                          "end": 2273,
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 24
+                            }
+                          },
+                          "object": {
+                            "type": "ThisExpression",
+                            "start": 2257,
+                            "end": 2261,
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 12
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 2262,
+                            "end": 2273,
+                            "loc": {
+                              "start": {
+                                "line": 44,
+                                "column": 13
+                              },
+                              "end": {
+                                "line": 44,
+                                "column": 24
+                              },
+                              "identifierName": "shapeParams"
+                            },
+                            "name": "shapeParams"
+                          },
+                          "computed": false
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start": 2276,
+                          "end": 2287,
+                          "loc": {
+                            "start": {
+                              "line": 44,
+                              "column": 27
+                            },
+                            "end": {
+                              "line": 44,
+                              "column": 38
+                            },
+                            "identifierName": "shapeParams"
+                          },
+                          "name": "shapeParams"
+                        }
+                      }
+                    },
+                    {
+                      "type": "ExpressionStatement",
+                      "start": 2298,
+                      "end": 2333,
+                      "loc": {
+                        "start": {
+                          "line": 45,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 45,
+                          "column": 43
+                        }
+                      },
+                      "expression": {
+                        "type": "AssignmentExpression",
+                        "start": 2298,
+                        "end": 2332,
+                        "loc": {
+                          "start": {
+                            "line": 45,
+                            "column": 8
+                          },
+                          "end": {
+                            "line": 45,
+                            "column": 42
+                          }
+                        },
+                        "operator": "=",
+                        "left": {
+                          "type": "MemberExpression",
+                          "start": 2298,
+                          "end": 2316,
+                          "loc": {
+                            "start": {
+                              "line": 45,
+                              "column": 8
+                            },
+                            "end": {
+                              "line": 45,
+                              "column": 26
+                            }
+                          },
+                          "object": {
+                            "type": "ThisExpression",
+                            "start": 2298,
+                            "end": 2302,
+                            "loc": {
+                              "start": {
+                                "line": 45,
+                                "column": 8
+                              },
+                              "end": {
+                                "line": 45,
+                                "column": 12
+                              }
+                            }
+                          },
+                          "property": {
+                            "type": "Identifier",
+                            "start": 2303,
+                            "end": 2316,
+                            "loc": {
+                              "start": {
+                                "line": 45,
+                                "column": 13
+                              },
+                              "end": {
+                                "line": 45,
+                                "column": 26
+                              },
+                              "identifierName": "matterOptions"
+                            },
+                            "name": "matterOptions"
+                          },
+                          "computed": false
+                        },
+                        "right": {
+                          "type": "Identifier",
+                          "start": 2319,
+                          "end": 2332,
+                          "loc": {
+                            "start": {
+                              "line": 45,
+                              "column": 29
+                            },
+                            "end": {
+                              "line": 45,
+                              "column": 42
+                            },
+                            "identifierName": "matterOptions"
+                          },
+                          "name": "matterOptions"
+                        }
+                      }
+                    }
+                  ],
+                  "directives": [],
+                  "trailingComments": null
+                },
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     * All prefabs must be constructed before they can be instantiated in the PsyanimScene.\r\n     * \r\n     * A single prefab object may be instantiated in the scene multiple times.\r\n     * \r\n     * During construction, `shapeParams` and `matterOptions` for the entity may optionally be supplied.\r\n     * \r\n     * @param {Object} shapeParams \r\n     * @param {Object} matterOptions \r\n     ",
+                    "start": 1779,
+                    "end": 2173,
+                    "loc": {
+                      "start": {
+                        "line": 32,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 41,
+                        "column": 7
+                      }
+                    }
+                  }
+                ],
+                "trailingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     * This `create()` method is intended to be overriden by the child class.\r\n     * \r\n     * @param {PsyanimEntity} entity - the entity this prefab will work on during instantiation\r\n     * @returns {PsyanimEntity} - the entity this prefab used during instantiation\r\n     ",
+                    "start": 2348,
+                    "end": 2629,
+                    "loc": {
+                      "start": {
+                        "line": 48,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 7
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "type": "ClassMethod",
+                "start": 2635,
+                "end": 2684,
+                "loc": {
+                  "start": {
+                    "line": 54,
+                    "column": 4
+                  },
+                  "end": {
+                    "line": 57,
+                    "column": 5
+                  }
+                },
+                "static": false,
+                "computed": false,
+                "key": {
+                  "type": "Identifier",
+                  "start": 2635,
+                  "end": 2641,
+                  "loc": {
+                    "start": {
+                      "line": 54,
+                      "column": 4
+                    },
+                    "end": {
+                      "line": 54,
+                      "column": 10
+                    },
+                    "identifierName": "create"
+                  },
+                  "name": "create",
+                  "leadingComments": null
+                },
+                "kind": "method",
+                "id": null,
+                "generator": false,
+                "expression": false,
+                "async": false,
+                "params": [
+                  {
+                    "type": "Identifier",
+                    "start": 2642,
+                    "end": 2648,
+                    "loc": {
+                      "start": {
+                        "line": 54,
+                        "column": 11
+                      },
+                      "end": {
+                        "line": 54,
+                        "column": 17
+                      },
+                      "identifierName": "entity"
+                    },
+                    "name": "entity"
+                  }
+                ],
+                "body": {
+                  "type": "BlockStatement",
+                  "start": 2650,
+                  "end": 2684,
+                  "loc": {
+                    "start": {
+                      "line": 54,
+                      "column": 19
+                    },
+                    "end": {
+                      "line": 57,
+                      "column": 5
+                    }
+                  },
+                  "body": [
+                    {
+                      "type": "ReturnStatement",
+                      "start": 2663,
+                      "end": 2677,
+                      "loc": {
+                        "start": {
+                          "line": 56,
+                          "column": 8
+                        },
+                        "end": {
+                          "line": 56,
+                          "column": 22
+                        }
+                      },
+                      "argument": {
+                        "type": "Identifier",
+                        "start": 2670,
+                        "end": 2676,
+                        "loc": {
+                          "start": {
+                            "line": 56,
+                            "column": 15
+                          },
+                          "end": {
+                            "line": 56,
+                            "column": 21
+                          },
+                          "identifierName": "entity"
+                        },
+                        "name": "entity"
+                      }
+                    }
+                  ],
+                  "directives": []
+                },
+                "leadingComments": [
+                  {
+                    "type": "CommentBlock",
+                    "value": "*\r\n     * This `create()` method is intended to be overriden by the child class.\r\n     * \r\n     * @param {PsyanimEntity} entity - the entity this prefab will work on during instantiation\r\n     * @returns {PsyanimEntity} - the entity this prefab used during instantiation\r\n     ",
+                    "start": 2348,
+                    "end": 2629,
+                    "loc": {
+                      "start": {
+                        "line": 48,
+                        "column": 4
+                      },
+                      "end": {
+                        "line": 53,
+                        "column": 7
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "leadingComments": [
+            {
+              "type": "CommentBlock",
+              "value": "*\r\n * This is the base class for all `prefabs` in psyanim-2.\r\n ",
+              "start": 0,
+              "end": 67,
+              "loc": {
+                "start": {
+                  "line": 1,
+                  "column": 0
+                },
+                "end": {
+                  "line": 3,
+                  "column": 3
+                }
+              }
+            }
+          ],
+          "trailingComments": []
+        },
+        "leadingComments": [
+          {
+            "type": "CommentBlock",
+            "value": "*\r\n * This is the base class for all `prefabs` in psyanim-2.\r\n ",
+            "start": 0,
+            "end": 67,
+            "loc": {
+              "start": {
+                "line": 1,
+                "column": 0
+              },
+              "end": {
+                "line": 3,
+                "column": 3
+              }
+            }
+          }
+        ]
+      }
+    ],
+    "directives": []
+  },
+  "comments": [
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n * This is the base class for all `prefabs` in psyanim-2.\r\n ",
+      "start": 0,
+      "end": 67,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     *  Parameters defining the shape of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isEmpty - If `true`, this entity will not have a visual representation or physics applied.\r\n     *  @property {PsyanimConstants.SHAPE_TYPE} shapeType - can be a circle, rectangle, or triangle\r\n     *  @property {number} radius - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.\r\n     *  @property {number} width - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.\r\n     *  @property {number} height - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.\r\n     *  @property {number} base - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.\r\n     *  @property {number} altitude - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.\r\n     *  @property {number} color - integer representing RGB color\r\n     *  @property {boolean} visible - `true` if entity is visible\r\n     ",
+      "start": 119,
+      "end": 1289,
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     *  Parameters defining the physics settings of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isSensor - If true, entity will be able to emit collision events, but will not be receive physics updates\r\n     *  @property {boolean} isSleeping - If true, entity will not have physics updates or receive collision events\r\n     *  @property {Object} collisionFilter - matter-js collision filter\r\n     ",
+      "start": 1315,
+      "end": 1751,
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 29,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     * All prefabs must be constructed before they can be instantiated in the PsyanimScene.\r\n     * \r\n     * A single prefab object may be instantiated in the scene multiple times.\r\n     * \r\n     * During construction, `shapeParams` and `matterOptions` for the entity may optionally be supplied.\r\n     * \r\n     * @param {Object} shapeParams \r\n     * @param {Object} matterOptions \r\n     ",
+      "start": 1779,
+      "end": 2173,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 4
+        },
+        "end": {
+          "line": 41,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     * This `create()` method is intended to be overriden by the child class.\r\n     * \r\n     * @param {PsyanimEntity} entity - the entity this prefab will work on during instantiation\r\n     * @returns {PsyanimEntity} - the entity this prefab used during instantiation\r\n     ",
+      "start": 2348,
+      "end": 2629,
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 4
+        },
+        "end": {
+          "line": 53,
+          "column": 7
+        }
+      }
+    }
+  ],
+  "tokens": [
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n * This is the base class for all `prefabs` in psyanim-2.\r\n ",
+      "start": 0,
+      "end": 67,
+      "loc": {
+        "start": {
+          "line": 1,
+          "column": 0
+        },
+        "end": {
+          "line": 3,
+          "column": 3
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "export",
+        "keyword": "export",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "export",
+      "start": 69,
+      "end": 75,
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 0
+        },
+        "end": {
+          "line": 4,
+          "column": 6
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "default",
+        "keyword": "default",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "default",
+      "start": 76,
+      "end": 83,
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 7
+        },
+        "end": {
+          "line": 4,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "class",
+        "keyword": "class",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "class",
+      "start": 84,
+      "end": 89,
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 15
+        },
+        "end": {
+          "line": 4,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "PsyanimEntityPrefab",
+      "start": 90,
+      "end": 109,
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 21
+        },
+        "end": {
+          "line": 4,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 110,
+      "end": 111,
+      "loc": {
+        "start": {
+          "line": 4,
+          "column": 41
+        },
+        "end": {
+          "line": 4,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     *  Parameters defining the shape of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isEmpty - If `true`, this entity will not have a visual representation or physics applied.\r\n     *  @property {PsyanimConstants.SHAPE_TYPE} shapeType - can be a circle, rectangle, or triangle\r\n     *  @property {number} radius - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.CIRCLE`, `radius` parameter controls its size.\r\n     *  @property {number} width - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.\r\n     *  @property {number} height - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.RECTANGLE`, `width` and `height` parameters control its size.\r\n     *  @property {number} base - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.\r\n     *  @property {number} altitude - If `shapeType` is `PsyanimConstants.SHAPE_TYPE.TRIANGLE`, `base` and `altitude` parameters control its size.\r\n     *  @property {number} color - integer representing RGB color\r\n     *  @property {boolean} visible - `true` if entity is visible\r\n     ",
+      "start": 119,
+      "end": 1289,
+      "loc": {
+        "start": {
+          "line": 6,
+          "column": 4
+        },
+        "end": {
+          "line": 19,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "shapeParams",
+      "start": 1295,
+      "end": 1306,
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 4
+        },
+        "end": {
+          "line": 20,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1306,
+      "end": 1307,
+      "loc": {
+        "start": {
+          "line": 20,
+          "column": 15
+        },
+        "end": {
+          "line": 20,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     *  Parameters defining the physics settings of the entity.\r\n     * \r\n     *  @return {Object}\r\n     *  @property {boolean} isSensor - If true, entity will be able to emit collision events, but will not be receive physics updates\r\n     *  @property {boolean} isSleeping - If true, entity will not have physics updates or receive collision events\r\n     *  @property {Object} collisionFilter - matter-js collision filter\r\n     ",
+      "start": 1315,
+      "end": 1751,
+      "loc": {
+        "start": {
+          "line": 22,
+          "column": 4
+        },
+        "end": {
+          "line": 29,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "matterOptions",
+      "start": 1757,
+      "end": 1770,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 4
+        },
+        "end": {
+          "line": 30,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 1770,
+      "end": 1771,
+      "loc": {
+        "start": {
+          "line": 30,
+          "column": 17
+        },
+        "end": {
+          "line": 30,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     * All prefabs must be constructed before they can be instantiated in the PsyanimScene.\r\n     * \r\n     * A single prefab object may be instantiated in the scene multiple times.\r\n     * \r\n     * During construction, `shapeParams` and `matterOptions` for the entity may optionally be supplied.\r\n     * \r\n     * @param {Object} shapeParams \r\n     * @param {Object} matterOptions \r\n     ",
+      "start": 1779,
+      "end": 2173,
+      "loc": {
+        "start": {
+          "line": 32,
+          "column": 4
+        },
+        "end": {
+          "line": 41,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "constructor",
+      "start": 2179,
+      "end": 2190,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 4
+        },
+        "end": {
+          "line": 42,
+          "column": 15
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2190,
+      "end": 2191,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 15
+        },
+        "end": {
+          "line": 42,
+          "column": 16
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "shapeParams",
+      "start": 2191,
+      "end": 2202,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 16
+        },
+        "end": {
+          "line": 42,
+          "column": 27
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 2203,
+      "end": 2204,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 28
+        },
+        "end": {
+          "line": 42,
+          "column": 29
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2205,
+      "end": 2206,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 30
+        },
+        "end": {
+          "line": 42,
+          "column": 31
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "isEmpty",
+      "start": 2207,
+      "end": 2214,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 32
+        },
+        "end": {
+          "line": 42,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ":",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2214,
+      "end": 2215,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 39
+        },
+        "end": {
+          "line": 42,
+          "column": 40
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "true",
+        "keyword": "true",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "true",
+      "start": 2216,
+      "end": 2220,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 41
+        },
+        "end": {
+          "line": 42,
+          "column": 45
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2221,
+      "end": 2222,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 46
+        },
+        "end": {
+          "line": 42,
+          "column": 47
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ",",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2222,
+      "end": 2223,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 47
+        },
+        "end": {
+          "line": 42,
+          "column": 48
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "matterOptions",
+      "start": 2224,
+      "end": 2237,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 49
+        },
+        "end": {
+          "line": 42,
+          "column": 62
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 2238,
+      "end": 2239,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 63
+        },
+        "end": {
+          "line": 42,
+          "column": 64
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2240,
+      "end": 2241,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 65
+        },
+        "end": {
+          "line": 42,
+          "column": 66
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2241,
+      "end": 2242,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 66
+        },
+        "end": {
+          "line": 42,
+          "column": 67
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2242,
+      "end": 2243,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 67
+        },
+        "end": {
+          "line": 42,
+          "column": 68
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2244,
+      "end": 2245,
+      "loc": {
+        "start": {
+          "line": 42,
+          "column": 69
+        },
+        "end": {
+          "line": 42,
+          "column": 70
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "this",
+        "keyword": "this",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "this",
+      "start": 2257,
+      "end": 2261,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 8
+        },
+        "end": {
+          "line": 44,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2261,
+      "end": 2262,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 12
+        },
+        "end": {
+          "line": 44,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "shapeParams",
+      "start": 2262,
+      "end": 2273,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 13
+        },
+        "end": {
+          "line": 44,
+          "column": 24
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 2274,
+      "end": 2275,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 25
+        },
+        "end": {
+          "line": 44,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "shapeParams",
+      "start": 2276,
+      "end": 2287,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 27
+        },
+        "end": {
+          "line": 44,
+          "column": 38
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2287,
+      "end": 2288,
+      "loc": {
+        "start": {
+          "line": 44,
+          "column": 38
+        },
+        "end": {
+          "line": 44,
+          "column": 39
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "this",
+        "keyword": "this",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "this",
+      "start": 2298,
+      "end": 2302,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 8
+        },
+        "end": {
+          "line": 45,
+          "column": 12
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ".",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2302,
+      "end": 2303,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 12
+        },
+        "end": {
+          "line": 45,
+          "column": 13
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "matterOptions",
+      "start": 2303,
+      "end": 2316,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 13
+        },
+        "end": {
+          "line": 45,
+          "column": 26
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "=",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": true,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "=",
+      "start": 2317,
+      "end": 2318,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 27
+        },
+        "end": {
+          "line": 45,
+          "column": 28
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "matterOptions",
+      "start": 2319,
+      "end": 2332,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 29
+        },
+        "end": {
+          "line": 45,
+          "column": 42
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2332,
+      "end": 2333,
+      "loc": {
+        "start": {
+          "line": 45,
+          "column": 42
+        },
+        "end": {
+          "line": 45,
+          "column": 43
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2339,
+      "end": 2340,
+      "loc": {
+        "start": {
+          "line": 46,
+          "column": 4
+        },
+        "end": {
+          "line": 46,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": "CommentBlock",
+      "value": "*\r\n     * This `create()` method is intended to be overriden by the child class.\r\n     * \r\n     * @param {PsyanimEntity} entity - the entity this prefab will work on during instantiation\r\n     * @returns {PsyanimEntity} - the entity this prefab used during instantiation\r\n     ",
+      "start": 2348,
+      "end": 2629,
+      "loc": {
+        "start": {
+          "line": 48,
+          "column": 4
+        },
+        "end": {
+          "line": 53,
+          "column": 7
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "create",
+      "start": 2635,
+      "end": 2641,
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 4
+        },
+        "end": {
+          "line": 54,
+          "column": 10
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "(",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2641,
+      "end": 2642,
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 10
+        },
+        "end": {
+          "line": 54,
+          "column": 11
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "entity",
+      "start": 2642,
+      "end": 2648,
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 11
+        },
+        "end": {
+          "line": 54,
+          "column": 17
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ")",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2648,
+      "end": 2649,
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 17
+        },
+        "end": {
+          "line": 54,
+          "column": 18
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "{",
+        "beforeExpr": true,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2650,
+      "end": 2651,
+      "loc": {
+        "start": {
+          "line": 54,
+          "column": 19
+        },
+        "end": {
+          "line": 54,
+          "column": 20
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "return",
+        "keyword": "return",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "value": "return",
+      "start": 2663,
+      "end": 2669,
+      "loc": {
+        "start": {
+          "line": 56,
+          "column": 8
+        },
+        "end": {
+          "line": 56,
+          "column": 14
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "name",
+        "beforeExpr": false,
+        "startsExpr": true,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "value": "entity",
+      "start": 2670,
+      "end": 2676,
+      "loc": {
+        "start": {
+          "line": 56,
+          "column": 15
+        },
+        "end": {
+          "line": 56,
+          "column": 21
+        }
+      }
+    },
+    {
+      "type": {
+        "label": ";",
+        "beforeExpr": true,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2676,
+      "end": 2677,
+      "loc": {
+        "start": {
+          "line": 56,
+          "column": 21
+        },
+        "end": {
+          "line": 56,
+          "column": 22
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2683,
+      "end": 2684,
+      "loc": {
+        "start": {
+          "line": 57,
+          "column": 4
+        },
+        "end": {
+          "line": 57,
+          "column": 5
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "}",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null
+      },
+      "start": 2686,
+      "end": 2687,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 0
+        },
+        "end": {
+          "line": 58,
+          "column": 1
+        }
+      }
+    },
+    {
+      "type": {
+        "label": "eof",
+        "beforeExpr": false,
+        "startsExpr": false,
+        "rightAssociative": false,
+        "isLoop": false,
+        "isAssign": false,
+        "prefix": false,
+        "postfix": false,
+        "binop": null,
+        "updateContext": null
+      },
+      "start": 2687,
+      "end": 2687,
+      "loc": {
+        "start": {
+          "line": 58,
+          "column": 1
+        },
+        "end": {
+          "line": 58,
+          "column": 1
+        }
+      }
+    }
+  ]
+}
