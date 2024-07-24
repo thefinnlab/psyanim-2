@@ -1,5 +1,7 @@
 export default class PsyanimBehaviorTreeNode {
 
+    // TODO: node needs access to the blackboard
+
     constructor(name) {
 
         super(name);
