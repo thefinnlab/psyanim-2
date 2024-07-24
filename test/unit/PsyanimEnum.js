@@ -1,32 +1,46 @@
 export default class PsyanimEnum {
 
-    constructor() {
+    get options() {
 
-        this._data = [];
+        return this._options.slice();
+    }
+
+    get value() {
+
+        return this._value;
+    }
+
+    constructor(options = []) {
+
+        this._options = [];
+
+        options.forEach(opt => this.addOption(opt));
+
+        if (this._options.length === 0)
+        {
+            console.error("ERROR: enum has no options!");
+        }
+
+        this._value = 0;
     }
 
     addOption(name) {
 
-        if (!this._data.includes(name))
+        if (!this._options.includes(name))
         {
-            this._data.push(name);
+            this._options.push(name);
         }
     }
 
     setValue(value) {
 
-        if (!this._data.includes(value))
+        if (this._options.includes(value))
         {
-            this._value = value;
+            this._value = this._options.indexOf(value);
         }
         else
         {
             console.error("Unknown enum value:", value);
         }
-    }
-
-    getValue() {
-
-        return this._value;
     }
 }

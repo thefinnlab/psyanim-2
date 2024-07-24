@@ -23,7 +23,11 @@ keys.forEach(key => {
 
     if (value instanceof PsyanimEnum)
     {
-        keyInfo.push({ name: key, type: PsyanimEnum.prototype.constructor.name });
+        keyInfo.push({ 
+            name: key, 
+            type: PsyanimEnum.prototype.constructor.name, 
+            options: taskInstance[key].options 
+        });
     }
     else if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number')
     {

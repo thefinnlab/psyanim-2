@@ -40,6 +40,11 @@ export default class PsyanimVehicle extends PsyanimComponent {
 
     onDisable() {
 
+        this.stop();
+    }
+
+    stop() {
+
         this.entity.setVelocity(0, 0);
         this.entity.body.force = { x: 0, y: 0 };
     }

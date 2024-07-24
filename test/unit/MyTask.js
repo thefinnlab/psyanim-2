@@ -10,11 +10,11 @@ export default class MyTask extends PsyanimBehaviorTreeTaskDefinition {
 
     boolField = false;
 
-    enumField = new MyCustomEnum();
+    enumField = new MyCustomEnum(['option A', 'option B', 'option C']);
 
-    constructor(entity) {
+    constructor(controller) {
 
-        super(entity);
+        super(controller);
     }
 
     _doSomething() {
