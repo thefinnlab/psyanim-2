@@ -66,9 +66,6 @@ import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent
 import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent.js';
 import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent.js';
 
-// behavior trees
-import PsyanimBehaviorTreeTaskDefinition from './core/components/ai/bt/PsyanimBehaviorTreeTaskDefinition.js';
-
 // FSM components
 import PsyanimBasicHFSM from './core/components/ai/PsyanimBasicHFSM.js';
 import PsyanimFSM from './core/components/ai/PsyanimFSM.js';
@@ -110,7 +107,6 @@ import PsyanimWanderAgentPrefab from './core/prefabs/PsyanimWanderAgentPrefab.js
 // utils
 import PsyanimNavigationGrid from './core/utils/PsyanimNavigationGrid.js';
 import PsyanimPath from './core/utils/PsyanimPath.js';
-import PsyanimEnum from './core/utils/PsyanimEnum.js';
 
 import PsyanimGeomUtils from './core/utils/PsyanimGeomUtils.js';
 
@@ -200,7 +196,6 @@ export {
     PsyanimWanderAgent,
 
     // behavior tree
-    PsyanimBehaviorTreeTaskDefinition,
 
     // fsm components
     PsyanimBasicHFSM,
@@ -243,7 +238,6 @@ export {
     // utils
     PsyanimNavigationGrid,
     PsyanimPath,
-    PsyanimEnum,
 
     PsyanimGeomUtils,
 
