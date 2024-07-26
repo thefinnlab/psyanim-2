@@ -12,7 +12,7 @@ export default class MyTask extends PsyanimBehaviorTreeTaskDefinition {
 
     enumField = new MyCustomEnum(['option A', 'option B', 'option C']);
 
-    constructor(controller) {
+    constructor(controller = null) {
 
         super(controller);
     }

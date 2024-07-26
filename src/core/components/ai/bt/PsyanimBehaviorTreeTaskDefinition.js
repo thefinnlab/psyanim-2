@@ -2,13 +2,12 @@ export default class PsyanimBehaviorTreeTaskDefinition {
 
     get blackboard() {
 
-        return this._blackboard;
+        return this._controller.blackboard;
     }
 
     constructor(controller) {
 
         this._controller = controller;
-        this._blackboard = this._controller.blackboard;
     }
 
     tick() {
