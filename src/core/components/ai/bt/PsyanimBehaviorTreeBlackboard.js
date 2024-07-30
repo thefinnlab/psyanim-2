@@ -1,14 +1,48 @@
-export default class PsyanimBehaviorTreeBlackboard {
+import PsyanimComponent from "../../../PsyanimComponent.js";
 
-    constructor(name) {
+export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
 
-        this._name = name;
+    name;
+
+    constructor(entity) {
+
+        super(entity);
+
         this._data = {};
     }
 
-    get name() {
+    afterCreate() {
 
-        return this._name;
+        super.afterCreate();
+
+        let userDefinedParams = this._getUserDefinedParams();
+
+        Object.keys(userDefinedParams).forEach(key => {
+
+            this.setValue(key, userDefinedParams[key]);
+        });
+
+        if (!this.name)
+        {
+            console.error("Blackboard was not assigned a name in scene! entity name:", this.entity.name);
+        }
+    }
+
+    _getUserDefinedParams() {
+
+        let reservedKeywords = ['name', 'entity', 'scene', 'id'];
+
+        let keys = Object.keys(this)
+            .filter(key => !key.startsWith('_'))
+            .filter(key => !reservedKeywords.includes(key));
+
+        let params = {};
+
+        keys.forEach(key => {
+            params[key] = this[key];
+        });
+
+        return params;
     }
 
     getValue(key) {
@@ -35,13 +69,14 @@ export default class PsyanimBehaviorTreeBlackboard {
     toJson() {
 
         return JSON.stringify({
-            name: this._name,
+            name: this.name,
             data: this._data
         });
     }
 
-    static fromJson(jsonData) {
+    loadJson(jsonData) {
 
+        // TODO: implement
         let data = JSON.parse(jsonData);
 
         if (!Object.hasOwn(data, 'name') ||
@@ -51,10 +86,6 @@ export default class PsyanimBehaviorTreeBlackboard {
             return null;
         }
 
-        let blackboard = new PsyanimBehaviorTreeBlackboard(data.name);
-
-        blackboard._data = data.data;
-
-        return blackboard;
+        this._data = data.data;
     }
 }
