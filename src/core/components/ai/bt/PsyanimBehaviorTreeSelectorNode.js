@@ -2,9 +2,9 @@ import PsyanimBehaviorTreeNode from "./PsyanimBehaviorTreeNode.js";
 
 export default class PsyanimBehaviorTreeSelectorNode extends PsyanimBehaviorTreeNode {
 
-    constructor(name) {
+    constructor(controller, id, name) {
 
-        super(name);
+        super(controller, id, name);
 
         this._currentChildIndex = 0;
     }

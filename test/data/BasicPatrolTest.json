@@ -1,0 +1,62 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "Root Node",
+            "type": "Behavior Tree Root",
+            "isComposite": true,
+            "x": 664.5,
+            "y": 287,
+            "fieldData": {
+                "Blackboard": "BasicPatrolTest"
+            }
+        },
+        {
+            "id": 1,
+            "name": "Sequence",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 679,
+            "y": 426,
+            "fieldData": {}
+        },
+        {
+            "id": 2,
+            "name": "PatrolTargetSelector",
+            "type": "PatrolTargetSelector",
+            "isComposite": false,
+            "x": 469,
+            "y": 646,
+            "fieldData": {
+                "targetEntityListBlackboardKey": "patrolTargetList"
+            }
+        },
+        {
+            "id": 3,
+            "name": "MoveTo",
+            "type": "MoveTo",
+            "isComposite": false,
+            "x": 818,
+            "y": 647,
+            "fieldData": {
+                "stoppingDistance": 35,
+                "targetEntityBlackboardKey": "patrolTarget"
+            }
+        }
+    ],
+    "decorators": [],
+    "edges": [
+        {
+            "topPortNodeId": 1,
+            "bottomPortNodeId": 0
+        },
+        {
+            "topPortNodeId": 2,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 3,
+            "bottomPortNodeId": 1
+        }
+    ]
+}

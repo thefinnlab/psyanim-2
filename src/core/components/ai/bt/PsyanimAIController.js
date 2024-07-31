@@ -8,16 +8,16 @@ import { PsyanimDebug } from 'psyanim-utils';
 
 import PsyanimBehaviorTreeBlackboard from './PsyanimBehaviorTreeBlackboard.js';
 
-import PsyanimBehaviorTree from 'PsyanimBehaviorTree.js';
-
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 
+import PsyanimBehaviorTree from './PsyanimBehaviorTree.js';
+
 export default class PsyanimAIController extends PsyanimComponent {
 
     taskDefinitions;
-    behaviorTreeFilePath;
+    behaviorTreeDefinition;
 
     /**
      *  Maximum speed this entity's vehicle can travel.
@@ -55,7 +55,7 @@ export default class PsyanimAIController extends PsyanimComponent {
 
         super(entity);
 
-        this.behaviorTreeFilePath = '';
+        this.behaviorTreeDefinition = null;
         this.taskDefinitions = [];
 
         this._tree = null;
@@ -83,7 +83,7 @@ export default class PsyanimAIController extends PsyanimComponent {
 
         super.afterCreate();
 
-        this._blackboard = this.getComponent(PsyanimBehaviorTreeBlackboard);
+        this._blackboard = this.entity.getComponent(PsyanimBehaviorTreeBlackboard);
 
         this._loadBehaviorTree();
     }
@@ -115,8 +115,6 @@ export default class PsyanimAIController extends PsyanimComponent {
     }
 
     moveTo(position) {
-
-        console.log('Moving to position:', position);
 
         this._reset();
 
@@ -194,21 +192,9 @@ export default class PsyanimAIController extends PsyanimComponent {
 
     _loadBehaviorTree() {
 
-        // TODO: see if we can import a js object from a json file so we don't have to request it 
-        // from the server... should be something that vite does at build time:
+        this._tree = new PsyanimBehaviorTree('TODO Get BT Name From file', this);
 
-        // https://stackoverflow.com/questions/67822238/how-to-import-a-json-file-using-vite-dynamicly
-
-        // this poster says you should be able to simply use a normal import:
-        // https://github.com/vitejs/vite/discussions/8242
-
-
-
-        // let jsonData = 
-
-        // this._tree = PsyanimBehaviorTree.fromJson(jsonData);
-
-        // TODO: validation
+        this._tree.load(this.behaviorTreeDefinition, this.taskDefinitions);
     }
 }
 

@@ -2,17 +2,13 @@ import PsyanimBehaviorTreeNode from './PsyanimBehaviorTreeNode.js';
 
 export default class PsyanimBehaviorTreeTask extends PsyanimBehaviorTreeNode {
 
-    constructor(name, taskDefinition = null) {
+    constructor(controller, id, name, taskDefinition) {
 
-        super(name);
+        super(controller, id, name);
 
         this._taskDefinition = taskDefinition;
+
         this._decoratorDefinitions = [];
-    }
-
-    get children() {
-
-        return null;
     }
 
     get childCount() {
@@ -29,18 +25,13 @@ export default class PsyanimBehaviorTreeTask extends PsyanimBehaviorTreeNode {
 
         super.tick();
 
-        if (this._taskDefinition)
-        {
-            let status = this._taskDefinition.tick();
+        // TODO: we need to tick the decorators too!
 
-            this.validateTaskStatus(status);
+        let status = this._taskDefinition.tick();
 
-            this._status = status;
-        }
-        else
-        {
-            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
-        }
+        this.validateTaskStatus(status);
+
+        this._status = status;
 
         return this._status;
     }

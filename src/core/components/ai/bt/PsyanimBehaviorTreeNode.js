@@ -2,13 +2,23 @@ export default class PsyanimBehaviorTreeNode {
 
     // TODO: node needs access to the blackboard
 
-    constructor(name) {
+    constructor(controller, id, name) {
 
-        super(name);
-
+        this._controller = controller;
+        this._id = id;
         this._name = name;
         this._children = [];
         this._status = PsyanimBehaviorTreeNode.STATUS.UNTICKED;
+    }
+
+    get controller() {
+
+        return this._controller;
+    }
+
+    get id() {
+
+        return this._id;
     }
 
     get name() {

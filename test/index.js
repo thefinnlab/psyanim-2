@@ -46,6 +46,8 @@ import AdvancedBehaviorTreeTest from './scenes/AdvancedBehaviorTreeTest.js';
 
 import BlackboardTest from './scenes/BlackboardTest.js';
 
+import BehaviorTreePatrolTest from './scenes/BehaviorTreePatrolTest.js';
+
 /**
  *  Setup Psyanim App - first register scenes:
  */
@@ -76,8 +78,10 @@ let SensorTestCopy = PsyanimUtils.cloneSceneDefinition(SensorTest);
 let EvadeTestCopy = PsyanimUtils.cloneSceneDefinition(EvadeTest);
 let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let BlackboardTestCopy = PsyanimUtils.cloneSceneDefinition(BlackboardTest);
+let BehaviorTreePatrolTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePatrolTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolTest);
 PsyanimApp.Instance.config.registerScene(BlackboardTestCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);
 PsyanimApp.Instance.config.registerScene(advancedBehaviorTreeTestCopy);

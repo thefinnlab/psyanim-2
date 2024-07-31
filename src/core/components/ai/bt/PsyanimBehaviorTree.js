@@ -1,18 +1,121 @@
 import PsyanimBehaviorTreeNode from './PsyanimBehaviorTreeNode.js';
 
+import PsyanimBehaviorTreeSelectorNode from './PsyanimBehaviorTreeSelectorNode.js';
+import PsyanimBehaviorTreeSequenceNode from './PsyanimBehaviorTreeSequenceNode.js';
+
+import PsyanimBehaviorTreeTask from './PsyanimBehaviorTreeTask.js';
+
+import { 
+    PsyanimDebug,
+
+    // import built-in tasks
+    MoveTo,
+    PatrolTargetSelector
+
+} from 'psyanim-utils';
+
 export default class PsyanimBehaviorTree {
 
-    constructor(name) {
+    constructor(name, controller) {
 
         console.warn("TODO: tree needs access to blackboard.");
 
         this._name = name;
-        this._root = new PsyanimBehaviorTreeNode("root");
+        this._root = new PsyanimBehaviorTreeSequenceNode(controller, 0, "root");
+
+        this._controller = controller;
     }
 
-    static fromJson(jsonData) {
+    load(behaviorTreeDefinition, userDefinedTasks = []) {
 
-        console.error("TODO: implement!");
+        PsyanimDebug.log('Loading Behavior Tree:', behaviorTreeDefinition);
+
+        let builtinTasks = [
+            MoveTo,
+            PatrolTargetSelector
+        ];
+
+        let taskDefinitions = builtinTasks.concat(userDefinedTasks);
+
+        let taskDefinitionNames = taskDefinitions.map(t => t.prototype.constructor.name);
+
+        let nodes = [];
+
+        behaviorTreeDefinition.nodes.forEach(nodeDef => {
+
+            let node = null;
+
+            if (nodeDef.isComposite)
+            {
+                if (nodeDef.type === 'Behavior Tree Root')
+                {
+                    node = this._root;
+                }
+                else if (nodeDef.type === 'Sequence')
+                {
+                    node = new PsyanimBehaviorTreeSequenceNode(
+                        this._controller, 
+                        nodeDef.id, 
+                        nodeDef.name);
+                }
+                else if (nodeDef.type === 'Selector')
+                {
+                    node = new PsyanimBehaviorTreeSelectorNode(
+                        this._controller,
+                        nodeDef.id,
+                        nodeDef.name);
+                }
+                else
+                {
+                    PsyanimDebug.error("Unknown composite type:", nodeDef.type);
+                    return;
+                }
+            }
+            else // it's a task
+            {
+                let taskDefinitionIndex = taskDefinitionNames.indexOf(nodeDef.type);
+
+                let taskDefinition = taskDefinitions[taskDefinitionIndex];
+
+                let taskDefinitionInstance = new taskDefinition(this._controller);
+
+                let fieldDataKeys = Object.keys(nodeDef.fieldData);
+
+                fieldDataKeys.forEach(key => {
+                    taskDefinitionInstance[key] = nodeDef.fieldData[key];
+                });
+
+                node = new PsyanimBehaviorTreeTask(
+                    this._controller,
+                    nodeDef.id, 
+                    nodeDef.name, 
+                    taskDefinitionInstance);
+            }
+
+            nodes.push(node);
+        });
+
+        behaviorTreeDefinition.edges.forEach(edgeDef => {
+
+            let parentNode = nodes.find(node => node.id === edgeDef.bottomPortNodeId);
+            let childNode = nodes.find(node => node.id === edgeDef.topPortNodeId);
+
+            if (!parentNode)
+            {
+                console.error('Failed to find parent node with ID:', edgeDef.bottomPortNodeId);
+                return;
+            }
+            else if (!childNode)
+            {
+                console.error('Failed to find child node with ID:', edgeDef.topPortNodeId);
+                return;
+            }
+
+            parentNode.children.push(childNode);
+        });
+
+        this.printTree();
+
         return null;
     }
 
@@ -63,7 +166,7 @@ export default class PsyanimBehaviorTree {
 
             console.log('%c' + '|    '.repeat(nextNode.level) + '|-' + nextNode.node.name, style);
 
-            for (let i = nextNode.node.children.length - 1; i >= 0; --i)
+            for (let i = nextNode.node.childCount - 1; i >= 0; --i)
             {
                 nodeStack.push({ level: nextNode.level + 1, node: nextNode.node.children[i] });
             }
