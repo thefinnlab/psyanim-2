@@ -40,10 +40,6 @@ import PreyV2Test from './scenes/PreyV2Test.js';
 
 import BasicHFSM from './scenes/BasicHFSM.js';
 
-import BasicBehaviorTreeTest from './scenes/BasicBehaviorTreeTest.js';
-
-import AdvancedBehaviorTreeTest from './scenes/AdvancedBehaviorTreeTest.js';
-
 import BlackboardTest from './scenes/BlackboardTest.js';
 
 import BehaviorTreePatrolTest from './scenes/BehaviorTreePatrolTest.js';
@@ -53,8 +49,6 @@ import BehaviorTreePatrolTest from './scenes/BehaviorTreePatrolTest.js';
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
-let advancedBehaviorTreeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedBehaviorTreeTest);
-let basicBehaviorTreeTestCopy = PsyanimUtils.cloneSceneDefinition(BasicBehaviorTreeTest);
 let basicHFSMCopy = PsyanimUtils.cloneSceneDefinition(BasicHFSM);
 let preyV2TestCopy = PsyanimUtils.cloneSceneDefinition(PreyV2Test);
 let predatorV2TestCopy = PsyanimUtils.cloneSceneDefinition(PredatorV2Test);
@@ -81,11 +75,9 @@ let BlackboardTestCopy = PsyanimUtils.cloneSceneDefinition(BlackboardTest);
 let BehaviorTreePatrolTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePatrolTest);
 
 // register the scene def clones to make sure the clones are g2g too
-PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolTest);
+PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolTestCopy);
 PsyanimApp.Instance.config.registerScene(BlackboardTestCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);
-PsyanimApp.Instance.config.registerScene(advancedBehaviorTreeTestCopy);
-PsyanimApp.Instance.config.registerScene(basicBehaviorTreeTestCopy);
 PsyanimApp.Instance.config.registerScene(SensorTestCopy);
 PsyanimApp.Instance.config.registerScene(playfightTestv2Copy);
 PsyanimApp.Instance.config.registerScene(basicHFSMCopy);
