@@ -21,11 +21,23 @@ export default class PsyanimBehaviorTreeTask extends PsyanimBehaviorTreeNode {
         this._decoratorDefinitions.push(decoratorDefinition);
     }
 
+    reset() {
+
+        super.reset();
+
+        this._taskDefinition.reset();
+    }
+
     tick() {
 
-        super.tick();
+        let canExecute = this.evaluateDecorators();
 
-        // TODO: we need to tick the decorators too!
+        if (!canExecute)
+        {
+            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
+
+            return this._status;
+        }
 
         let status = this._taskDefinition.tick();
 

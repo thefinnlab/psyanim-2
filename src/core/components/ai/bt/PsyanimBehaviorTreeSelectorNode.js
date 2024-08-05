@@ -17,7 +17,16 @@ export default class PsyanimBehaviorTreeSelectorNode extends PsyanimBehaviorTree
     }
 
     tick() {
-        
+
+        let canExecute = this.evaluateDecorators();
+
+        if (!canExecute)
+        {
+            this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
+
+            return this._status;
+        }
+
         let childStatus = this._children[this._currentChildIndex].tick();
 
         this.validateTaskStatus(childStatus);

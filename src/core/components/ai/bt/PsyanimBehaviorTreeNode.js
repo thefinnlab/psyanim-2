@@ -9,6 +9,8 @@ export default class PsyanimBehaviorTreeNode {
         this._name = name;
         this._children = [];
         this._status = PsyanimBehaviorTreeNode.STATUS.UNTICKED;
+
+        this._decorators = [];
     }
 
     get controller() {
@@ -41,6 +43,11 @@ export default class PsyanimBehaviorTreeNode {
         return this._children.length;
     }
 
+    get decorators() {
+
+        return this._decorators;
+    }
+
     validateTaskStatus(status) {
 
         let isValid = (status === PsyanimBehaviorTreeNode.STATUS.UNTICKED ||
@@ -60,8 +67,24 @@ export default class PsyanimBehaviorTreeNode {
         this._children.forEach(child => child.reset());
     }
 
-    tick() {
-        
+    evaluateDecorators() {
+
+        if (this._decorators.length === 0)
+        {
+            return true;
+        }
+
+        for (let i = 0; i < this._decorators.length; ++i)
+        {
+            let success = this._decorators[i].evaluate();
+
+            if (!success)
+            {
+                return false;
+            }
+        }
+
+        return success;
     }
 }
 

@@ -5,7 +5,8 @@ import PsyanimBehaviorTreeSequenceNode from './PsyanimBehaviorTreeSequenceNode.j
 
 import PsyanimBehaviorTreeTask from './PsyanimBehaviorTreeTask.js';
 
-import { 
+import {
+
     PsyanimDebug,
 
     // import built-in tasks
@@ -139,23 +140,25 @@ export default class PsyanimBehaviorTree {
 
         while (nodeStack.length !== 0)
         {
-            let nextNode = nodeStack.pop();
+            let nextNodeData = nodeStack.pop();
+
+            let nextNode = nextNodeData.node;
 
             let style = null;
 
-            if (nextNode.node.status === PsyanimBehaviorTreeNode.STATUS.UNTICKED)
+            if (nextNode.status === PsyanimBehaviorTreeNode.STATUS.UNTICKED)
             {
                 style = 'color: white;';
             }
-            else if (nextNode.node.status === PsyanimBehaviorTreeNode.STATUS.FAILURE)
+            else if (nextNode.status === PsyanimBehaviorTreeNode.STATUS.FAILURE)
             {
                 style = 'color: red;';
             }
-            else if (nextNode.node.status === PsyanimBehaviorTreeNode.STATUS.SUCCESS)
+            else if (nextNode.status === PsyanimBehaviorTreeNode.STATUS.SUCCESS)
             {
                 style = 'color: green;';
             }
-            else if (nextNode.node.status === PsyanimBehaviorTreeNode.STATUS.RUNNING)
+            else if (nextNode.status === PsyanimBehaviorTreeNode.STATUS.RUNNING)
             {
                 style = 'color: yellow;';
             }
@@ -164,11 +167,21 @@ export default class PsyanimBehaviorTree {
                 console.error("Next node status is invalid!");
             }
 
-            console.log('%c' + '|    '.repeat(nextNode.level) + '|-' + nextNode.node.name, style);
+            let level = nextNodeData.level;
 
-            for (let i = nextNode.node.childCount - 1; i >= 0; --i)
+            for (let i = 0; i < nextNode.decorators.length; ++i)
             {
-                nodeStack.push({ level: nextNode.level + 1, node: nextNode.node.children[i] });
+                let decorator = nextNode.decorators[i];
+                let label = '(BB Query: ' + decorator.keyTypeAsString + ')';
+
+                console.log('%c' + '|    '.repeat(level++) + '|-' + label, style);
+            }
+
+            console.log('%c' + '|    '.repeat(level) + '|-' + nextNode.name, style);
+
+            for (let i = nextNode.childCount - 1; i >= 0; --i)
+            {
+                nodeStack.push({ level: nextNodeData.level + 1, node: nextNode.children[i] });
             }
         }
     }

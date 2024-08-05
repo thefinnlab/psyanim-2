@@ -11,6 +11,7 @@ import PsyanimBehaviorTreeBlackboard from './PsyanimBehaviorTreeBlackboard.js';
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
+import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
 
 import PsyanimBehaviorTree from './PsyanimBehaviorTree.js';
 
@@ -24,6 +25,11 @@ export default class PsyanimAIController extends PsyanimComponent {
      *  @type {Number}
      */
     maxSpeed;
+
+    /**
+     *  Maximum acceleration this entity's vehicle can attain.
+     */
+    maxAcceleration;
 
     /**
      *  Distance, in px, from target which agent will come to rest.
@@ -62,16 +68,30 @@ export default class PsyanimAIController extends PsyanimComponent {
         this._blackboard = null;
 
         this.maxSpeed = 8;
+        this.maxAcceleration = 0.3;
+
         this.innerDecelerationRadius = 25;
         this.outerDecelerationRadius = 140;
 
+        // TODO: should be able to set maxFleeSpeed/Accel and maxArriveSpeed/Accel
+        // to values smaller than maxSpeed and maxAcceleration
+
+        // add vehicle
         this._vehicle = entity.addComponent(PsyanimVehicle);
 
+        // add arrive behavior
         this._arriveBehavior = entity.addComponent(PsyanimArriveBehavior);
 
         this._arriveBehavior.maxSpeed = this.maxSpeed;
         this._arriveBehavior.innerDecelerationRadius = this.innerDecelerationRadius;
         this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
+
+        // add flee behavior
+        this._fleeBehavior = entity.addComponent(PsyanimFleeBehavior);
+
+        this._fleeBehavior.maxSpeed = this.maxSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxAcceleration;
+        this._fleeBehavior.panicDistance = 250; // TODO: don't hardcode!
 
         // empty target we'll use for 'moveTo'
         this._moveToTarget = this.scene.addEntity(this.entity.name + '_moveToTarget');
@@ -107,16 +127,16 @@ export default class PsyanimAIController extends PsyanimComponent {
 
         console.log('Fleeing from entity:', targetEntity.name);
 
-        console.warn('TODO: implement flee on AI controller!');
+        this._reset(true);
 
-        this._reset();
+        this._fleeTarget = targetEntity;
 
         this._state = PsyanimAIController.STATE.FLEE;
     }
 
     moveTo(position) {
 
-        this._reset();
+        this._reset(true);
 
         this._moveToTarget.x = position.x;
         this._moveToTarget.y = position.y;
@@ -124,13 +144,16 @@ export default class PsyanimAIController extends PsyanimComponent {
         this._state = PsyanimAIController.STATE.MOVE_TO;
     }
 
-    idle() {
+    idle(stopImmediately = false) {
         
         console.log('Idling');
 
         this._reset();
 
-        this._vehicle.stop();
+        if (stopImmediately)
+        {
+            this._vehicle.stop();
+        }
 
         this._state = PsyanimAIController.STATE.IDLE;
     }
@@ -179,6 +202,12 @@ export default class PsyanimAIController extends PsyanimComponent {
 
             this._vehicle.steer(steering);
         }
+        else if (this._state === PsyanimAIController.STATE.FLEE)
+        {
+            let steering = this._fleeBehavior.getSteering(this._fleeTarget);
+
+            this._vehicle.steer(steering);
+        }
     }
 
     /*************************************************************************************
@@ -188,6 +217,7 @@ export default class PsyanimAIController extends PsyanimComponent {
     _reset() {
 
         this._followTarget = null;
+        this._fleeTarget = null;
     }
 
     _loadBehaviorTree() {

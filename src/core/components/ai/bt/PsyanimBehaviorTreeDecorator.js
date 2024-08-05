@@ -2,6 +2,35 @@ import { PsyanimBehaviorTreeDecoratorEnums, PsyanimBehaviorTreeTaskDefinition } 
 
 export default class PsyanimBehaviorTreeDecorator {
 
+    get status() {
+
+        return this._status;
+    }
+
+    get keyTypeAsString() {
+
+        switch (this._keyType) {
+
+            case PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.BOOLEAN:
+
+                return 'Boolean';
+
+            case PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.NUMBER:
+
+                return 'Number';
+
+            case PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.STRING:
+
+                return 'String';
+
+            default:
+
+                console.error("Unknown decorator key type:", this._keyType);
+
+                return null;
+        }
+    }
+
     /**
      * 
      * @param {PsyanimBehaviorTreeNode} node 
@@ -20,9 +49,11 @@ export default class PsyanimBehaviorTreeDecorator {
         this._keyType = keyType;
         this._keyQueryType = keyQueryType;
         this._keyValue = keyValue;
+
+        this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.UNTICKED;
     }
 
-    tick() {
+    evaluate() {
 
         let value = this._node.controller.blackboard.getValue(key);
 
@@ -32,41 +63,49 @@ export default class PsyanimBehaviorTreeDecorator {
 
                 if (this._checkBoolean(value))
                 {
-                    return PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
+                    this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
                 }
                 else
                 {
-                    return PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
+                    this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
                 }
+
+                break;
 
             case PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.NUMBER:
 
                 if (this._checkNumber(value))
                 {
-                    return PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
+                    this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
                 }
                 else
                 {
-                    return PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
+                    this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
                 }
+
+                break;
 
             case PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.STRING:
 
                 if (this._checkString(value))
                 {
-                    return PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
+                    this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
                 }
                 else
                 {
-                    return PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
+                    this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
                 }
+
+                break;
 
             default:
 
                 console.error("Unknown decorator key type:", this._keyType);
                 
-                return PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
+                this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.FAILURE;
         }
+
+        return this._status === PsyanimBehaviorTreeTaskDefinition.STATUS.SUCCESS;
     }
 
     _checkBoolean(value) {
