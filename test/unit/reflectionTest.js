@@ -1,4 +1,4 @@
-import PsyanimEnum from './PsyanimEnum.js';
+import {PsyanimEnum} from 'psyanim-utils';
 
 // test dynamic import of MyTask
 const taskModule = await import('./MyTask.js');
@@ -26,12 +26,13 @@ keys.forEach(key => {
         keyInfo.push({ 
             name: key, 
             type: PsyanimEnum.prototype.constructor.name, 
-            options: taskInstance[key].options 
+            options: taskInstance[key].options,
+            defaultValue: value.value
         });
     }
     else if (typeof value === 'string' || typeof value === 'boolean' || typeof value === 'number')
     {
-        keyInfo.push({ name: key, type: typeof value });
+        keyInfo.push({ name: key, type: typeof value, defaultValue: value });
     }
     else
     {
