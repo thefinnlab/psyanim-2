@@ -4,11 +4,23 @@ export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
 
     name;
 
+    get events() {
+
+        return this._events;
+    }
+
+    get keys() {
+
+        return Object.keys(this._data);
+    }
+
     constructor(entity) {
 
         super(entity);
 
         this._data = {};
+
+        this._events = new Phaser.Events.EventEmitter();
     }
 
     afterCreate() {
@@ -26,6 +38,8 @@ export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
         {
             console.error("Blackboard was not assigned a name in scene! entity name:", this.entity.name);
         }
+
+        this._events.emit('created');
     }
 
     _getUserDefinedParams() {
@@ -57,6 +71,8 @@ export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
     }
 
     setValue(key, value) {
+
+        // TODO: this should throw an event!
 
         this._data[key] = value;
     }

@@ -1,7 +1,5 @@
 export default class PsyanimBehaviorTreeNode {
 
-    // TODO: node needs access to the blackboard
-
     constructor(controller, id, name) {
 
         this._controller = controller;
@@ -46,6 +44,22 @@ export default class PsyanimBehaviorTreeNode {
     get decorators() {
 
         return this._decorators;
+    }
+
+    getAllChildrenRecursive() {
+
+        let children = [];
+
+        for (let i = 0; i < this._children.length; ++i)
+        {
+            let child = this._children[i];
+
+            children.push(child);
+
+            children.push(...child.getAllChildrenRecursive());
+        }
+
+        return children;
     }
 
     validateTaskStatus(status) {

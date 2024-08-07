@@ -51,6 +51,8 @@ export default class PsyanimBehaviorTreeDecorator {
         this._keyValue = keyValue;
 
         this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.UNTICKED;
+
+        this._node.decorators.push(this);
     }
 
     evaluate() {

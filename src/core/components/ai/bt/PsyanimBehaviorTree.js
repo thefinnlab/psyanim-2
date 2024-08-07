@@ -1,9 +1,12 @@
 import PsyanimBehaviorTreeNode from './PsyanimBehaviorTreeNode.js';
+import PsyanimBehaviorTreeDecorator from './PsyanimBehaviorTreeDecorator.js';
 
 import PsyanimBehaviorTreeSelectorNode from './PsyanimBehaviorTreeSelectorNode.js';
 import PsyanimBehaviorTreeSequenceNode from './PsyanimBehaviorTreeSequenceNode.js';
 
 import PsyanimBehaviorTreeTask from './PsyanimBehaviorTreeTask.js';
+
+import { PsyanimBehaviorTreeDecoratorEnums } from 'psyanim-utils';
 
 import {
 
@@ -24,7 +27,10 @@ export default class PsyanimBehaviorTree {
         this._name = name;
         this._root = new PsyanimBehaviorTreeSequenceNode(controller, 0, "root");
 
+        this._nodes = [this._root];
+
         this._controller = controller;
+        this._blackboard = controller.blackboard;
     }
 
     load(behaviorTreeDefinition, userDefinedTasks = []) {
@@ -40,6 +46,7 @@ export default class PsyanimBehaviorTree {
 
         let taskDefinitionNames = taskDefinitions.map(t => t.prototype.constructor.name);
 
+        // load nodes
         let nodes = [];
 
         behaviorTreeDefinition.nodes.forEach(nodeDef => {
@@ -96,6 +103,9 @@ export default class PsyanimBehaviorTree {
             nodes.push(node);
         });
 
+        this._nodes = nodes;
+
+        // load edges & build graph 
         behaviorTreeDefinition.edges.forEach(edgeDef => {
 
             let parentNode = nodes.find(node => node.id === edgeDef.bottomPortNodeId);
@@ -115,9 +125,91 @@ export default class PsyanimBehaviorTree {
             parentNode.children.push(childNode);
         });
 
-        this.printTree();
+        // load decorators
+        behaviorTreeDefinition.decorators.forEach(decoratorDef => {
 
-        return null;
+            let node = this._nodes.find(n => n.id === decoratorDef.nodeId);
+
+            if (!node)
+            {
+                console.error("Failed to find node with ID:", decorator.nodeId);
+                return;
+            }
+
+            let abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.NONE;
+
+            switch (decoratorDef.fieldData["Abort Mode"])
+            {
+                case "Self":
+
+                    abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.SELF;
+                    break;
+
+                case "Lower Priority":
+
+                    abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.LOWER_PRIORITY;
+                    break;
+
+                case "Both":
+
+                    abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH;
+                    break;
+
+                default:
+
+                    console.error("Invalid decorator abort mode:", decoratorDef.fieldData["Abort Mode"]);
+                    return;
+            }
+
+            let key = decoratorDef.fieldData["Blackboard Key"];
+
+            let keyType = typeof(this._blackboard.getValue(key));
+
+            if (!(keyType === 'number' || keyType === 'boolean' || keyType === 'string'))
+            {
+                console.error('Unknown decorator key type:', keyType);
+                return;
+            }
+
+            console.warn("TODO: need to finish processing decorator data here,",
+                "then create decorator and add it to node,",
+                "then we need to update the BT runtime to finish abort functionality,",
+                "which involves computing a min/max node index during load for each decorator",
+                "whose abort mode is not 'None' and then checking those each frame for now,",
+                "will be made event-driven later");
+
+            // let decorator = new PsyanimBehaviorTreeDecorator(
+            //     node,
+            //     abortMode,
+            //     key,
+            //     keyType,
+
+            // );
+        });
+
+        // TODO: here for testing - remove before flight!!!
+        this._blackboard.keys.forEach(key => {
+
+            let keyType = typeof(this._blackboard.getValue(key));
+
+            console.log("key:", key, ", keyType:", keyType);
+        })
+
+        // TODO: here for testing, remove before flight
+        console.log('children:', this.getAllNodeIDs());
+
+        this.printTree();
+    }
+
+    getAllNodeIDs() {
+
+        let children = this._root.getAllChildrenRecursive();
+
+        let nodeIDs = children.map(child => child.id);
+
+        nodeIDs.unshift(this._root.id);
+
+        return nodeIDs;
     }
 
     tick() {

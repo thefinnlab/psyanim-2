@@ -105,7 +105,7 @@ export default class PsyanimAIController extends PsyanimComponent {
 
         this._blackboard = this.entity.getComponent(PsyanimBehaviorTreeBlackboard);
 
-        this._loadBehaviorTree();
+        this._blackboard.events.on('created', () => this._loadBehaviorTree());
     }
 
     /*************************************************************************************
@@ -186,6 +186,11 @@ export default class PsyanimAIController extends PsyanimComponent {
     update(t, dt) {
         
         super.update(t, dt);
+
+        if (!this._tree)
+        {
+            return;
+        }
 
         // run behavior tree
         this._tree.tick();
