@@ -1,0 +1,146 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "Root Node",
+            "type": "Behavior Tree Root",
+            "isComposite": true,
+            "x": 874.5,
+            "y": 287,
+            "fieldData": {
+                "Blackboard": "PatrolFleeTest"
+            }
+        },
+        {
+            "id": 1,
+            "name": "Main Selector",
+            "type": "Selector",
+            "isComposite": true,
+            "x": 865,
+            "y": 409,
+            "fieldData": {}
+        },
+        {
+            "id": 2,
+            "name": "Flee",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 546.6666666666652,
+            "y": 661.3333333333305,
+            "fieldData": {}
+        },
+        {
+            "id": 3,
+            "name": "Flee",
+            "type": "Flee",
+            "isComposite": false,
+            "x": 473.66666666666526,
+            "y": 882.3333333333305,
+            "fieldData": {
+                "panicDistance": 250,
+                "targetEntityBlackboardKey": "fleeTarget"
+            }
+        },
+        {
+            "id": 4,
+            "name": "Wait",
+            "type": "Wait",
+            "isComposite": false,
+            "x": 686.6666666666652,
+            "y": 869.3333333333305,
+            "fieldData": {
+                "waitTime": 5
+            }
+        },
+        {
+            "id": 5,
+            "name": "Patrol",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 1186.8888888888878,
+            "y": 663.8888888888873,
+            "fieldData": {}
+        },
+        {
+            "id": 6,
+            "name": "PatrolTargetSelector",
+            "type": "PatrolTargetSelector",
+            "isComposite": false,
+            "x": 976.8888888888878,
+            "y": 837.8888888888873,
+            "fieldData": {
+                "targetEntityListBlackboardKey": "patrolTargetList"
+            }
+        },
+        {
+            "id": 7,
+            "name": "MoveTo",
+            "type": "MoveTo",
+            "isComposite": false,
+            "x": 1307.8888888888878,
+            "y": 828.8888888888873,
+            "fieldData": {
+                "stoppingDistance": 50,
+                "targetEntityBlackboardKey": "patrolTarget"
+            }
+        }
+    ],
+    "decorators": [
+        {
+            "nodeId": 2,
+            "decoratorId": 0,
+            "name": "Is Target Nearby",
+            "type": "Blackboard Decorator",
+            "fieldData": {
+                "Abort Mode": "Lower Priority",
+                "Blackboard Key": "distanceToTarget",
+                "Key Type": 1,
+                "Query Type": 8,
+                "Key Query Value": 250
+            }
+        },
+        {
+            "nodeId": 4,
+            "decoratorId": 0,
+            "name": "Is Target Nearby",
+            "type": "Blackboard Decorator",
+            "fieldData": {
+                "Abort Mode": "Self",
+                "Blackboard Key": "distanceToTarget",
+                "Key Type": 1,
+                "Query Type": 2,
+                "Key Query Value": 250
+            }
+        }
+    ],
+    "edges": [
+        {
+            "topPortNodeId": 1,
+            "bottomPortNodeId": 0
+        },
+        {
+            "topPortNodeId": 2,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 3,
+            "bottomPortNodeId": 2
+        },
+        {
+            "topPortNodeId": 4,
+            "bottomPortNodeId": 2
+        },
+        {
+            "topPortNodeId": 5,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 6,
+            "bottomPortNodeId": 5
+        },
+        {
+            "topPortNodeId": 7,
+            "bottomPortNodeId": 5
+        }
+    ]
+}

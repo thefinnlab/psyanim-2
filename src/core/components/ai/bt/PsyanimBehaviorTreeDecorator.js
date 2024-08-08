@@ -31,6 +31,26 @@ export default class PsyanimBehaviorTreeDecorator {
         }
     }
 
+    get triggersAbort() {
+
+        return this._abortMode !== PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.NONE;
+    }
+
+    get abortMode() {
+
+        return this._abortMode;
+    }
+
+    get abortNodeStartIndex() {
+
+        return this._abortNodeStartIndex;
+    }
+
+    get abortNodeEndIndex() {
+
+        return this._abortNodeEndIndex;
+    }
+
     /**
      * 
      * @param {PsyanimBehaviorTreeNode} node 
@@ -52,12 +72,56 @@ export default class PsyanimBehaviorTreeDecorator {
 
         this._status = PsyanimBehaviorTreeTaskDefinition.STATUS.UNTICKED;
 
+        // compute abort mode node indices
+        if (this._abortMode !== PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.NONE)
+        {
+            let childIDs = this._node.getAllChildrenRecursive()
+                .map(child => child.id);
+
+            switch (this._abortMode)
+            {
+                case PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.SELF:
+
+                    this._abortNodeStartIndex = this._node.id;
+
+                    if (childIDs.length === 0)
+                    {
+                        this._abortNodeEndIndex = this._node.id;                        
+                    }
+                    else
+                    {
+                        this._abortNodeEndIndex = childIDs[childIDs.length - 1];
+                    }
+
+                    break;
+
+                case PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.LOWER_PRIORITY:
+
+                    this._abortNodeStartIndex = childIDs[childIDs.length - 1];
+                    this._abortNodeEndIndex = -1; // rest of tree can be aborted
+
+                    break;
+
+                case PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH:
+
+                    this._abortNodeStartIndex = this._node.id;
+                    this._abortNodeEndIndex = -1; // rest of tree can be aborted
+
+                    break;
+
+                default:
+
+                    console.error("Unknown decorator abort mode:", this._abortMode);
+            }
+        }
+
+        // add decorator to node
         this._node.decorators.push(this);
     }
 
     evaluate() {
 
-        let value = this._node.controller.blackboard.getValue(key);
+        let value = this._node.controller.blackboard.getValue(this._key);
 
         switch (this._keyType) {
 

@@ -98,7 +98,7 @@ export default class PsyanimBehaviorTreeNode {
             }
         }
 
-        return success;
+        return true;
     }
 }
 

@@ -6,7 +6,7 @@ import PsyanimBehaviorTreeSequenceNode from './PsyanimBehaviorTreeSequenceNode.j
 
 import PsyanimBehaviorTreeTask from './PsyanimBehaviorTreeTask.js';
 
-import { PsyanimBehaviorTreeDecoratorEnums } from 'psyanim-utils';
+import { PsyanimBehaviorTreeDecoratorEnums, PsyanimBehaviorTreeTaskDefinition } from 'psyanim-utils';
 
 import {
 
@@ -14,7 +14,9 @@ import {
 
     // import built-in tasks
     MoveTo,
-    PatrolTargetSelector
+    PatrolTargetSelector,
+    Wait,
+    Flee
 
 } from 'psyanim-utils';
 
@@ -29,6 +31,8 @@ export default class PsyanimBehaviorTree {
 
         this._nodes = [this._root];
 
+        this._decoratorsWithAborts = [];
+
         this._controller = controller;
         this._blackboard = controller.blackboard;
     }
@@ -39,7 +43,9 @@ export default class PsyanimBehaviorTree {
 
         let builtinTasks = [
             MoveTo,
-            PatrolTargetSelector
+            PatrolTargetSelector,
+            Wait,
+            Flee
         ];
 
         let taskDefinitions = builtinTasks.concat(userDefinedTasks);
@@ -163,41 +169,42 @@ export default class PsyanimBehaviorTree {
 
             let key = decoratorDef.fieldData["Blackboard Key"];
 
-            let keyType = typeof(this._blackboard.getValue(key));
+            let keyType = decoratorDef.fieldData["Key Type"];
 
-            if (!(keyType === 'number' || keyType === 'boolean' || keyType === 'string'))
+            if (!(keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.STRING || 
+                keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.NUMBER || 
+                keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.BOOLEAN))
             {
                 console.error('Unknown decorator key type:', keyType);
                 return;
             }
 
-            console.warn("TODO: need to finish processing decorator data here,",
-                "then create decorator and add it to node,",
-                "then we need to update the BT runtime to finish abort functionality,",
-                "which involves computing a min/max node index during load for each decorator",
-                "whose abort mode is not 'None' and then checking those each frame for now,",
-                "will be made event-driven later");
+            let keyQueryType = decoratorDef.fieldData["Query Type"];
 
-            // let decorator = new PsyanimBehaviorTreeDecorator(
-            //     node,
-            //     abortMode,
-            //     key,
-            //     keyType,
+            let keyValue = null;
 
-            // );
+            if (keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.NUMBER || 
+                keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.STRING)
+            {
+                keyValue = decoratorDef.fieldData["Key Query Value"];
+            }
+
+            let decorator = new PsyanimBehaviorTreeDecorator(
+                node,
+                abortMode,
+                key,
+                keyType,
+                keyQueryType,
+                keyValue
+            );
+
+            if (decorator.triggersAbort)
+            {
+                this._decoratorsWithAborts.push(decorator);
+            }
         });
 
-        // TODO: here for testing - remove before flight!!!
-        this._blackboard.keys.forEach(key => {
-
-            let keyType = typeof(this._blackboard.getValue(key));
-
-            console.log("key:", key, ", keyType:", keyType);
-        })
-
-        // TODO: here for testing, remove before flight
-        console.log('children:', this.getAllNodeIDs());
-
+        // TODO: here for debugging - remove before flight!
         this.printTree();
     }
 
@@ -259,21 +266,21 @@ export default class PsyanimBehaviorTree {
                 console.error("Next node status is invalid!");
             }
 
-            let level = nextNodeData.level;
+            let currentLevel = nextNodeData.level;
 
             for (let i = 0; i < nextNode.decorators.length; ++i)
             {
                 let decorator = nextNode.decorators[i];
                 let label = '(BB Query: ' + decorator.keyTypeAsString + ')';
 
-                console.log('%c' + '|    '.repeat(level++) + '|-' + label, style);
+                console.log('%c' + '|    '.repeat(currentLevel++) + '|-' + label, style);
             }
 
-            console.log('%c' + '|    '.repeat(level) + '|-' + nextNode.name, style);
+            console.log('%c' + '|    '.repeat(currentLevel) + '|-' + nextNode.name, style);
 
             for (let i = nextNode.childCount - 1; i >= 0; --i)
             {
-                nodeStack.push({ level: nextNodeData.level + 1, node: nextNode.children[i] });
+                nodeStack.push({ level: currentLevel + 1, node: nextNode.children[i] });
             }
         }
     }

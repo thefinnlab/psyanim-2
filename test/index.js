@@ -43,6 +43,7 @@ import BasicHFSM from './scenes/BasicHFSM.js';
 import BlackboardTest from './scenes/BlackboardTest.js';
 
 import BehaviorTreePatrolTest from './scenes/BehaviorTreePatrolTest.js';
+import BehaviorTreePatrolFleeTest from './scenes/BehaviorTreePatrolFleeTest.js';
 
 /**
  *  Setup Psyanim App - first register scenes:
@@ -73,8 +74,10 @@ let EvadeTestCopy = PsyanimUtils.cloneSceneDefinition(EvadeTest);
 let AdvancedFleeTestCopy = PsyanimUtils.cloneSceneDefinition(AdvancedFleeTest);
 let BlackboardTestCopy = PsyanimUtils.cloneSceneDefinition(BlackboardTest);
 let BehaviorTreePatrolTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePatrolTest);
+let BehaviorTreePatrolFleeTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePatrolFleeTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolFleeTestCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolTestCopy);
 PsyanimApp.Instance.config.registerScene(BlackboardTestCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);
