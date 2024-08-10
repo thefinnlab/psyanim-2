@@ -49,7 +49,7 @@
             "x": 686.6666666666652,
             "y": 869.3333333333305,
             "fieldData": {
-                "waitTime": 5
+                "waitTime": 3
             }
         },
         {
@@ -102,7 +102,7 @@
         {
             "nodeId": 4,
             "decoratorId": 0,
-            "name": "Is Target Nearby",
+            "name": "Is Safe Distance",
             "type": "Blackboard Decorator",
             "fieldData": {
                 "Abort Mode": "Self",

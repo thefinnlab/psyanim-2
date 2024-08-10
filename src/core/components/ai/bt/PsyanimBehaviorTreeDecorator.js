@@ -2,6 +2,11 @@ import { PsyanimBehaviorTreeDecoratorEnums, PsyanimBehaviorTreeTaskDefinition } 
 
 export default class PsyanimBehaviorTreeDecorator {
 
+    get node() {
+
+        return this._node;
+    }
+
     get status() {
 
         return this._status;
@@ -41,14 +46,14 @@ export default class PsyanimBehaviorTreeDecorator {
         return this._abortMode;
     }
 
-    get abortNodeStartIndex() {
+    get selfAbortNodeStartId() {
 
-        return this._abortNodeStartIndex;
+        return this._selfAbortNodeStartId;
     }
 
-    get abortNodeEndIndex() {
+    get selfAbortNodeEndId() {
 
-        return this._abortNodeEndIndex;
+        return this._selfAbortNodeEndId;
     }
 
     /**
@@ -78,40 +83,15 @@ export default class PsyanimBehaviorTreeDecorator {
             let childIDs = this._node.getAllChildrenRecursive()
                 .map(child => child.id);
 
-            switch (this._abortMode)
+            this._selfAbortNodeStartId = this._node.id;
+
+            if (childIDs.length === 0)
             {
-                case PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.SELF:
-
-                    this._abortNodeStartIndex = this._node.id;
-
-                    if (childIDs.length === 0)
-                    {
-                        this._abortNodeEndIndex = this._node.id;                        
-                    }
-                    else
-                    {
-                        this._abortNodeEndIndex = childIDs[childIDs.length - 1];
-                    }
-
-                    break;
-
-                case PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.LOWER_PRIORITY:
-
-                    this._abortNodeStartIndex = childIDs[childIDs.length - 1];
-                    this._abortNodeEndIndex = -1; // rest of tree can be aborted
-
-                    break;
-
-                case PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH:
-
-                    this._abortNodeStartIndex = this._node.id;
-                    this._abortNodeEndIndex = -1; // rest of tree can be aborted
-
-                    break;
-
-                default:
-
-                    console.error("Unknown decorator abort mode:", this._abortMode);
+                this._selfAbortNodeEndId = this._node.id;
+            }
+            else
+            {
+                this._selfAbortNodeEndId = childIDs[childIDs.length - 1];
             }
         }
 

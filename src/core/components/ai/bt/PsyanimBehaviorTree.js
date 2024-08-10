@@ -35,6 +35,8 @@ export default class PsyanimBehaviorTree {
 
         this._controller = controller;
         this._blackboard = controller.blackboard;
+
+        this._currentlyTickingNode = null;
     }
 
     load(behaviorTreeDefinition, userDefinedTasks = []) {
@@ -204,8 +206,18 @@ export default class PsyanimBehaviorTree {
             }
         });
 
+        // subscribe to node events
+        this._nodes.forEach(node => {
+            node.events.on('tick', this._handleNodeTick.bind(this));
+        });
+
         // TODO: here for debugging - remove before flight!
         this.printTree();
+    }
+
+    _handleNodeTick(node) {
+
+        this._currentlyTickingNode = node;
     }
 
     getAllNodeIDs() {
@@ -221,13 +233,60 @@ export default class PsyanimBehaviorTree {
 
     tick() {
 
-        // TODO: this is probably where we want to handle decorators and things
+        // check if any aborts are triggered in decorators
+        if (this._currentlyTickingNode)
+        {
+            let nodeId = this._currentlyTickingNode.id;
+
+            for (let i = 0; i < this._decoratorsWithAborts.length; ++i)
+            {
+                let decorator = this._decoratorsWithAborts[i];
+
+                let resetTree = false;
+
+                if (decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.SELF ||
+                    decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH)
+                {
+                    if (nodeId >= decorator.selfAbortNodeStartId && 
+                        nodeId <= decorator.selfAbortNodeEndId)
+                    {
+                        // we should only reset tree on 'SELF' mode if decorator fails
+                        resetTree = !decorator.evaluate();
+                    }
+                }
+
+                if (!resetTree && 
+                    (decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.LOWER_PRIORITY ||
+                    decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH))
+                {
+                    if (nodeId > decorator.selfAbortNodeEndId)
+                    {
+                        resetTree = decorator.evaluate();
+                    }                    
+                }
+
+                if (resetTree)
+                {
+                    // reset the tree
+                    this._root.reset();
+
+                    this._currentlyTickingNode = null;
+
+                    break;
+                }
+            }
+        }
+
+        // tick the tree
         let status = this._root.tick();
 
         if (status === PsyanimBehaviorTreeNode.STATUS.FAILURE || 
             status === PsyanimBehaviorTreeNode.STATUS.SUCCESS)
         {
+            // reset the tree
             this._root.reset();
+
+            this._currentlyTickingNode = null;
         }
     }
 

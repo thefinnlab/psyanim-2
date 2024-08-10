@@ -9,6 +9,15 @@ export default class PsyanimBehaviorTreeNode {
         this._status = PsyanimBehaviorTreeNode.STATUS.UNTICKED;
 
         this._decorators = [];
+
+        this._evaluatedDecorators = false;
+
+        this._events = new Phaser.Events.EventEmitter();
+    }
+
+    get events() {
+
+        return this._events;
     }
 
     get controller() {
@@ -78,10 +87,14 @@ export default class PsyanimBehaviorTreeNode {
     reset() {
 
         this._status = PsyanimBehaviorTreeNode.STATUS.UNTICKED;
+
+        this._evaluatedDecorators = false;
+        this._canExecute = false;
+
         this._children.forEach(child => child.reset());
     }
 
-    evaluateDecorators() {
+    evaluateDecorators(setEvaluated = true) {
 
         if (this._decorators.length === 0)
         {
@@ -98,7 +111,27 @@ export default class PsyanimBehaviorTreeNode {
             }
         }
 
+        if (setEvaluated)
+        {
+            this._evaluatedDecorators = true;
+        }
+
         return true;
+    }
+
+    get canExecute() {
+
+        return this._canExecute;
+    }
+
+    tick() {
+
+        this.events.emit('tick', this);
+
+        if (!this._evaluatedDecorators)
+        {
+            this._canExecute = this.evaluateDecorators();
+        }
     }
 }
 
