@@ -13,6 +13,9 @@ import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimArriveBehavior from '../../steering/PsyanimArriveBehavior.js';
 import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
 
+import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
+import PsyanimWanderBehavior from '../../steering/PsyanimWanderBehavior.js';
+
 import PsyanimBehaviorTree from './PsyanimBehaviorTree.js';
 
 export default class PsyanimAIController extends PsyanimComponent {
@@ -73,11 +76,37 @@ export default class PsyanimAIController extends PsyanimComponent {
         this.innerDecelerationRadius = 25;
         this.outerDecelerationRadius = 140;
 
+        // seek behavior defaults
+        this.maxSeekSpeed = 4;
+        this.maxSeekAcceleration =  0.4;
+
+        // wander behavior defaults
+        this.wanderRadius = 50;
+        this.wanderOffset = 250;
+        this.maxWanderAngleChangePerFrame = 20;
+
+        console.warn('TODO: you need to initialize these in afterCreate()!');
+
         // TODO: should be able to set maxFleeSpeed/Accel and maxArriveSpeed/Accel
         // to values smaller than maxSpeed and maxAcceleration
 
         // add vehicle
         this._vehicle = entity.addComponent(PsyanimVehicle);
+
+        // add seek behavior
+        this._seekBehavior = entity.addComponent(PsyanimSeekBehavior);
+        this._seekBehavior.maxSpeed = this.maxSeekSpeed;
+        this._seekBehavior.maxAcceleration = this.maxSeekAcceleration;
+
+        // add wander behavior
+        this._wanderBehavior = entity.addComponent(PsyanimWanderBehavior);
+
+        this._wanderBehavior.seekBehavior = this._seekBehavior;
+        this._wanderBehavior.maxSeekSpeed = this.maxSeekSpeed;
+        this._wanderBehavior.maxSeekAcceleration = this.maxSeekAcceleration;
+        this._wanderBehavior.radius = this.wanderRadius;
+        this._wanderBehavior.offset = this.wanderOffset;
+        this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
 
         // add arrive behavior
         this._arriveBehavior = entity.addComponent(PsyanimArriveBehavior);
@@ -111,6 +140,15 @@ export default class PsyanimAIController extends PsyanimComponent {
     /*************************************************************************************
      ******************************** Public Methods *************************************
      *************************************************************************************/
+
+    wander() {
+
+        console.log('Entity wandering:', this.entity.name);
+
+        this._reset();
+
+        this._state = PsyanimAIController.STATE.WANDER;
+    }
 
     follow(targetEntity) {
 
@@ -213,6 +251,12 @@ export default class PsyanimAIController extends PsyanimComponent {
 
             this._vehicle.steer(steering);
         }
+        else if (this._state === PsyanimAIController.STATE.WANDER)
+        {
+            let steering = this._wanderBehavior.getSteering();
+
+            this._vehicle.steer(steering);
+        }
     }
 
     /*************************************************************************************
@@ -238,6 +282,7 @@ const AI_CONTROLLER_STATE = {
     FOLLOW_TARGET: 0x01,
     FLEE: 0x02,
     MOVE_TO: 0x04,
+    WANDER: 0x08
 };
 
 PsyanimAIController.STATE = AI_CONTROLLER_STATE;

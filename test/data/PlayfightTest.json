@@ -1,0 +1,44 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "Root Node",
+            "type": "Behavior Tree Root",
+            "isComposite": true,
+            "x": 874.5,
+            "y": 287,
+            "fieldData": {}
+        },
+        {
+            "id": 1,
+            "name": "Sequence",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 893,
+            "y": 412,
+            "fieldData": {}
+        },
+        {
+            "id": 2,
+            "name": "Wander",
+            "type": "Wander",
+            "isComposite": false,
+            "x": 905,
+            "y": 566,
+            "fieldData": {
+                "duration": 5
+            }
+        }
+    ],
+    "decorators": [],
+    "edges": [
+        {
+            "topPortNodeId": 1,
+            "bottomPortNodeId": 0
+        },
+        {
+            "topPortNodeId": 2,
+            "bottomPortNodeId": 1
+        }
+    ]
+}

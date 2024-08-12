@@ -1,3 +1,5 @@
+import { PsyanimDebug } from "psyanim-utils";
+
 export default class PsyanimBehaviorTreeNode {
 
     constructor(controller, id, name) {
