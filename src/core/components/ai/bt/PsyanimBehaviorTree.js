@@ -26,8 +26,6 @@ export default class PsyanimBehaviorTree {
 
     constructor(name, controller) {
 
-        console.warn("TODO: tree needs access to blackboard.");
-
         this._name = name;
         this._root = new PsyanimBehaviorTreeSequenceNode(controller, 0, "root");
 

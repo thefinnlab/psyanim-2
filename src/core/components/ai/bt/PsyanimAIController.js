@@ -86,7 +86,7 @@ export default class PsyanimAIController extends PsyanimComponent {
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 20;
 
-        console.warn('TODO: you need to initialize these in afterCreate()!');
+        console.warn('TODO: should move AI controller component initialization to afterCreate()!');
 
         // TODO: should be able to set maxFleeSpeed/Accel and maxArriveSpeed/Accel
         // to values smaller than maxSpeed and maxAcceleration
