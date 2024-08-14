@@ -66,7 +66,20 @@ import PsyanimPreyAgent from './core/components/steering/agents/PsyanimPreyAgent
 import PsyanimSeekAgent from './core/components/steering/agents/PsyanimSeekAgent.js';
 import PsyanimWanderAgent from './core/components/steering/agents/PsyanimWanderAgent.js';
 
-// FSM components
+// AI Behavior Trees
+import PsyanimAIController from './core/components/ai/bt/PsyanimAIController.js';
+import PsyanimBehaviorTree from './core/components/ai/bt/PsyanimBehaviorTree.js';
+import PsyanimBehaviorTreeBlackboard from './core/components/ai/bt/PsyanimBehaviorTreeBlackboard.js';
+import PsyanimBehaviorTreeDebugger from './core/components/ai/bt/PsyanimBehaviorTreeDebugger.js';
+import PsyanimBehaviorTreeDecorator from './core/components/ai/bt/PsyanimBehaviorTreeDecorator.js';
+import PsyanimBehaviorTreeNode from './core/components/ai/bt/PsyanimBehaviorTreeNode.js';
+import PsyanimBehaviorTreeSelectorNode from './core/components/ai/bt/PsyanimBehaviorTreeSelectorNode.js';
+import PsyanimBehaviorTreeSequenceNode from './core/components/ai/bt/PsyanimBehaviorTreeSequenceNode.js';
+import PsyanimBehaviorTreeTask from './core/components/ai/bt/PsyanimBehaviorTreeTask.js';
+
+import PsyanimBlackboardTargetDistance from './core/components/ai/bt/writers/PsyanimBlackboardTargetDistance.js';
+
+// AI FSM components
 import PsyanimBasicHFSM from './core/components/ai/PsyanimBasicHFSM.js';
 import PsyanimFSM from './core/components/ai/PsyanimFSM.js';
 import PsyanimFSMState from './core/components/ai/PsyanimFSMState.js';
@@ -196,6 +209,17 @@ export {
     PsyanimWanderAgent,
 
     // behavior tree
+    PsyanimAIController,
+    PsyanimBehaviorTree,
+    PsyanimBehaviorTreeBlackboard,
+    PsyanimBehaviorTreeDebugger,
+    PsyanimBehaviorTreeDecorator,
+    PsyanimBehaviorTreeNode,
+    PsyanimBehaviorTreeSelectorNode,
+    PsyanimBehaviorTreeSequenceNode,
+    PsyanimBehaviorTreeTask,
+
+    PsyanimBlackboardTargetDistance,
 
     // fsm components
     PsyanimBasicHFSM,
