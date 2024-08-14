@@ -70,15 +70,16 @@ export default class PsyanimAIController extends PsyanimComponent {
         this._tree = null;
         this._blackboard = null;
 
-        this.maxSpeed = 8;
-        this.maxAcceleration = 0.3;
-
         this.innerDecelerationRadius = 25;
         this.outerDecelerationRadius = 140;
 
         // seek behavior defaults
         this.maxSeekSpeed = 4;
         this.maxSeekAcceleration =  0.4;
+
+        // arrive behavior defaults
+        this.maxArriveSpeed = 8;
+        this.maxArriveAcceleration = 0.3;
 
         // wander behavior defaults
         this.wanderRadius = 50;
@@ -111,15 +112,15 @@ export default class PsyanimAIController extends PsyanimComponent {
         // add arrive behavior
         this._arriveBehavior = entity.addComponent(PsyanimArriveBehavior);
 
-        this._arriveBehavior.maxSpeed = this.maxSpeed;
+        this._arriveBehavior.maxSpeed = this.maxArriveSpeed;
         this._arriveBehavior.innerDecelerationRadius = this.innerDecelerationRadius;
         this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
 
         // add flee behavior
         this._fleeBehavior = entity.addComponent(PsyanimFleeBehavior);
 
-        this._fleeBehavior.maxSpeed = this.maxSpeed;
-        this._fleeBehavior.maxAcceleration = this.maxAcceleration;
+        this._fleeBehavior.maxSpeed = this.maxArriveSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxArriveAcceleration;
         this._fleeBehavior.panicDistance = 250; // TODO: don't hardcode!
 
         // empty target we'll use for 'moveTo'
@@ -143,27 +144,41 @@ export default class PsyanimAIController extends PsyanimComponent {
 
     wander() {
 
-        console.log('Entity wandering:', this.entity.name);
-
         this._reset();
 
         this._state = PsyanimAIController.STATE.WANDER;
     }
 
-    follow(targetEntity) {
-
-        console.log('Following entity:', targetEntity.name);
+    arrive(targetEntity) {
 
         this._reset();
 
-        this._followTarget = targetEntity;
+        this._arriveTarget = targetEntity;
 
-        this._state = PsyanimAIController.STATE.FOLLOW_TARGET;
+        this._state = PsyanimAIController.STATE.ARRIVE;
+    }
+
+    seek(targetEntity, maxSpeed = -1, maxAcceleration = -1) {
+
+        if (maxSpeed > 0)
+        {
+            this.maxSeekSpeed = maxSpeed;
+        }
+
+        if (maxAcceleration > 0)
+        {
+            this.maxSeekAcceleration = maxAcceleration;
+        }
+
+        this._seekBehavior.maxSpeed = this.maxSeekSpeed;
+        this._seekBehavior.maxAcceleration = this.maxSeekAcceleration;
+
+        this._seekTarget = targetEntity;
+
+        this._state = PsyanimAIController.STATE.SEEK;
     }
 
     flee(targetEntity) {
-
-        console.log('Fleeing from entity:', targetEntity.name);
 
         this._reset(true);
 
@@ -183,8 +198,6 @@ export default class PsyanimAIController extends PsyanimComponent {
     }
 
     idle(stopImmediately = false) {
-        
-        console.log('Idling');
 
         this._reset();
 
@@ -233,9 +246,15 @@ export default class PsyanimAIController extends PsyanimComponent {
         // run behavior tree
         this._tree.tick();
 
-        if (this._state === PsyanimAIController.STATE.FOLLOW_TARGET)
+        if (this._state === PsyanimAIController.STATE.SEEK)
         {
-            let steering = this._arriveBehavior.getSteering(this._followTarget);
+            let steering = this._seekBehavior.getSteering(this._seekTarget);
+
+            this._vehicle.steer(steering);
+        }
+        else if (this._state === PsyanimAIController.STATE.ARRIVE)
+        {
+            let steering = this._arriveBehavior.getSteering(this._arriveTarget);
 
             this._vehicle.steer(steering);
         }
@@ -265,7 +284,8 @@ export default class PsyanimAIController extends PsyanimComponent {
 
     _reset() {
 
-        this._followTarget = null;
+        this._seekTarget = null;
+        this._arriveTarget = null;
         this._fleeTarget = null;
     }
 
@@ -279,10 +299,11 @@ export default class PsyanimAIController extends PsyanimComponent {
 
 const AI_CONTROLLER_STATE = {
     IDLE: 0x00,
-    FOLLOW_TARGET: 0x01,
+    ARRIVE: 0x01,
     FLEE: 0x02,
     MOVE_TO: 0x04,
-    WANDER: 0x08
+    WANDER: 0x08,
+    SEEK: 0x10,
 };
 
 PsyanimAIController.STATE = AI_CONTROLLER_STATE;

@@ -23,10 +23,24 @@
             "name": "Wander",
             "type": "Wander",
             "isComposite": false,
-            "x": 905,
-            "y": 566,
+            "x": 805,
+            "y": 593,
             "fieldData": {
                 "duration": 5
+            }
+        },
+        {
+            "id": 4,
+            "name": "PlayfightCharge",
+            "type": "PlayfightCharge",
+            "isComposite": false,
+            "x": 997,
+            "y": 598,
+            "fieldData": {
+                "maxSpeed": 7,
+                "maxAcceleration": 0.4,
+                "collisionDistance": 50,
+                "targetEntityBlackboardKey": "chargeTarget"
             }
         }
     ],
@@ -38,6 +52,10 @@
         },
         {
             "topPortNodeId": 2,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 4,
             "bottomPortNodeId": 1
         }
     ]

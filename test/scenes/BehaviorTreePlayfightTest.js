@@ -4,8 +4,6 @@ import PsyanimPhysicsSettingsController from '../../src/core/components/controll
 import PsyanimSceneChangeController from '../../src/core/components/controllers/PsyanimSceneController.js';
 import PsyanimSceneTitle from '../../src/core/components/ui/PsyanimSceneTitle.js';
 
-import PsyanimMouseFollowTarget from '../../src/core/components/controllers/PsyanimMouseFollowTarget.js';
-
 import PsyanimBehaviorTreeBlackboard from '../../src/core/components/ai/bt/PsyanimBehaviorTreeBlackboard.js';
 import PsyanimAIController from '../../src/core/components/ai/bt/PsyanimAIController.js';
 
@@ -39,30 +37,18 @@ export default {
                 {
                     type: PsyanimBehaviorTreeDebugger,
                     params: {
-                        behaviorTreeAgentNames: ['Agent']
+                        behaviorTreeAgentNames: ['Agent1', 'Agent2']
                     }
                 }
             ]
         },
         {
-            name: 'mouseFollowTarget',
+            name: 'Agent1',
             initialPosition: { x: 400, y: 300 },
             shapeParams: {
-                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE,
-                radius: 4,
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+                radius: 12,
                 color: 0x00ff00
-            },
-            components: [
-                { type: PsyanimMouseFollowTarget }
-            ]
-        },
-        {
-            name: 'Agent',
-            initialPosition: { x: 400, y: 300 },
-            shapeParams: {
-                shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE, 
-                base: 16, altitude: 32, 
-                color: 0xffc0cb            
             },
             components: [
                 {
@@ -76,6 +62,36 @@ export default {
                     type: PsyanimBehaviorTreeBlackboard,
                     params: {
                         name: 'PatrolFlee Test',
+                        chargeTarget: {
+                            entityName: 'Agent2'
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            name: 'Agent2',
+            initialPosition: { x: 400, y: 300 },
+            shapeParams: {
+                shapeType: PsyanimConstants.SHAPE_TYPE.CIRCLE, 
+                radius: 12,
+                color: 0x0000ff
+            },
+            components: [
+                {
+                    type: PsyanimAIController,
+                    params: {
+                        taskDefinitions: [],
+                        behaviorTreeDefinition: PlayfightTest
+                    }
+                },
+                {
+                    type: PsyanimBehaviorTreeBlackboard,
+                    params: {
+                        name: 'PatrolFlee Test',
+                        chargeTarget: {
+                            entityName: 'Agent1'
+                        }
                     }
                 }
             ]

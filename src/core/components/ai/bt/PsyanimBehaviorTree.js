@@ -17,7 +17,8 @@ import {
     PatrolTargetSelector,
     Wait,
     Flee,
-    Wander
+    Wander,
+    PlayfightCharge
 
 } from 'psyanim-utils';
 
@@ -49,7 +50,8 @@ export default class PsyanimBehaviorTree {
             PatrolTargetSelector,
             Wait,
             Flee,
-            Wander
+            Wander,
+            PlayfightCharge
         ];
 
         let taskDefinitions = builtinTasks.concat(userDefinedTasks);
