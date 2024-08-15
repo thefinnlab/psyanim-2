@@ -91,6 +91,17 @@ export default class PsyanimJsPsychTrial {
         };
     }
 
+    getBehaviorTreeTaskParams(agentName, taskName) {
+
+        console.warn('TODO: validation!');
+
+        return this._sceneDefinition
+            .entities.find(e => e.name === agentName)
+            .components.find(c => c.type.prototype.constructor.name === 'PsyanimAIController')
+            .params.behaviorTreeDefinition.nodes.find(n => n.name === taskName)
+            .fieldData;
+    }
+
     /**
      * The scene key associated with this trial
      */

@@ -24,14 +24,6 @@ export default {
             ]
         },
         {
-            name: 'patrolLocation1',
-            initialPosition: { x: 100, y: 100 }
-        },
-        {
-            name: 'patrolLocation2',
-            initialPosition: { x: 700, y: 100 }
-        },
-        {
             name: 'btDebugger',
             components: [
                 {
