@@ -91,17 +91,6 @@ export default class PsyanimJsPsychTrial {
         };
     }
 
-    getBehaviorTreeTaskParams(agentName, taskName) {
-
-        console.warn('TODO: validation!');
-
-        return this._sceneDefinition
-            .entities.find(e => e.name === agentName)
-            .components.find(c => c.type.prototype.constructor.name === 'PsyanimAIController')
-            .params.behaviorTreeDefinition.nodes.find(n => n.name === taskName)
-            .fieldData;
-    }
-
     /**
      * The scene key associated with this trial
      */
@@ -239,6 +228,36 @@ export default class PsyanimJsPsychTrial {
         }
 
         return entityDefinition;
+    }
+
+    getBehaviorTreeTaskParams(agentName, taskName) {
+
+        console.warn('TODO: validation!');
+
+        return this._sceneDefinition
+            .entities.find(e => e.name === agentName)
+            .components.find(c => c.type.prototype.constructor.name === 'PsyanimAIController')
+            .params.behaviorTreeDefinition.nodes.find(n => n.name === taskName)
+            .fieldData;
+    }
+
+    setBehaviorTreeTaskParameter(agentName, taskName, paramName, paramValue) {
+
+        let params = this.getBehaviorTreeTaskParams(agentName, taskName);
+
+        params[paramName] = paramValue;
+    }
+
+    setBlackboardParameter(agentName, key, value) {
+
+        // TODO: validation!
+
+        let blackboardParams = this._sceneDefinition
+            .entities.find(e => e.name === agentName)
+            .components.find(c => c.type.prototype.constructor.name === 'PsyanimBehaviorTreeBlackboard')
+            .params;
+
+        blackboardParams[key] = value;
     }
 
     setEntityParameter(entityName, parameterName, value) {

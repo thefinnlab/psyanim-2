@@ -3,6 +3,7 @@ import PsyanimComponent from "../../../PsyanimComponent.js";
 export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
 
     name;
+    file;
 
     get events() {
 
@@ -18,6 +19,7 @@ export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
 
         super(entity);
 
+        this.file = {};
         this._data = {};
 
         this._events = new Phaser.Events.EventEmitter();
@@ -27,12 +29,21 @@ export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
 
         super.afterCreate();
 
+        // add all data from the blackboard file
+        Object.keys(this.file).forEach(key => {
+
+            this.setValue(key, this.file[key]);
+        });
+
+        // add all user-defined params from the scene definition
         let userDefinedParams = this._getUserDefinedParams();
 
         Object.keys(userDefinedParams).forEach(key => {
 
             this.setValue(key, userDefinedParams[key]);
         });
+
+        console.log('Blackboard loaded:', this._data);
 
         if (!this.name)
         {
@@ -44,7 +55,7 @@ export default class PsyanimBehaviorTreeBlackboard extends PsyanimComponent {
 
     _getUserDefinedParams() {
 
-        let reservedKeywords = ['name', 'entity', 'scene', 'id'];
+        let reservedKeywords = ['name', 'entity', 'scene', 'id', 'file'];
 
         let keys = Object.keys(this)
             .filter(key => !key.startsWith('_'))
