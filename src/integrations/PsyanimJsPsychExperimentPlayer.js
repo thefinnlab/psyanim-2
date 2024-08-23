@@ -13,6 +13,8 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
         this.events = new Phaser.Events.EventEmitter();
 
         this._entities = [];
+
+        this.scene.game.registry.remove('psyanim_lastExperimentPlayerStartTime');
     }
 
     afterCreate() {
@@ -115,6 +117,8 @@ export default class PsyanimJsPsychExperimentPlayer extends PsyanimComponent {
 
             this._entities.push(agent);
         }
+
+        this.scene.game.registry.set('psyanim_lastExperimentPlayerStartTime', Date.now());
 
         if (this._entities.length == 0)
         {

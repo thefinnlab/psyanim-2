@@ -72,6 +72,8 @@ class _PsyanimJsPsychPlugin {
 
         this._currentTrial = trial;
 
+        this._trialStartTime = Date.now();
+
         // add phaser game canvas to display element
         this._displayElement = display_element;
 
@@ -269,7 +271,24 @@ class _PsyanimJsPsychPlugin {
                     PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
                     'wrapScreenBoundary', PsyanimApp.Instance.currentScene.screenBoundary.wrap
                 ));
+
+                // add trial start time
+                trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                    PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                    'trialStartTime', this._trialStartTime
+                ));
     
+                // if it exists, save the experiment player start time!
+                if (PsyanimApp.Instance.game.registry.has('psyanim_lastExperimentPlayerStartTime'))
+                {
+                    let experimentPlayerStartTime = PsyanimApp.Instance.game.registry.get('psyanim_lastExperimentPlayerStartTime');
+
+                    trialSceneParameters.push(new PsyanimJsPsychTrialParameter(
+                        PsyanimJsPsychTrialParameter.Type.SCENE_PARAMETER,
+                        'experimentPlayerStartTime', experimentPlayerStartTime
+                    ));
+                }
+
                 trialMetadata.sceneParameters = [];
     
                 trialSceneParameters.forEach(p => {
