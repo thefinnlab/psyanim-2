@@ -81,7 +81,7 @@ let BehaviorTreePlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTr
 
 // register the scene def clones to make sure the clones are g2g too
 PsyanimApp.Instance.config.registerScene(BehaviorTreePlayfightTestCopy);
-PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolFleeTestCopy);
+// PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolFleeTestCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolTestCopy);
 PsyanimApp.Instance.config.registerScene(BlackboardTestCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);

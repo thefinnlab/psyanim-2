@@ -54,6 +54,10 @@ export default {
                     type: PsyanimBehaviorTreeBlackboard,
                     params: {
                         name: 'PatrolFlee Test',
+                        wanderDuration: 5.0,
+                        pcMaxChargeSpeed: 7,
+                        pcMaxChargeAcceleration: 0.4,
+                        pcMaxCollisionDistance: 50,
                         chargeTarget: {
                             entityName: 'Agent2'
                         }
@@ -81,10 +85,14 @@ export default {
                     type: PsyanimBehaviorTreeBlackboard,
                     params: {
                         name: 'PatrolFlee Test',
+                        wanderDuration: 5.0,
+                        pcMaxChargeSpeed: 7,
+                        pcMaxChargeAcceleration: 0.4,
+                        pcMaxCollisionDistance: 50,
                         chargeTarget: {
                             entityName: 'Agent1'
                         }
-                    }
+                  }
                 }
             ]
         },

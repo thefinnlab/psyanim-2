@@ -62,6 +62,13 @@ export default {
                     type: PsyanimBehaviorTreeBlackboard,
                     params: {
                         name: 'My Test Blackboard',
+
+                        stoppingDistance: 50,
+
+                        /** using blackboard keys for string keys is a bit convoluted, but we need to test LOL */
+                        patrolTargetKey: 'patrolTarget',
+                        patrolTargetListKey: 'patrolTargetList',
+
                         patrolTargetList: ['patrolLocation1', 'patrolLocation2'],
                     }
                 }

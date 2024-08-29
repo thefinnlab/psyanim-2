@@ -100,7 +100,19 @@ export default class PsyanimBehaviorTree {
                 let fieldDataKeys = Object.keys(nodeDef.fieldData);
 
                 fieldDataKeys.forEach(key => {
-                    taskDefinitionInstance[key] = nodeDef.fieldData[key];
+
+                    let data = nodeDef.fieldData[key];
+
+                    let taskParameter = taskDefinitionInstance[key];
+
+                    if (data.isBlackboardKey)
+                    {
+                        taskParameter.setBlackboardKey(data.value);
+                    }
+                    else
+                    {
+                        taskParameter.value = data.value;
+                    }
                 });
 
                 node = new PsyanimBehaviorTreeTask(

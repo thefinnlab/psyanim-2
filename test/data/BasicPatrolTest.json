@@ -5,10 +5,13 @@
             "name": "Root Node",
             "type": "Behavior Tree Root",
             "isComposite": true,
-            "x": 664.5,
+            "x": 600,
             "y": 287,
             "fieldData": {
-                "Blackboard": "BasicPatrolTest"
+                "Blackboard": {
+                    "isBlackboardKey": false,
+                    "value": "Default Blackboard Name"
+                }
             }
         },
         {
@@ -16,8 +19,8 @@
             "name": "Sequence",
             "type": "Sequence",
             "isComposite": true,
-            "x": 679,
-            "y": 426,
+            "x": 621,
+            "y": 419,
             "fieldData": {}
         },
         {
@@ -25,10 +28,13 @@
             "name": "PatrolTargetSelector",
             "type": "PatrolTargetSelector",
             "isComposite": false,
-            "x": 469,
-            "y": 646,
+            "x": 362,
+            "y": 665,
             "fieldData": {
-                "targetEntityListBlackboardKey": "patrolTargetList"
+                "targetEntityListBlackboardKey": {
+                    "isBlackboardKey": true,
+                    "value": "patrolTargetListKey"
+                }
             }
         },
         {
@@ -36,11 +42,17 @@
             "name": "MoveTo",
             "type": "MoveTo",
             "isComposite": false,
-            "x": 818,
-            "y": 647,
+            "x": 851,
+            "y": 675,
             "fieldData": {
-                "stoppingDistance": 35,
-                "targetEntityBlackboardKey": "patrolTarget"
+                "stoppingDistance": {
+                    "isBlackboardKey": true,
+                    "value": "stoppingDistance"
+                },
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": true,
+                    "value": "patrolTargetKey"
+                }
             }
         }
     ],
