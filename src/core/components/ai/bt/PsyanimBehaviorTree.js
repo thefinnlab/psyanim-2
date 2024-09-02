@@ -160,7 +160,7 @@ export default class PsyanimBehaviorTree {
 
             let abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.NONE;
 
-            switch (decoratorDef.fieldData["Abort Mode"])
+            switch (decoratorDef.fieldData["Abort Mode"].value)
             {
                 case "Self":
 
@@ -179,13 +179,13 @@ export default class PsyanimBehaviorTree {
 
                 default:
 
-                    console.error("Invalid decorator abort mode:", decoratorDef.fieldData["Abort Mode"]);
+                    console.error("Invalid decorator abort mode:", decoratorDef.fieldData["Abort Mode"].value);
                     return;
             }
 
-            let key = decoratorDef.fieldData["Blackboard Key"];
+            let key = decoratorDef.fieldData["Blackboard Key"].value;
 
-            let keyType = decoratorDef.fieldData["Key Type"];
+            let keyType = decoratorDef.fieldData["Key Type"].value;
 
             if (!(keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.STRING || 
                 keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.NUMBER || 
@@ -195,14 +195,14 @@ export default class PsyanimBehaviorTree {
                 return;
             }
 
-            let keyQueryType = decoratorDef.fieldData["Query Type"];
+            let keyQueryType = decoratorDef.fieldData["Query Type"].value;
 
             let keyValue = null;
 
             if (keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.NUMBER || 
                 keyType === PsyanimBehaviorTreeDecoratorEnums.KEY_TYPE.STRING)
             {
-                keyValue = decoratorDef.fieldData["Key Query Value"];
+                keyValue = decoratorDef.fieldData["Key Query Value"].value;
             }
 
             let decorator = new PsyanimBehaviorTreeDecorator(

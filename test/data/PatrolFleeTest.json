@@ -5,10 +5,13 @@
             "name": "Root Node",
             "type": "Behavior Tree Root",
             "isComposite": true,
-            "x": 874.5,
+            "x": 600,
             "y": 287,
             "fieldData": {
-                "Blackboard": "PatrolFleeTest"
+                "Blackboard": {
+                    "isBlackboardKey": false,
+                    "value": "Default Blackboard Name"
+                }
             }
         },
         {
@@ -16,8 +19,8 @@
             "name": "Main Selector",
             "type": "Selector",
             "isComposite": true,
-            "x": 865,
-            "y": 409,
+            "x": 611,
+            "y": 416,
             "fieldData": {}
         },
         {
@@ -25,51 +28,63 @@
             "name": "Flee",
             "type": "Sequence",
             "isComposite": true,
-            "x": 546.6666666666652,
-            "y": 661.3333333333305,
+            "x": 403,
+            "y": 642,
             "fieldData": {}
         },
         {
             "id": 3,
-            "name": "Flee",
-            "type": "Flee",
-            "isComposite": false,
-            "x": 473.66666666666526,
-            "y": 882.3333333333305,
-            "fieldData": {
-                "panicDistance": 250,
-                "targetEntityBlackboardKey": "fleeTarget"
-            }
+            "name": "Patrol",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 857,
+            "y": 643,
+            "fieldData": {}
         },
         {
             "id": 4,
-            "name": "Wait",
-            "type": "Wait",
+            "name": "Flee",
+            "type": "Flee",
             "isComposite": false,
-            "x": 686.6666666666652,
-            "y": 869.3333333333305,
+            "x": 314,
+            "y": 917,
             "fieldData": {
-                "waitTime": 3
+                "panicDistance": {
+                    "isBlackboardKey": false,
+                    "value": 250
+                },
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "fleeTarget"
+                }
             }
         },
         {
             "id": 5,
-            "name": "Patrol",
-            "type": "Sequence",
-            "isComposite": true,
-            "x": 1186.8888888888878,
-            "y": 663.8888888888873,
-            "fieldData": {}
+            "name": "Wait",
+            "type": "Wait",
+            "isComposite": false,
+            "x": 516,
+            "y": 888,
+            "fieldData": {
+                "waitTime": {
+                    "isBlackboardKey": false,
+                    "value": 3
+                }
+            }
         },
         {
             "id": 6,
             "name": "PatrolTargetSelector",
             "type": "PatrolTargetSelector",
             "isComposite": false,
-            "x": 976.8888888888878,
-            "y": 837.8888888888873,
+            "x": 791,
+            "y": 889,
             "fieldData": {
-                "targetEntityListBlackboardKey": "patrolTargetList"
+                "targetEntityListBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "patrolTargetList"
+                }
             }
         },
         {
@@ -77,11 +92,17 @@
             "name": "MoveTo",
             "type": "MoveTo",
             "isComposite": false,
-            "x": 1307.8888888888878,
-            "y": 828.8888888888873,
+            "x": 1124,
+            "y": 894,
             "fieldData": {
-                "stoppingDistance": 50,
-                "targetEntityBlackboardKey": "patrolTarget"
+                "stoppingDistance": {
+                    "isBlackboardKey": false,
+                    "value": 50
+                },
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "patrolTarget"
+                }
             }
         }
     ],
@@ -92,24 +113,54 @@
             "name": "Is Target Nearby",
             "type": "Blackboard Decorator",
             "fieldData": {
-                "Abort Mode": "Lower Priority",
-                "Blackboard Key": "distanceToTarget",
-                "Key Type": 1,
-                "Query Type": 8,
-                "Key Query Value": 250
+                "Abort Mode": {
+                    "isBlackboardKey": false,
+                    "value": "Lower Priority"
+                },
+                "Blackboard Key": {
+                    "isBlackboardKey": false,
+                    "value": "distanceToTarget"
+                },
+                "Key Type": {
+                    "isBlackboardKey": false,
+                    "value": 1
+                },
+                "Query Type": {
+                    "isBlackboardKey": false,
+                    "value": 8
+                },
+                "Key Query Value": {
+                    "isBlackboardKey": false,
+                    "value": 250
+                }
             }
         },
         {
-            "nodeId": 4,
+            "nodeId": 5,
             "decoratorId": 0,
             "name": "Is Safe Distance",
             "type": "Blackboard Decorator",
             "fieldData": {
-                "Abort Mode": "Self",
-                "Blackboard Key": "distanceToTarget",
-                "Key Type": 1,
-                "Query Type": 2,
-                "Key Query Value": 250
+                "Abort Mode": {
+                    "isBlackboardKey": false,
+                    "value": "Self"
+                },
+                "Blackboard Key": {
+                    "isBlackboardKey": false,
+                    "value": "distanceToTarget"
+                },
+                "Key Type": {
+                    "isBlackboardKey": false,
+                    "value": 1
+                },
+                "Query Type": {
+                    "isBlackboardKey": false,
+                    "value": 2
+                },
+                "Key Query Value": {
+                    "isBlackboardKey": false,
+                    "value": 250
+                }
             }
         }
     ],
@@ -124,7 +175,7 @@
         },
         {
             "topPortNodeId": 3,
-            "bottomPortNodeId": 2
+            "bottomPortNodeId": 1
         },
         {
             "topPortNodeId": 4,
@@ -132,15 +183,15 @@
         },
         {
             "topPortNodeId": 5,
-            "bottomPortNodeId": 1
+            "bottomPortNodeId": 2
         },
         {
             "topPortNodeId": 6,
-            "bottomPortNodeId": 5
+            "bottomPortNodeId": 3
         },
         {
             "topPortNodeId": 7,
-            "bottomPortNodeId": 5
+            "bottomPortNodeId": 3
         }
     ]
 }
