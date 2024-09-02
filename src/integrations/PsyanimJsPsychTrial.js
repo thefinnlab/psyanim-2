@@ -2,6 +2,8 @@ import PsyanimApp from '../core/PsyanimApp.js';
 import PsyanimJsPsychPlugin from './PsyanimJsPsychPlugin.js';
 import PsyanimJsPsychTrialParameter from './PsyanimJsPsychTrialParameter.js';
 
+import PsyanimBehaviorTreeBlackboard from '../core/components/ai/bt/PsyanimBehaviorTreeBlackboard.js';
+
 import {
     PsyanimUtils,
     PsyanimDebug
@@ -248,16 +250,16 @@ export default class PsyanimJsPsychTrial {
         params[paramName] = paramValue;
     }
 
-    setBlackboardParameter(agentName, key, value) {
+    setBlackboardParameter(agentName, key, value, saveParameter = true) {
 
         // TODO: validation!
 
-        let blackboardParams = this._sceneDefinition
-            .entities.find(e => e.name === agentName)
-            .components.find(c => c.type.prototype.constructor.name === 'PsyanimBehaviorTreeBlackboard')
-            .params;
-
-        blackboardParams[key] = value;
+        this.setComponentParameter(
+            agentName,
+            PsyanimBehaviorTreeBlackboard,
+            key,
+            value,
+            saveParameter);
     }
 
     setEntityParameter(entityName, parameterName, value) {
