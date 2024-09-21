@@ -23,6 +23,10 @@ export default class PsyanimAIController extends PsyanimComponent {
     taskDefinitions;
     behaviorTreeDefinition;
 
+    /**********************************************************************/
+    /************************ General Parameters **************************/
+    /**********************************************************************/
+
     /**
      *  Maximum speed this entity's vehicle can travel.
      *  @type {Number}
@@ -46,6 +50,138 @@ export default class PsyanimAIController extends PsyanimComponent {
      */
     outerDecelerationRadius;
 
+    /**********************************************************************/
+    /************************* Seek Parameters ****************************/
+    /**********************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 9 ]
+     *  Maximum speed at which this agent can move toward it's target.
+     *  @type {Number}
+     */
+    maxSeekSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.4 ]
+     *  Maximum acceleration this agent can reach when charging at it's target.
+     *  @type {Number}
+     */
+    maxSeekAcceleration;
+
+    /**********************************************************************/
+    /************************* Arrive Parameters **************************/
+    /**********************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 9 ]
+     *  Maximum speed at which this agent can move toward it's target.
+     *  @type {Number}
+     */
+    maxArriveSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.4 ]
+     *  Maximum acceleration this agent can reach when charging at it's target.
+     *  @type {Number}
+     */
+    maxArriveAcceleration;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 12 ]
+     *  Distance, in px, from target which the agent will come to rest.
+     *  @type {Number}
+     */
+    innerDecelerationRadius;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 30 ]
+     *  Distance, in px, from target which the agent will begin slowing down.
+     *  @type {Number}
+     */
+    outerDecelerationRadius;
+
+    /**********************************************************************/
+    /************************ Wander Parameters **************************/
+    /**********************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 4 ]
+     *  Maximum speed at which the agent will wander.
+     *  @type {Number}
+     */
+    maxWanderSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.2 ]
+     *  Maximum acceleration the agent can attain during wander.
+     *  @type {Number}
+     */
+    maxWanderAcceleration;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 50 ]
+     *  Radius of the wander circle.
+     *  @type {Number}
+     */
+    wanderRadius;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 5 - 500 ]
+     *  [Default: 250 ]
+     *  Distance the wander circle is offset from the agent's position.
+     *  @type {Number}
+     */
+    wanderOffset;
+
+    /**
+     *  [***advanced***]
+     *  [Range: 3 - 360 ]
+     *  [Default: 20 ]
+     *  Maximum number of degrees the wander target can move around the wander circle per frame.
+     *  @type {Number}
+     */
+    maxWanderAngleChangePerFrame;
+
+    /**********************************************************************/
+    /************************** Flee Parameters ***************************/
+    /**********************************************************************/
+
+    /**
+     *  [Range: 3 - 20 ]
+     *  [Default: 12 ]
+     *  Maximum speed this agent can flee from the target.
+     *  @type {Number}
+     */
+    maxFleeSpeed;
+
+    /**
+     *  [Range: 0.05 - 0.7 ]
+     *  [Default: 0.5 ]
+     *  Maximum acceleration this agent can reach during flee from target.
+     *  @type {Number}
+     */
+    maxFleeAcceleration;
+
+    /**
+     *  [Range: - ]
+     *  [Default: ]
+     *  @type {Number}
+     */
+    fleePanicDistance;
+
     get blackboard() {
 
         return this._blackboard;
@@ -64,14 +200,15 @@ export default class PsyanimAIController extends PsyanimComponent {
 
         super(entity);
 
+        /**
+         *  Initialize default values
+         */
+
         this.behaviorTreeDefinition = null;
         this.taskDefinitions = [];
 
         this._tree = null;
         this._blackboard = null;
-
-        this.innerDecelerationRadius = 25;
-        this.outerDecelerationRadius = 140;
 
         // seek behavior defaults
         this.maxSeekSpeed = 4;
@@ -81,47 +218,39 @@ export default class PsyanimAIController extends PsyanimComponent {
         this.maxArriveSpeed = 8;
         this.maxArriveAcceleration = 0.3;
 
+        this.innerDecelerationRadius = 25;
+        this.outerDecelerationRadius = 140;
+
         // wander behavior defaults
+        this.maxWanderSpeed = 4;
+        this.maxWanderAcceleration = 0.4;
         this.wanderRadius = 50;
         this.wanderOffset = 250;
         this.maxWanderAngleChangePerFrame = 20;
 
-        console.warn('TODO: should move AI controller component initialization to afterCreate()!');
+        // flee behavior defaults
+        this.maxFleeSpeed = 8;
+        this.maxFleeAcceleration = 0.3;
+        this.fleePanicDistance = 250;
 
-        // TODO: should be able to set maxFleeSpeed/Accel and maxArriveSpeed/Accel
-        // to values smaller than maxSpeed and maxAcceleration
+        /**
+         *  Add required components
+         */
 
         // add vehicle
         this._vehicle = entity.addComponent(PsyanimVehicle);
 
         // add seek behavior
         this._seekBehavior = entity.addComponent(PsyanimSeekBehavior);
-        this._seekBehavior.maxSpeed = this.maxSeekSpeed;
-        this._seekBehavior.maxAcceleration = this.maxSeekAcceleration;
 
         // add wander behavior
         this._wanderBehavior = entity.addComponent(PsyanimWanderBehavior);
 
-        this._wanderBehavior.seekBehavior = this._seekBehavior;
-        this._wanderBehavior.maxSeekSpeed = this.maxSeekSpeed;
-        this._wanderBehavior.maxSeekAcceleration = this.maxSeekAcceleration;
-        this._wanderBehavior.radius = this.wanderRadius;
-        this._wanderBehavior.offset = this.wanderOffset;
-        this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
-
         // add arrive behavior
         this._arriveBehavior = entity.addComponent(PsyanimArriveBehavior);
 
-        this._arriveBehavior.maxSpeed = this.maxArriveSpeed;
-        this._arriveBehavior.innerDecelerationRadius = this.innerDecelerationRadius;
-        this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
-
         // add flee behavior
         this._fleeBehavior = entity.addComponent(PsyanimFleeBehavior);
-
-        this._fleeBehavior.maxSpeed = this.maxArriveSpeed;
-        this._fleeBehavior.maxAcceleration = this.maxArriveAcceleration;
-        this._fleeBehavior.panicDistance = 250; // TODO: don't hardcode!
 
         // empty target we'll use for 'moveTo'
         this._moveToTarget = this.scene.addEntity(this.entity.name + '_moveToTarget');
@@ -136,6 +265,29 @@ export default class PsyanimAIController extends PsyanimComponent {
         this._blackboard = this.entity.getComponent(PsyanimBehaviorTreeBlackboard);
 
         this._blackboard.events.on('created', () => this._loadBehaviorTree());
+
+        // seek behavior
+        this._seekBehavior.maxSpeed = this.maxSeekSpeed;
+        this._seekBehavior.maxAcceleration = this.maxSeekAcceleration;
+
+        // wander behavior
+        this._wanderBehavior.seekBehavior = this._seekBehavior;
+        this._wanderBehavior.maxSeekSpeed = this.maxWanderSpeed;
+        this._wanderBehavior.maxSeekAcceleration = this.maxWanderAcceleration;
+        this._wanderBehavior.radius = this.wanderRadius;
+        this._wanderBehavior.offset = this.wanderOffset;
+        this._wanderBehavior.maxWanderAngleChangePerFrame = this.maxWanderAngleChangePerFrame;
+
+        // arrive behavior
+        this._arriveBehavior.maxSpeed = this.maxArriveSpeed;
+        this._arriveBehavior.maxAcceleration = this.maxArriveAcceleration;
+        this._arriveBehavior.innerDecelerationRadius = this.innerDecelerationRadius;
+        this._arriveBehavior.outerDecelerationRadius = this.outerDecelerationRadius;
+
+        // flee behavior
+        this._fleeBehavior.maxSpeed = this.maxFleeSpeed;
+        this._fleeBehavior.maxAcceleration = this.maxFleeAcceleration;
+        this._fleeBehavior.panicDistance = this.fleePanicDistance;
     }
 
     /*************************************************************************************
