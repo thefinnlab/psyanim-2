@@ -145,6 +145,9 @@ export default class PsyanimBehaviorTree {
             }
 
             parentNode.children.push(childNode);
+
+            // always make sure children are sorted by id!
+            parentNode.children.sort((a, b) => a.id - b.id);
         });
 
         // load decorators
@@ -175,6 +178,11 @@ export default class PsyanimBehaviorTree {
                 case "Both":
 
                     abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH;
+                    break;
+
+                case "None":
+
+                    abortMode = PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.NONE;
                     break;
 
                 default:
@@ -257,6 +265,7 @@ export default class PsyanimBehaviorTree {
                 let decorator = this._decoratorsWithAborts[i];
 
                 let resetTree = false;
+                let failCurrentNode = false;
 
                 if (decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.SELF ||
                     decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH)
@@ -264,12 +273,12 @@ export default class PsyanimBehaviorTree {
                     if (nodeId >= decorator.selfAbortNodeStartId && 
                         nodeId <= decorator.selfAbortNodeEndId)
                     {
-                        // we should only reset tree on 'SELF' mode if decorator fails
-                        resetTree = !decorator.evaluate();
+                        // we should only fail the current node on 'SELF' mode if decorator fails
+                        failCurrentNode = !decorator.evaluate();
                     }
                 }
 
-                if (!resetTree && 
+                if (!failCurrentNode && 
                     (decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.LOWER_PRIORITY ||
                     decorator.abortMode === PsyanimBehaviorTreeDecoratorEnums.ABORT_MODE.BOTH))
                 {
@@ -285,6 +294,13 @@ export default class PsyanimBehaviorTree {
                     this._root.reset();
 
                     this._currentlyTickingNode = null;
+
+                    break;
+                }
+                else if (failCurrentNode)
+                {
+                    // fail the current node and let tree execute from there
+                    this._currentlyTickingNode.fail();
 
                     break;
                 }

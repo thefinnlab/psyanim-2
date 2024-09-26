@@ -126,6 +126,14 @@ export default class PsyanimBehaviorTreeNode {
         return this._canExecute;
     }
 
+    fail() {
+
+        this._status = PsyanimBehaviorTreeNode.STATUS.FAILURE;
+
+        this._canExecute = false;
+        this._evaluatedDecorators = true;
+    }
+
     tick() {
 
         this.events.emit('tick', this);

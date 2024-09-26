@@ -1,0 +1,138 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "Root Node",
+            "type": "Behavior Tree Root",
+            "isComposite": true,
+            "x": 564.5,
+            "y": 302.3333333333333,
+            "fieldData": {
+                "Blackboard": {
+                    "isBlackboardKey": false,
+                    "value": "Default Blackboard Name"
+                }
+            }
+        },
+        {
+            "id": 1,
+            "name": "Main Selector",
+            "type": "Selector",
+            "isComposite": true,
+            "x": 565,
+            "y": 441.75,
+            "fieldData": {}
+        },
+        {
+            "id": 3,
+            "name": "MoveTo",
+            "type": "MoveTo",
+            "isComposite": false,
+            "x": 356,
+            "y": 674.25,
+            "fieldData": {
+                "stoppingDistance": {
+                    "isBlackboardKey": false,
+                    "value": 50
+                },
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "chaseTarget"
+                }
+            }
+        },
+        {
+            "id": 4,
+            "name": "Patrol",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 853.5,
+            "y": 663,
+            "fieldData": {}
+        },
+        {
+            "id": 5,
+            "name": "PatrolTargetSelector",
+            "type": "PatrolTargetSelector",
+            "isComposite": false,
+            "x": 690.75,
+            "y": 846.5,
+            "fieldData": {
+                "targetEntityListBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "patrolTargetList"
+                }
+            }
+        },
+        {
+            "id": 6,
+            "name": "MoveTo",
+            "type": "MoveTo",
+            "isComposite": false,
+            "x": 945.75,
+            "y": 846.5,
+            "fieldData": {
+                "stoppingDistance": {
+                    "isBlackboardKey": false,
+                    "value": 50
+                },
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "patrolTarget"
+                }
+            }
+        }
+    ],
+    "decorators": [
+        {
+            "nodeId": 3,
+            "decoratorId": 0,
+            "name": "Is Target Nearby",
+            "type": "Blackboard Decorator",
+            "fieldData": {
+                "Abort Mode": {
+                    "isBlackboardKey": false,
+                    "value": "Both"
+                },
+                "Blackboard Key": {
+                    "isBlackboardKey": false,
+                    "value": "distanceToTarget"
+                },
+                "Key Type": {
+                    "isBlackboardKey": false,
+                    "value": 1
+                },
+                "Query Type": {
+                    "isBlackboardKey": false,
+                    "value": 8
+                },
+                "Key Query Value": {
+                    "isBlackboardKey": false,
+                    "value": 250
+                }
+            }
+        }
+    ],
+    "edges": [
+        {
+            "topPortNodeId": 1,
+            "bottomPortNodeId": 0
+        },
+        {
+            "topPortNodeId": 4,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 5,
+            "bottomPortNodeId": 4
+        },
+        {
+            "topPortNodeId": 6,
+            "bottomPortNodeId": 4
+        },
+        {
+            "topPortNodeId": 3,
+            "bottomPortNodeId": 1
+        }
+    ]
+}
