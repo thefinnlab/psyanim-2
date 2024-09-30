@@ -16,9 +16,9 @@ export default class PsyanimBehaviorTreeSequenceNode extends PsyanimBehaviorTree
         super.reset();
     }
 
-    tick() {
+    tick(t, dt) {
 
-        super.tick();
+        super.tick(t, dt);
 
         if (!this.canExecute)
         {
@@ -27,7 +27,7 @@ export default class PsyanimBehaviorTreeSequenceNode extends PsyanimBehaviorTree
             return this._status;
         }
 
-        let childStatus = this._children[this._currentChildIndex].tick();
+        let childStatus = this._children[this._currentChildIndex].tick(t, dt);
 
         this.validateTaskStatus(childStatus);
 

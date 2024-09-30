@@ -182,6 +182,23 @@ export default class PsyanimAIController extends PsyanimComponent {
      */
     fleePanicDistance;
 
+    /**********************************************************************/
+    /************************** Chase Parameters **************************/
+    /**********************************************************************/
+
+    subtlety; // degrees
+    subtletyLag; // ms
+
+    maxChaseSpeed;
+    maxChaseAcceleration;
+
+    chaseInnerDecelerationRadius;
+    chaseOuterDecelerationRadius;
+
+    /**********************************************************************/
+    /************************ General Properties **************************/
+    /**********************************************************************/
+
     get blackboard() {
 
         return this._blackboard;
@@ -232,6 +249,21 @@ export default class PsyanimAIController extends PsyanimComponent {
         this.maxFleeSpeed = 8;
         this.maxFleeAcceleration = 0.3;
         this.fleePanicDistance = 250;
+
+        // chase behavior
+        this.subtlety = 30; // degrees
+        this.subtletyLag = 500; // ms
+
+        this.maxChaseSpeed = 3;
+        this.maxChaseAcceleration = 0.2;
+
+        this.chaseInnerDecelerationRadius = 12;
+        this.chaseOuterDecelerationRadius = 30;
+
+        this._subtletyAngle = 0;
+        this._subtletyUpdateTimer = 0;
+
+        this._realChaseTarget = this.entity.scene.addEntity(this.entity.name + "_realChaseTarget");
 
         /**
          *  Add required components
@@ -361,6 +393,66 @@ export default class PsyanimAIController extends PsyanimComponent {
         this._state = PsyanimAIController.STATE.IDLE;
     }
 
+    _recomputeSubtletyAngle() {
+
+        this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+    }
+
+    _calculateChaseTargetPosition() {
+
+        let targetRelativePosition = this._chaseTarget.position
+            .subtract(this.entity.position);
+
+        targetRelativePosition.rotate(this._subtletyAngle * Math.PI / 180);
+
+        return this.entity.position
+            .add(targetRelativePosition);
+    }
+
+    _updateChaseTargetPosition() {
+
+        let newTargetPosition = null;
+
+        // attempt to keep the target within canvas
+        for (let i = 0; i < 200; ++i)
+        {
+            newTargetPosition = this._calculateChaseTargetPosition();
+
+            if (this.entity.scene.screenBoundary.isPointInBounds(newTargetPosition))
+            {
+                break;
+            }
+
+            this._recomputeSubtletyAngle();
+        }
+
+        this._chaseTarget.position = newTargetPosition;
+    }
+
+    _updateSubtlety(dt) {
+
+        this._subtletyUpdateTimer += dt;
+
+        if (this._subtletyUpdateTimer > this.subtletyLag)
+        {
+            this._subtletyUpdateTimer = 0;
+
+            this._recomputeSubtletyAngle();
+        }
+    }
+
+    chase(targetEntity) {
+
+        this._reset();
+
+        this._chaseTarget = targetEntity;
+
+        this._subtletyUpdateTimer = 0;
+        this._recomputeSubtletyAngle();
+
+        this._state = PsyanimAIController.STATE.CHASE;
+    }
+
     onEnable() {
 
         super.onEnable();
@@ -396,7 +488,7 @@ export default class PsyanimAIController extends PsyanimComponent {
         }
 
         // run behavior tree
-        this._tree.tick();
+        this._tree.tick(t, dt);
 
         if (this._state === PsyanimAIController.STATE.SEEK)
         {
@@ -428,6 +520,15 @@ export default class PsyanimAIController extends PsyanimComponent {
 
             this._vehicle.steer(steering);
         }
+        else if (this._state === PsyanimAIController.STATE.CHASE)
+        {
+            this._updateSubtlety(dt);
+            this._updateChaseTargetPosition();
+
+            let steering = this._arriveBehavior.getSteering(this._chaseTarget);
+
+            this._vehicle.steer(steering);
+        }
     }
 
     /*************************************************************************************
@@ -439,6 +540,7 @@ export default class PsyanimAIController extends PsyanimComponent {
         this._seekTarget = null;
         this._arriveTarget = null;
         this._fleeTarget = null;
+        this._chaseTarget = null;
     }
 
     _loadBehaviorTree() {
@@ -456,6 +558,7 @@ const AI_CONTROLLER_STATE = {
     MOVE_TO: 0x04,
     WANDER: 0x08,
     SEEK: 0x10,
+    CHASE: 0x11
 };
 
 PsyanimAIController.STATE = AI_CONTROLLER_STATE;

@@ -1,0 +1,156 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "Root Node",
+            "type": "Behavior Tree Root",
+            "isComposite": true,
+            "x": 584,
+            "y": 302.3333333333333,
+            "fieldData": {
+                "Blackboard": {
+                    "isBlackboardKey": false,
+                    "value": ""
+                }
+            }
+        },
+        {
+            "id": 1,
+            "name": "Main Sequence",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 572,
+            "y": 439,
+            "fieldData": {}
+        },
+        {
+            "id": 2,
+            "name": "Wander",
+            "type": "Wander",
+            "isComposite": false,
+            "x": 431,
+            "y": 646,
+            "fieldData": {
+                "duration": {
+                    "isBlackboardKey": true,
+                    "value": "wanderDuration"
+                }
+            }
+        },
+        {
+            "id": 3,
+            "name": "Chase Or Wander",
+            "type": "Selector",
+            "isComposite": true,
+            "x": 784,
+            "y": 629,
+            "fieldData": {}
+        },
+        {
+            "id": 4,
+            "name": "Chase",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 643.9999999999998,
+            "y": 803.2222222222224,
+            "fieldData": {}
+        },
+        {
+            "id": 5,
+            "name": "RandomFailure",
+            "type": "RandomFailure",
+            "isComposite": false,
+            "x": 476.4444444444432,
+            "y": 988.4444444444448,
+            "fieldData": {
+                "probability": {
+                    "isBlackboardKey": true,
+                    "value": "wanderProbability"
+                }
+            }
+        },
+        {
+            "id": 6,
+            "name": "Wander",
+            "type": "Wander",
+            "isComposite": false,
+            "x": 1001.1111111111115,
+            "y": 820.2222222222233,
+            "fieldData": {
+                "duration": {
+                    "isBlackboardKey": false,
+                    "value": 1000
+                }
+            }
+        },
+        {
+            "id": 7,
+            "name": "Chase",
+            "type": "Chase",
+            "isComposite": false,
+            "x": 749.444444444444,
+            "y": 992.2222222222224,
+            "fieldData": {
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "chaseTarget"
+                },
+                "subtlety": {
+                    "isBlackboardKey": true,
+                    "value": "subtlety"
+                },
+                "subtletyLag": {
+                    "isBlackboardKey": true,
+                    "value": "subtletyLag"
+                },
+                "maxChaseSpeed": {
+                    "isBlackboardKey": true,
+                    "value": "maxChaseSpeed"
+                },
+                "maxChaseAcceleration": {
+                    "isBlackboardKey": true,
+                    "value": "maxChaseAcceleration"
+                },
+                "chaseInnerDecelerationRadius": {
+                    "isBlackboardKey": false,
+                    "value": 12
+                },
+                "chaseOuterDecelerationRadius": {
+                    "isBlackboardKey": false,
+                    "value": 30
+                }
+            }
+        }
+    ],
+    "decorators": [],
+    "edges": [
+        {
+            "topPortNodeId": 1,
+            "bottomPortNodeId": 0
+        },
+        {
+            "topPortNodeId": 2,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 3,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 4,
+            "bottomPortNodeId": 3
+        },
+        {
+            "topPortNodeId": 5,
+            "bottomPortNodeId": 4
+        },
+        {
+            "topPortNodeId": 6,
+            "bottomPortNodeId": 3
+        },
+        {
+            "topPortNodeId": 7,
+            "bottomPortNodeId": 4
+        }
+    ]
+}

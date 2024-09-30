@@ -18,7 +18,11 @@ import {
     Wait,
     Flee,
     Wander,
-    PlayfightCharge
+    PlayfightCharge,
+    Chase,
+    ResetTimer,
+    TickTimer,
+    RandomFailure
 
 } from 'psyanim-utils';
 
@@ -49,7 +53,11 @@ export default class PsyanimBehaviorTree {
             Wait,
             Flee,
             Wander,
-            PlayfightCharge
+            PlayfightCharge,
+            Chase,
+            ResetTimer,
+            TickTimer,
+            RandomFailure
         ];
 
         let taskDefinitions = builtinTasks.concat(userDefinedTasks);
@@ -253,7 +261,7 @@ export default class PsyanimBehaviorTree {
         return nodeIDs;
     }
 
-    tick() {
+    tick(t, dt) {
 
         // check if any aborts are triggered in decorators
         if (this._currentlyTickingNode)
@@ -308,7 +316,7 @@ export default class PsyanimBehaviorTree {
         }
 
         // tick the tree
-        let status = this._root.tick();
+        let status = this._root.tick(t, dt);
 
         if (status === PsyanimBehaviorTreeNode.STATUS.FAILURE || 
             status === PsyanimBehaviorTreeNode.STATUS.SUCCESS)

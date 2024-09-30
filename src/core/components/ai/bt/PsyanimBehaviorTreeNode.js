@@ -134,7 +134,7 @@ export default class PsyanimBehaviorTreeNode {
         this._evaluatedDecorators = true;
     }
 
-    tick() {
+    tick(t, dt) {
 
         this.events.emit('tick', this);
 

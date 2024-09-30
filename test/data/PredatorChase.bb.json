@@ -1,0 +1,8 @@
+{
+    "wanderDuration": 5,
+    "wanderProbability": 0.5,
+    "subtlety": 30,
+    "subtletyLag": 500,
+    "maxChaseSpeed": 3,
+    "maxChaseAcceleration": 0.2
+}

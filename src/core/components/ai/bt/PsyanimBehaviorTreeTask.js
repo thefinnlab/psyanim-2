@@ -28,11 +28,11 @@ export default class PsyanimBehaviorTreeTask extends PsyanimBehaviorTreeNode {
         this._taskDefinition.reset();
     }
 
-    tick() {
+    tick(t, dt) {
 
         // TODO: task definitions need a 'debug' mode!
         
-        super.tick();
+        super.tick(t, dt);
 
         if (!this.canExecute)
         {
@@ -41,7 +41,7 @@ export default class PsyanimBehaviorTreeTask extends PsyanimBehaviorTreeNode {
             return this._status;
         }
 
-        let status = this._taskDefinition.tick();
+        let status = this._taskDefinition.tick(t, dt);
 
         this.validateTaskStatus(status);
 
