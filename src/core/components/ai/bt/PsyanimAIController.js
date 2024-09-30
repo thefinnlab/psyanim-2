@@ -426,7 +426,7 @@ export default class PsyanimAIController extends PsyanimComponent {
             this._recomputeSubtletyAngle();
         }
 
-        this._chaseTarget.position = newTargetPosition;
+        this._realChaseTarget.position = newTargetPosition;
     }
 
     _updateSubtlety(dt) {
@@ -525,7 +525,7 @@ export default class PsyanimAIController extends PsyanimComponent {
             this._updateSubtlety(dt);
             this._updateChaseTargetPosition();
 
-            let steering = this._arriveBehavior.getSteering(this._chaseTarget);
+            let steering = this._arriveBehavior.getSteering(this._realChaseTarget);
 
             this._vehicle.steer(steering);
         }
