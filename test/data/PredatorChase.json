@@ -5,7 +5,7 @@
             "name": "Root Node",
             "type": "Behavior Tree Root",
             "isComposite": true,
-            "x": 584,
+            "x": 874.5,
             "y": 302.3333333333333,
             "fieldData": {
                 "Blackboard": {
@@ -16,20 +16,29 @@
         },
         {
             "id": 1,
-            "name": "Main Sequence",
-            "type": "Sequence",
+            "name": "Select Algorithm",
+            "type": "Selector",
             "isComposite": true,
-            "x": 572,
-            "y": 439,
+            "x": 863.8888888888889,
+            "y": 424.1111111111111,
             "fieldData": {}
         },
         {
-            "id": 2,
+            "id": 3,
+            "name": "WanderChaseAlgorithm",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 664.3333333333338,
+            "y": 625.3333333333337,
+            "fieldData": {}
+        },
+        {
+            "id": 4,
             "name": "Wander",
             "type": "Wander",
             "isComposite": false,
-            "x": 431,
-            "y": 646,
+            "x": 524.333333333333,
+            "y": 802.0000000000002,
             "fieldData": {
                 "duration": {
                     "isBlackboardKey": true,
@@ -38,44 +47,76 @@
             }
         },
         {
-            "id": 3,
+            "id": 5,
             "name": "Chase Or Wander",
             "type": "Selector",
             "isComposite": true,
-            "x": 784,
-            "y": 629,
+            "x": 681,
+            "y": 858.6666666666667,
             "fieldData": {}
         },
         {
-            "id": 4,
+            "id": 10,
             "name": "Chase",
-            "type": "Sequence",
-            "isComposite": true,
-            "x": 643.9999999999998,
-            "y": 803.2222222222224,
-            "fieldData": {}
-        },
-        {
-            "id": 5,
-            "name": "RandomFailure",
-            "type": "RandomFailure",
+            "type": "Chase",
             "isComposite": false,
-            "x": 476.4444444444432,
-            "y": 988.4444444444448,
+            "x": 1097.6666666666667,
+            "y": 635.3333333333331,
             "fieldData": {
-                "probability": {
+                "targetEntityBlackboardKey": {
+                    "isBlackboardKey": false,
+                    "value": "chaseTarget"
+                },
+                "initialSubtlety": {
                     "isBlackboardKey": true,
-                    "value": "wanderProbability"
+                    "value": "initialSubtlety"
+                },
+                "finalSubtlety": {
+                    "isBlackboardKey": true,
+                    "value": "finalSubtlety"
+                },
+                "timeToFinalSubtlety": {
+                    "isBlackboardKey": true,
+                    "value": "timeToFinalSubtlety"
+                },
+                "subtletyLag": {
+                    "isBlackboardKey": true,
+                    "value": "subtletyLag"
+                },
+                "maxChaseSpeed": {
+                    "isBlackboardKey": true,
+                    "value": "maxChaseSpeed"
+                },
+                "maxChaseAcceleration": {
+                    "isBlackboardKey": true,
+                    "value": "maxChaseAcceleration"
+                },
+                "chaseInnerDecelerationRadius": {
+                    "isBlackboardKey": false,
+                    "value": 12
+                },
+                "chaseOuterDecelerationRadius": {
+                    "isBlackboardKey": false,
+                    "value": 30
                 }
             }
         },
         {
             "id": 6,
+            "name": "Chase",
+            "type": "Sequence",
+            "isComposite": true,
+            "x": 506.55555555555725,
+            "y": 1052.0000000000002,
+            "fieldData": {}
+        },
+        {
+            "id": 9,
             "name": "Wander",
             "type": "Wander",
             "isComposite": false,
-            "x": 1001.1111111111115,
-            "y": 820.2222222222233,
+            "x": 726.5555555555563,
+            "y": 1090.8888888888882,
             "fieldData": {
                 "duration": {
                     "isBlackboardKey": false,
@@ -85,19 +126,41 @@
         },
         {
             "id": 7,
+            "name": "RandomFailure",
+            "type": "RandomFailure",
+            "isComposite": false,
+            "x": 301.00000000000216,
+            "y": 1238.666666666667,
+            "fieldData": {
+                "probability": {
+                    "isBlackboardKey": true,
+                    "value": "wanderProbability"
+                }
+            }
+        },
+        {
+            "id": 8,
             "name": "Chase",
             "type": "Chase",
             "isComposite": false,
-            "x": 749.444444444444,
-            "y": 992.2222222222224,
+            "x": 514.3333333333342,
+            "y": 1238.6666666666672,
             "fieldData": {
                 "targetEntityBlackboardKey": {
                     "isBlackboardKey": false,
                     "value": "chaseTarget"
                 },
-                "subtlety": {
+                "initialSubtlety": {
                     "isBlackboardKey": true,
-                    "value": "subtlety"
+                    "value": "initialSubtlety"
+                },
+                "finalSubtlety": {
+                    "isBlackboardKey": true,
+                    "value": "finalSubtlety"
+                },
+                "timeToFinalSubtlety": {
+                    "isBlackboardKey": true,
+                    "value": "timeToFinalSubtlety"
                 },
                 "subtletyLag": {
                     "isBlackboardKey": true,
@@ -122,15 +185,40 @@
             }
         }
     ],
-    "decorators": [],
+    "decorators": [
+        {
+            "nodeId": 3,
+            "decoratorId": 2,
+            "name": "Blackboard Decorator",
+            "type": "Blackboard Decorator",
+            "fieldData": {
+                "Abort Mode": {
+                    "isBlackboardKey": false,
+                    "value": "Self"
+                },
+                "Blackboard Key": {
+                    "isBlackboardKey": false,
+                    "value": "wanderAtStart"
+                },
+                "Key Type": {
+                    "isBlackboardKey": false,
+                    "value": 0
+                },
+                "Query Type": {
+                    "isBlackboardKey": false,
+                    "value": 0
+                },
+                "Key Query Value": {
+                    "isBlackboardKey": false,
+                    "value": ""
+                }
+            }
+        }
+    ],
     "edges": [
         {
             "topPortNodeId": 1,
             "bottomPortNodeId": 0
-        },
-        {
-            "topPortNodeId": 2,
-            "bottomPortNodeId": 1
         },
         {
             "topPortNodeId": 3,
@@ -142,15 +230,27 @@
         },
         {
             "topPortNodeId": 5,
-            "bottomPortNodeId": 4
-        },
-        {
-            "topPortNodeId": 6,
             "bottomPortNodeId": 3
         },
         {
+            "topPortNodeId": 10,
+            "bottomPortNodeId": 1
+        },
+        {
+            "topPortNodeId": 6,
+            "bottomPortNodeId": 5
+        },
+        {
+            "topPortNodeId": 9,
+            "bottomPortNodeId": 5
+        },
+        {
             "topPortNodeId": 7,
-            "bottomPortNodeId": 4
+            "bottomPortNodeId": 6
+        },
+        {
+            "topPortNodeId": 8,
+            "bottomPortNodeId": 6
         }
     ]
 }

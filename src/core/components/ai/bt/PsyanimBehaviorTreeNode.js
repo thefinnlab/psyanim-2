@@ -100,6 +100,11 @@ export default class PsyanimBehaviorTreeNode {
 
         if (this._decorators.length === 0)
         {
+            if (setEvaluated)
+            {
+                this._evaluatedDecorators = true;
+            }
+
             return true;
         }
 

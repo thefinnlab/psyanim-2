@@ -1,8 +1,10 @@
 {
     "wanderDuration": 5,
-    "wanderProbability": 0.5,
-    "subtlety": 30,
-    "subtletyLag": 500,
+    "initialSubtlety": 90,
+    "finalSubtlety": 0,
+    "timeToFinalSubtlety": 5,
+    "subtletyLag": 0.5,
     "maxChaseSpeed": 3,
-    "maxChaseAcceleration": 0.2
+    "maxChaseAcceleration": 0.2,
+    "wanderProbability": 0.5
 }

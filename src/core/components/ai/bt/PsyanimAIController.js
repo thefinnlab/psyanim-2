@@ -186,7 +186,11 @@ export default class PsyanimAIController extends PsyanimComponent {
     /************************** Chase Parameters **************************/
     /**********************************************************************/
 
-    subtlety; // degrees
+    initialSubtlety; // degrees
+    finalSubtlety; // degrees
+
+    timeToFinalSubtlety; // ms
+
     subtletyLag; // ms
 
     maxChaseSpeed;
@@ -251,7 +255,11 @@ export default class PsyanimAIController extends PsyanimComponent {
         this.fleePanicDistance = 250;
 
         // chase behavior
-        this.subtlety = 30; // degrees
+        this.initialSubtlety = 30; // degrees
+        this.finalSubtlety = 30; // degrees
+
+        this.timeToFinalSubtlety = 3000; // ms
+
         this.subtletyLag = 500; // ms
 
         this.maxChaseSpeed = 3;
@@ -395,7 +403,28 @@ export default class PsyanimAIController extends PsyanimComponent {
 
     _recomputeSubtletyAngle() {
 
-        this._subtletyAngle = this.subtlety * (2 * Math.random() - 1);
+        // TODO: put this in a utility function API in psyanim-utils
+        let lerp = (start, end, t) => {
+
+            if (t < 0.0)
+            {
+                t = 0.0;
+            }
+
+            if (t > 1.0)
+            {
+                t = 1.0;
+            }
+
+            return start * (1 - t) + end * t;
+        };
+
+        // the subtlety bounds based on chase runtime
+        let t = this._chaseRunTime / this.timeToFinalSubtlety;
+
+        let subtletyMax = lerp(this.initialSubtlety, this.finalSubtlety, t);
+
+        this._subtletyAngle = subtletyMax * (2 * Math.random() - 1);
     }
 
     _calculateChaseTargetPosition() {
@@ -431,6 +460,7 @@ export default class PsyanimAIController extends PsyanimComponent {
 
     _updateSubtlety(dt) {
 
+        this._chaseRunTime += dt;
         this._subtletyUpdateTimer += dt;
 
         if (this._subtletyUpdateTimer > this.subtletyLag)
@@ -444,6 +474,11 @@ export default class PsyanimAIController extends PsyanimComponent {
     chase(targetEntity) {
 
         this._reset();
+
+        this._arriveBehavior.maxSpeed = this.maxChaseSpeed;
+        this._arriveBehavior.maxAcceleration = this.maxChaseAcceleration;
+
+        this._chaseRunTime = 0;
 
         this._chaseTarget = targetEntity;
 

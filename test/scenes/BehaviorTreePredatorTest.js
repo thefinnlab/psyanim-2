@@ -74,7 +74,8 @@ export default {
                         file: PredatorChaseBlackboard,
                         chaseTarget: {
                             entityName: 'mouseFollowTarget'
-                        }
+                        },
+                        wanderAtStart: false
                     }
                 }
             ]
