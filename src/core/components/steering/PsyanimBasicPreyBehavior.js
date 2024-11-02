@@ -1,3 +1,5 @@
+import PsyanimApp from "../../PsyanimApp.js";
+
 import PsyanimComponent from "../../PsyanimComponent.js";
 
 import {
@@ -8,6 +10,18 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
     subtlety; // 'degrees'
     subtletlyLag; // ms
+
+    /**
+     *  Delay time, in ms, before agent will begin moving initially.
+     *  @type {Number}
+     */
+    movementLag;
+
+    /**
+     *  If user provides this, agent will not move initially until the target first moves.
+     *  @type {PsyanimEntity}
+     */
+    movementLagDetectionTarget;
 
     safetyDistance; // min. distance in 'px' to target which this predator will flee to maintain
 
@@ -27,12 +41,19 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
         this.safetyDistance = 100;
 
-        this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
+        this.movementLag = 0;
+
+        this.movementLagDetectionTarget = null;
+
+        this._state = PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG;
 
         this._fleeTarget = this.scene.addEntity(this.entity.name + '_fleeTarget');
 
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
+
+        this._movementLagTimer = 0;
+        this._movementLagTargetInitialPosition = null;
 
         this.debug = false;
     }
@@ -44,11 +65,25 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         // use an initial angle and subtlety that's randomized
         this.entity.setAngle(360 * (2 * Math.random() - 1));
         this._recomputeSubtletyAngle();
+
+        if (this.movementLagDetectionTarget)
+        {
+            this._movementLagTargetInitialPosition = this.movementLagDetectionTarget.position;
+        }
+
+        if (this.movementLag === 0)
+        {
+            this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
+        }
     }
 
     get maxSpeed() {
 
         switch(this._state) {
+
+            case PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG:
+
+                return 0;
 
             case PsyanimBasicPreyBehavior.STATE.WANDERING:
 
@@ -92,33 +127,59 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
             .length();
 
         // update state
-        if (targetInSight && distanceToTarget < this.safetyDistance)
+        if (this._state === PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG)
         {
-            if (this._state != PsyanimBasicPreyBehavior.STATE.FLEEING)
+            if (this.movementLagDetectionTarget)
             {
-                if (this.debug)
+                if (!this._movementLagTargetInitialPosition.fuzzyEquals(
+                    this.movementLagDetectionTarget.position))
                 {
-                    PsyanimDebug.log("Prey '" + this.entity.name + "' state = FLEEING.");
+                    this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
                 }
-    
-                this._state = PsyanimBasicPreyBehavior.STATE.FLEEING;
+                else if (this.movementLag != 0 && this._movementLagTimer > this.movementLag)
+                {
+                    PsyanimApp.Instance.events.emit('psyanim-jspsych-endTrial');                    
+                }
+            }
+            else if (this._movementLagTimer > this.movementLag)
+            {
+                this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;
             }
         }
         else
         {
-            if (this._state != PsyanimBasicPreyBehavior.STATE.WANDERING)
+            if (targetInSight && distanceToTarget < this.safetyDistance)
             {
-                if (this.debug)
+                if (this._state != PsyanimBasicPreyBehavior.STATE.FLEEING)
                 {
-                    PsyanimDebug.log("Prey '" + this.entity.name + "' state = WANDERING.");
+                    if (this.debug)
+                    {
+                        PsyanimDebug.log("Prey '" + this.entity.name + "' state = FLEEING.");
+                    }
+        
+                    this._state = PsyanimBasicPreyBehavior.STATE.FLEEING;
                 }
-    
-                this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;    
+            }
+            else
+            {
+                if (this._state != PsyanimBasicPreyBehavior.STATE.WANDERING)
+                {
+                    if (this.debug)
+                    {
+                        PsyanimDebug.log("Prey '" + this.entity.name + "' state = WANDERING.");
+                    }
+        
+                    this._state = PsyanimBasicPreyBehavior.STATE.WANDERING;    
+                }
             }
         }
 
         // compute steering
-        if (this._state == PsyanimBasicPreyBehavior.STATE.FLEEING)
+        if (this._state === PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG)
+        {
+            return Phaser.Math.Vector2.ZERO;
+        }
+        else if (this._state == PsyanimBasicPreyBehavior.STATE.FLEEING)
         {
             let targetRelativePosition = target.position
                 .subtract(this.entity.position);
@@ -149,11 +210,16 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
         this._subtletyUpdateTimer += dt;
 
+        if (this._state === PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG)
+        {
+            this._movementLagTimer += dt;
+        }
+
         if (this._subtletyUpdateTimer > this.subtletyLag)
         {
             this._subtletyUpdateTimer = 0;
 
-            if (this._state == PsyanimBasicPreyBehavior.STATE.PURSUING)
+            if (this._state == PsyanimBasicPreyBehavior.STATE.FLEEING)
             {
                 this._recomputeSubtletyAngle();
             }
@@ -164,4 +230,5 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 PsyanimBasicPreyBehavior.STATE = {
     WANDERING: 0x0001,
     FLEEING: 0x0002,
+    MOVEMENT_LAG: 0x0004
 }; 

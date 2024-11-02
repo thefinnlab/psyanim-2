@@ -9,6 +9,7 @@ import PsyanimFleeBehavior from '../../steering/PsyanimFleeBehavior.js';
 import PsyanimPreyWanderState from './PsyanimPreyWanderState.js';
 import PsyanimPreyFleeState from './PsyanimPreyFleeState.js';
 import PsyanimPreyWallAvoidanceState from './PsyanimPreyWallAvoidanceState.js';
+import PsyanimPreyMovementLagState from './PsyanimPreyMovementLagState.js';
 
 /**
  *  `PsyanimPreyFSM` implements the `Prey v2` algorithm.
@@ -42,6 +43,18 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
      *  @type {Number}
      */    
     subtletyLag;
+
+    /**
+     *  Delay time, in ms, before agent will begin moving initially.
+     *  @type {Number}
+     */
+    movementLag;
+
+    /**
+     *  If user provides this, agent will not move initially until the target first moves.
+     *  @type {PsyanimEntity}
+     */
+    movementLagDetectionTarget;
 
     /***********************************************************************************************/
     /********************************** Wander State Parameters ************************************/
@@ -202,6 +215,10 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this.maxFleeAcceleration = 0.2;
         this.minimumWallSeparation = 50;
 
+        // movement lag state params
+        this.movementLag = 0;
+        this.movementLagDetectionTarget = null;
+
         // wall avoidance params
         this.wallAvoidanceSubtlety = 10;
         this.wallAvoidanceSubtletyLag = 1000;
@@ -232,8 +249,9 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this._wanderState = this.addState(PsyanimPreyWanderState);
         this._fleeState = this.addState(PsyanimPreyFleeState);
         this._wallAvoidanceState = this.addState(PsyanimPreyWallAvoidanceState);
+        this._movementLagState = this.addState(PsyanimPreyMovementLagState);
 
-        this.initialState = this._wanderState;
+        this.initialState = this._movementLagState;
     }
 
     onEnable() {
@@ -247,6 +265,10 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     }
 
     afterCreate() {
+
+        // movement lag state
+        this._movementLagState.movementLag = this.movementLag;
+        this._movementLagState.movementLagDetectionTarget = this.movementLagDetectionTarget;
 
         super.afterCreate();
 

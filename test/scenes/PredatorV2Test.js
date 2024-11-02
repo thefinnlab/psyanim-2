@@ -53,7 +53,11 @@ export default {
                         subtlety: 30,
                         averageWanderTime: 2000,
                         debugLogging: false,
-                        debugGraphics: true
+                        debugGraphics: true,
+                        movementLag: 4000,
+                        // movementLagDetectionTarget: {
+                        //     entityName: 'player'
+                        // }                        
                     }
                 }
             ]

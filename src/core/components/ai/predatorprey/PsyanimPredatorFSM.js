@@ -2,6 +2,7 @@ import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimPredatorWanderState from './PsyanimPredatorWanderState.js';
 import PsyanimPredatorChargeState from './PsyanimPredatorChargeState.js';
+import PsyanimPredatorMovementLagState from './PsyanimPredatorMovementLagState.js';
 
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
 import PsyanimSeekBehavior from '../../steering/PsyanimSeekBehavior.js';
@@ -40,6 +41,18 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
      *  @type {Number}
      */
     subtletyLag;
+
+    /**
+     *  Delay time, in ms, before agent will begin moving initially.
+     *  @type {Number}
+     */
+    movementLag;
+
+    /**
+     *  If user provides this, agent will not move initially until the target first moves.
+     *  @type {PsyanimEntity}
+     */
+    movementLagDetectionTarget;
 
     /***********************************************************************************************/
     /********************************** Wander State Parameters ************************************/
@@ -197,6 +210,10 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         this.innerDecelerationRadius = 12;
         this.outerDecelerationRadius = 30;
 
+        // movement lag state params
+        this.movementLag = 0;
+        this.movementLagDetectionTarget = null;
+
         // vehicle component
         this.nSamplesForLookSmoothing = 16;
 
@@ -209,8 +226,9 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
         // setup FSM
         this._wanderState = this.addState(PsyanimPredatorWanderState);
         this._chargeState = this.addState(PsyanimPredatorChargeState);
+        this._movementLagState = this.addState(PsyanimPredatorMovementLagState);
 
-        this.initialState = this._wanderState;
+        this.initialState = this._movementLagState;
     }
 
     onEnable() {
@@ -224,6 +242,10 @@ export default class PsyanimPredatorFSM extends PsyanimFSM {
     }
 
     afterCreate() {
+
+        // movement lag state
+        this._movementLagState.movementLag = this.movementLag;
+        this._movementLagState.movementLagDetectionTarget = this.movementLagDetectionTarget;
 
         super.afterCreate();
 

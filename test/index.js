@@ -86,19 +86,21 @@ let BehaviorTreePatrolChaseTestCopy = PsyanimUtils.cloneSceneDefinition(Behavior
 let BehaviorTreePredatorTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePredatorTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(preyV2TestCopy);
+PsyanimApp.Instance.config.registerScene(predatorV2TestCopy);
+PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);
+PsyanimApp.Instance.config.registerScene(PredatorTestCopy);
+PsyanimApp.Instance.config.registerScene(PreyTestCopy);
+PsyanimApp.Instance.config.registerScene(predatorPreyCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePredatorTestCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolChaseTestCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolFleeTestCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePlayfightTestCopy);
 PsyanimApp.Instance.config.registerScene(BehaviorTreePatrolTestCopy);
 PsyanimApp.Instance.config.registerScene(BlackboardTestCopy);
-PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);
 PsyanimApp.Instance.config.registerScene(SensorTestCopy);
 PsyanimApp.Instance.config.registerScene(playfightTestv2Copy);
 PsyanimApp.Instance.config.registerScene(basicHFSMCopy);
-PsyanimApp.Instance.config.registerScene(preyV2TestCopy);
-PsyanimApp.Instance.config.registerScene(predatorV2TestCopy);
-PsyanimApp.Instance.config.registerScene(predatorPreyCopy);
 PsyanimApp.Instance.config.registerScene(PlayfightTestCopy);
 PsyanimApp.Instance.config.registerScene(fsmTestCopy);
 PsyanimApp.Instance.config.registerScene(AdvancedFleeTestCopy);
@@ -109,8 +111,6 @@ PsyanimApp.Instance.config.registerScene(ClickToMoveTestCopy);
 PsyanimApp.Instance.config.registerScene(FOVSensorTestCopy);
 PsyanimApp.Instance.config.registerScene(ArriveTestCopy);
 PsyanimApp.Instance.config.registerScene(PreciselyTimedArriveTestCopy);
-PsyanimApp.Instance.config.registerScene(PreyTestCopy);
-PsyanimApp.Instance.config.registerScene(PredatorTestCopy);
 PsyanimApp.Instance.config.registerScene(SeekTestCopy);
 PsyanimApp.Instance.config.registerScene(FleeTestCopy);
 PsyanimApp.Instance.config.registerScene(WanderTestCopy);

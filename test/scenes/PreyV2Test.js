@@ -53,7 +53,11 @@ export default {
                         panicDistance: 150,
                         subtlety: 30,
                         debugLogging: false,
-                        debugGraphics: true
+                        debugGraphics: true,
+                        movementLag: 4000,
+                        // movementLagDetectionTarget: {
+                        //     entityName: 'player'
+                        // }
                     }
                 }
             ]

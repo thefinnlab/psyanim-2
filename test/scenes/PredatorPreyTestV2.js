@@ -34,7 +34,11 @@ export default {
                             entityName: 'prey'
                         },
                         debugLogging: false,
-                        debugGraphics: true
+                        debugGraphics: true,
+                        movementLag: 4000,
+                        // movementLagDetectionTarget: {
+                        //     entityName: 'prey'
+                        // }     
                     }
                 }
             ]
@@ -55,7 +59,11 @@ export default {
                         },
                         panicDistance: 250,
                         debugLogging: false,
-                        debugGraphics: true
+                        debugGraphics: true,
+                        movementLag: 10000,
+                        movementLagDetectionTarget: {
+                            entityName: 'predator'
+                        }
                     }
                 }
             ]

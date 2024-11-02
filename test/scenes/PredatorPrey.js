@@ -10,6 +10,9 @@ import PsyanimPredatorAgent from '../../src/core/components/steering/agents/Psya
 import PsyanimPreyPrefab from '../../src/core/prefabs/PsyanimPreyPrefab.js';
 import PsyanimPreyAgent from '../../src/core/components/steering/agents/PsyanimPreyAgent.js';
 
+import PsyanimBasicPreyBehavior from "../../src/core/components/steering/PsyanimBasicPreyBehavior.js";
+import PsyanimBasicPredatorBehavior from "../../src/core/components/steering/PsyanimBasicPredatorBehavior.js";
+
 export default {
     key: 'PredatorPrey',
     wrapScreenBoundary: false,
@@ -37,6 +40,15 @@ export default {
             },
             components: [
                 {
+                    type: PsyanimBasicPredatorBehavior,
+                    params: {
+                        movementLag: 4000,
+                        // movementLagDetectionTarget: {
+                        //     entityName: 'prey'
+                        // }                        
+                    }
+                },
+                {
                     type: PsyanimPredatorAgent,
                     params: {
                         target: {
@@ -60,6 +72,15 @@ export default {
                 }
             },
             components: [
+                {
+                    type: PsyanimBasicPreyBehavior,
+                    params: {
+                        movementLag: 10000,
+                        movementLagDetectionTarget: {
+                            entityName: 'predator'
+                        }                        
+                    }
+                },
                 {
                     type: PsyanimPreyAgent,
                     params: {

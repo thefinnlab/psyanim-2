@@ -46,12 +46,18 @@ export default {
                 shapeType: PsyanimConstants.SHAPE_TYPE.TRIANGLE,
                 base: 16, altitude: 32, color: 0xffff00
             },
-            prefab: { type: PsyanimPreyPrefab },
+            prefab: { 
+                type: PsyanimPreyPrefab,
+            },
             components: [
                 {
                     type: PsyanimBasicPreyBehavior,
                     params: {
-                        debug: true
+                        debug: true,
+                        movementLag: 4000,
+                        // movementLagDetectionTarget: {
+                        //     entityName: 'player'
+                        // }
                     }
                 },
                 {

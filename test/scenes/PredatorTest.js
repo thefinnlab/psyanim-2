@@ -52,6 +52,10 @@ export default {
                     type: PsyanimBasicPredatorBehavior,
                     params: {
                         debug: true,
+                        movementLag: 4000,
+                        // movementLagDetectionTarget: {
+                        //     entityName: 'player'
+                        // }
                     }
                 },
                 {
