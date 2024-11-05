@@ -1,3 +1,4 @@
+import PsyanimApp from '../../../PsyanimApp.js';
 import PsyanimFSM from '../PsyanimFSM.js';
 
 import PsyanimVehicle from '../../steering/PsyanimVehicle.js';
@@ -55,6 +56,15 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
      *  @type {PsyanimEntity}
      */
     movementLagDetectionTarget;
+
+    /**
+     *  NOTE: this optional parameter is specific to integration with jsPsych!
+     * 
+     *  Time duration, in ms, that this behavior will execute, once moving, before throwing an 
+     *  event to tell jsPsych to end the current trial.
+     *  @type {Number}
+     */
+    fixedDuration;
 
     /***********************************************************************************************/
     /********************************** Wander State Parameters ************************************/
@@ -219,6 +229,8 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this.movementLag = 0;
         this.movementLagDetectionTarget = null;
 
+        this.fixedDuration = -1;
+
         // wall avoidance params
         this.wallAvoidanceSubtlety = 10;
         this.wallAvoidanceSubtletyLag = 1000;
@@ -244,6 +256,8 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
         this._seekBehavior = this.entity.addComponent(PsyanimSeekBehavior);
         this._wanderBehavior = this.entity.addComponent(PsyanimWanderBehavior);
         this._fleeBehavior = this.entity.addComponent(PsyanimFleeBehavior);
+
+        this._behaviorExecutionTimer = 0;
 
         // setup fsm
         this._wanderState = this.addState(PsyanimPreyWanderState);
@@ -310,5 +324,15 @@ export default class PsyanimPreyFSM extends PsyanimFSM {
     update(t, dt) {
 
         super.update(t, dt);
+
+        if (this.currentStateName != 'PsyanimPreyMovementLagState')
+        {
+            this._behaviorExecutionTimer += dt;
+
+            if (this.fixedDuration > 0 && this._behaviorExecutionTimer > this.fixedDuration)
+            {
+                PsyanimApp.Instance.events.emit('psyanim-jspsych-endTrial');
+            }
+        }
     }
 }

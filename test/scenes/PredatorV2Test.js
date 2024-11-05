@@ -55,6 +55,7 @@ export default {
                         debugLogging: false,
                         debugGraphics: true,
                         movementLag: 4000,
+                        fixedDuration: 4000,
                         // movementLagDetectionTarget: {
                         //     entityName: 'player'
                         // }                        

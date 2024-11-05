@@ -23,6 +23,15 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
      */
     movementLagDetectionTarget;
 
+    /**
+     *  NOTE: this optional parameter is specific to integration with jsPsych!
+     * 
+     *  Time duration, in ms, that this behavior will execute, once moving, before throwing an 
+     *  event to tell jsPsych to end the current trial.
+     *  @type {Number}
+     */
+    fixedDuration;
+
     safetyDistance; // min. distance in 'px' to target which this predator will flee to maintain
 
     fovSensor;
@@ -43,6 +52,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
         this.movementLag = 0;
 
+        this.fixedDuration = -1;
+
         this.movementLagDetectionTarget = null;
 
         this._state = PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG;
@@ -51,6 +62,8 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
 
         this._subtletyAngle = 0;
         this._subtletyUpdateTimer = 0;
+
+        this._behaviorExecutionTimer = 0;
 
         this._movementLagTimer = 0;
         this._movementLagTargetInitialPosition = null;
@@ -213,6 +226,15 @@ export default class PsyanimBasicPreyBehavior extends PsyanimComponent {
         if (this._state === PsyanimBasicPreyBehavior.STATE.MOVEMENT_LAG)
         {
             this._movementLagTimer += dt;
+        }
+        else
+        {
+            this._behaviorExecutionTimer += dt;
+        }
+
+        if (this.fixedDuration > 0 && this._behaviorExecutionTimer > this.fixedDuration)
+        {
+            PsyanimApp.Instance.events.emit('psyanim-jspsych-endTrial');
         }
 
         if (this._subtletyUpdateTimer > this.subtletyLag)
