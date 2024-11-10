@@ -15,8 +15,23 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
 
     maxWanderSpeed;
     maxAcceleration;
-    
+
     minScreenBoundaryDistance;
+
+    /**
+     *  Delay time, in ms, before agent will begin moving initially.
+     *  @type {Number}
+     */
+    movementLag;
+
+    /**
+     *  NOTE: this optional parameter is specific to integration with jsPsych!
+     * 
+     *  Time duration, in ms, that this behavior will execute, once moving, before throwing an 
+     *  event to tell jsPsych to end the current trial.
+     *  @type {Number}
+     */
+    fixedDuration;
 
     debug;
 
@@ -32,6 +47,11 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
         this.maxWanderAcceleration = 0.2;
 
         this.minScreenBoundaryDistance = 50;
+
+        // movement lag state params
+        this.movementLag = 0;
+
+        this.fixedDuration = -1;
 
         this.debug = false;
     }
@@ -59,6 +79,9 @@ export default class PsyanimWanderAgentPrefab extends PsyanimEntityPrefab {
         let wanderAgent = entity.addComponent(PsyanimWanderAgent);
         wanderAgent.vehicle = vehicle;
         wanderAgent.wanderBehavior = wander;
+
+        wanderAgent.movementLag = this.movementLag;
+        wanderAgent.fixedDuration = this.fixedDuration;
 
         if (this.debug)
         {

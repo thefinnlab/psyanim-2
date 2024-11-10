@@ -31,7 +31,8 @@ export default {
             prefab: {
                 type: PsyanimWanderAgentPrefab,
                 params: {
-                    debug: false
+                    debug: false,
+                    movementLag: 4000
                 }
             }
         }

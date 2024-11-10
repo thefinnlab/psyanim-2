@@ -51,6 +51,8 @@ import BehaviorTreePatrolChaseTest from './scenes/BehaviorTreePatrolChaseTest.js
 
 import BehaviorTreePredatorTest from './scenes/BehaviorTreePredatorTest.js';
 
+import WanderMovementLagTest from './scenes/WanderMovementLagTest.js';
+
 /**
  *  Setup Psyanim App - first register scenes:
  */
@@ -84,8 +86,11 @@ let BehaviorTreePatrolFleeTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorT
 let BehaviorTreePlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePlayfightTest);
 let BehaviorTreePatrolChaseTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePatrolChaseTest);
 let BehaviorTreePredatorTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTreePredatorTest);
+let WanderMovementLagTestCopy = PsyanimUtils.cloneSceneDefinition(WanderMovementLagTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(WanderMovementLagTestCopy);
+PsyanimApp.Instance.config.registerScene(WanderTestCopy);
 PsyanimApp.Instance.config.registerScene(preyV2TestCopy);
 PsyanimApp.Instance.config.registerScene(predatorV2TestCopy);
 PsyanimApp.Instance.config.registerScene(predatorPreyTestV2Copy);
@@ -113,7 +118,6 @@ PsyanimApp.Instance.config.registerScene(ArriveTestCopy);
 PsyanimApp.Instance.config.registerScene(PreciselyTimedArriveTestCopy);
 PsyanimApp.Instance.config.registerScene(SeekTestCopy);
 PsyanimApp.Instance.config.registerScene(FleeTestCopy);
-PsyanimApp.Instance.config.registerScene(WanderTestCopy);
 PsyanimApp.Instance.config.registerScene(EvadeTestCopy);
 
 // just use the original scene defs here
