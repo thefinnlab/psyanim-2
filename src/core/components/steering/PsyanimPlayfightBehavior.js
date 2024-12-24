@@ -8,6 +8,8 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     breakDuration;
 
+    minimumChargeDistance;
+
     fleeBehavior;
     arriveBehavior;
     wanderBehavior;
@@ -21,6 +23,7 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
         this.debug = false;
 
         this.breakDuration = 1500;
+        this.minimumChargeDistance = -1;
 
         this._breakTimer = 0;
 
@@ -129,19 +132,24 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
 
     getSteering(target) {
 
-        let distanceToTarget = 0;
+        let distanceToTarget = this.entity.position
+            .subtract(target.position)
+            .length();
 
         switch (this._state) {
 
             case PsyanimPlayfightBehavior.STATE.CHARGING:
 
+                if (this.minimumChargeDistance > 0 && distanceToTarget < this.minimumChargeDistance)
+                {
+                    this.handleCollision(); // treat as if collision occurred
+
+                    return Phaser.Math.Vector2.ZERO;
+                }
+
                 return this.arriveBehavior.getSteering(target);
 
             case PsyanimPlayfightBehavior.STATE.WANDERING:
-
-                distanceToTarget = this.entity.position
-                    .subtract(target.position)
-                    .length();
 
                 if (distanceToTarget < this.fleeBehavior.panicDistance)
                 {
@@ -153,10 +161,6 @@ export default class PsyanimPlayfightBehavior extends PsyanimComponent {
                 return this.wanderBehavior.getSteering();
 
             case PsyanimPlayfightBehavior.STATE.FLEEING:
-
-                distanceToTarget = this.entity.position
-                    .subtract(target.position)
-                    .length();
 
                 if (distanceToTarget > this.fleeBehavior.panicDistance)
                 {

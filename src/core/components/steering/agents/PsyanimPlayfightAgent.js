@@ -3,6 +3,7 @@ import PsyanimComponent from '../../../PsyanimComponent.js';
 export default class PsyanimPlayfightAgent extends PsyanimComponent {
 
     target;
+    minimumChargeDistance;
 
     playfightBehavior;
     vehicle;
@@ -10,9 +11,13 @@ export default class PsyanimPlayfightAgent extends PsyanimComponent {
     constructor(entity) {
 
         super(entity);
+
+        this.minimumChargeDistance = -1;
     }
 
     afterCreate() {
+
+        this.playfightBehavior.minimumChargeDistance = this.minimumChargeDistance;
 
         if (this.target)
         {

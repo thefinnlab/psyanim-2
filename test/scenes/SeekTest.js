@@ -31,7 +31,13 @@ export default {
                 color: 0x00ff00
             },
             components: [
-                { type: PsyanimMouseFollowTarget }
+                { 
+                    type: PsyanimMouseFollowTarget,
+                    params: {
+                        canCollideWithSprite: true,
+                        collisionRadius: 40
+                    }
+                }            
             ]
         },
         {

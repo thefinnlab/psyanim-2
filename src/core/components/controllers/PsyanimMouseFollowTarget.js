@@ -7,6 +7,10 @@ import PsyanimConstants from "../../PsyanimConstants.js";
  */
 export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
+    canCollideWithSprite;
+
+    collisionRadius;
+
     /**
      * 
      * @param {PsyanimEntity} entity 
@@ -15,21 +19,34 @@ export default class PsyanimMouseFollowTarget extends PsyanimComponent {
 
         super(entity);
 
-        this._radius = 4;
+        this.canCollideWithSprite = false;
+        this.collisionRadius = 20;
+    }
 
-        let bodyOptions = {
-            label: 'mouseFollowTarget',
-            shape: {
-                type: 'circle',
-                radius: 4
-            },
-            collisionFilter: {
-                category: PsyanimConstants.COLLISION_CATEGORIES.MOUSE_CURSOR,
-                mask: PsyanimConstants.COLLISION_CATEGORIES.NONE
-            }
+    afterCreate() {
+
+        super.afterCreate();
+
+        let collisionFilter = {
+            category: PsyanimConstants.COLLISION_CATEGORIES.MOUSE_CURSOR,
+            mask: PsyanimConstants.COLLISION_CATEGORIES.NONE
+        };
+
+        if (this.canCollideWithSprite)
+        {
+            collisionFilter = PsyanimConstants.DEFAULT_SPRITE_COLLISION_FILTER;
         }
 
-        this.entity.setBody({ type: 'circle', radius: 4 }, bodyOptions);
+        let bodyOptions = {
+            label: '_mouseFollowTarget',
+            shape: {
+                type: 'circle',
+                radius: this.collisionRadius
+            },
+            collisionFilter: collisionFilter
+        }
+
+        this.entity.setBody({ type: 'circle', radius: this.collisionRadius }, bodyOptions);
 
         // give focus to the canvas so the mouse follow target starts working immediately
         this.entity.scene.game.canvas.focus();

@@ -53,11 +53,14 @@ import BehaviorTreePredatorTest from './scenes/BehaviorTreePredatorTest.js';
 
 import WanderMovementLagTest from './scenes/WanderMovementLagTest.js';
 
+import InteractivePlayfightTest from './scenes/InteractivePlayfightTest.js';
+
 /**
  *  Setup Psyanim App - first register scenes:
  */
 
 // make a clone of the scene definitions here to test our cloning funcs
+let interactivePlayfightTestCopy = PsyanimUtils.cloneSceneDefinition(InteractivePlayfightTest);
 let basicHFSMCopy = PsyanimUtils.cloneSceneDefinition(BasicHFSM);
 let preyV2TestCopy = PsyanimUtils.cloneSceneDefinition(PreyV2Test);
 let predatorV2TestCopy = PsyanimUtils.cloneSceneDefinition(PredatorV2Test);
@@ -89,6 +92,7 @@ let BehaviorTreePredatorTestCopy = PsyanimUtils.cloneSceneDefinition(BehaviorTre
 let WanderMovementLagTestCopy = PsyanimUtils.cloneSceneDefinition(WanderMovementLagTest);
 
 // register the scene def clones to make sure the clones are g2g too
+PsyanimApp.Instance.config.registerScene(interactivePlayfightTestCopy);
 PsyanimApp.Instance.config.registerScene(WanderMovementLagTestCopy);
 PsyanimApp.Instance.config.registerScene(WanderTestCopy);
 PsyanimApp.Instance.config.registerScene(preyV2TestCopy);
